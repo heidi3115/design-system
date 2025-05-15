@@ -1,0 +1,41 @@
+{
+  "name": "jui-frontend",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint --filter=...[HEAD^]",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "next-app": "pnpm --filter next-app",
+    "react-app": "pnpm --filter react-app",
+    "utils": "pnpm --filter @common/utils",
+    "tokens": "pnpm --filter @common/tokens",
+    "typescript-config": "pnpm --filter @common/typescript-config",
+    "eslint-config": "pnpm --filter @common/eslint-config",
+    "ui": "pnpm --filter @common/ui",
+    "prepare": "husky install",
+    "test:type": "turbo run typecheck",
+    "generate:palette": "ts-node --transpile-only -P tsconfig.ts-node.json scripts/generateCss.ts"
+  },
+  "devDependencies": {
+    "@common/eslint-config": "workspace:*",
+    "@common/types": "workspace:*",
+    "@common/typescript-config": "workspace:*",
+    "husky": "^8.0.0",
+    "lint-staged": "^16.0.0",
+    "prettier": "^3.5.1",
+    "ts-node": "^10.9.2",
+    "tsc": "^2.0.4",
+    "turbo": "^2.4.2",
+    "typescript": "5.7.3"
+  },
+  "packageManager": "pnpm@10.4.1",
+  "engines": {
+    "node": ">=20"
+  }
+}

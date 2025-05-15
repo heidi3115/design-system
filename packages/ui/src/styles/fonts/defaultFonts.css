@@ -1,0 +1,25 @@
+/**
+ * nextjs 및 react 의 임포트 필요
+ * '/public/fonts/pretendard' 디렉토리 안에 폰트 파일 필요(다른위치에 설정 하려면 새롭게 파일 생성)
+ */
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 400;
+  src:
+    local('Pretendard'),
+    url(/fonts/pretendard/Pretendard-Regular.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 700;
+  src:
+    local('Pretendard'),
+    url(/fonts/pretendard/Pretendard-Bold.woff2) format('woff2');
+}
+
+body,
+input,
+textarea {
+  font-family: 'Pretendard', 'monospace';
+}

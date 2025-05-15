@@ -1,0 +1,16 @@
+# Ignore artifacts:
+build/
+dist/
+coverage/
+.yarn/
+
+# static files
+public/
+
+# Ignore all HTML files:
+**.html
+**.md
+**.mdx
+
+pnpm-lock.yaml
+pnpm-workspace.yaml

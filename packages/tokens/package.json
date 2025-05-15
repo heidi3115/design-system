@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "@common/tokens",
+  "main": "src/index.ts",
+  "scripts": {
+    "test-type": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

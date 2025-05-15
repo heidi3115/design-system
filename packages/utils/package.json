@@ -1,0 +1,17 @@
+{
+  "name": "@common/utils",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "test-type": "tsc"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "@types/react": "^19.1.3"
+  }
+}

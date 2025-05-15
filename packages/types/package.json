@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "@common/types",
+  "main": "index.d.ts",
+  "scripts": {
+    "test-type": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.3"
+  }
+}

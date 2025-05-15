@@ -1,0 +1,5 @@
+{
+  "extends": "@common/typescript-config/base.json",
+  "compilerOptions": {},
+  "include": ["*"]
+}
