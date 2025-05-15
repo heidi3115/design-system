@@ -79,6 +79,7 @@ export default function Page() {
 
           <AddIcon className="fill-juiPrimary" />
           <AddIcon size="large" />
+          <AddIcon variant="error" />
           <PieChartIcon />
         </div>
       </div>
