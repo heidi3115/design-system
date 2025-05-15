@@ -23,7 +23,7 @@ export default function Page() {
           jui Button
         </Button>
         <Button variant="juiGrey" onClick={() => setCount((prev) => (prev += 1))}>
-          jui Grey <Mail className="size-1.5" />
+          jui Grey <CournerDownRightIcon />
         </Button>
         <Button variant="juiGradient" onClick={() => setCount((prev) => (prev += 1))}>
           jui Button Gradient
@@ -81,6 +81,7 @@ export default function Page() {
           <AddIcon size="large" />
           <AddIcon variant="disabled" />
           <PieChartIcon variant="disabled" />
+          <CournerDownRightIcon />
           <CournerDownRightIcon size="large" className="fill-juiError size-16" />
         </div>
       </div>
