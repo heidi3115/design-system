@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Mail } from 'lucide-react';
 
 import { Badge, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@common/ui';
-import { AddIcon, AlarmIcon, PieChartIcon } from '@common/ui/icons';
+import { AddIcon, AlarmIcon, CournerDownRightIcon, PieChartIcon } from '@common/ui/icons';
 
 import { useUpdateEffect } from '@common/utils';
 
@@ -79,8 +79,9 @@ export default function Page() {
 
           <AddIcon className="fill-juiPrimary" />
           <AddIcon size="large" />
-          <AddIcon variant="error" />
-          <PieChartIcon />
+          <AddIcon variant="disabled" />
+          <PieChartIcon variant="disabled" />
+          <CournerDownRightIcon size="large" className="fill-juiError size-16" />
         </div>
       </div>
     </div>
