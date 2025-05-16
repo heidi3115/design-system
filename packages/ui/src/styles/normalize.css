@@ -80,10 +80,9 @@ pre {
  * Remove the gray background on active links in IE 10.
  */
 
-a {
+a:not([data-slot='button']) {
   background-color: transparent;
 }
-
 /**
  * 1. Remove the bottom border in Chrome 57-
  * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
