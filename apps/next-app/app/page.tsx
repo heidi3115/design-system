@@ -4,7 +4,30 @@ import { useState } from 'react';
 import { Mail } from 'lucide-react';
 
 import { Badge, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@common/ui';
-import { AddIcon, AlarmIcon, CournerDownRightIcon, PieChartIcon } from '@common/ui/icons';
+import {
+  AddIcon,
+  CournerDownRightIcon,
+  DownloadIcon,
+  EditIcon,
+  ExternalLinkIcon,
+  EyeOffIcon,
+  EyeIcon,
+  FilePlusIcon,
+  FileIcon,
+  FileTextIcon,
+  FolderIcon,
+  GlobeIcon,
+  GridIcon,
+  HomeIcon,
+  InBoxIcon,
+  InfoIcon,
+  LayersIcon,
+  LayoutIcon,
+  ListIcon,
+  LockIcon,
+  LogInIcon,
+  LogOutIcon,
+} from '@common/ui/icons';
 
 import { useUpdateEffect } from '@common/utils';
 
@@ -66,23 +89,20 @@ export default function Page() {
               <p>Card Footer</p>
             </CardFooter>
           </Card>
-          <AlarmIcon />
-          <AlarmIcon variant="primary" />
-          <AlarmIcon variant="secondary" />
-          <AlarmIcon variant="error" />
-          <AlarmIcon variant="disabled" />
-
-          <AlarmIcon size="small" />
-          <AlarmIcon size="basic" />
-          <AlarmIcon size="medium" />
-          <AlarmIcon size={99} color={'red'} />
-
-          <AddIcon className="fill-juiPrimary" />
-          <AddIcon size="large" />
-          <AddIcon variant="disabled" />
-          <PieChartIcon variant="disabled" />
-          <CournerDownRightIcon />
-          <CournerDownRightIcon size="large" className="fill-juiError size-16" />
+          <DownloadIcon />
+          <EditIcon />
+          <ExternalLinkIcon />
+          <EyeOffIcon />
+          <EyeIcon />
+          <FilePlusIcon />
+          <FileIcon />
+          <FileTextIcon />
+          <FolderIcon />
+          <GlobeIcon />
+          <GridIcon />
+          <HomeIcon />
+          <InBoxIcon />
+          <InfoIcon />
         </div>
       </div>
     </div>
