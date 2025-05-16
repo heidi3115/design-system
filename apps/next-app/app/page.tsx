@@ -4,32 +4,35 @@ import { useState } from 'react';
 import { Mail } from 'lucide-react';
 
 import { Badge, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@common/ui';
-import {
-  AddIcon,
-  CournerDownRightIcon,
-  DownloadIcon,
-  EditIcon,
-  ExternalLinkIcon,
-  EyeOffIcon,
-  EyeIcon,
-  FilePlusIcon,
-  FileIcon,
-  FileTextIcon,
-  FolderIcon,
-  GlobeIcon,
-  GridIcon,
-  HomeIcon,
-  InBoxIcon,
-  InfoIcon,
-  LayersIcon,
-  LayoutIcon,
-  ListIcon,
-  LockIcon,
-  LogInIcon,
-  LogOutIcon,
-} from '@common/ui/icons';
+// import {
+// AddIcon,
+// CournerDownRightIcon,
+// DownloadIcon,
+// EditIcon,
+// ExternalLinkIcon,
+// EyeOffIcon,
+// EyeIcon,
+// FilePlusIcon,
+// FileIcon,
+// FileTextIcon,
+// FolderIcon,
+// GlobeIcon,
+// GridIcon,
+// HomeIcon,
+// InBoxIcon,
+// InfoIcon,
+// LayersIcon,
+// LayoutIcon,
+// ListIcon,
+// LockIcon,
+// LogInIcon,
+// LogOutIcon,
+// } from '@common/ui/icons';
 
 import { useUpdateEffect } from '@common/utils';
+import LogInIcon from '@common/ui/icons/Icon/LogInIcon';
+import CournerDownRightIcon from '@common/ui/icons/Icon/CournerDownRightIcon';
+import MailIcon from '@common/ui/icons/Icon/MailIcon';
 
 export default function Page() {
   const [count, setCount] = useState(0);
@@ -52,9 +55,9 @@ export default function Page() {
           jui Button Gradient
         </Button>
         <Badge className="text-juiStatus-urgency">
-          {count} <AddIcon className="stroke-juiSecondary" />
-          {count} <AddIcon className="fill-juiSecondary" />
-          {count} <AddIcon className="fill-current" />
+          {/*{count} <AddIcon className="stroke-juiSecondary" />*/}
+          {/*{count} <AddIcon className="fill-juiSecondary" />*/}
+          {/*{count} <AddIcon className="fill-current" />*/}
         </Badge>
         <div className="flex justify-between items-center gap-5">
           <Card>
@@ -89,20 +92,8 @@ export default function Page() {
               <p>Card Footer</p>
             </CardFooter>
           </Card>
-          <DownloadIcon />
-          <EditIcon />
-          <ExternalLinkIcon />
-          <EyeOffIcon />
-          <EyeIcon />
-          <FilePlusIcon />
-          <FileIcon />
-          <FileTextIcon />
-          <FolderIcon />
-          <GlobeIcon />
-          <GridIcon />
-          <HomeIcon />
-          <InBoxIcon />
-          <InfoIcon />
+          <LogInIcon />
+          <MailIcon />
         </div>
       </div>
     </div>
