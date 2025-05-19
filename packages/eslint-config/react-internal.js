@@ -24,7 +24,7 @@ export const config = [
     },
     rules: {
       ...pluginReact.configs.flat.recommended.rules,
-      'no-undef': 'error',
+      'react/jsx-no-undef': 'error',
     },
   },
   {

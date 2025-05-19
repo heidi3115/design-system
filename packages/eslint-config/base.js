@@ -19,6 +19,8 @@ export const config = [
       prettier: prettierPlugin,
     },
     rules: {
+      'react/jsx-no-undef': 'error',
+
       'turbo/no-undeclared-env-vars': 'warn',
       '@typescript-eslint/no-unused-vars': 'error',
       'prettier/prettier': ['error', { endOfLine: 'auto' }],
