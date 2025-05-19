@@ -22,7 +22,6 @@ export default [
     rules: {
       'prettier/prettier': 'warn',
       'no-console': 'warn',
-      'no-undef': 'error',
     },
   },
 ];
