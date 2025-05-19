@@ -1,5 +1,28 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
-import Bookmark from '../svg/Bookmark.svg';
+import CreateIcon from '../CreateIcon';
 
-export const BookmarkIcon = (props: IconProps) => <CreateIcon Icon={Bookmark} viewBox="0 0 20 20" {...props} />;
+const BookmarkPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M5.83331 3.33334C5.37308 3.33334 4.99998 3.70643 4.99998 4.16667V15.8807L9.51561 12.6552C9.80536 12.4483 10.1946 12.4483 10.4843 12.6552L15 15.8807V4.16667C15 3.70643 14.6269 3.33334 14.1666 3.33334H5.83331ZM3.33331 4.16667C3.33331 2.78596 4.4526 1.66667 5.83331 1.66667H14.1666C15.5474 1.66667 16.6666 2.78596 16.6666 4.16667V17.5C16.6666 17.8122 16.4922 18.0981 16.2146 18.241C15.9371 18.3838 15.603 18.3596 15.3489 18.1781L9.99998 14.3574L4.65101 18.1781C4.397 18.3596 4.06289 18.3838 3.78533 18.241C3.50777 18.0981 3.33331 17.8122 3.33331 17.5V4.16667Z"
+    />
+  </>
+);
+/**
+ * @component @name BookmarkIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik01LjgzMzMxIDMuMzMzMzRDNS4zNzMwOCAzLjMzMzM0IDQuOTk5OTggMy43MDY0MyA0Ljk5OTk4IDQuMTY2NjdWMTUuODgwN0w5LjUxNTYxIDEyLjY1NTJDOS44MDUzNiAxMi40NDgzIDEwLjE5NDYgMTIuNDQ4MyAxMC40ODQzIDEyLjY1NTJMMTUgMTUuODgwN1Y0LjE2NjY3QzE1IDMuNzA2NDMgMTQuNjI2OSAzLjMzMzM0IDE0LjE2NjYgMy4zMzMzNEg1LjgzMzMxWk0zLjMzMzMxIDQuMTY2NjdDMy4zMzMzMSAyLjc4NTk2IDQuNDUyNiAxLjY2NjY3IDUuODMzMzEgMS42NjY2N0gxNC4xNjY2QzE1LjU0NzQgMS42NjY2NyAxNi42NjY2IDIuNzg1OTYgMTYuNjY2NiA0LjE2NjY3VjE3LjVDMTYuNjY2NiAxNy44MTIyIDE2LjQ5MjIgMTguMDk4MSAxNi4yMTQ2IDE4LjI0MUMxNS45MzcxIDE4LjM4MzggMTUuNjAzIDE4LjM1OTYgMTUuMzQ4OSAxOC4xNzgxTDkuOTk5OTggMTQuMzU3NEw0LjY1MTAxIDE4LjE3ODFDNC4zOTcgMTguMzU5NiA0LjA2Mjg5IDE4LjM4MzggMy43ODUzMyAxOC4yNDFDMy41MDc3NyAxOC4wOTgxIDMuMzMzMzEgMTcuODEyMiAzLjMzMzMxIDE3LjVWNC4xNjY2N1oiCiAgICAvPjwvc3ZnPg==)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
+
+export const BookmarkIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: BookmarkPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

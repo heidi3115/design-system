@@ -11,25 +11,19 @@ import {
   CalendarIcon,
   ChevronUpIcon,
   ClockIcon,
-  CournerDownLeftIcon,
-  CournerDownRightIcon,
-  EditIcon,
+  CornerDownLeftIcon,
+  CornerDownRightIcon,
   ExternalLinkIcon,
   EyeIcon,
-  EyeOffIcon,
   FilePlusIcon,
   FileTextIcon,
   GlobeIcon,
   HomeIcon,
-  InBoxIcon,
   InfoIcon,
   LayersIcon,
-  LayoutIcon,
   ListIcon,
   LockIcon,
-  LogInIcon,
   MailIcon,
-  Maximize2Icon,
   MaximizeIcon,
   Minimize2Icon,
   MinusCircleIcon,
@@ -38,6 +32,7 @@ import {
   PlayIcon,
   PlusCircleIcon,
   PlusIcon,
+  PlusSquareIcon,
   PrinterIcon,
   QuestionCircleIcon,
   RepeatIcon,
@@ -45,26 +40,19 @@ import {
   SaveIcon,
   ServerIcon,
   SettingsIcon,
-  SideBarIcon,
-  SlashIcon,
   SquareIcon,
   StarIcon,
   TagIcon,
   Trash2Icon,
-  TrashIcon,
   UserIcon,
   UserMinusIcon,
   UserPlusIcon,
   XCircleIcon,
   XIcon,
   ZoomInIcon,
-  ZoomOutIcon,
 } from '@common/ui/icons';
 
 import { useUpdateEffect } from '@common/utils';
-// import LogInIcon from '@common/ui/icons/Icon/LogInIcon';
-// import CournerDownRightIcon from '@common/ui/icons/Icon/CournerDownRightIcon';
-// import MailIcon from '@common/ui/icons/Icon/MailIcon';
 
 export default function Page() {
   const [count, setCount] = useState(0);
@@ -81,7 +69,7 @@ export default function Page() {
           jui Button
         </Button>
         <Button variant="juiGrey" onClick={() => setCount((prev) => (prev += 1))}>
-          jui Grey <CournerDownRightIcon />
+          jui Grey <CornerDownLeftIcon />
         </Button>
         <Button variant="juiGradient" onClick={() => setCount((prev) => (prev += 1))}>
           jui Button Gradient
@@ -124,18 +112,15 @@ export default function Page() {
               <p>Card Footer</p>
             </CardFooter>
           </Card>
-          <CournerDownRightIcon />
-          <LogInIcon />
-          <ArrowLeftIcon />
-          <CalendarIcon />
-          <ClockIcon />
+          <CornerDownRightIcon />
+          <ArrowLeftIcon fill="var(--juiError)" />
+          <CalendarIcon color="var(--juiPrimary)" />
+          <ClockIcon variant="secondary" />
           <EyeIcon />
           <FilePlusIcon />
           <FileTextIcon />
           <ListIcon />
-          <LayoutIcon />
           <LockIcon />
-          <EditIcon />
           <GlobeIcon />
           <ZoomInIcon />
           <XIcon />
@@ -145,8 +130,6 @@ export default function Page() {
           <InfoIcon />
           <ChevronUpIcon />
           <ExternalLinkIcon />
-          <ZoomInIcon />
-          <ZoomOutIcon />
           <UserMinusIcon />
           <UserPlusIcon />
           <StarIcon />
@@ -154,7 +137,6 @@ export default function Page() {
           <QuestionCircleIcon />
           <RepeatIcon />
           <SaveIcon />
-          <SlashIcon />
           <SquareIcon />
           <PrinterIcon />
           <ServerIcon />
@@ -163,14 +145,11 @@ export default function Page() {
           <XCircleIcon />
           <AlertCircleIcon />
           <BookmarkIcon />
-          <EyeOffIcon />
-          <InBoxIcon />
           <BarChartIcon />
           <LayersIcon />
-          <CournerDownLeftIcon />
+          <CornerDownLeftIcon />
           <MoreHorizontalIcon />
           <MailIcon />
-          <Maximize2Icon />
           <MaximizeIcon />
           <MinusCircleIcon />
           <Minimize2Icon />
@@ -178,8 +157,9 @@ export default function Page() {
           <PaperClipIcon />
           <PlusCircleIcon />
           <PlusIcon />
-          <SideBarIcon />
-          <TrashIcon />
+          <PlusIcon />
+          <PlusSquareIcon />
+          <PlusIcon />
         </div>
       </div>
     </div>

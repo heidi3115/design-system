@@ -1,5 +1,5 @@
 import { Button } from '@common/ui';
-import { CheckIcon, LogInIcon, AlertCircleIcon } from '@common/ui/icons';
+import { BellIcon } from '@common/ui/icons';
 
 function App() {
   return (
@@ -10,9 +10,7 @@ function App() {
           <Button variant="jui">jui Button</Button>
           <Button variant="juiGrey">jui Grey</Button>
           <Button variant="juiGradient">jui Button Gradient</Button>
-          <LogInIcon />
-          <AlertCircleIcon />
-          <CheckIcon />
+          <BellIcon />
         </div>
       </div>
     </main>

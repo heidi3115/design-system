@@ -1,3 +1,6 @@
-module.exports = {
-  '*.{ts,tsx,js,jsx,json}': ['prettier --write "**/*.{ts,tsx,md}"'],
+const lintstagedrc = {
+  '*.{ts,tsx,js,jsx,json}': ['eslint --fix', 'prettier --write'],
+  '*.{md,css,scss}': ['prettier --write'],
 };
+
+export default lintstagedrc;
