@@ -1,0 +1,67 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Docs Overview/Intro" />
+<style>
+  {`
+    ol, ul, li {
+      list-style: unset !important;
+    }
+  `}
+</style>
+
+
+
+# JASON UI Design System
+
+@common/ui를 통해 개발 과정을 보다 열린 방식으로 만들고자 합니다.<br />
+이 핵심 시스템과 가이드라인은 제이슨시스템의 제품인 JMachine, JSearch 디자인 시스템의 일부이며, 기여 및 플러그인 개발에 도움이 되도록 설계되었습니다.
+
+<br />
+### Our vision
+-----------------
+
+JUI Design System은 프론트엔드 엔지니어와 모든 분야의 제이슨시스템의 임직원들이 최대한 쉽게 할 수 있도록 하기 위해 @common/ui를 시작했습니다.<br />
+우리는 다음과 같은 결과를 만들어내는 컴포넌트를 만들고자 합니다:
+
+- 각 컴포넌트가 어떻게 동작하는지, 그리고 이를 활용해 뛰어난 사용자 경험을 만드는 방법에 대한 이해
+- 짧은 개발 시간과 일관된 코드 품질 유지
+- 아름답고 시각적으로 일관된 화면 경험 제공
+- 우리가 어떻게 일하고 무엇을 하는지에 대한 투명성
+
+<br />
+### How to get involved
+-----------------
+변경이 필요하다고 판단되면, 함께 어떤 변경이 되어야 할지 결정하고<br />
+변경 사항을 적용한 후 공개적으로 소통합니다.<br />
+개발자와 디자이너가 함께 @common/ui를 만들고 개선해 나갑니다.<br />
+전체 과정에서 여러분의 참여를 유도하고, 요구사항을 충족시키기 위해 노력합니다.<br />
+여러분의 디자인 및 개선 아이디어에 대해 논의하고, 기여 가이드라인에서 어떻게 도움을 줄 수 있는지 알아보길 기대합니다.
+
+<br />
+### Get started
+-----------------
+
+- **UI 컴포넌트 탐색하기** 사이드바에서 원하는 컴포넌트를 클릭하면 해당 컴포넌트의 모습과 설정 방법을 확인할 수 있습니다. 각 컴포넌트에는 속성에 대한 문서와 사용 예제 코드가 포함되어 있습니다.
+- **직접 사용해보기**
+  - 각 컴포넌트의 스토리를 클릭하여 다양한 속성을 실험해보세요.
+  - 사이드 패널의 Controls에서 속성을 변경할 수 있습니다.
+- **컴포넌트 활용하기** 사용하려는 용도에 맞는 컴포넌트를 찾았다면, Code 탭을 클릭해 코드 구현을 확인하거나, Docs 탭에서 예제를 참고하세요. **Docs**.
+
+더 자세한 내용은 [패키지 소스](http://10.0.0.8:7990/projects/JMACT/repos/jui-frontend)를 참고하시기 바랍니다.
+
+<br />
+### Installation
+-----------------
+
+JASON Design System은 Monorepo에서 기본 스타일링 엔진으로 tailwindcss v4를 사용합니다.<br />
+또한 컴포넌트 디자인 패턴은 ShadCN을 활용하여 개발되었습니다.(shadcn은 radix-ui 와 tailwindcss 를 포함합니다.)<br />
+이 스토리북의 스타일을 그대로 사용하려면, 진입점(entry point) 파일에 다음과 같이 import하세요(두번째줄의 font는 정적 파일을 받아서 직접 설정 할 수 있습니다.)
+```
+@import '@common/ui/src/styles/globals.css';
+@import '@common/ui/src/styles/fonts/defaultFonts.css';
+```
+
+### Related Links
+-----------------
+- [Shadcn UI](https://ui.shadcn.com/)
+- [(WIP) 디자인 시스템 및 모노레포의 진행상황 및 문서](https://jasonsystem.atlassian.net/wiki/spaces/bWAtrrt5Do0T/pages/489783328/New+Version)
