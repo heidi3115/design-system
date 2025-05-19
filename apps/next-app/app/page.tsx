@@ -24,7 +24,6 @@ import {
   LayersIcon,
   ListIcon,
   LockIcon,
-  LogInIcon,
   MailIcon,
   MaximizeIcon,
   Minimize2Icon,
@@ -120,7 +119,6 @@ export default function Page() {
             </CardFooter>
           </Card>
           <CornerDownRightIcon />
-          <LogInIcon />
           <ArrowLeftIcon />
           <CalendarIcon />
           <ClockIcon />
@@ -138,7 +136,6 @@ export default function Page() {
           <InfoIcon />
           <ChevronUpIcon />
           <ExternalLinkIcon />
-          <ZoomInIcon />
           <ZoomOutIcon />
           <UserMinusIcon />
           <UserPlusIcon />

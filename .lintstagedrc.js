@@ -1,4 +1,6 @@
-module.exports = {
-  '*.{ts,tsx,js,jsx,json}': ['turbo lint --filter=...[HEAD^]', 'prettier --write'],
+const lintstagedrc = {
+  '*.{ts,tsx,js,jsx,json}': ['eslint --fix', 'prettier --write'],
   '*.{md,css,scss}': ['prettier --write'],
 };
+
+export default lintstagedrc;
