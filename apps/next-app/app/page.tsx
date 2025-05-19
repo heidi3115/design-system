@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail } from 'lucide-react';
 
 import { Badge, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@common/ui';
 import { CournerDownRightIcon, LogInIcon } from '@common/ui/icons';
