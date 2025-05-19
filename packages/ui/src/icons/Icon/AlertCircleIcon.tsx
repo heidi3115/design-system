@@ -1,6 +1,25 @@
 import { type IconProps } from '../types';
 import CreateIcon from '../CreaateIcon';
 
-import AlertCircle from '../svg/AlertCircle.svg';
+const alertCirclePath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M0.833328 10C0.833328 4.9374 4.93738 0.833344 10 0.833344C15.0626 0.833344 19.1667 4.9374 19.1667 10C19.1667 15.0626 15.0626 19.1667 10 19.1667C4.93738 19.1667 0.833328 15.0626 0.833328 10ZM10 2.50001C5.85786 2.50001 2.49999 5.85787 2.49999 10C2.49999 14.1421 5.85786 17.5 10 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85787 14.1421 2.50001 10 2.50001Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M10 5.83334C10.4602 5.83334 10.8333 6.20644 10.8333 6.66668V10C10.8333 10.4602 10.4602 10.8333 10 10.8333C9.53977 10.8333 9.16667 10.4602 9.16667 10V6.66668C9.16667 6.20644 9.53977 5.83334 10 5.83334Z"
+    />
+    <path d="M10.8333 13.3333C10.8333 13.7936 10.4602 14.1667 10 14.1667C9.53977 14.1667 9.16667 13.7936 9.16667 13.3333C9.16667 12.8731 9.53977 12.5 10 12.5C10.4602 12.5 10.8333 12.8731 10.8333 13.3333Z" />
+  </>
+);
 
-export const AlertCircleIcon = (props: IconProps) => <CreateIcon Icon={AlertCircle} viewBox="0 0 20 20" {...props} />;
+export const AlertCircleIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: alertCirclePath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });
