@@ -10,6 +10,15 @@ const MessageSquarePath = (
     />
   </>
 );
+/**
+ * @component @name MessageSquareIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik00LjE2NjY5IDMuMzMzMzRDMy43MDY0NSAzLjMzMzM0IDMuMzMzMzUgMy43MDY0MyAzLjMzMzM1IDQuMTY2NjdWMTUuNDg4Mkw1LjI0NDEgMTMuNTc3NEM1LjQwMDM4IDEzLjQyMTEgNS42MTIzNCAxMy4zMzMzIDUuODMzMzUgMTMuMzMzM0gxNS44MzM0QzE2LjI5MzYgMTMuMzMzMyAxNi42NjY3IDEyLjk2MDIgMTYuNjY2NyAxMi41VjQuMTY2NjdDMTYuNjY2NyAzLjcwNjQzIDE2LjI5MzYgMy4zMzMzNCAxNS44MzM0IDMuMzMzMzRINC4xNjY2OVpNMS42NjY2OSA0LjE2NjY3QzEuNjY2NjkgMi43ODU5NiAyLjc4NTk4IDEuNjY2NjcgNC4xNjY2OSAxLjY2NjY3SDE1LjgzMzRDMTcuMjE0MSAxLjY2NjY3IDE4LjMzMzQgMi43ODU5NiAxOC4zMzM0IDQuMTY2NjdWMTIuNUMxOC4zMzM0IDEzLjg4MDcgMTcuMjE0MSAxNSAxNS44MzM0IDE1SDYuMTc4NTNMMy4wODkyOCAxOC4wODkzQzIuODUwOTQgMTguMzI3NiAyLjQ5MjUxIDE4LjM5ODkgMi4xODExMiAxOC4yNjk5QzEuODY5NzIgMTguMTQwOSAxLjY2NjY5IDE3LjgzNzEgMS42NjY2OSAxNy41VjQuMTY2NjdaIgogICAgLz48L3N2Zz4=)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
 
 export const MessageSquareIcon = (props: IconProps) =>
   CreateIcon({

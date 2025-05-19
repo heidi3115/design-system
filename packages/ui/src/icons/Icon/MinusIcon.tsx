@@ -10,6 +10,15 @@ const MinusPath = (
     />
   </>
 );
+/**
+ * @component @name MinusIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0zLjMzMzMxIDEwQzMuMzMzMzEgOS41Mzk3NyAzLjcwNjQxIDkuMTY2NjcgNC4xNjY2NSA5LjE2NjY3SDE1LjgzMzNDMTYuMjkzNiA5LjE2NjY3IDE2LjY2NjYgOS41Mzk3NyAxNi42NjY2IDEwQzE2LjY2NjYgMTAuNDYwMiAxNi4yOTM2IDEwLjgzMzMgMTUuODMzMyAxMC44MzMzSDQuMTY2NjVDMy43MDY0MSAxMC44MzMzIDMuMzMzMzEgMTAuNDYwMiAzLjMzMzMxIDEwWiIKICAgIC8+PC9zdmc+)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
 
 export const MinusIcon = (props: IconProps) =>
   CreateIcon({

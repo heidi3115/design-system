@@ -10,6 +10,15 @@ const PlayPath = (
     />
   </>
 );
+/**
+ * @component @name PlayIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0zLjc1MDA0IDEuNzk5MDJDMy40NjQ0IDEuOTU0OTYgMy4zMzMzNyAyLjUgMy4zMzMzNyAyLjVWMTcuNUMzLjMzMzM3IDE3LjgwNDggMy40OTk4MiAxOC4wODU0IDMuNzY3MzggMTguMjMxNEM0LjAzNDk1IDE4LjM3NzUgNC4zNjA5MSAxOC4zNjU4IDQuNjE3MzQgMTguMjAxTDE2LjI4NCAxMC43MDFDMTYuNTIyNSAxMC41NDc2IDE2LjY2NjcgMTAuMjgzNiAxNi42NjY3IDEwQzE2LjY2NjcgOS43MTY0NCAxNi41MjI1IDkuNDUyMzUgMTYuMjg0IDkuMjk5MDJMNC42MTczNCAxLjc5OTAxQzQuNjE3MzQgMS43OTkwMSA0LjAzNTY4IDEuNjQzMDcgMy43NTAwNCAxLjc5OTAyWk0xNC4yOTIzIDEwTDUuMDAwMDQgNC4wMjYzOFYxNS45NzM2TDE0LjI5MjMgMTBaIgogICAgLz48L3N2Zz4=)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
 
 export const PlayIcon = (props: IconProps) =>
   CreateIcon({

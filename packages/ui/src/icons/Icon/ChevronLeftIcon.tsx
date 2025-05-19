@@ -10,6 +10,15 @@ const ChevronLeftPath = (
     />
   </>
 );
+/**
+ * @component @name ChevronLeftIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0xMy4wODkzIDQuNDEwNzVDMTMuNDE0NyA0LjczNjE5IDEzLjQxNDcgNS4yNjM4MiAxMy4wODkzIDUuNTg5MjZMOC42Nzg1MSAxMEwxMy4wODkzIDE0LjQxMDhDMTMuNDE0NyAxNC43MzYyIDEzLjQxNDcgMTUuMjYzOCAxMy4wODkzIDE1LjU4OTNDMTIuNzYzOCAxNS45MTQ3IDEyLjIzNjIgMTUuOTE0NyAxMS45MTA3IDE1LjU4OTNMNi45MTA3NCAxMC41ODkzQzYuNTg1MyAxMC4yNjM4IDYuNTg1MyA5LjczNjE5IDYuOTEwNzQgOS40MTA3NUwxMS45MTA3IDQuNDEwNzVDMTIuMjM2MiA0LjA4NTMxIDEyLjc2MzggNC4wODUzMSAxMy4wODkzIDQuNDEwNzVaIgogICAgLz48L3N2Zz4=)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
 
 export const ChevronLeftIcon = (props: IconProps) =>
   CreateIcon({

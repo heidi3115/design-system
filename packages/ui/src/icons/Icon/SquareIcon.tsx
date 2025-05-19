@@ -10,6 +10,15 @@ const SquarePath = (
     />
   </>
 );
+/**
+ * @component @name SquareIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0xLjY2NjY5IDQuMTY2NjZDMS42NjY2OSAyLjc4NTk0IDIuNzg1OTggMS42NjY2NiA0LjE2NjY5IDEuNjY2NjZIMTUuODMzNEMxNy4yMTQxIDEuNjY2NjYgMTguMzMzNCAyLjc4NTk0IDE4LjMzMzQgNC4xNjY2NlYxNS44MzMzQzE4LjMzMzQgMTcuMjE0IDE3LjIxNDEgMTguMzMzMyAxNS44MzM0IDE4LjMzMzNINC4xNjY2OUMyLjc4NTk4IDE4LjMzMzMgMS42NjY2OSAxNy4yMTQgMS42NjY2OSAxNS44MzMzVjQuMTY2NjZaTTQuMTY2NjkgMy4zMzMzMkMzLjcwNjQ1IDMuMzMzMzIgMy4zMzMzNSAzLjcwNjQyIDMuMzMzMzUgNC4xNjY2NlYxNS44MzMzQzMuMzMzMzUgMTYuMjkzNiAzLjcwNjQ1IDE2LjY2NjcgNC4xNjY2OSAxNi42NjY3SDE1LjgzMzRDMTYuMjkzNiAxNi42NjY3IDE2LjY2NjcgMTYuMjkzNiAxNi42NjY3IDE1LjgzMzNWNC4xNjY2NkMxNi42NjY3IDMuNzA2NDIgMTYuMjkzNiAzLjMzMzMyIDE1LjgzMzQgMy4zMzMzMkg0LjE2NjY5WiIKICAgIC8+PC9zdmc+)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
 
 export const SquareIcon = (props: IconProps) =>
   CreateIcon({

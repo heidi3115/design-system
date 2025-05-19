@@ -32,6 +32,7 @@ import {
   PlayIcon,
   PlusCircleIcon,
   PlusIcon,
+  PlusSquareIcon,
   PrinterIcon,
   QuestionCircleIcon,
   RepeatIcon,
@@ -39,7 +40,6 @@ import {
   SaveIcon,
   ServerIcon,
   SettingsIcon,
-  SideBarIcon,
   SquareIcon,
   StarIcon,
   TagIcon,
@@ -157,7 +157,9 @@ export default function Page() {
           <PaperClipIcon />
           <PlusCircleIcon />
           <PlusIcon />
-          <SideBarIcon />
+          <PlusIcon />
+          <PlusSquareIcon />
+          <PlusIcon />
         </div>
       </div>
     </div>

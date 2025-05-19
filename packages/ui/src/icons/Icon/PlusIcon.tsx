@@ -15,6 +15,15 @@ const PlusPath = (
     />
   </>
 );
+/**
+ * @component @name PlusIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0xMCAzLjMzMzM0QzEwLjQ2MDIgMy4zMzMzNCAxMC44MzMzIDMuNzA2NDQgMTAuODMzMyA0LjE2NjY4VjE1LjgzMzNDMTAuODMzMyAxNi4yOTM2IDEwLjQ2MDIgMTYuNjY2NyAxMCAxNi42NjY3QzkuNTM5NzcgMTYuNjY2NyA5LjE2NjY3IDE2LjI5MzYgOS4xNjY2NyAxNS44MzMzVjQuMTY2NjhDOS4xNjY2NyAzLjcwNjQ0IDkuNTM5NzcgMy4zMzMzNCAxMCAzLjMzMzM0WiIKICAgIC8+CiAgICA8cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0zLjMzMzM0IDkuOTk5OTlDMy4zMzMzNCA5LjUzOTc1IDMuNzA2NDMgOS4xNjY2NiA0LjE2NjY3IDkuMTY2NjZIMTUuODMzM0MxNi4yOTM2IDkuMTY2NjYgMTYuNjY2NyA5LjUzOTc1IDE2LjY2NjcgOS45OTk5OUMxNi42NjY3IDEwLjQ2MDIgMTYuMjkzNiAxMC44MzMzIDE1LjgzMzMgMTAuODMzM0g0LjE2NjY3QzMuNzA2NDMgMTAuODMzMyAzLjMzMzM0IDEwLjQ2MDIgMy4zMzMzNCA5Ljk5OTk5WiIKICAgIC8+PC9zdmc+)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
 
 export const PlusIcon = (props: IconProps) =>
   CreateIcon({

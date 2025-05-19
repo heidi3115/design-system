@@ -10,6 +10,15 @@ const CheckPath = (
     />
   </>
 );
+/**
+ * @component @name CheckIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0xNy4yNTU5IDUuMjQ0MDhDMTcuNTgxNCA1LjU2OTUxIDE3LjU4MTQgNi4wOTcxNSAxNy4yNTU5IDYuNDIyNTlMOC4wODkyNiAxNS41ODkzQzcuNzYzODIgMTUuOTE0NyA3LjIzNjE4IDE1LjkxNDcgNi45MTA3NCAxNS41ODkzTDIuNzQ0MDggMTEuNDIyNkMyLjQxODY0IDExLjA5NzIgMi40MTg2NCAxMC41Njk1IDIuNzQ0MDggMTAuMjQ0MUMzLjA2OTUxIDkuOTE4NjQgMy41OTcxNSA5LjkxODY0IDMuOTIyNTkgMTAuMjQ0MUw3LjUgMTMuODIxNUwxNi4wNzc0IDUuMjQ0MDhDMTYuNDAyOCA0LjkxODY0IDE2LjkzMDUgNC45MTg2NCAxNy4yNTU5IDUuMjQ0MDhaIgogICAgLz48L3N2Zz4=)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
 
 export const CheckIcon = (props: IconProps) =>
   CreateIcon({

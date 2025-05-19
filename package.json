@@ -2,7 +2,6 @@
   "name": "jui-frontend",
   "version": "0.0.1",
   "private": true,
-  "type": "module",
   "workspaces": [
     "apps/*",
     "packages/*",
@@ -24,7 +23,8 @@
     "storybook:dev": "pnpm --filter storybook storybook",
     "prepare": "husky install",
     "test:type": "turbo run typecheck",
-    "generate:palette": "ts-node --transpile-only -P tsconfig.ts-node.json scripts/generateCss.ts"
+    "generate:palette": "ts-node --transpile-only -P tsconfig.ts-node.json scripts/generateCss.ts",
+    "generate:icon": "ts-node --transpile-only -P tsconfig.ts-node.json scripts/generateIconAnnotation.ts"
   },
   "devDependencies": {
     "@common/eslint-config": "workspace:*",
