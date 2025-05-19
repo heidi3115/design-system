@@ -2,9 +2,15 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
   ignorePatterns: ['apps/**', 'packages/**'],
-  extends: ['@common/eslint-config/library.js'],
+  extends: ['@common/eslint-config/library'],
+
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: true,
+  },
+
+  plugins: ['prettier'],
+  rules: {
+    'prettier/prettier': 'error',
   },
 };
