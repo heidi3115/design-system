@@ -1,5 +1,5 @@
 import { Button } from '@common/ui';
-import { CheckIcon, PlusIcon } from '@common/ui/icons';
+import { CheckIcon } from '@common/ui/icons';
 
 function App() {
   return (
