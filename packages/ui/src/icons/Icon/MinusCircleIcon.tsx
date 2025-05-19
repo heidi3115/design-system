@@ -1,6 +1,24 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import MinusCircle from '../svg/MinusCircle.svg';
+const MinusCirclePath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M0.833313 10C0.833313 4.93738 4.93737 0.833328 9.99998 0.833328C15.0626 0.833328 19.1666 4.93738 19.1666 10C19.1666 15.0626 15.0626 19.1667 9.99998 19.1667C4.93737 19.1667 0.833313 15.0626 0.833313 10ZM9.99998 2.49999C5.85784 2.49999 2.49998 5.85786 2.49998 10C2.49998 14.1421 5.85784 17.5 9.99998 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.49999 9.99998 2.49999Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M5.83331 10C5.83331 9.53977 6.20641 9.16667 6.66665 9.16667H13.3333C13.7936 9.16667 14.1666 9.53977 14.1666 10C14.1666 10.4602 13.7936 10.8333 13.3333 10.8333H6.66665C6.20641 10.8333 5.83331 10.4602 5.83331 10Z"
+    />
+  </>
+);
 
-export const MinusCircleIcon = (props: IconProps) => <CreateIcon Icon={MinusCircle} viewBox="0 0 20 20" {...props} />;
+export const MinusCircleIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: MinusCirclePath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

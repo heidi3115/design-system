@@ -1,6 +1,24 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import User from '../svg/User.svg';
+const UserPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M2.5 15.8334C2.5 13.5322 4.36548 11.6667 6.66667 11.6667H13.3333C15.6345 11.6667 17.5 13.5322 17.5 15.8334V17.5C17.5 17.9603 17.1269 18.3334 16.6667 18.3334C16.2064 18.3334 15.8333 17.9603 15.8333 17.5V15.8334C15.8333 14.4526 14.714 13.3334 13.3333 13.3334H6.66667C5.28595 13.3334 4.16667 14.4526 4.16667 15.8334V17.5C4.16667 17.9603 3.79357 18.3334 3.33333 18.3334C2.8731 18.3334 2.5 17.9603 2.5 17.5V15.8334Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M5.83334 5.83335C5.83334 3.53217 7.69882 1.66669 10 1.66669C12.3012 1.66669 14.1667 3.53217 14.1667 5.83335C14.1667 8.13454 12.3012 10 10 10C7.69882 10 5.83334 8.13454 5.83334 5.83335ZM10 3.33335C8.61929 3.33335 7.5 4.45264 7.5 5.83335C7.5 7.21407 8.61929 8.33335 10 8.33335C11.3807 8.33335 12.5 7.21407 12.5 5.83335C12.5 4.45264 11.3807 3.33335 10 3.33335Z"
+    />
+  </>
+);
 
-export const UserIcon = (props: IconProps) => <CreateIcon Icon={User} viewBox="0 0 20 20" {...props} />;
+export const UserIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: UserPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

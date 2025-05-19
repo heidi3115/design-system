@@ -1,7 +1,7 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-const alertCirclePath = (
+const AlertCirclePath = (
   <>
     <path
       fillRule="evenodd"
@@ -19,7 +19,7 @@ const alertCirclePath = (
 
 export const AlertCircleIcon = (props: IconProps) =>
   CreateIcon({
-    paths: alertCirclePath,
+    paths: AlertCirclePath,
     viewBox: '0 0 20 20',
     ...props,
   });

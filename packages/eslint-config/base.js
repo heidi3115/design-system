@@ -1,6 +1,6 @@
 import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import onlyWarn from 'eslint-plugin-only-warn';
+// import onlyWarn from 'eslint-plugin-only-warn';
 import turboPlugin from 'eslint-plugin-turbo';
 import tseslint from 'typescript-eslint';
 
@@ -24,6 +24,11 @@ export const config = [
   {
     plugins: {
       onlyWarn,
+    },
+  },
+  {
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'error',
     },
   },
   {

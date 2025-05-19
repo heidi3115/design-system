@@ -1,6 +1,34 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import Maximize2 from '../svg/Maximize2.svg';
+const Maximize2Path = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M11.6667 2.50001C11.6667 2.03977 12.0398 1.66667 12.5 1.66667H17.5C17.9602 1.66667 18.3333 2.03977 18.3333 2.50001V7.5C18.3333 7.96024 17.9602 8.33334 17.5 8.33334C17.0398 8.33334 16.6667 7.96024 16.6667 7.5V3.33334H12.5C12.0398 3.33334 11.6667 2.96024 11.6667 2.50001Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M2.50001 11.6667C2.96024 11.6667 3.33334 12.0398 3.33334 12.5V16.6667H7.5C7.96024 16.6667 8.33334 17.0398 8.33334 17.5C8.33334 17.9602 7.96024 18.3333 7.5 18.3333H2.50001C2.03977 18.3333 1.66667 17.9602 1.66667 17.5V12.5C1.66667 12.0398 2.03977 11.6667 2.50001 11.6667Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M18.0893 1.91075C18.4147 2.23619 18.4147 2.76382 18.0893 3.08926L12.2559 8.92259C11.9305 9.24803 11.4029 9.24803 11.0774 8.92259C10.752 8.59716 10.752 8.06952 11.0774 7.74408L16.9108 1.91075C17.2362 1.58531 17.7638 1.58531 18.0893 1.91075Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M8.92259 11.0774C9.24803 11.4028 9.24803 11.9305 8.92259 12.2559L3.08926 18.0893C2.76382 18.4147 2.23619 18.4147 1.91075 18.0893C1.58531 17.7638 1.58531 17.2362 1.91075 16.9107L7.74408 11.0774C8.06952 10.752 8.59716 10.752 8.92259 11.0774Z"
+    />
+  </>
+);
 
-export const Maximize2Icon = (props: IconProps) => <CreateIcon Icon={Maximize2} viewBox="0 0 20 20" {...props} />;
+export const Maximize2Icon = (props: IconProps) =>
+  CreateIcon({
+    paths: Maximize2Path,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

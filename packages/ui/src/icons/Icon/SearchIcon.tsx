@@ -1,6 +1,24 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import Search from '../svg/Search.svg';
+const SearchPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M1.66669 8.74999C1.66669 4.83797 4.838 1.66666 8.75002 1.66666C12.662 1.66666 15.8334 4.83797 15.8334 8.74999C15.8334 12.662 12.662 15.8333 8.75002 15.8333C4.838 15.8333 1.66669 12.662 1.66669 8.74999ZM8.75002 3.33332C5.75848 3.33332 3.33335 5.75845 3.33335 8.74999C3.33335 11.7415 5.75848 14.1667 8.75002 14.1667C11.7416 14.1667 14.1667 11.7415 14.1667 8.74999C14.1667 5.75845 11.7416 3.33332 8.75002 3.33332Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M12.5774 12.5774C12.9028 12.252 13.4305 12.252 13.7559 12.5774L18.0892 16.9108C18.4147 17.2362 18.4147 17.7638 18.0892 18.0893C17.7638 18.4147 17.2362 18.4147 16.9107 18.0893L12.5774 13.7559C12.252 13.4305 12.252 12.9029 12.5774 12.5774Z"
+    />
+  </>
+);
 
-export const SearchIcon = (props: IconProps) => <CreateIcon Icon={Search} viewBox="0 0 20 20" {...props} />;
+export const SearchIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: SearchPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

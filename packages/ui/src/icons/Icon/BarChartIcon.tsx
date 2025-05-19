@@ -1,6 +1,29 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import BarChart from '../svg/BarChart.svg';
+const BarChartPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M14.1667 2.50001C14.1667 2.03977 14.5398 1.66667 15 1.66667H18.3333C18.7936 1.66667 19.1667 2.03977 19.1667 2.50001V17.5C19.1667 17.9602 18.7936 18.3333 18.3333 18.3333H15C14.5398 18.3333 14.1667 17.9602 14.1667 17.5V2.50001ZM15.8333 3.33334V16.6667H17.5V3.33334H15.8333Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M7.5 6.66666C7.5 6.20642 7.8731 5.83333 8.33333 5.83333H11.6667C12.1269 5.83333 12.5 6.20642 12.5 6.66666V17.5C12.5 17.9602 12.1269 18.3333 11.6667 18.3333H8.33333C7.8731 18.3333 7.5 17.9602 7.5 17.5V6.66666ZM9.16667 7.49999V16.6667H10.8333V7.49999H9.16667Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M0.833328 10.8333C0.833328 10.3731 1.20642 10 1.66666 10H4.99999C5.46023 10 5.83333 10.3731 5.83333 10.8333V17.5C5.83333 17.9602 5.46023 18.3333 4.99999 18.3333H1.66666C1.20642 18.3333 0.833328 17.9602 0.833328 17.5V10.8333ZM2.49999 11.6667V16.6667H4.16666V11.6667H2.49999Z"
+    />
+  </>
+);
 
-export const BarChartIcon = (props: IconProps) => <CreateIcon Icon={BarChart} viewBox="0 0 20 20" {...props} />;
+export const BarChartIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: BarChartPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

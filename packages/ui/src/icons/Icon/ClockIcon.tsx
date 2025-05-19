@@ -1,6 +1,24 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import Clock from '../svg/Clock.svg';
+const ClockPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M0.833313 10C0.833313 4.93738 4.93737 0.833328 9.99998 0.833328C15.0626 0.833328 19.1666 4.93738 19.1666 10C19.1666 15.0626 15.0626 19.1667 9.99998 19.1667C4.93737 19.1667 0.833313 15.0626 0.833313 10ZM9.99998 2.49999C5.85784 2.49999 2.49998 5.85786 2.49998 10C2.49998 14.1421 5.85784 17.5 9.99998 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.49999 9.99998 2.49999Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M10 4.16667C10.4603 4.16667 10.8334 4.53977 10.8334 5.00001V9.65483L13.0893 11.9107C13.4147 12.2362 13.4147 12.7638 13.0893 13.0893C12.7638 13.4147 12.2362 13.4147 11.9108 13.0893L9.41076 10.5893C9.25448 10.433 9.16669 10.221 9.16669 10V5.00001C9.16669 4.53977 9.53978 4.16667 10 4.16667Z"
+    />
+  </>
+);
 
-export const ClockIcon = (props: IconProps) => <CreateIcon Icon={Clock} viewBox="0 0 20 20" {...props} />;
+export const ClockIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: ClockPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

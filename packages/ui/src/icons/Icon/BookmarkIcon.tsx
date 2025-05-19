@@ -1,5 +1,19 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
-import Bookmark from '../svg/Bookmark.svg';
+import CreateIcon from '../CreateIcon';
 
-export const BookmarkIcon = (props: IconProps) => <CreateIcon Icon={Bookmark} viewBox="0 0 20 20" {...props} />;
+const BookmarkPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M5.83331 3.33334C5.37308 3.33334 4.99998 3.70643 4.99998 4.16667V15.8807L9.51561 12.6552C9.80536 12.4483 10.1946 12.4483 10.4843 12.6552L15 15.8807V4.16667C15 3.70643 14.6269 3.33334 14.1666 3.33334H5.83331ZM3.33331 4.16667C3.33331 2.78596 4.4526 1.66667 5.83331 1.66667H14.1666C15.5474 1.66667 16.6666 2.78596 16.6666 4.16667V17.5C16.6666 17.8122 16.4922 18.0981 16.2146 18.241C15.9371 18.3838 15.603 18.3596 15.3489 18.1781L9.99998 14.3574L4.65101 18.1781C4.397 18.3596 4.06289 18.3838 3.78533 18.241C3.50777 18.0981 3.33331 17.8122 3.33331 17.5V4.16667Z"
+    />
+  </>
+);
+
+export const BookmarkIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: BookmarkPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

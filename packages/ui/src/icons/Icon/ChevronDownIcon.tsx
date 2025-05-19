@@ -1,5 +1,19 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
-import ChevronDown from '../svg/ChevronDown.svg';
+import CreateIcon from '../CreateIcon';
 
-export const ChevronDownIcon = (props: IconProps) => <CreateIcon Icon={ChevronDown} viewBox="0 0 20 20" {...props} />;
+const ChevronDownPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M4.41075 6.91074C4.73618 6.5853 5.26382 6.5853 5.58926 6.91074L10 11.3215L14.4107 6.91074C14.7362 6.5853 15.2638 6.5853 15.5893 6.91074C15.9147 7.23618 15.9147 7.76382 15.5893 8.08925L10.5893 13.0893C10.2638 13.4147 9.73618 13.4147 9.41075 13.0893L4.41075 8.08925C4.08531 7.76382 4.08531 7.23618 4.41075 6.91074Z"
+    />
+  </>
+);
+
+export const ChevronDownIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: ChevronDownPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

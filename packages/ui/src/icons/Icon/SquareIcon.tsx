@@ -1,6 +1,19 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import Square from '../svg/Square.svg';
+const SquarePath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M1.66669 4.16666C1.66669 2.78594 2.78598 1.66666 4.16669 1.66666H15.8334C17.2141 1.66666 18.3334 2.78594 18.3334 4.16666V15.8333C18.3334 17.214 17.2141 18.3333 15.8334 18.3333H4.16669C2.78598 18.3333 1.66669 17.214 1.66669 15.8333V4.16666ZM4.16669 3.33332C3.70645 3.33332 3.33335 3.70642 3.33335 4.16666V15.8333C3.33335 16.2936 3.70645 16.6667 4.16669 16.6667H15.8334C16.2936 16.6667 16.6667 16.2936 16.6667 15.8333V4.16666C16.6667 3.70642 16.2936 3.33332 15.8334 3.33332H4.16669Z"
+    />
+  </>
+);
 
-export const SquareIcon = (props: IconProps) => <CreateIcon Icon={Square} viewBox="0 0 20 20" {...props} />;
+export const SquareIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: SquarePath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

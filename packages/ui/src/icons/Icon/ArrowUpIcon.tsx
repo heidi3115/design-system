@@ -1,5 +1,24 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
-import ArrowUp from '../svg/ArrowUp.svg';
+import CreateIcon from '../CreateIcon';
 
-export const ArrowUpIcon = (props: IconProps) => <CreateIcon Icon={ArrowUp} viewBox="0 0 20 20" {...props} />;
+const ArrowUpPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M9.99996 2.5C10.4602 2.5 10.8333 2.8731 10.8333 3.33333V16.6667C10.8333 17.1269 10.4602 17.5 9.99996 17.5C9.53972 17.5 9.16663 17.1269 9.16663 16.6667V3.33333C9.16663 2.8731 9.53972 2.5 9.99996 2.5Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M9.4107 2.74408C9.73614 2.41864 10.2638 2.41864 10.5892 2.74408L15.5892 7.74408C15.9147 8.06951 15.9147 8.59715 15.5892 8.92259C15.2638 9.24803 14.7361 9.24803 14.4107 8.92259L9.99996 4.51184L5.58922 8.92259C5.26378 9.24803 4.73614 9.24803 4.4107 8.92259C4.08527 8.59715 4.08527 8.06951 4.4107 7.74408L9.4107 2.74408Z"
+    />
+  </>
+);
+
+export const ArrowUpIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: ArrowUpPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

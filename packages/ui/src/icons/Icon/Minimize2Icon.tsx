@@ -1,6 +1,34 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import Minimize2 from '../svg/Minimize2.svg';
+const Minimize2Path = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M2.5 11.6667C2.5 11.2064 2.8731 10.8333 3.33333 10.8333H8.33333C8.79357 10.8333 9.16667 11.2064 9.16667 11.6667V16.6667C9.16667 17.1269 8.79357 17.5 8.33333 17.5C7.8731 17.5 7.5 17.1269 7.5 16.6667V12.5H3.33333C2.8731 12.5 2.5 12.1269 2.5 11.6667Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M11.6666 2.5C12.1269 2.5 12.5 2.8731 12.5 3.33333V7.5H16.6666C17.1269 7.5 17.5 7.8731 17.5 8.33333C17.5 8.79357 17.1269 9.16667 16.6666 9.16667H11.6666C11.2064 9.16667 10.8333 8.79357 10.8333 8.33333V3.33333C10.8333 2.8731 11.2064 2.5 11.6666 2.5Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M18.0892 1.91075C18.4147 2.23619 18.4147 2.76382 18.0892 3.08926L12.2559 8.92259C11.9305 9.24803 11.4028 9.24803 11.0774 8.92259C10.752 8.59716 10.752 8.06952 11.0774 7.74408L16.9107 1.91075C17.2362 1.58531 17.7638 1.58531 18.0892 1.91075Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M8.92261 11.0774C9.24805 11.4028 9.24805 11.9305 8.92261 12.2559L3.08928 18.0893C2.76384 18.4147 2.2362 18.4147 1.91076 18.0893C1.58533 17.7638 1.58533 17.2362 1.91076 16.9107L7.7441 11.0774C8.06953 10.752 8.59717 10.752 8.92261 11.0774Z"
+    />
+  </>
+);
 
-export const Minimize2Icon = (props: IconProps) => <CreateIcon Icon={Minimize2} viewBox="0 0 20 20" {...props} />;
+export const Minimize2Icon = (props: IconProps) =>
+  CreateIcon({
+    paths: Minimize2Path,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

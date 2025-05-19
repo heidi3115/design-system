@@ -1,6 +1,29 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import ZoomOut from '../svg/ZoomOut.svg';
+const ZoomOutPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M1.66663 9.16669C1.66663 5.02455 5.02449 1.66669 9.16663 1.66669C13.3088 1.66669 16.6666 5.02455 16.6666 9.16669C16.6666 13.3088 13.3088 16.6667 9.16663 16.6667C5.02449 16.6667 1.66663 13.3088 1.66663 9.16669ZM9.16663 3.33335C5.94496 3.33335 3.33329 5.94503 3.33329 9.16669C3.33329 12.3883 5.94496 15 9.16663 15C12.3883 15 15 12.3883 15 9.16669C15 5.94503 12.3883 3.33335 9.16663 3.33335Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M13.2857 13.2858C13.6111 12.9603 14.1388 12.9603 14.4642 13.2858L18.0892 16.9108C18.4147 17.2362 18.4147 17.7638 18.0892 18.0893C17.7638 18.4147 17.2361 18.4147 16.9107 18.0893L13.2857 14.4643C12.9603 14.1388 12.9603 13.6112 13.2857 13.2858Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M5.83337 9.16665C5.83337 8.70641 6.20647 8.33331 6.66671 8.33331H11.6667C12.1269 8.33331 12.5 8.70641 12.5 9.16665C12.5 9.62688 12.1269 9.99998 11.6667 9.99998H6.66671C6.20647 9.99998 5.83337 9.62688 5.83337 9.16665Z"
+    />
+  </>
+);
 
-export const ZoomOutIcon = (props: IconProps) => <CreateIcon Icon={ZoomOut} viewBox="0 0 20 20" {...props} />;
+export const ZoomOutIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: ZoomOutPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

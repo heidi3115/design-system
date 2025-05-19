@@ -1,6 +1,24 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import Home from '../svg/Home.svg';
+const HomePath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M9.48837 1.00888C9.7893 0.774823 10.2107 0.774823 10.5116 1.00888L18.0116 6.84221C18.2146 7.00009 18.3333 7.24284 18.3333 7.5V16.6667C18.3333 18.0474 17.214 19.1667 15.8333 19.1667H4.16666C2.78594 19.1667 1.66666 18.0474 1.66666 16.6667V7.5C1.66666 7.24284 1.78538 7.00009 1.98837 6.84221L9.48837 1.00888ZM3.33332 7.90757V16.6667C3.33332 17.1269 3.70642 17.5 4.16666 17.5H15.8333C16.2936 17.5 16.6667 17.1269 16.6667 16.6667V7.90757L9.99999 2.72239L3.33332 7.90757Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M6.66666 10C6.66666 9.53976 7.03975 9.16666 7.49999 9.16666H12.5C12.9602 9.16666 13.3333 9.53976 13.3333 10V18.3333C13.3333 18.7936 12.9602 19.1667 12.5 19.1667C12.0398 19.1667 11.6667 18.7936 11.6667 18.3333V10.8333H8.33332V18.3333C8.33332 18.7936 7.96023 19.1667 7.49999 19.1667C7.03975 19.1667 6.66666 18.7936 6.66666 18.3333V10Z"
+    />
+  </>
+);
 
-export const HomeIcon = (props: IconProps) => <CreateIcon Icon={Home} viewBox="0 0 20 20" {...props} />;
+export const HomeIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: HomePath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

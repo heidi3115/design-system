@@ -11,8 +11,8 @@ import {
   CalendarIcon,
   ChevronUpIcon,
   ClockIcon,
-  CournerDownLeftIcon,
-  CournerDownRightIcon,
+  CornerDownLeftIcon,
+  CornerDownRightIcon,
   EditIcon,
   ExternalLinkIcon,
   EyeIcon,
@@ -21,7 +21,7 @@ import {
   FileTextIcon,
   GlobeIcon,
   HomeIcon,
-  InBoxIcon,
+  InboxIcon,
   InfoIcon,
   LayersIcon,
   LayoutIcon,
@@ -81,7 +81,7 @@ export default function Page() {
           jui Button
         </Button>
         <Button variant="juiGrey" onClick={() => setCount((prev) => (prev += 1))}>
-          jui Grey <CournerDownRightIcon />
+          jui Grey <CornerDownLeftIcon />
         </Button>
         <Button variant="juiGradient" onClick={() => setCount((prev) => (prev += 1))}>
           jui Button Gradient
@@ -124,7 +124,7 @@ export default function Page() {
               <p>Card Footer</p>
             </CardFooter>
           </Card>
-          <CournerDownRightIcon />
+          <CornerDownRightIcon />
           <LogInIcon />
           <ArrowLeftIcon />
           <CalendarIcon />
@@ -135,7 +135,6 @@ export default function Page() {
           <ListIcon />
           <LayoutIcon />
           <LockIcon />
-          <EditIcon />
           <GlobeIcon />
           <ZoomInIcon />
           <XIcon />
@@ -164,10 +163,10 @@ export default function Page() {
           <AlertCircleIcon />
           <BookmarkIcon />
           <EyeOffIcon />
-          <InBoxIcon />
+          <InboxIcon />
           <BarChartIcon />
           <LayersIcon />
-          <CournerDownLeftIcon />
+          <CornerDownLeftIcon />
           <MoreHorizontalIcon />
           <MailIcon />
           <Maximize2Icon />

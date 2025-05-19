@@ -1,5 +1,24 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
-import ArrowRight from '../svg/ArrowRight.svg';
+import CreateIcon from '../CreateIcon';
 
-export const ArrowRightIcon = (props: IconProps) => <CreateIcon Icon={ArrowRight} viewBox="0 0 20 20" {...props} />;
+const ArrowRightPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M2.5 9.99999C2.5 9.53975 2.8731 9.16666 3.33333 9.16666H16.6667C17.1269 9.16666 17.5 9.53975 17.5 9.99999C17.5 10.4602 17.1269 10.8333 16.6667 10.8333H3.33333C2.8731 10.8333 2.5 10.4602 2.5 9.99999Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M11.0775 4.41073C11.4029 4.0853 11.9305 4.0853 12.256 4.41073L17.256 9.41073C17.5814 9.73617 17.5814 10.2638 17.256 10.5892L12.256 15.5892C11.9305 15.9147 11.4029 15.9147 11.0775 15.5892C10.752 15.2638 10.752 14.7362 11.0775 14.4107L15.4882 9.99999L11.0775 5.58925C10.752 5.26381 10.752 4.73617 11.0775 4.41073Z"
+    />
+  </>
+);
+
+export const ArrowRightIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: ArrowRightPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

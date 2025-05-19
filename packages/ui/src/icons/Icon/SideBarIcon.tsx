@@ -1,6 +1,24 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import SideBar from '../svg/SideBar.svg';
+const SideBarPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M1.66667 4.16666C1.66667 2.78594 2.78596 1.66666 4.16667 1.66666H15.8333C17.2141 1.66666 18.3333 2.78594 18.3333 4.16666V15.8333C18.3333 17.214 17.2141 18.3333 15.8333 18.3333H4.16667C2.78596 18.3333 1.66667 17.214 1.66667 15.8333V4.16666ZM4.16667 3.33332C3.70643 3.33332 3.33334 3.70642 3.33334 4.16666V15.8333C3.33334 16.2936 3.70643 16.6667 4.16667 16.6667H15.8333C16.2936 16.6667 16.6667 16.2936 16.6667 15.8333V4.16666C16.6667 3.70642 16.2936 3.33332 15.8333 3.33332H4.16667Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M7.50001 1.66666C7.96024 1.66666 8.33334 2.03975 8.33334 2.49999V17.5C8.33334 17.9602 7.96024 18.3333 7.50001 18.3333C7.03977 18.3333 6.66667 17.9602 6.66667 17.5V2.49999C6.66667 2.03975 7.03977 1.66666 7.50001 1.66666Z"
+    />
+  </>
+);
 
-export const SideBarIcon = (props: IconProps) => <CreateIcon Icon={SideBar} viewBox="0 0 20 20" {...props} />;
+export const SideBarIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: SideBarPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

@@ -1,6 +1,24 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import MinusSquare from '../svg/MinusSquare.svg';
+const MinusSquarePath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M1.66669 4.16667C1.66669 2.78596 2.78598 1.66667 4.16669 1.66667H15.8334C17.2141 1.66667 18.3334 2.78596 18.3334 4.16667V15.8333C18.3334 17.2141 17.2141 18.3333 15.8334 18.3333H4.16669C2.78598 18.3333 1.66669 17.2141 1.66669 15.8333V4.16667ZM4.16669 3.33334C3.70645 3.33334 3.33335 3.70643 3.33335 4.16667V15.8333C3.33335 16.2936 3.70645 16.6667 4.16669 16.6667H15.8334C16.2936 16.6667 16.6667 16.2936 16.6667 15.8333V4.16667C16.6667 3.70643 16.2936 3.33334 15.8334 3.33334H4.16669Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M5.83331 10C5.83331 9.53977 6.20641 9.16667 6.66665 9.16667H13.3333C13.7936 9.16667 14.1666 9.53977 14.1666 10C14.1666 10.4602 13.7936 10.8333 13.3333 10.8333H6.66665C6.20641 10.8333 5.83331 10.4602 5.83331 10Z"
+    />
+  </>
+);
 
-export const MinusSquareIcon = (props: IconProps) => <CreateIcon Icon={MinusSquare} viewBox="0 0 20 20" {...props} />;
+export const MinusSquareIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: MinusSquarePath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });
