@@ -178,7 +178,6 @@ export default function Page() {
           <PlusCircleIcon />
           <PlusIcon />
           <SideBarIcon />
-          <TrashIcon />
         </div>
       </div>
     </div>
