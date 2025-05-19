@@ -1,5 +1,5 @@
 import { Button } from '@common/ui';
-import { CheckIcon } from '@common/ui/icons';
+import { BellIcon, CheckIcon } from '@common/ui/icons';
 
 function App() {
   return (
@@ -13,6 +13,7 @@ function App() {
           <CheckIcon />
           <TagIcon />
           <PlusIcon />
+          <BellIcon />
         </div>
       </div>
     </main>
