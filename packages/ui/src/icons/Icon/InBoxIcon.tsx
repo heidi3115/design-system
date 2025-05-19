@@ -1,5 +1,5 @@
-import { type IconProps } from '../types.js';
-import CreateIcon from '../CreateIcon.js';
+import { type IconProps } from '../types';
+import CreateIcon from '../CreateIcon';
 
 const InBoxPath = (
   <>
