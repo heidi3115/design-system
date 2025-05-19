@@ -30,7 +30,7 @@ export { FolderIcon } from './Icon/FolderIcon';
 export { GlobeIcon } from './Icon/GlobeIcon';
 export { GridIcon } from './Icon/GridIcon';
 export { HomeIcon } from './Icon/HomeIcon';
-export { InboxIcon } from './Icon/InboxIcon';
+export { InBoxIcon } from './Icon/InBoxIcon';
 export { InfoIcon } from './Icon/InfoIcon';
 export { LayersIcon } from './Icon/LayersIcon';
 export { LayoutIcon } from './Icon/LayoutIcon';

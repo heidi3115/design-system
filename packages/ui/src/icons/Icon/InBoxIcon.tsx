@@ -1,7 +1,7 @@
 import { type IconProps } from '../types.js';
 import CreateIcon from '../CreateIcon.js';
 
-const InboxPath = (
+const InBoxPath = (
   <>
     <path
       fillRule="evenodd"
@@ -17,9 +17,9 @@ const InboxPath = (
   </>
 );
 
-export const InboxIcon = (props: IconProps) =>
+export const InBoxIcon = (props: IconProps) =>
   CreateIcon({
-    paths: InboxPath,
+    paths: InBoxPath,
     viewBox: '0 0 20 20',
     ...props,
   });
