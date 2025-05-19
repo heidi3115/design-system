@@ -4,7 +4,7 @@ const iconVariants = tv({
   base: '',
   variants: {
     variant: {
-      default: 'fill-juiText-primary',
+      default: 'fill-current',
       primary: 'fill-juiPrimary',
       secondary: 'fill-juiSecondary',
       error: 'fill-juiError',
