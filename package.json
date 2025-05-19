@@ -4,7 +4,8 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "storybook"
   ],
   "scripts": {
     "build": "turbo build",
@@ -18,6 +19,8 @@
     "typescript-config": "pnpm --filter @common/typescript-config",
     "eslint-config": "pnpm --filter @common/eslint-config",
     "ui": "pnpm --filter @common/ui",
+    "storybook": "pnpm --filter storybook",
+    "storybook:dev": "pnpm --filter storybook storybook",
     "prepare": "husky install",
     "test:type": "turbo run typecheck",
     "generate:palette": "ts-node --transpile-only -P tsconfig.ts-node.json scripts/generateCss.ts"
