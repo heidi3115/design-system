@@ -3,7 +3,63 @@
 import { useState } from 'react';
 
 import { Badge, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@common/ui';
-import { CournerDownRightIcon, LogInIcon } from '@common/ui/icons';
+import {
+  AlertCircleIcon,
+  ArrowLeftIcon,
+  BarChartIcon,
+  BookmarkIcon,
+  CalendarIcon,
+  ChevronUpIcon,
+  ClockIcon,
+  CournerDownLeftIcon,
+  CournerDownRightIcon,
+  EditIcon,
+  ExternalLinkIcon,
+  EyeIcon,
+  EyeOffIcon,
+  FilePlusIcon,
+  FileTextIcon,
+  GlobeIcon,
+  HomeIcon,
+  InBoxIcon,
+  InfoIcon,
+  LayersIcon,
+  LayoutIcon,
+  ListIcon,
+  LockIcon,
+  LogInIcon,
+  MailIcon,
+  Maximize2Icon,
+  MaximizeIcon,
+  Minimize2Icon,
+  MinusCircleIcon,
+  MoreHorizontalIcon,
+  PaperClipIcon,
+  PlayIcon,
+  PlusCircleIcon,
+  PlusIcon,
+  PrinterIcon,
+  QuestionCircleIcon,
+  RepeatIcon,
+  RotateIcon,
+  SaveIcon,
+  ServerIcon,
+  SettingsIcon,
+  SideBarIcon,
+  SlashIcon,
+  SquareIcon,
+  StarIcon,
+  TagIcon,
+  Trash2Icon,
+  TrashIcon,
+  UserIcon,
+  UserMinusIcon,
+  UserPlusIcon,
+  XCircleIcon,
+  XIcon,
+  ZoomInIcon,
+  ZoomOutIcon,
+} from '@common/ui/icons';
 
 import { useUpdateEffect } from '@common/utils';
 // import LogInIcon from '@common/ui/icons/Icon/LogInIcon';
@@ -70,6 +126,60 @@ export default function Page() {
           </Card>
           <CournerDownRightIcon />
           <LogInIcon />
+          <ArrowLeftIcon />
+          <CalendarIcon />
+          <ClockIcon />
+          <EyeIcon />
+          <FilePlusIcon />
+          <FileTextIcon />
+          <ListIcon />
+          <LayoutIcon />
+          <LockIcon />
+          <EditIcon />
+          <GlobeIcon />
+          <ZoomInIcon />
+          <XIcon />
+          <TagIcon />
+          <UserIcon />
+          <HomeIcon />
+          <InfoIcon />
+          <ChevronUpIcon />
+          <ExternalLinkIcon />
+          <ZoomInIcon />
+          <ZoomOutIcon />
+          <UserMinusIcon />
+          <UserPlusIcon />
+          <StarIcon />
+          <RotateIcon />
+          <QuestionCircleIcon />
+          <RepeatIcon />
+          <SaveIcon />
+          <SlashIcon />
+          <SquareIcon />
+          <PrinterIcon />
+          <ServerIcon />
+          <SettingsIcon />
+          <Trash2Icon />
+          <XCircleIcon />
+          <AlertCircleIcon />
+          <BookmarkIcon />
+          <EyeOffIcon />
+          <InBoxIcon />
+          <BarChartIcon />
+          <LayersIcon />
+          <CournerDownLeftIcon />
+          <MoreHorizontalIcon />
+          <MailIcon />
+          <Maximize2Icon />
+          <MaximizeIcon />
+          <MinusCircleIcon />
+          <Minimize2Icon />
+          <PlayIcon />
+          <PaperClipIcon />
+          <PlusCircleIcon />
+          <PlusIcon />
+          <SideBarIcon />
+          <TrashIcon />
         </div>
       </div>
     </div>

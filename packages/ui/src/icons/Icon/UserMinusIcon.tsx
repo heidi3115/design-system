@@ -3,5 +3,4 @@ import CreateIcon from '../CreaateIcon';
 
 import UserMinus from '../svg/UserMinus.svg';
 
-const UserMinusIcon = (props: IconProps) => <CreateIcon Icon={UserMinus} viewBox="0 0 20 20" {...props} />;
-export default UserMinusIcon;
+export const UserMinusIcon = (props: IconProps) => <CreateIcon Icon={UserMinus} viewBox="0 0 20 20" {...props} />;

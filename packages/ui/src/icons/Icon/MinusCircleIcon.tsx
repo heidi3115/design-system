@@ -3,5 +3,4 @@ import CreateIcon from '../CreaateIcon';
 
 import MinusCircle from '../svg/MinusCircle.svg';
 
-const MinusCircleIcon = (props: IconProps) => <CreateIcon Icon={MinusCircle} viewBox="0 0 20 20" {...props} />;
-export default MinusCircleIcon;
+export const MinusCircleIcon = (props: IconProps) => <CreateIcon Icon={MinusCircle} viewBox="0 0 20 20" {...props} />;

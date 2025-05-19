@@ -3,5 +3,4 @@ import CreateIcon from '../CreaateIcon';
 
 import FileText from '../svg/FileText.svg';
 
-const FileTextIcon = (props: IconProps) => <CreateIcon Icon={FileText} viewBox="0 0 20 20" {...props} />;
-export default FileTextIcon;
+export const FileTextIcon = (props: IconProps) => <CreateIcon Icon={FileText} viewBox="0 0 20 20" {...props} />;

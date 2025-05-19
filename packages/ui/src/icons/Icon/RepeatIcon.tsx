@@ -3,5 +3,4 @@ import CreateIcon from '../CreaateIcon';
 
 import Repeat from '../svg/Repeat.svg';
 
-const RepeatIcon = (props: IconProps) => <CreateIcon Icon={Repeat} viewBox="0 0 20 20" {...props} />;
-export default RepeatIcon;
+export const RepeatIcon = (props: IconProps) => <CreateIcon Icon={Repeat} viewBox="0 0 20 20" {...props} />;

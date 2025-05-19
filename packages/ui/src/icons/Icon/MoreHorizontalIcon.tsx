@@ -3,5 +3,6 @@ import CreateIcon from '../CreaateIcon';
 
 import MoreHorizontal from '../svg/MoreHorizontal.svg';
 
-const MoreHorizontalIcon = (props: IconProps) => <CreateIcon Icon={MoreHorizontal} viewBox="0 0 20 20" {...props} />;
-export default MoreHorizontalIcon;
+export const MoreHorizontalIcon = (props: IconProps) => (
+  <CreateIcon Icon={MoreHorizontal} viewBox="0 0 20 20" {...props} />
+);

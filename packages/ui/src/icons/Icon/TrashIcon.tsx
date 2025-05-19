@@ -3,5 +3,4 @@ import CreateIcon from '../CreaateIcon';
 
 import Trash from '../svg/Trash.svg';
 
-const TrashIcon = (props: IconProps) => <CreateIcon Icon={Trash} viewBox="0 0 20 20" {...props} />;
-export default TrashIcon;
+export const TrashIcon = (props: IconProps) => <CreateIcon Icon={Trash} viewBox="0 0 20 20" {...props} />;

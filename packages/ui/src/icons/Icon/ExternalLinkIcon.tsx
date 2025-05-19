@@ -3,5 +3,4 @@ import CreateIcon from '../CreaateIcon';
 
 import ExternalLink from '../svg/ExternalLink.svg';
 
-const ExternalLinkIcon = (props: IconProps) => <CreateIcon Icon={ExternalLink} viewBox="0 0 20 20" {...props} />;
-export default ExternalLinkIcon;
+export const ExternalLinkIcon = (props: IconProps) => <CreateIcon Icon={ExternalLink} viewBox="0 0 20 20" {...props} />;

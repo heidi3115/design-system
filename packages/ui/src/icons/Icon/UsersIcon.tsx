@@ -3,5 +3,4 @@ import CreateIcon from '../CreaateIcon';
 
 import Users from '../svg/Users.svg';
 
-const UsersIcon = (props: IconProps) => <CreateIcon Icon={Users} viewBox="0 0 20 20" {...props} />;
-export default UsersIcon;
+export const UsersIcon = (props: IconProps) => <CreateIcon Icon={Users} viewBox="0 0 20 20" {...props} />;
