@@ -15,7 +15,6 @@ import {
   CornerDownRightIcon,
   ExternalLinkIcon,
   EyeIcon,
-  EyeOffIcon,
   FilePlusIcon,
   FileTextIcon,
   GlobeIcon,
@@ -41,7 +40,6 @@ import {
   ServerIcon,
   SettingsIcon,
   SideBarIcon,
-  SlashIcon,
   SquareIcon,
   StarIcon,
   TagIcon,
@@ -144,7 +142,6 @@ export default function Page() {
           <QuestionCircleIcon />
           <RepeatIcon />
           <SaveIcon />
-          <SlashIcon />
           <SquareIcon />
           <PrinterIcon />
           <ServerIcon />
@@ -153,7 +150,6 @@ export default function Page() {
           <XCircleIcon />
           <AlertCircleIcon />
           <BookmarkIcon />
-          <EyeOffIcon />
           <BarChartIcon />
           <LayersIcon />
           <CornerDownLeftIcon />
