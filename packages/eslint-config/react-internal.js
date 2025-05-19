@@ -7,7 +7,10 @@ import tseslint from 'typescript-eslint';
 
 import { config as baseConfig } from './base.js';
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
+/**
+ *
+ * @type {import("eslint").Linter.Config}
+ * */
 export const config = [
   ...baseConfig,
   js.configs.recommended,
@@ -24,7 +27,6 @@ export const config = [
     },
     rules: {
       ...pluginReact.configs.flat.recommended.rules,
-      'react/jsx-no-undef': 'error',
     },
   },
   {
@@ -36,6 +38,7 @@ export const config = [
       ...pluginReactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
+      'react/jsx-no-undef': 'error',
     },
   },
 ];
