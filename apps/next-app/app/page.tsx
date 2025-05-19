@@ -2,7 +2,17 @@
 
 import { useState } from 'react';
 
-import { Badge, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@common/ui';
+import {
+  Badge,
+  Button,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  Input,
+} from '@common/ui';
 import {
   AlertCircleIcon,
   ArrowLeftIcon,
@@ -65,6 +75,9 @@ export default function Page() {
     <div className="flex items-center justify-center min-h-svh">
       <div className="flex flex-col items-center justify-center gap-4">
         <h1 className="text-2xl text-juiGrey-400 font-bold underline">Hello World</h1>
+        <div className="w-2xs">
+          <Input placeholder="aaaa" />
+        </div>
         <Button variant="jui" onClick={() => setCount((prev) => (prev += 1))}>
           jui Button
         </Button>
