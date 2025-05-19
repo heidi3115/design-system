@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@common/ui": ["../../packages/ui/src"],
       "@common/ui/*": ["../../packages/ui/src/*"],
       "@common/typescript-config": ["../../packages/typescript-config"],
       "@common/eslint-config": ["../../packages/eslint-config"],

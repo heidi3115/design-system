@@ -1,5 +1,6 @@
 import '@common/ui/src/styles/globals.css';
 import '@common/ui/src/styles/fonts/defaultFonts.css';
+import '../src/stories/index.css';
 
 import type { Preview } from '@storybook/react';
 import { palette } from '@common/tokens';

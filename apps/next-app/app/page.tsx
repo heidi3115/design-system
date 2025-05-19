@@ -1,12 +1,70 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail } from 'lucide-react';
 
 import { Badge, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@common/ui';
-import { AddIcon, AlarmIcon, CournerDownRightIcon, PieChartIcon } from '@common/ui/icons';
+import {
+  AlertCircleIcon,
+  ArrowLeftIcon,
+  BarChartIcon,
+  BookmarkIcon,
+  CalendarIcon,
+  ChevronUpIcon,
+  ClockIcon,
+  CournerDownLeftIcon,
+  CournerDownRightIcon,
+  EditIcon,
+  ExternalLinkIcon,
+  EyeIcon,
+  EyeOffIcon,
+  FilePlusIcon,
+  FileTextIcon,
+  GlobeIcon,
+  HomeIcon,
+  InBoxIcon,
+  InfoIcon,
+  LayersIcon,
+  LayoutIcon,
+  ListIcon,
+  LockIcon,
+  LogInIcon,
+  MailIcon,
+  Maximize2Icon,
+  MaximizeIcon,
+  Minimize2Icon,
+  MinusCircleIcon,
+  MoreHorizontalIcon,
+  PaperClipIcon,
+  PlayIcon,
+  PlusCircleIcon,
+  PlusIcon,
+  PrinterIcon,
+  QuestionCircleIcon,
+  RepeatIcon,
+  RotateIcon,
+  SaveIcon,
+  ServerIcon,
+  SettingsIcon,
+  SideBarIcon,
+  SlashIcon,
+  SquareIcon,
+  StarIcon,
+  TagIcon,
+  Trash2Icon,
+  TrashIcon,
+  UserIcon,
+  UserMinusIcon,
+  UserPlusIcon,
+  XCircleIcon,
+  XIcon,
+  ZoomInIcon,
+  ZoomOutIcon,
+} from '@common/ui/icons';
 
 import { useUpdateEffect } from '@common/utils';
+// import LogInIcon from '@common/ui/icons/Icon/LogInIcon';
+// import CournerDownRightIcon from '@common/ui/icons/Icon/CournerDownRightIcon';
+// import MailIcon from '@common/ui/icons/Icon/MailIcon';
 
 export default function Page() {
   const [count, setCount] = useState(0);
@@ -29,9 +87,9 @@ export default function Page() {
           jui Button Gradient
         </Button>
         <Badge className="text-juiStatus-urgency">
-          {count} <AddIcon className="stroke-juiSecondary" />
-          {count} <AddIcon className="fill-juiSecondary" />
-          {count} <AddIcon className="fill-current" />
+          {/*{count} <AddIcon className="stroke-juiSecondary" />*/}
+          {/*{count} <AddIcon className="fill-juiSecondary" />*/}
+          {/*{count} <AddIcon className="fill-current" />*/}
         </Badge>
         <div className="flex justify-between items-center gap-5">
           <Card>
@@ -66,23 +124,62 @@ export default function Page() {
               <p>Card Footer</p>
             </CardFooter>
           </Card>
-          <AlarmIcon />
-          <AlarmIcon variant="primary" />
-          <AlarmIcon variant="secondary" />
-          <AlarmIcon variant="error" />
-          <AlarmIcon variant="disabled" />
-
-          <AlarmIcon size="small" />
-          <AlarmIcon size="basic" />
-          <AlarmIcon size="medium" />
-          <AlarmIcon size={99} color={'red'} />
-
-          <AddIcon className="fill-juiPrimary" />
-          <AddIcon size="large" />
-          <AddIcon variant="disabled" />
-          <PieChartIcon variant="disabled" />
           <CournerDownRightIcon />
-          <CournerDownRightIcon size="large" className="fill-juiError size-16" />
+          <LogInIcon />
+          <ArrowLeftIcon />
+          <CalendarIcon />
+          <ClockIcon />
+          <EyeIcon />
+          <FilePlusIcon />
+          <FileTextIcon />
+          <ListIcon />
+          <LayoutIcon />
+          <LockIcon />
+          <EditIcon />
+          <GlobeIcon />
+          <ZoomInIcon />
+          <XIcon />
+          <TagIcon />
+          <UserIcon />
+          <HomeIcon />
+          <InfoIcon />
+          <ChevronUpIcon />
+          <ExternalLinkIcon />
+          <ZoomInIcon />
+          <ZoomOutIcon />
+          <UserMinusIcon />
+          <UserPlusIcon />
+          <StarIcon />
+          <RotateIcon />
+          <QuestionCircleIcon />
+          <RepeatIcon />
+          <SaveIcon />
+          <SlashIcon />
+          <SquareIcon />
+          <PrinterIcon />
+          <ServerIcon />
+          <SettingsIcon />
+          <Trash2Icon />
+          <XCircleIcon />
+          <AlertCircleIcon />
+          <BookmarkIcon />
+          <EyeOffIcon />
+          <InBoxIcon />
+          <BarChartIcon />
+          <LayersIcon />
+          <CournerDownLeftIcon />
+          <MoreHorizontalIcon />
+          <MailIcon />
+          <Maximize2Icon />
+          <MaximizeIcon />
+          <MinusCircleIcon />
+          <Minimize2Icon />
+          <PlayIcon />
+          <PaperClipIcon />
+          <PlusCircleIcon />
+          <PlusIcon />
+          <SideBarIcon />
+          <TrashIcon />
         </div>
       </div>
     </div>

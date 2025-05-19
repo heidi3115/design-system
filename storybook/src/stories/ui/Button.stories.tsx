@@ -1,6 +1,6 @@
 import { Button, buttonVariants } from '@common/ui/components';
 import type { Meta, StoryObj } from '@storybook/react';
-import { AddIcon } from '@common/ui/icons';
+import { AlertCircleIcon } from '@common/ui/icons';
 
 const meta: Meta<typeof Button> = {
   title: 'UI/Button',
@@ -39,13 +39,16 @@ export const Default: Story = {};
 // variant 별 버튼 렌더링 스토리
 export const Variants: Story = {
   render: (args) => (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-col flex-wrap gap-2">
       {(Object.keys(buttonVariants.variants.variant) as (keyof typeof buttonVariants.variants.variant)[]).map(
         (variant) => (
-          <Button key={variant} {...args} variant={variant}>
-            <AddIcon />
+          <>
             {variant}
-          </Button>
+            <Button key={variant} {...args} variant={variant}>
+              <AlertCircleIcon />
+              {variant}
+            </Button>
+          </>
         ),
       )}
     </div>
