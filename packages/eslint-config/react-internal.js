@@ -22,6 +22,7 @@ export const config = [
       ...pluginReact.configs.flat.recommended.languageOptions,
       globals: {
         ...globals.serviceworker,
+        ...globals.browser,
       },
     },
   },
@@ -32,8 +33,7 @@ export const config = [
     settings: { react: { version: 'detect' } },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
+      'no-undef': 'error',
     },
   },
 ];
