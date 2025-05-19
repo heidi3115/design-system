@@ -50,7 +50,6 @@ import {
   XCircleIcon,
   XIcon,
   ZoomInIcon,
-  ZoomOutIcon,
 } from '@common/ui/icons';
 
 import { useUpdateEffect } from '@common/utils';
@@ -134,7 +133,6 @@ export default function Page() {
           <InfoIcon />
           <ChevronUpIcon />
           <ExternalLinkIcon />
-          <ZoomOutIcon />
           <UserMinusIcon />
           <UserPlusIcon />
           <StarIcon />

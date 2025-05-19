@@ -35,6 +35,7 @@ export const config = [
       ...pluginReactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
+      'no-undef': 'error',
     },
   },
 ];

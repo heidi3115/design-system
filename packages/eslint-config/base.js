@@ -19,7 +19,6 @@ export const config = [
       prettier: prettierPlugin,
     },
     rules: {
-      'no-undef': 'error',
       'turbo/no-undeclared-env-vars': 'warn',
       '@typescript-eslint/no-unused-vars': 'error',
       'prettier/prettier': ['error', { endOfLine: 'auto' }],
