@@ -53,9 +53,6 @@ import {
 } from '@common/ui/icons';
 
 import { useUpdateEffect } from '@common/utils';
-// import LogInIcon from '@common/ui/icons/Icon/LogInIcon';
-// import CournerDownRightIcon from '@common/ui/icons/Icon/CournerDownRightIcon';
-// import MailIcon from '@common/ui/icons/Icon/MailIcon';
 
 export default function Page() {
   const [count, setCount] = useState(0);
@@ -116,9 +113,9 @@ export default function Page() {
             </CardFooter>
           </Card>
           <CornerDownRightIcon />
-          <ArrowLeftIcon />
-          <CalendarIcon />
-          <ClockIcon />
+          <ArrowLeftIcon fill="var(--juiError)" />
+          <CalendarIcon color="var(--juiPrimary)" />
+          <ClockIcon variant="secondary" />
           <EyeIcon />
           <FilePlusIcon />
           <FileTextIcon />
