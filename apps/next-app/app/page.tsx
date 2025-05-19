@@ -130,7 +130,6 @@ export default function Page() {
           <FilePlusIcon />
           <FileTextIcon />
           <ListIcon />
-          <LayoutIcon />
           <LockIcon />
           <GlobeIcon />
           <ZoomInIcon />
