@@ -165,7 +165,6 @@ export default function Page() {
           <CornerDownLeftIcon />
           <MoreHorizontalIcon />
           <MailIcon />
-          <Maximize2Icon />
           <MaximizeIcon />
           <MinusCircleIcon />
           <Minimize2Icon />
