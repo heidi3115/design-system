@@ -13,7 +13,6 @@ import {
   ClockIcon,
   CornerDownLeftIcon,
   CornerDownRightIcon,
-  EditIcon,
   ExternalLinkIcon,
   EyeIcon,
   EyeOffIcon,
@@ -21,7 +20,6 @@ import {
   FileTextIcon,
   GlobeIcon,
   HomeIcon,
-  InboxIcon,
   InfoIcon,
   LayersIcon,
   LayoutIcon,
@@ -51,7 +49,6 @@ import {
   StarIcon,
   TagIcon,
   Trash2Icon,
-  TrashIcon,
   UserIcon,
   UserMinusIcon,
   UserPlusIcon,
@@ -163,7 +160,6 @@ export default function Page() {
           <AlertCircleIcon />
           <BookmarkIcon />
           <EyeOffIcon />
-          <InboxIcon />
           <BarChartIcon />
           <LayersIcon />
           <CornerDownLeftIcon />

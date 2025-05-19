@@ -10,6 +10,9 @@ function App() {
           <Button variant="jui">jui Button</Button>
           <Button variant="juiGrey">jui Grey</Button>
           <Button variant="juiGradient">jui Button Gradient</Button>
+          <CheckIcon />
+          <LogInIcon />
+          <AlertCircleIcon />
         </div>
       </div>
     </main>
