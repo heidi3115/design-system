@@ -23,11 +23,11 @@ const buttonVariants = tv({
         'bg-transparent bg-[image:linear-gradient(to_right,#4b63eb,#5d2ce9,#7782ff,#5d2ce9,#4b63eb)] bg-position-[0_0] bg-size-[300%_100%]',
         'border-transparent',
         'shadow-md',
-        'hover:bg-position-[100%_0] hover:border-transparent active:scale-95',
+        'hover:bg-position-[100%_0] hover:border-transparent active:bg-position-[100%_0] active:border-transparent active:scale-95 focus:bg-position-[100%_0] focus:border-transparent',
         'dark:hover:border-transparent',
       ],
       transparent: 'bg-transparent',
-      transparentGrey: 'bg-transparent hover:text-juiGrey-a700',
+      transparentGrey: 'bg-transparent hover:text-juiGrey-a700 active:text-juiGrey-a700 focus:text-juiGrey-a700',
     },
     size: {
       small: 'px-2 h-5.5 text-xs',
