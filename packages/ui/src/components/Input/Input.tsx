@@ -5,7 +5,8 @@ import { cn } from '../../lib/utils';
 
 const inputVariants = tv({
   base: [
-    ' text-xs shadow-xs outline-none',
+    'w-full text-xs shadow-xs outline-none',
+    'px-4',
     'placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground',
     'border border-transparent focus-visible:border-juiText-primary',
     'transition-all duration-200 ease-in-out',
