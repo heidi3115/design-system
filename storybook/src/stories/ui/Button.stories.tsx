@@ -43,7 +43,6 @@ export const Variants: Story = {
       {(Object.keys(buttonVariants.variants.variant) as (keyof typeof buttonVariants.variants.variant)[]).map(
         (variant) => (
           <>
-            {variant}
             <Button key={variant} {...args} variant={variant}>
               <AlertCircleIcon />
               {variant}
