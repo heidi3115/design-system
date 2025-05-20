@@ -76,7 +76,7 @@ export default function Page() {
       <div className="flex flex-col items-center justify-center gap-4">
         <h1 className="text-2xl text-juiGrey-400 font-bold underline">Hello World</h1>
         <div className="w-2xs">
-          <Input placeholder="aaaa" />
+          <Input type="text" placeholder="aaaa" />
         </div>
         <Button variant="jui" onClick={() => setCount((prev) => (prev += 1))}>
           jui Button

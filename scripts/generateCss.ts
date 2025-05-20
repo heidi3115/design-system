@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+
 import { palette } from '@common/tokens';
 
 /** CSS 변수 생성 */
