@@ -38,7 +38,7 @@ const buttonVariants = tv({
     disabled: {
       true: [
         'opacity-60 cursor-not-allowed pointer-events-auto',
-        'hover:text-current hover:bg-current hover:border-transparent hover:bg-position-[0_0] active:bg-current active:border-current focus:bg-current focus:border-current focus:outline-none',
+        'hover:text-current hover:bg-current hover:border-transparent hover:bg-position-[0_0] active:text-current active:bg-current active:border-transparent active:bg-position-[0_0] focus:text-current focus:bg-current focus:border-transparent focus:bg-position-[0_0] focus:outline-none',
         '[&_svg]:pointer-events-none [&_svg]:fill-current',
       ],
     },
