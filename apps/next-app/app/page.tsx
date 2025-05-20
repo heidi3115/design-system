@@ -53,6 +53,7 @@ import {
 } from '@common/ui/icons';
 
 import { useUpdateEffect } from '@common/utils';
+import { Toggle } from '@common/ui/components/Toggle';
 
 export default function Page() {
   const [count, setCount] = useState(0);
@@ -74,6 +75,9 @@ export default function Page() {
         <Button variant="juiGradient" onClick={() => setCount((prev) => (prev += 1))}>
           jui Button Gradient
         </Button>
+        <Toggle variant="outline" size="lg" aria-label="Toggle italic">
+          <div className="h-4">A</div>
+        </Toggle>
         <Badge className="text-juiStatus-urgency">
           {/*{count} <AddIcon className="stroke-juiSecondary" />*/}
           {/*{count} <AddIcon className="fill-juiSecondary" />*/}
