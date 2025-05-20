@@ -37,7 +37,7 @@ export const Variants: Story = {
     <div className="flex flex-col flex-wrap gap-2">
       {(Object.keys(toggleVariants.variants.variant) as (keyof typeof toggleVariants.variants.variant)[]).map(
         (variant) => (
-          <div key={variant}>
+          <div key={variant} className="flex flex-col w-20 gap-2">
             {variant}
             <Toggle {...args} variant={variant}>
               {variant}
