@@ -95,7 +95,11 @@ function Input({
         )}
       </div>
 
-      {error && helperText && <p className="text-xs text-juiError mx-1 mt-1">{helperText}</p>}
+      {error && helperText && (
+        <p className={cn('text-xs text-juiError mx-1 mt-0.5', disabled && 'opacity-50 cursor-not-allowed')}>
+          {helperText}
+        </p>
+      )}
     </div>
   );
 }
