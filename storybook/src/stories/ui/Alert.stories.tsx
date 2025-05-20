@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Alert, AlertDescription, AlertTitle, alertVariants } from '@common/ui/components';
 
-// 👇 우리가 사용할 args 타입을 명시
 type AlertStoryArgs = {
   variant: keyof typeof alertVariants.variants.variant;
   title: string;
