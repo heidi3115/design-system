@@ -65,7 +65,8 @@ import {
 import { useUpdateEffect } from '@common/utils';
 
 export default function Page() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState('1');
+  const [value, setValue] = useState('');
 
   useUpdateEffect(() => {
     alert(count);
@@ -75,8 +76,27 @@ export default function Page() {
     <div className="flex items-center justify-center min-h-svh">
       <div className="flex flex-col items-center justify-center gap-4">
         <h1 className="text-2xl text-juiGrey-400 font-bold underline">Hello World</h1>
-        <div className="w-2xs">
+        <div className="w-2xs flex flex-col gap-2">
           <Input type="text" placeholder="aaaa" size="large" iconLeft={<LockIcon />} iconRight={<CalendarIcon />} />
+          <Input type="text" placeholder="aaaa" size="large" iconLeft={<LockIcon />} />
+          <Input type="text" placeholder="aaaa" size="large" iconRight={<CalendarIcon />} />
+          <p></p>
+          <span>제어</span>
+          <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder="Controlled input" />
+          <p></p>
+          <span>비제어</span>
+          <Input placeholder="Uncontrolled input" onBlur={(e) => console.log(e.target.value)} />
+
+          <Input
+            type="text"
+            placeholder="aaaa"
+            size="large"
+            iconLeft={<LockIcon />}
+            iconRight={<CalendarIcon />}
+            error
+            helperText="aaaaa"
+          />
+          <Input type="text" placeholder="aaaa" size="large" error />
         </div>
         <Button variant="jui" onClick={() => setCount((prev) => (prev += 1))}>
           jui Button
