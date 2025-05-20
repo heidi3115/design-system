@@ -2,13 +2,12 @@ import { tv } from 'tailwind-variants';
 
 const buttonVariants = tv({
   base: [
-    'relative flex flex-row items-center justify-center',
+    'relative flex flex-row items-center justify-center w-fit',
     'text-white font-bold tracking-normal no-underline whitespace-nowrap',
     'rounded-none border-2 border-transparent outline-0',
     'transition-all duration-500 ease-in-out shrink-0',
     'cursor-pointer select-none',
     'hover:bg-transparent hover:border-white active:bg-transparent active:border-white focus:bg-transparent focus:border-white focus:outline-none',
-    'disabled:opacity-60 disabled:pointer-events-none disabled:cursor-not-allowed',
     'has-[>svg]:shrink-0 has-[>svg]:gap-1.5', // 직전 자식에 svg 있을 경우 부모(button)에 적용
     '[&_svg]:pointer-events-none',
     'dark:hover:border-white dark:active:border-white dark:focus:border-white',
@@ -29,21 +28,15 @@ const buttonVariants = tv({
       ],
       transparent: 'bg-transparent',
       transparentGrey: 'bg-transparent hover:text-juiGrey-a700',
-      disabled: [
-        'bg-juiPrimary/60',
-        'opacity-60',
-        'cursor-not-allowed pointer-events-none',
-        '[&_svg]:pointer-events-none',
-      ],
     },
     size: {
       small: 'px-2 h-5.5 text-xs',
       basic: 'px-2 h-7 text-xs',
       medium: 'px-4 h-8 text-sm',
-      large: 'px-5 h-9 text-sm',
+      large: 'px-5 h-9 text-base',
     },
     disabled: {
-      true: 'cursor-not-allowed pointer-events-none opacity-60 [&_svg]:pointer-events-none',
+      true: 'opacity-60 cursor-not-allowed pointer-events-none [&_svg]:pointer-events-none',
     },
   },
   defaultVariants: {

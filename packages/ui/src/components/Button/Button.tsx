@@ -16,9 +16,8 @@ function Button({
     asChild?: boolean;
   }) {
   const Comp = asChild ? Slot : 'button';
-  const buttonProps = asChild ? { ...props } : { type: props?.type || 'button', ...props };
 
-  return <Comp className={cn(buttonVariants({ variant, size, disabled, className }))} {...buttonProps} />;
+  return <Comp data-slot="button" className={cn(buttonVariants({ variant, size, disabled, className }))} {...props} />;
 }
 
 export default Button;

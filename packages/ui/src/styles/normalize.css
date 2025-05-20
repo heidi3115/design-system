@@ -217,7 +217,8 @@ button,
 [type='reset'],
 [type='submit'] {
   -webkit-appearance: button;
-  cursor: pointer;
+  /* 우선순위로 주석 처리 */
+  /*cursor: pointer;*/
 }
 
 /**
