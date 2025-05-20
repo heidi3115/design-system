@@ -1,6 +1,33 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import Slash from '../svg/Slash.svg';
+const SlashPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M0.833344 10C0.833344 4.9374 4.9374 0.833344 10 0.833344C15.0626 0.833344 19.1667 4.9374 19.1667 10C19.1667 15.0626 15.0626 19.1667 10 19.1667C4.9374 19.1667 0.833344 15.0626 0.833344 10ZM10 2.50001C5.85787 2.50001 2.50001 5.85787 2.50001 10C2.50001 14.1421 5.85787 17.5 10 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85787 14.1421 2.50001 10 2.50001Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M3.51907 3.51907C3.84451 3.19363 4.37215 3.19363 4.69758 3.51907L16.4809 15.3024C16.8064 15.6278 16.8064 16.1555 16.4809 16.4809C16.1555 16.8064 15.6278 16.8064 15.3024 16.4809L3.51907 4.69758C3.19363 4.37215 3.19363 3.84451 3.51907 3.51907Z"
+    />
+  </>
+);
+/**
+ * @component @name SlashIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0wLjgzMzM0NCAxMEMwLjgzMzM0NCA0LjkzNzQgNC45Mzc0IDAuODMzMzQ0IDEwIDAuODMzMzQ0QzE1LjA2MjYgMC44MzMzNDQgMTkuMTY2NyA0LjkzNzQgMTkuMTY2NyAxMEMxOS4xNjY3IDE1LjA2MjYgMTUuMDYyNiAxOS4xNjY3IDEwIDE5LjE2NjdDNC45Mzc0IDE5LjE2NjcgMC44MzMzNDQgMTUuMDYyNiAwLjgzMzM0NCAxMFpNMTAgMi41MDAwMUM1Ljg1Nzg3IDIuNTAwMDEgMi41MDAwMSA1Ljg1Nzg3IDIuNTAwMDEgMTBDMi41MDAwMSAxNC4xNDIxIDUuODU3ODcgMTcuNSAxMCAxNy41QzE0LjE0MjEgMTcuNSAxNy41IDE0LjE0MjEgMTcuNSAxMEMxNy41IDUuODU3ODcgMTQuMTQyMSAyLjUwMDAxIDEwIDIuNTAwMDFaIgogICAgLz4KICAgIDxwYXRoCiAgICAgIGZpbGxSdWxlPSJldmVub2RkIgogICAgICBjbGlwUnVsZT0iZXZlbm9kZCIKICAgICAgZD0iTTMuNTE5MDcgMy41MTkwN0MzLjg0NDUxIDMuMTkzNjMgNC4zNzIxNSAzLjE5MzYzIDQuNjk3NTggMy41MTkwN0wxNi40ODA5IDE1LjMwMjRDMTYuODA2NCAxNS42Mjc4IDE2LjgwNjQgMTYuMTU1NSAxNi40ODA5IDE2LjQ4MDlDMTYuMTU1NSAxNi44MDY0IDE1LjYyNzggMTYuODA2NCAxNS4zMDI0IDE2LjQ4MDlMMy41MTkwNyA0LjY5NzU4QzMuMTkzNjMgNC4zNzIxNSAzLjE5MzYzIDMuODQ0NTEgMy41MTkwNyAzLjUxOTA3WiIKICAgIC8+PC9zdmc+)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
 
-export const SlashIcon = (props: IconProps) => <CreateIcon Icon={Slash} viewBox="0 0 20 20" {...props} />;
+export const SlashIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: SlashPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

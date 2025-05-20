@@ -1,6 +1,33 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import Search from '../svg/Search.svg';
+const SearchPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M1.66669 8.74999C1.66669 4.83797 4.838 1.66666 8.75002 1.66666C12.662 1.66666 15.8334 4.83797 15.8334 8.74999C15.8334 12.662 12.662 15.8333 8.75002 15.8333C4.838 15.8333 1.66669 12.662 1.66669 8.74999ZM8.75002 3.33332C5.75848 3.33332 3.33335 5.75845 3.33335 8.74999C3.33335 11.7415 5.75848 14.1667 8.75002 14.1667C11.7416 14.1667 14.1667 11.7415 14.1667 8.74999C14.1667 5.75845 11.7416 3.33332 8.75002 3.33332Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M12.5774 12.5774C12.9028 12.252 13.4305 12.252 13.7559 12.5774L18.0892 16.9108C18.4147 17.2362 18.4147 17.7638 18.0892 18.0893C17.7638 18.4147 17.2362 18.4147 16.9107 18.0893L12.5774 13.7559C12.252 13.4305 12.252 12.9029 12.5774 12.5774Z"
+    />
+  </>
+);
+/**
+ * @component @name SearchIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0xLjY2NjY5IDguNzQ5OTlDMS42NjY2OSA0LjgzNzk3IDQuODM4IDEuNjY2NjYgOC43NTAwMiAxLjY2NjY2QzEyLjY2MiAxLjY2NjY2IDE1LjgzMzQgNC44Mzc5NyAxNS44MzM0IDguNzQ5OTlDMTUuODMzNCAxMi42NjIgMTIuNjYyIDE1LjgzMzMgOC43NTAwMiAxNS44MzMzQzQuODM4IDE1LjgzMzMgMS42NjY2OSAxMi42NjIgMS42NjY2OSA4Ljc0OTk5Wk04Ljc1MDAyIDMuMzMzMzJDNS43NTg0OCAzLjMzMzMyIDMuMzMzMzUgNS43NTg0NSAzLjMzMzM1IDguNzQ5OTlDMy4zMzMzNSAxMS43NDE1IDUuNzU4NDggMTQuMTY2NyA4Ljc1MDAyIDE0LjE2NjdDMTEuNzQxNiAxNC4xNjY3IDE0LjE2NjcgMTEuNzQxNSAxNC4xNjY3IDguNzQ5OTlDMTQuMTY2NyA1Ljc1ODQ1IDExLjc0MTYgMy4zMzMzMiA4Ljc1MDAyIDMuMzMzMzJaIgogICAgLz4KICAgIDxwYXRoCiAgICAgIGZpbGxSdWxlPSJldmVub2RkIgogICAgICBjbGlwUnVsZT0iZXZlbm9kZCIKICAgICAgZD0iTTEyLjU3NzQgMTIuNTc3NEMxMi45MDI4IDEyLjI1MiAxMy40MzA1IDEyLjI1MiAxMy43NTU5IDEyLjU3NzRMMTguMDg5MiAxNi45MTA4QzE4LjQxNDcgMTcuMjM2MiAxOC40MTQ3IDE3Ljc2MzggMTguMDg5MiAxOC4wODkzQzE3Ljc2MzggMTguNDE0NyAxNy4yMzYyIDE4LjQxNDcgMTYuOTEwNyAxOC4wODkzTDEyLjU3NzQgMTMuNzU1OUMxMi4yNTIgMTMuNDMwNSAxMi4yNTIgMTIuOTAyOSAxMi41Nzc0IDEyLjU3NzRaIgogICAgLz48L3N2Zz4=)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
 
-export const SearchIcon = (props: IconProps) => <CreateIcon Icon={Search} viewBox="0 0 20 20" {...props} />;
+export const SearchIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: SearchPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

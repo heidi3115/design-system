@@ -1,7 +1,7 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-const alertCirclePath = (
+const AlertCirclePath = (
   <>
     <path
       fillRule="evenodd"
@@ -16,10 +16,19 @@ const alertCirclePath = (
     <path d="M10.8333 13.3333C10.8333 13.7936 10.4602 14.1667 10 14.1667C9.53977 14.1667 9.16667 13.7936 9.16667 13.3333C9.16667 12.8731 9.53977 12.5 10 12.5C10.4602 12.5 10.8333 12.8731 10.8333 13.3333Z" />
   </>
 );
+/**
+ * @component @name AlertCircleIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0wLjgzMzMyOCAxMEMwLjgzMzMyOCA0LjkzNzQgNC45MzczOCAwLjgzMzM0NCAxMCAwLjgzMzM0NEMxNS4wNjI2IDAuODMzMzQ0IDE5LjE2NjcgNC45Mzc0IDE5LjE2NjcgMTBDMTkuMTY2NyAxNS4wNjI2IDE1LjA2MjYgMTkuMTY2NyAxMCAxOS4xNjY3QzQuOTM3MzggMTkuMTY2NyAwLjgzMzMyOCAxNS4wNjI2IDAuODMzMzI4IDEwWk0xMCAyLjUwMDAxQzUuODU3ODYgMi41MDAwMSAyLjQ5OTk5IDUuODU3ODcgMi40OTk5OSAxMEMyLjQ5OTk5IDE0LjE0MjEgNS44NTc4NiAxNy41IDEwIDE3LjVDMTQuMTQyMSAxNy41IDE3LjUgMTQuMTQyMSAxNy41IDEwQzE3LjUgNS44NTc4NyAxNC4xNDIxIDIuNTAwMDEgMTAgMi41MDAwMVoiCiAgICAvPgogICAgPHBhdGgKICAgICAgZmlsbFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGNsaXBSdWxlPSJldmVub2RkIgogICAgICBkPSJNMTAgNS44MzMzNEMxMC40NjAyIDUuODMzMzQgMTAuODMzMyA2LjIwNjQ0IDEwLjgzMzMgNi42NjY2OFYxMEMxMC44MzMzIDEwLjQ2MDIgMTAuNDYwMiAxMC44MzMzIDEwIDEwLjgzMzNDOS41Mzk3NyAxMC44MzMzIDkuMTY2NjcgMTAuNDYwMiA5LjE2NjY3IDEwVjYuNjY2NjhDOS4xNjY2NyA2LjIwNjQ0IDkuNTM5NzcgNS44MzMzNCAxMCA1LjgzMzM0WiIKICAgIC8+CiAgICA8cGF0aCBkPSJNMTAuODMzMyAxMy4zMzMzQzEwLjgzMzMgMTMuNzkzNiAxMC40NjAyIDE0LjE2NjcgMTAgMTQuMTY2N0M5LjUzOTc3IDE0LjE2NjcgOS4xNjY2NyAxMy43OTM2IDkuMTY2NjcgMTMuMzMzM0M5LjE2NjY3IDEyLjg3MzEgOS41Mzk3NyAxMi41IDEwIDEyLjVDMTAuNDYwMiAxMi41IDEwLjgzMzMgMTIuODczMSAxMC44MzMzIDEzLjMzMzNaIiAvPjwvc3ZnPg==)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
 
 export const AlertCircleIcon = (props: IconProps) =>
   CreateIcon({
-    paths: alertCirclePath,
+    paths: AlertCirclePath,
     viewBox: '0 0 20 20',
     ...props,
   });

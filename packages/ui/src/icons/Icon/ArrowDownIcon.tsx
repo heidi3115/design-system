@@ -1,5 +1,33 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
-import ArrowDown from '../svg/ArrowDown.svg';
+import CreateIcon from '../CreateIcon';
 
-export const ArrowDownIcon = (props: IconProps) => <CreateIcon Icon={ArrowDown} viewBox="0 0 20 20" {...props} />;
+const ArrowDownPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M10 2.5C10.4603 2.5 10.8334 2.8731 10.8334 3.33333V16.6667C10.8334 17.1269 10.4603 17.5 10 17.5C9.53978 17.5 9.16669 17.1269 9.16669 16.6667V3.33333C9.16669 2.8731 9.53978 2.5 10 2.5Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M4.41076 11.0774C4.7362 10.752 5.26384 10.752 5.58928 11.0774L10 15.4882L14.4108 11.0774C14.7362 10.752 15.2638 10.752 15.5893 11.0774C15.9147 11.4029 15.9147 11.9305 15.5893 12.2559L10.5893 17.2559C10.2638 17.5814 9.7362 17.5814 9.41077 17.2559L4.41076 12.2559C4.08533 11.9305 4.08533 11.4029 4.41076 11.0774Z"
+    />
+  </>
+);
+/**
+ * @component @name ArrowDownIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0xMCAyLjVDMTAuNDYwMyAyLjUgMTAuODMzNCAyLjg3MzEgMTAuODMzNCAzLjMzMzMzVjE2LjY2NjdDMTAuODMzNCAxNy4xMjY5IDEwLjQ2MDMgMTcuNSAxMCAxNy41QzkuNTM5NzggMTcuNSA5LjE2NjY5IDE3LjEyNjkgOS4xNjY2OSAxNi42NjY3VjMuMzMzMzNDOS4xNjY2OSAyLjg3MzEgOS41Mzk3OCAyLjUgMTAgMi41WiIKICAgIC8+CiAgICA8cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik00LjQxMDc2IDExLjA3NzRDNC43MzYyIDEwLjc1MiA1LjI2Mzg0IDEwLjc1MiA1LjU4OTI4IDExLjA3NzRMMTAgMTUuNDg4MkwxNC40MTA4IDExLjA3NzRDMTQuNzM2MiAxMC43NTIgMTUuMjYzOCAxMC43NTIgMTUuNTg5MyAxMS4wNzc0QzE1LjkxNDcgMTEuNDAyOSAxNS45MTQ3IDExLjkzMDUgMTUuNTg5MyAxMi4yNTU5TDEwLjU4OTMgMTcuMjU1OUMxMC4yNjM4IDE3LjU4MTQgOS43MzYyIDE3LjU4MTQgOS40MTA3NyAxNy4yNTU5TDQuNDEwNzYgMTIuMjU1OUM0LjA4NTMzIDExLjkzMDUgNC4wODUzMyAxMS40MDI5IDQuNDEwNzYgMTEuMDc3NFoiCiAgICAvPjwvc3ZnPg==)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
+
+export const ArrowDownIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: ArrowDownPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

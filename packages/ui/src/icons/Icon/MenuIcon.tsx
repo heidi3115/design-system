@@ -1,6 +1,38 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import Menu from '../svg/Menu.svg';
+const MenuPath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M1.66666 10C1.66666 9.53977 2.03975 9.16667 2.49999 9.16667H17.5C17.9602 9.16667 18.3333 9.53977 18.3333 10C18.3333 10.4602 17.9602 10.8333 17.5 10.8333H2.49999C2.03975 10.8333 1.66666 10.4602 1.66666 10Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M1.66666 5.00001C1.66666 4.53977 2.03975 4.16667 2.49999 4.16667H17.5C17.9602 4.16667 18.3333 4.53977 18.3333 5.00001C18.3333 5.46024 17.9602 5.83334 17.5 5.83334H2.49999C2.03975 5.83334 1.66666 5.46024 1.66666 5.00001Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M1.66666 15C1.66666 14.5398 2.03975 14.1667 2.49999 14.1667H17.5C17.9602 14.1667 18.3333 14.5398 18.3333 15C18.3333 15.4602 17.9602 15.8333 17.5 15.8333H2.49999C2.03975 15.8333 1.66666 15.4602 1.66666 15Z"
+    />
+  </>
+);
+/**
+ * @component @name MenuIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0xLjY2NjY2IDEwQzEuNjY2NjYgOS41Mzk3NyAyLjAzOTc1IDkuMTY2NjcgMi40OTk5OSA5LjE2NjY3SDE3LjVDMTcuOTYwMiA5LjE2NjY3IDE4LjMzMzMgOS41Mzk3NyAxOC4zMzMzIDEwQzE4LjMzMzMgMTAuNDYwMiAxNy45NjAyIDEwLjgzMzMgMTcuNSAxMC44MzMzSDIuNDk5OTlDMi4wMzk3NSAxMC44MzMzIDEuNjY2NjYgMTAuNDYwMiAxLjY2NjY2IDEwWiIKICAgIC8+CiAgICA8cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0xLjY2NjY2IDUuMDAwMDFDMS42NjY2NiA0LjUzOTc3IDIuMDM5NzUgNC4xNjY2NyAyLjQ5OTk5IDQuMTY2NjdIMTcuNUMxNy45NjAyIDQuMTY2NjcgMTguMzMzMyA0LjUzOTc3IDE4LjMzMzMgNS4wMDAwMUMxOC4zMzMzIDUuNDYwMjQgMTcuOTYwMiA1LjgzMzM0IDE3LjUgNS44MzMzNEgyLjQ5OTk5QzIuMDM5NzUgNS44MzMzNCAxLjY2NjY2IDUuNDYwMjQgMS42NjY2NiA1LjAwMDAxWiIKICAgIC8+CiAgICA8cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0xLjY2NjY2IDE1QzEuNjY2NjYgMTQuNTM5OCAyLjAzOTc1IDE0LjE2NjcgMi40OTk5OSAxNC4xNjY3SDE3LjVDMTcuOTYwMiAxNC4xNjY3IDE4LjMzMzMgMTQuNTM5OCAxOC4zMzMzIDE1QzE4LjMzMzMgMTUuNDYwMiAxNy45NjAyIDE1LjgzMzMgMTcuNSAxNS44MzMzSDIuNDk5OTlDMi4wMzk3NSAxNS44MzMzIDEuNjY2NjYgMTUuNDYwMiAxLjY2NjY2IDE1WiIKICAgIC8+PC9zdmc+)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
 
-export const MenuIcon = (props: IconProps) => <CreateIcon Icon={Menu} viewBox="0 0 20 20" {...props} />;
+export const MenuIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: MenuPath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

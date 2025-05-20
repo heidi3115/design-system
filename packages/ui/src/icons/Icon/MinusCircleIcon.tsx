@@ -1,6 +1,33 @@
 import { type IconProps } from '../types';
-import CreateIcon from '../CreaateIcon';
+import CreateIcon from '../CreateIcon';
 
-import MinusCircle from '../svg/MinusCircle.svg';
+const MinusCirclePath = (
+  <>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M0.833313 10C0.833313 4.93738 4.93737 0.833328 9.99998 0.833328C15.0626 0.833328 19.1666 4.93738 19.1666 10C19.1666 15.0626 15.0626 19.1667 9.99998 19.1667C4.93737 19.1667 0.833313 15.0626 0.833313 10ZM9.99998 2.49999C5.85784 2.49999 2.49998 5.85786 2.49998 10C2.49998 14.1421 5.85784 17.5 9.99998 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.49999 9.99998 2.49999Z"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M5.83331 10C5.83331 9.53977 6.20641 9.16667 6.66665 9.16667H13.3333C13.7936 9.16667 14.1666 9.53977 14.1666 10C14.1666 10.4602 13.7936 10.8333 13.3333 10.8333H6.66665C6.20641 10.8333 5.83331 10.4602 5.83331 10Z"
+    />
+  </>
+);
+/**
+ * @component @name MinusCircleIcon
+ * @description Custom SVG icon component rendering.
+ *
+ * @preview ![img](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiNmZmYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aAogICAgICBmaWxsUnVsZT0iZXZlbm9kZCIKICAgICAgY2xpcFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGQ9Ik0wLjgzMzMxMyAxMEMwLjgzMzMxMyA0LjkzNzM4IDQuOTM3MzcgMC44MzMzMjggOS45OTk5OCAwLjgzMzMyOEMxNS4wNjI2IDAuODMzMzI4IDE5LjE2NjYgNC45MzczOCAxOS4xNjY2IDEwQzE5LjE2NjYgMTUuMDYyNiAxNS4wNjI2IDE5LjE2NjcgOS45OTk5OCAxOS4xNjY3QzQuOTM3MzcgMTkuMTY2NyAwLjgzMzMxMyAxNS4wNjI2IDAuODMzMzEzIDEwWk05Ljk5OTk4IDIuNDk5OTlDNS44NTc4NCAyLjQ5OTk5IDIuNDk5OTggNS44NTc4NiAyLjQ5OTk4IDEwQzIuNDk5OTggMTQuMTQyMSA1Ljg1Nzg0IDE3LjUgOS45OTk5OCAxNy41QzE0LjE0MjEgMTcuNSAxNy41IDE0LjE0MjEgMTcuNSAxMEMxNy41IDUuODU3ODYgMTQuMTQyMSAyLjQ5OTk5IDkuOTk5OTggMi40OTk5OVoiCiAgICAvPgogICAgPHBhdGgKICAgICAgZmlsbFJ1bGU9ImV2ZW5vZGQiCiAgICAgIGNsaXBSdWxlPSJldmVub2RkIgogICAgICBkPSJNNS44MzMzMSAxMEM1LjgzMzMxIDkuNTM5NzcgNi4yMDY0MSA5LjE2NjY3IDYuNjY2NjUgOS4xNjY2N0gxMy4zMzMzQzEzLjc5MzYgOS4xNjY2NyAxNC4xNjY2IDkuNTM5NzcgMTQuMTY2NiAxMEMxNC4xNjY2IDEwLjQ2MDIgMTMuNzkzNiAxMC44MzMzIDEzLjMzMzMgMTAuODMzM0g2LjY2NjY1QzYuMjA2NDEgMTAuODMzMyA1LjgzMzMxIDEwLjQ2MDIgNS44MzMzMSAxMFoiCiAgICAvPjwvc3ZnPg==)
+ *
+ * @param {IconProps} props - Icon props and valid SVG attributes.
+ * @returns {JSX.Element} SVG icon component.
+ */
 
-export const MinusCircleIcon = (props: IconProps) => <CreateIcon Icon={MinusCircle} viewBox="0 0 20 20" {...props} />;
+export const MinusCircleIcon = (props: IconProps) =>
+  CreateIcon({
+    paths: MinusCirclePath,
+    viewBox: '0 0 20 20',
+    ...props,
+  });

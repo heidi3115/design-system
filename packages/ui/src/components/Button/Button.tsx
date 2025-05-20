@@ -9,15 +9,16 @@ function Button({
   className,
   variant,
   size,
+  disabled = false,
   ...props
 }: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
   }) {
   const Comp = asChild ? Slot : 'button';
-  const buttonProps = asChild ? { ...props } : { type: props?.type || 'button', ...props };
+  const buttonProps = asChild ? { ...props } : { type: props?.type || 'button', 'data-slot': 'button', ...props };
 
-  return <Comp data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...buttonProps} />;
+  return <Comp className={cn(buttonVariants({ variant, size, disabled, className }))} {...buttonProps} />;
 }
 
 export default Button;

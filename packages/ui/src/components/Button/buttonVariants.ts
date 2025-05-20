@@ -9,8 +9,8 @@ const buttonVariants = tv({
     'cursor-pointer select-none',
     'hover:bg-transparent hover:border-white active:bg-transparent active:border-white focus:bg-transparent focus:border-white focus:outline-none',
     'disabled:opacity-60 disabled:pointer-events-none disabled:cursor-not-allowed',
-    'has-[&_svg]:shrink-0 has-[&>svg]:gap-1.5',
-    '[&_svg]:pointer-events-none', // [&_svg]:
+    'has-[>svg]:shrink-0 has-[>svg]:gap-1.5', // 직전 자식에 svg 있을 경우 부모(button)에 적용
+    '[&_svg]:pointer-events-none',
     'dark:hover:border-white dark:active:border-white dark:focus:border-white',
   ],
   variants: {
@@ -42,10 +42,14 @@ const buttonVariants = tv({
       medium: 'px-4 h-8 text-sm',
       large: 'px-5 h-9 text-sm',
     },
+    disabled: {
+      true: 'cursor-not-allowed pointer-events-none opacity-60 [&_svg]:pointer-events-none',
+    },
   },
   defaultVariants: {
     variant: 'default',
     size: 'basic',
+    disabled: false,
   },
 });
 
