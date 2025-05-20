@@ -38,7 +38,6 @@ const meta: Meta<typeof Button> = {
     size: 'basic',
     disabled: false,
     asChild: false,
-    className: '',
   },
   parameters: {
     docs: {
