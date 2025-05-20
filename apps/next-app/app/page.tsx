@@ -5,14 +5,16 @@ import { useState } from 'react';
 import {
   Badge,
   Button,
+  buttonVariants,
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-  Input,
 } from '@common/ui';
+
+import { useUpdateEffect } from '@common/utils';
 import {
   AlertCircleIcon,
   ArrowLeftIcon,
@@ -33,6 +35,7 @@ import {
   LayersIcon,
   ListIcon,
   LockIcon,
+  LogInIcon,
   MailIcon,
   MaximizeIcon,
   Minimize2Icon,
@@ -62,364 +65,179 @@ import {
   ZoomInIcon,
 } from '@common/ui/icons';
 
-import { useUpdateEffect } from '@common/utils';
-import { useForm } from 'react-hook-form';
-
 export default function Page() {
   const [count, setCount] = useState('1');
-  const [value, setValue] = useState('');
 
   useUpdateEffect(() => {
     alert(count);
   }, [count]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    mode: 'onBlur',
-  });
-
-  const onValid = (data: Record<string, string>) => {
-    console.log('폼 제출됨', data);
-  };
-
   return (
-    <form className="p-4" onSubmit={handleSubmit(onValid)}>
-      <div className="flex items-center justify-center min-h-svh">
-        <div className="flex flex-col items-center justify-center gap-4">
-          <h1 className="text-2xl text-juiGrey-400 font-bold underline">Hello World</h1>
-          <div className="w-2xs flex flex-col gap-2">
-            <Input
-              {...register('email', { required: '이메일은 필수입니다' })}
-              error={!!errors.email}
-              helperText={errors.email?.message as string}
-            />
-            <Input type="text" placeholder="aaaa" size="large" iconLeft={<LockIcon />} iconRight={<CalendarIcon />} />
-            <Input type="text" placeholder="aaaa" size="large" iconLeft={<LockIcon />} />
-            <Input type="text" placeholder="aaaa" size="large" iconRight={<CalendarIcon />} />
-            <p></p>
-            <span>제어</span>
-            <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder="Controlled input" />
-            <p></p>
-            <span>비제어</span>
-            <Input placeholder="Uncontrolled input" onBlur={(e) => console.log(e.target.value)} />
-
-            <Input
-              type="text"
-              placeholder="aaaa"
-              size="large"
-              iconLeft={<LockIcon />}
-              iconRight={<CalendarIcon />}
-              error
-              helperText="aaaaa"
-            />
-            <Input type="text" placeholder="aaaa" size="large" error />
+    <section className="flex items-center justify-center w-full min-h-svh">
+      <div className="flex flex-col gap-4 items-center justify-center">
+        <h1 className="text-juiGrey-400 text-5xl font-bold hover:text-white">JUI Design Gallery</h1>
+        <div className={'flex flex-col gap-4 items-center justify-center'}>
+          <h2 className={'text-juiText-blue text-3xl font-bold'}>Buttons</h2>
+          <div className={'flex flex-col gap-4'}>
+            <h3 className={'text-juiText-blue text-lg font-bold'}>Colors(variant)</h3>
+            <div className={'flex gap-4 flex-row items-center justify-center'}>
+              {(
+                Object.keys(buttonVariants.variants.variant) as Array<keyof typeof buttonVariants.variants.variant>
+              ).map((variant) => (
+                <Button key={variant} variant={variant} size={'basic'} onClick={() => setCount((prev) => (prev += 1))}>
+                  {variant}
+                </Button>
+              ))}
+            </div>
           </div>
-          <Button variant="jui" onClick={() => setCount((prev) => (prev += 1))}>
-            jui Button
-          </Button>
-          <Button variant="juiGrey" onClick={() => setCount((prev) => (prev += 1))}>
-            jui Grey <CornerDownLeftIcon />
-          </Button>
-          <Button variant="juiGradient" onClick={() => setCount((prev) => (prev += 1))}>
-            jui Button Gradient
-          </Button>
-          <Badge className="text-juiStatus-urgency">
-            {/*{count} <AddIcon className="stroke-juiSecondary" />*/}
-            {/*{count} <AddIcon className="fill-juiSecondary" />*/}
-            {/*{count} <AddIcon className="fill-current" />*/}
-          </Badge>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <CornerDownRightIcon />
-            <ArrowLeftIcon fill="var(--juiError)" />
-            <CalendarIcon color="var(--juiPrimary)" />
-            <ClockIcon variant="secondary" />
-            <EyeIcon />
-            <FilePlusIcon />
-            <FileTextIcon />
-            <ListIcon />
-            <LockIcon />
-            <GlobeIcon />
-            <ZoomInIcon />
-            <XIcon />
-            <TagIcon />
-            <UserIcon />
-            <HomeIcon />
-            <InfoIcon />
-            <ChevronUpIcon />
-            <ExternalLinkIcon />
-            <UserMinusIcon />
-            <UserPlusIcon />
-            <StarIcon />
-            <RotateIcon />
-            <QuestionCircleIcon />
-            <RepeatIcon />
-            <SaveIcon />
-            <SquareIcon />
-            <PrinterIcon />
-            <ServerIcon />
-            <SettingsIcon />
-            <Trash2Icon />
-            <XCircleIcon />
-            <AlertCircleIcon />
-            <BookmarkIcon />
-            <BarChartIcon />
-            <LayersIcon />
-            <CornerDownLeftIcon />
-            <MoreHorizontalIcon />
-            <MailIcon />
-            <MaximizeIcon />
-            <MinusCircleIcon />
-            <Minimize2Icon />
-            <PlayIcon />
-            <PaperClipIcon />
-            <PlusCircleIcon />
-            <PlusIcon />
-            <PlusIcon />
-            <PlusSquareIcon />
-            <PlusIcon />
+          <div className={'flex flex-col gap-4'}>
+            <h3 className={'text-juiText-blue text-lg font-bold'}>Size</h3>
+            <div className={'flex flex-row gap-4 items-center justify-center'}>
+              {(
+                Object.keys(buttonVariants.variants.variant) as Array<keyof typeof buttonVariants.variants.variant>
+              ).map((variant) => {
+                return (
+                  <div key={variant} className={'flex flex-col gap-4'}>
+                    {(
+                      Object.keys(buttonVariants.variants.size) as Array<keyof typeof buttonVariants.variants.size>
+                    ).map((size) => (
+                      <Button
+                        key={`${variant}-${size}`}
+                        variant={variant}
+                        size={size}
+                        onClick={() => setCount((prev) => (prev += 1))}>
+                        {size !== 'small' ? (
+                          <>
+                            {variant === 'transparentGrey' && size}
+                            <ZoomInIcon
+                              size={'small'}
+                              color={variant === 'transparentGrey' ? 'custom' : undefined}
+                              className={variant === 'transparentGrey' ? 'fill-current' : ''}
+                            />
+                            {variant !== 'transparentGrey' && size}
+                          </>
+                        ) : (
+                          size
+                        )}
+                      </Button>
+                    ))}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
+          <div className={'flex flex-col gap-4'}>
+            <h3 className={'text-juiText-blue text-lg font-bold'}>Status</h3>
+            <div className={'flex flex-row gap-5 items-center justify-center'}>
+              <div className={''}>
+                <h4 className={'my-3 text-base'}>Login</h4>
+                <Button variant={'gradient'} size={'large'} className={'w-[400px] h-[60px]'}>
+                  <LogInIcon />
+                  <span className={'font-bold text-2xl'}>Login</span>
+                </Button>
+              </div>
+              <div className={''}>
+                <h4 className={'my-3 text-base'}>Search</h4>
+                <Button variant={'gradient'} size={'large'} className={'w-[160px] h-[40px]'}>
+                  <PlusIcon />
+                  <span className={'font-bold text-base'}>Search</span>
+                </Button>
+              </div>
+            </div>
           </div>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
+        </div>
+        <div className={'flex flex-col gap-4 items-center justify-center'}>
+          <h2 className={''}>Badges</h2>
+          <div className={'flex gap-4 items-center justify-center'}>
+            <Badge className="text-juiStatus-urgency">
+              {count} <CornerDownRightIcon className="stroke-juiSecondary" />
+              {count} <CornerDownRightIcon className="fill-juiSecondary" />
+              {count} <CornerDownRightIcon className="fill-current" />
+            </Badge>
           </div>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-          </div>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-          </div>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-          </div>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-          </div>
-          <Button type="submit">제출</Button>
+        </div>
+        <div className="flex justify-between items-center gap-5">
+          <Card>
+            <CardHeader>
+              <CardTitle>Card Title</CardTitle>
+              <CardDescription>Card Description</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p>Card Content</p>
+              <p>Card Content</p>
+              <p>Card Content</p>
+              <p>Card Content</p>
+              <p>Card Content</p>
+            </CardContent>
+            <CardFooter>
+              <p>Card Footer</p>
+            </CardFooter>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Card Title</CardTitle>
+              <CardDescription>Card Description</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p>Card Content</p>
+              <p>Card Content</p>
+              <p>Card Content</p>
+              <p>Card Content</p>
+              <p>Card Content</p>
+            </CardContent>
+            <CardFooter>
+              <p>Card Footer</p>
+            </CardFooter>
+          </Card>
+        </div>
+        <div className={'grid grid-cols-10 gap-4'}>
+          <CalendarIcon color="var(--juiPrimary)" />
+          <ClockIcon variant="secondary" />
+          <ArrowLeftIcon fill="var(--juiError)" />
+          <GlobeIcon variant="default" />
+          <LockIcon variant="disabled" />
+          <ZoomInIcon color="var(--juiStatus-progress)" />
+          <XIcon color="var(--juiStatus-complete)" />
+          <TagIcon fill="var(--juiStatus-failed)" />
+          <UserIcon color="var(--juiStatus-info)" />
+          <HomeIcon fill="var(--juiStatus-alert)" />
+          <EyeIcon size="small" />
+          <FilePlusIcon size="basic" />
+          <FileTextIcon size="medium" />
+          <ListIcon size="large" />
+          <InfoIcon size="small" />
+          <ChevronUpIcon size="basic" />
+          <ExternalLinkIcon size="medium" />
+          <UserMinusIcon size="large" />
+          <UserPlusIcon />
+          <StarIcon />
+          <RotateIcon />
+          <QuestionCircleIcon />
+          <RepeatIcon />
+          <SaveIcon />
+          <SquareIcon />
+          <PrinterIcon />
+          <ServerIcon />
+          <SettingsIcon />
+          <Trash2Icon />
+          <XCircleIcon />
+          <AlertCircleIcon />
+          <BookmarkIcon />
+          <BarChartIcon />
+          <LayersIcon />
+          <CornerDownLeftIcon />
+          <MoreHorizontalIcon />
+          <MailIcon />
+          <MaximizeIcon />
+          <MinusCircleIcon />
+          <Minimize2Icon />
+          <PlayIcon />
+          <PaperClipIcon />
+          <PlusCircleIcon />
+          <PlusSquareIcon />
+          <PlusIcon />
         </div>
       </div>
-    </form>
+    </section>
   );
 }
