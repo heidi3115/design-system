@@ -234,6 +234,9 @@ importers:
       '@common/tokens':
         specifier: workspace:*
         version: link:../tokens
+      '@eslint/js':
+        specifier: ^9.25.0
+        version: 9.27.0
       '@radix-ui/react-slot':
         specifier: ^1.1.2
         version: 1.2.2(@types/react@19.1.4)(react@19.1.0)
@@ -243,6 +246,15 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      eslint:
+        specifier: ^9.25.0
+        version: 9.27.0(jiti@2.4.2)
+      eslint-plugin-react-hooks:
+        specifier: ^5.2.0
+        version: 5.2.0(eslint@9.27.0(jiti@2.4.2))
+      eslint-plugin-react-refresh:
+        specifier: ^0.4.19
+        version: 0.4.20(eslint@9.27.0(jiti@2.4.2))
       lucide-react:
         specifier: ^0.475.0
         version: 0.475.0(react@19.1.0)
