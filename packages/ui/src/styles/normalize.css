@@ -39,6 +39,7 @@ main {
  * `article` contexts in Chrome, Firefox, and Safari.
  */
 
+/* 우선순위로 주석처리 */
 /*h1 {*/
 /*    font-size: 2em;*/
 /*    margin: 0.67em 0;*/
@@ -169,7 +170,7 @@ img {
  * 2. Remove the margin in Firefox and Safari.
  */
 
-/* global.css로 이동 */
+/* 우선순위로 주석처리 */
 /*button,*/
 /*input,*/
 /* optgroup,*/

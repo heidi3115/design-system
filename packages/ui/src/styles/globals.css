@@ -165,21 +165,4 @@
   body {
     @apply bg-background text-foreground;
   }
-
-  /* normalize.css 에서 layer로 감싸지 않아서 5:implict outer layer로서 가장 높은 우선순위로서 tailwind의 내역보다 우선순위를 가져서 layer base로 옮김. */
-  button,
-  input,
-  optgroup,
-  select,
-  textarea {
-    font-family: inherit;
-    font-size: 100%;
-    line-height: 1.15;
-    margin: 0;
-  }
-
-  h1 {
-    font-size: 2em;
-    margin: 0.67em 0;
-  }
 }
