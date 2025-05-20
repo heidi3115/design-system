@@ -30,6 +30,8 @@
     "@common/eslint-config": "workspace:*",
     "@common/types": "workspace:*",
     "@common/typescript-config": "workspace:*",
+    "@eslint/js": "^9.25.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.4.0",
     "husky": "^8.0.0",
     "lint-staged": "^16.0.0",
@@ -37,7 +39,8 @@
     "ts-node": "^10.9.2",
     "tsc": "^2.0.4",
     "turbo": "^2.4.2",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "typescript-eslint": "^8.32.1"
   },
   "packageManager": "pnpm@10.4.1",
   "engines": {

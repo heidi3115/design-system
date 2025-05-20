@@ -76,7 +76,7 @@ export default function Page() {
           jui Button Gradient
         </Button>
         <Toggle variant="outline" size="lg" aria-label="Toggle italic">
-          <div className="h-4">A</div>
+          B
         </Toggle>
         <Badge className="text-juiStatus-urgency">
           {/*{count} <AddIcon className="stroke-juiSecondary" />*/}
