@@ -44,8 +44,8 @@ export const Variants: Story = {
         (variant) => (
           <>
             <Button key={variant} {...args} variant={variant}>
-              <AlertCircleIcon />
               {variant}
+              <AlertCircleIcon />
             </Button>
           </>
         ),
