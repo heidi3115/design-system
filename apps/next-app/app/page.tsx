@@ -15,6 +15,14 @@ import {
   AlertTitle,
   AlertDescription,
   AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
 } from '@common/ui';
 import {
   AlertCircleIcon,
@@ -73,16 +81,6 @@ import {
 } from '@common/ui/icons';
 
 import { useUpdateEffect } from '@common/utils';
-import {
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@common/ui/components/AlertDialog/AlertDialog';
 // import LogInIcon from '@common/ui/icons/Icon/LogInIcon';
 // import CournerDownRightIcon from '@common/ui/icons/Icon/CournerDownRightIcon';
 // import MailIcon from '@common/ui/icons/Icon/MailIcon';
@@ -118,7 +116,7 @@ export default function Page() {
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>testAlert</AlertDialogTitle>
+              <AlertDialogTitle>제목</AlertDialogTitle>
               <AlertDialogDescription>
                 This action cannot be undone. This will permanently delete your account and remove your data from our
                 servers.
