@@ -45,7 +45,7 @@ export default function Page() {
               error={!!errors.email}
               helperText={errors.email?.message as string}
             />
-            <Input type="text" placeholder="aaaa" size="large" iconLeft={<LockIcon />} disabled />
+            <Input type="text" placeholder="aaaa" size="large" iconLeft={<span>응</span>} />
             <Input type="text" placeholder="aaaa" size="large" iconLeft={<LockIcon />} />
             <Input type="text" placeholder="aaaa" size="large" iconRight={<CalendarIcon />} />
             <p></p>

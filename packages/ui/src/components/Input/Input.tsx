@@ -1,5 +1,3 @@
-'use client';
-
 import { type ReactElement, type SVGProps, isValidElement, cloneElement } from 'react';
 import { type VariantProps } from 'tailwind-variants';
 import { type IconProps } from '@common/ui/icons/types';
