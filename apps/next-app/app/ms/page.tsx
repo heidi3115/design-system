@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Input } from '@common/ui';
+import { Button, Input } from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -11,13 +11,9 @@ import {
   EyeIcon,
   FilePlusIcon,
   FileTextIcon,
-  GlobeIcon,
-  ListIcon,
   LockIcon,
   TagIcon,
   UserIcon,
-  XIcon,
-  ZoomInIcon,
 } from '@common/ui/icons';
 
 import { useForm } from 'react-hook-form';
@@ -45,10 +41,11 @@ export default function Page() {
           <div className="w-2xs flex flex-col gap-2">
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}
+              placeholder="email"
               error={!!errors.email}
               helperText={errors.email?.message as string}
             />
-            <Input type="text" placeholder="aaaa" size="large" iconLeft={<LockIcon />} iconRight={<CalendarIcon />} />
+            <Input type="text" placeholder="aaaa" size="large" iconLeft={<LockIcon />} disabled />
             <Input type="text" placeholder="aaaa" size="large" iconLeft={<LockIcon />} />
             <Input type="text" placeholder="aaaa" size="large" iconRight={<CalendarIcon />} />
             <p></p>
@@ -66,43 +63,12 @@ export default function Page() {
               iconRight={<CalendarIcon />}
               error
               helperText="aaaaa"
+              disabled
             />
             <Input type="text" placeholder="aaaa" size="large" error />
           </div>
 
           <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
             <CornerDownRightIcon />
             <ArrowLeftIcon fill="var(--juiError)" />
             <CalendarIcon color="var(--juiPrimary)" />
@@ -110,217 +76,9 @@ export default function Page() {
             <EyeIcon />
             <FilePlusIcon />
             <FileTextIcon />
-            <ListIcon />
             <LockIcon />
-            <GlobeIcon />
-            <ZoomInIcon />
-            <XIcon />
             <TagIcon />
             <UserIcon />
-          </div>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-          </div>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-          </div>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-          </div>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-          </div>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-          </div>
-          <div className="flex justify-between items-center gap-5">
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
           </div>
           <Button type="submit">제출</Button>
         </div>

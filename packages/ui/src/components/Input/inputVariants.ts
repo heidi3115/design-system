@@ -26,6 +26,9 @@ const inputVariants = tv({
       true: 'pr-10',
       false: 'px-4',
     },
+    disabled: {
+      true: 'opacity-50 cursor-not-allowed',
+    },
   },
   compoundVariants: [
     // 아이콘 없음
@@ -61,13 +64,13 @@ const inputVariants = tv({
       hasIconLeft: false,
       hasIconRight: true,
       error: false,
-      className: 'pl-4 pr-10',
+      className: 'pl-4 pr-9',
     },
     {
       hasIconLeft: false,
       hasIconRight: true,
       error: true,
-      className: 'pl-4 pr-16', // 오른쪽 아이콘 + 에러 아이콘
+      className: 'pl-4 pr-14', // 오른쪽 아이콘 + 에러 아이콘
     },
 
     // 양쪽 아이콘
@@ -75,13 +78,13 @@ const inputVariants = tv({
       hasIconLeft: true,
       hasIconRight: true,
       error: false,
-      className: 'pl-10 pr-10',
+      className: 'pl-10 pr-9',
     },
     {
       hasIconLeft: true,
       hasIconRight: true,
       error: true,
-      className: 'pl-10 pr-16',
+      className: 'pl-10 pr-14',
     },
   ],
   defaultVariants: {

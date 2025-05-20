@@ -1,9 +1,21 @@
-import { type ReactElement, type SVGProps, useState, useEffect, useCallback } from 'react';
-import { type VariantProps } from 'tailwind-variants';
+'use client';
 
-import { cn } from '../../lib/utils';
-import inputVariants from './inputVariants';
+import { type ReactElement, type SVGProps, isValidElement, cloneElement } from 'react';
+import { type VariantProps } from 'tailwind-variants';
+import { type IconProps } from '@common/ui/icons/types';
 import { AlertCircle2Icon } from '@common/ui/icons';
+
+import inputVariants from './inputVariants';
+import { useInputValue } from './hooks/useInputValue';
+import { cn } from '../../lib/utils';
+
+type InputProps = Omit<React.ComponentProps<'input'>, 'size'> &
+  VariantProps<typeof inputVariants> & {
+    iconLeft?: ReactElement<SVGProps<SVGSVGElement>>;
+    iconRight?: ReactElement<SVGProps<SVGSVGElement>>;
+    error?: boolean;
+    helperText?: string;
+  };
 
 function Input({
   className,
@@ -18,36 +30,18 @@ function Input({
   helperText,
   onChange,
   ...props
-}: Omit<React.ComponentProps<'input'>, 'size'> &
-  VariantProps<typeof inputVariants> & {
-    iconLeft?: ReactElement<SVGProps<SVGSVGElement>>;
-    iconRight?: ReactElement<SVGProps<SVGSVGElement>>;
-    error?: boolean;
-    helperText?: string;
-  }) {
+}: InputProps) {
   const hasIconLeft = !!iconLeft;
   const hasIconRight = !!iconRight;
 
-  const isControlled = value !== undefined;
+  const { value: inputValue, handleChange } = useInputValue({
+    value,
+    defaultValue,
+    onChange,
+  });
 
-  const [internalValue, setInternalValue] = useState(defaultValue ?? '');
-
-  // controlled value 반영
-  useEffect(() => {
-    if (isControlled) {
-      setInternalValue(value as string);
-    }
-  }, [value, isControlled]);
-
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!isControlled) {
-        setInternalValue(e.target.value);
-      }
-      onChange?.(e); // onChange가 있을 경우에만 실행
-    },
-    [onChange, isControlled],
-  );
+  const renderIcon = (icon: ReactElement<SVGProps<SVGSVGElement>> | undefined) =>
+    isValidElement<IconProps>(icon) ? cloneElement(icon, { size: 'small' }) : icon;
 
   return (
     <div>
@@ -58,7 +52,7 @@ function Input({
               'absolute left-3 top-1/2 -translate-y-1/2 text-current pointer-events-none',
               disabled && 'opacity-50 cursor-not-allowed',
             )}>
-            {iconLeft}
+            {renderIcon(iconLeft)}
           </span>
         )}
 
@@ -66,18 +60,29 @@ function Input({
           type={type}
           disabled={disabled}
           data-slot="input"
-          value={internalValue}
+          value={inputValue}
           onChange={handleChange}
           className={cn(
-            inputVariants({ error, size, hasIconLeft, hasIconRight, className }),
-            disabled && 'cursor-not-allowed opacity-50',
+            inputVariants({
+              error,
+              size,
+              hasIconLeft,
+              hasIconRight,
+              disabled,
+              className,
+            }),
           )}
           {...props}
         />
 
         {error && (
-          <span className={cn('absolute top-1/2 -translate-y-1/2', hasIconRight ? 'right-9' : 'right-2')}>
-            <AlertCircle2Icon variant="error" />
+          <span
+            className={cn(
+              'absolute top-1/2 -translate-y-1/2',
+              hasIconRight ? 'right-9' : 'right-2',
+              disabled && 'opacity-50 cursor-not-allowed',
+            )}>
+            <AlertCircle2Icon variant="error" size="small" />
           </span>
         )}
 
@@ -87,10 +92,11 @@ function Input({
               'absolute right-3 top-1/2 -translate-y-1/2 text-current pointer-events-none',
               disabled && 'opacity-50 cursor-not-allowed',
             )}>
-            {iconRight}
+            {renderIcon(iconRight)}
           </span>
         )}
       </div>
+
       {error && helperText && <p className="text-xs text-juiError mx-1 mt-1">{helperText}</p>}
     </div>
   );
