@@ -66,6 +66,7 @@ function Input({
   size,
   iconLeft,
   iconRight,
+  disabled,
   ...props
 }: Omit<React.ComponentProps<'input'>, 'size'> &
   VariantProps<typeof inputVariants> & {
@@ -76,20 +77,36 @@ function Input({
   const hasIconRight = !!iconRight;
 
   return (
-    <div className="relative w-full flex gap-1">
-      {iconLeft && (
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white pointer-events-none">{iconLeft}</span>
+    <div className="relative w-full">
+      {hasIconLeft && (
+        <span
+          className={cn(
+            'absolute left-3 top-1/2 -translate-y-1/2 text-juiText-primary pointer-events-none',
+            disabled && 'opacity-50 cursor-not-allowed',
+          )}>
+          {iconLeft}
+        </span>
       )}
 
       <input
         type={type}
+        disabled={disabled}
         data-slot="input"
-        className={cn(inputVariants({ variant, size, hasIconLeft, hasIconRight, className }))}
+        className={cn(
+          inputVariants({ variant, size, hasIconLeft, hasIconRight, className }),
+          disabled && 'cursor-not-allowed opacity-50',
+        )}
         {...props}
       />
 
-      {iconRight && (
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-white pointer-events-none">{iconRight}</span>
+      {hasIconRight && (
+        <span
+          className={cn(
+            'absolute right-3 top-1/2 -translate-y-1/2 text-juiText-primary pointer-events-none',
+            disabled && 'opacity-50 cursor-not-allowed',
+          )}>
+          {iconRight}
+        </span>
       )}
     </div>
   );
