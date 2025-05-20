@@ -1,15 +1,15 @@
 :root {
   --juiPrimary: #4b63eb;
   --juiSecondary: #8526e4;
-  --juiError: #E236B2;
+  --juiError: #e236b2;
   --juiStatus-progress: #3b53da;
   --juiStatus-complete: #3a9f6c;
   --juiStatus-failed: #e236b2;
-  --juiStatus-info: #29A3E8;
-  --juiStatus-boundary: #1CC8DE;
-  --juiStatus-alert: #27C977;
-  --juiStatus-critical: #E0E329;
-  --juiStatus-urgency: #FF981F;
+  --juiStatus-info: #29a3e8;
+  --juiStatus-boundary: #1cc8de;
+  --juiStatus-alert: #27c977;
+  --juiStatus-critical: #e0e329;
+  --juiStatus-urgency: #ff981f;
   --juiGrey-50: rgba(255, 255, 255, 0.05);
   --juiGrey-100: rgba(255, 255, 255, 0.1);
   --juiGrey-200: rgba(255, 255, 255, 0.2);
@@ -20,30 +20,31 @@
   --juiGrey-700: rgba(255, 255, 255, 0.7);
   --juiGrey-800: rgba(255, 255, 255, 0.8);
   --juiGrey-900: #333333;
-  --juiGrey-a100: #EEEEEE;
-  --juiGrey-a200: #E0E0E0;
-  --juiGrey-a400: #9E9E9E;
-  --juiGrey-a700: #3B4154;
+  --juiGrey-a100: #eeeeee;
+  --juiGrey-a200: #e0e0e0;
+  --juiGrey-a400: #9e9e9e;
+  --juiGrey-a700: #3b4154;
   --juiBackground-default: #182036;
   --juiBackground-paper: #182036;
+  --juiBackground-input: rgba(0, 0, 0, 0.3);
   --juiText-primary: #fff;
   --juiText-secondary: rgba(255, 255, 255, 0.4);
   --juiText-disabled: #505050;
-  --juiText-blue: #7A97FF;
+  --juiText-blue: #7a97ff;
 }
 
 @theme {
   --juiPrimary: #4b63eb;
   --juiSecondary: #8526e4;
-  --juiError: #E236B2;
+  --juiError: #e236b2;
   --juiStatus-progress: #3b53da;
   --juiStatus-complete: #3a9f6c;
   --juiStatus-failed: #e236b2;
-  --juiStatus-info: #29A3E8;
-  --juiStatus-boundary: #1CC8DE;
-  --juiStatus-alert: #27C977;
-  --juiStatus-critical: #E0E329;
-  --juiStatus-urgency: #FF981F;
+  --juiStatus-info: #29a3e8;
+  --juiStatus-boundary: #1cc8de;
+  --juiStatus-alert: #27c977;
+  --juiStatus-critical: #e0e329;
+  --juiStatus-urgency: #ff981f;
   --juiGrey-50: rgba(255, 255, 255, 0.05);
   --juiGrey-100: rgba(255, 255, 255, 0.1);
   --juiGrey-200: rgba(255, 255, 255, 0.2);
@@ -54,16 +55,17 @@
   --juiGrey-700: rgba(255, 255, 255, 0.7);
   --juiGrey-800: rgba(255, 255, 255, 0.8);
   --juiGrey-900: #333333;
-  --juiGrey-a100: #EEEEEE;
-  --juiGrey-a200: #E0E0E0;
-  --juiGrey-a400: #9E9E9E;
-  --juiGrey-a700: #3B4154;
+  --juiGrey-a100: #eeeeee;
+  --juiGrey-a200: #e0e0e0;
+  --juiGrey-a400: #9e9e9e;
+  --juiGrey-a700: #3b4154;
   --juiBackground-default: #182036;
   --juiBackground-paper: #182036;
+  --juiBackground-input: rgba(0, 0, 0, 0.3);
   --juiText-primary: #fff;
   --juiText-secondary: rgba(255, 255, 255, 0.4);
   --juiText-disabled: #505050;
-  --juiText-blue: #7A97FF;
+  --juiText-blue: #7a97ff;
 }
 
 @theme inline {
@@ -94,6 +96,7 @@
   --color-juiGrey-a700: var(--juiGrey-a700);
   --color-juiBackground-default: var(--juiBackground-default);
   --color-juiBackground-paper: var(--juiBackground-paper);
+  --color-juiBackground-input: var(--juiBackground-input);
   --color-juiText-primary: var(--juiText-primary);
   --color-juiText-secondary: var(--juiText-secondary);
   --color-juiText-disabled: var(--juiText-disabled);

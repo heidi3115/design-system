@@ -5,15 +5,16 @@ import { cn } from '../../lib/utils';
 
 const inputVariants = tv({
   base: [
-    'w-full text-xs shadow-xs outline-none bg-black',
+    'w-full text-xs shadow-xs outline-none bg-juiBackground-input',
     'px-4',
     'placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground',
-    'border border-transparent focus-visible:border-juiText-primary',
+    'outline outline-transparent focus-visible:outline-juiText-primary',
     'transition-all duration-700 ease-in-out',
   ],
   variants: {
     variant: {
       default: '',
+      error: '',
     },
     size: {
       default: 'h-8',

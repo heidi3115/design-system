@@ -31,6 +31,7 @@ const palette = {
   juiBackground: {
     default: '#182036',
     paper: '#182036',
+    input: 'rgba(0, 0, 0, 0.3)',
   },
   juiText: {
     primary: '#fff',
