@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { type VariantProps } from 'tailwind-variants';
 import { cn } from '../../lib/utils';
-import buttonVariants from '@common/ui/components/Button/buttonVariants';
+import buttonVariants from './buttonVariants';
 
 function Button({
   asChild = false,
