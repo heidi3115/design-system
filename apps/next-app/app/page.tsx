@@ -5,25 +5,16 @@ import { useState } from 'react';
 import {
   Badge,
   Button,
+  buttonVariants,
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-  Alert,
-  AlertTitle,
-  AlertDescription,
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@common/ui';
+
+import { useUpdateEffect } from '@common/utils';
 import {
   AlertCircleIcon,
   ArrowLeftIcon,
@@ -32,23 +23,20 @@ import {
   CalendarIcon,
   ChevronUpIcon,
   ClockIcon,
-  EditIcon,
+  CornerDownLeftIcon,
+  CornerDownRightIcon,
   ExternalLinkIcon,
   EyeIcon,
-  EyeOffIcon,
   FilePlusIcon,
   FileTextIcon,
   GlobeIcon,
   HomeIcon,
-  // InBoxIcon,
   InfoIcon,
   LayersIcon,
-  LayoutIcon,
   ListIcon,
   LockIcon,
   LogInIcon,
   MailIcon,
-  Maximize2Icon,
   MaximizeIcon,
   Minimize2Icon,
   MinusCircleIcon,
@@ -57,6 +45,7 @@ import {
   PlayIcon,
   PlusCircleIcon,
   PlusIcon,
+  PlusSquareIcon,
   PrinterIcon,
   QuestionCircleIcon,
   RepeatIcon,
@@ -64,26 +53,17 @@ import {
   SaveIcon,
   ServerIcon,
   SettingsIcon,
-  SideBarIcon,
-  SlashIcon,
   SquareIcon,
   StarIcon,
   TagIcon,
   Trash2Icon,
-  TrashIcon,
   UserIcon,
   UserMinusIcon,
   UserPlusIcon,
   XCircleIcon,
   XIcon,
   ZoomInIcon,
-  ZoomOutIcon,
 } from '@common/ui/icons';
-
-import { useUpdateEffect } from '@common/utils';
-// import LogInIcon from '@common/ui/icons/Icon/LogInIcon';
-// import CournerDownRightIcon from '@common/ui/icons/Icon/CournerDownRightIcon';
-// import MailIcon from '@common/ui/icons/Icon/MailIcon';
 
 export default function Page() {
   const [count, setCount] = useState(0);
@@ -93,51 +73,88 @@ export default function Page() {
   }, [count]);
 
   return (
-    <div className="flex items-center justify-center min-h-svh">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl text-juiGrey-400 font-bold underline">Hello World</h1>
-        <Button variant="jui" onClick={() => setCount((prev) => (prev += 1))}>
-          jui Button
-        </Button>
-        <Button variant="juiGradient" onClick={() => setCount((prev) => (prev += 1))}>
-          jui Button Gradient
-        </Button>
-        <Badge className="text-juiStatus-urgency">
-          <FilePlusIcon />
-          <FileTextIcon />
-          {/*{count} <AddIcon className="stroke-juiSecondary" />*/}
-          {/*{count} <AddIcon className="fill-juiSecondary" />*/}
-          {/*{count} <AddIcon className="fill-current" />*/}
-        </Badge>
-
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="jui">Alert 열기</Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>제목</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your account and remove your data from our
-                servers.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>취소</AlertDialogCancel>
-              <AlertDialogAction>확인</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-
-        <div className="flex justify-between items-center gap-5 bg-white p-5 w-150">
-          <Alert>
-            <AlertTitle>타이틀</AlertTitle>
-            <AlertDescription>내용</AlertDescription>
-          </Alert>
-          <Alert variant="destructive">
-            <AlertTitle>타이틀</AlertTitle>
-            <AlertDescription>내용</AlertDescription>
-          </Alert>
+    <section className="flex items-center justify-center w-full min-h-svh">
+      <div className="flex flex-col gap-4 items-center justify-center">
+        <h1 className="text-juiGrey-400 text-5xl font-bold hover:text-white">JUI Design Gallery</h1>
+        <div className={'flex flex-col gap-4 items-center justify-center'}>
+          <h2 className={'text-juiText-blue text-3xl font-bold'}>Buttons</h2>
+          <div className={'flex flex-col gap-4'}>
+            <h3 className={'text-juiText-blue text-lg font-bold'}>Colors(variant)</h3>
+            <div className={'flex gap-4 flex-row items-center justify-center'}>
+              {(
+                Object.keys(buttonVariants.variants.variant) as Array<keyof typeof buttonVariants.variants.variant>
+              ).map((variant) => (
+                <Button key={variant} variant={variant} size={'basic'} onClick={() => setCount((prev) => (prev += 1))}>
+                  {variant}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <div className={'flex flex-col gap-4'}>
+            <h3 className={'text-juiText-blue text-lg font-bold'}>Size</h3>
+            <div className={'flex flex-row gap-4 items-center justify-center'}>
+              {(
+                Object.keys(buttonVariants.variants.variant) as Array<keyof typeof buttonVariants.variants.variant>
+              ).map((variant) => {
+                return (
+                  <div key={variant} className={'flex flex-col gap-4'}>
+                    {(
+                      Object.keys(buttonVariants.variants.size) as Array<keyof typeof buttonVariants.variants.size>
+                    ).map((size) => (
+                      <Button
+                        key={`${variant}-${size}`}
+                        variant={variant}
+                        size={size}
+                        onClick={() => setCount((prev) => (prev += 1))}>
+                        {size !== 'small' ? (
+                          <>
+                            {variant === 'transparentGrey' && size}
+                            <ZoomInIcon
+                              size={'small'}
+                              color={variant === 'transparentGrey' ? 'custom' : undefined}
+                              className={variant === 'transparentGrey' ? 'fill-current' : ''}
+                            />
+                            {variant !== 'transparentGrey' && size}
+                          </>
+                        ) : (
+                          size
+                        )}
+                      </Button>
+                    ))}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className={'flex flex-col gap-4'}>
+            <h3 className={'text-juiText-blue text-lg font-bold'}>Status</h3>
+            <div className={'flex flex-row gap-5 items-center justify-center'}>
+              <div className={''}>
+                <h4 className={'my-3 text-base'}>Login</h4>
+                <Button variant={'gradient'} size={'large'} className={'w-[400px] h-[60px]'}>
+                  <LogInIcon />
+                  <span className={'font-bold text-2xl'}>Login</span>
+                </Button>
+              </div>
+              <div className={''}>
+                <h4 className={'my-3 text-base'}>Search</h4>
+                <Button variant={'gradient'} size={'large'} className={'w-[160px] h-[40px]'}>
+                  <PlusIcon />
+                  <span className={'font-bold text-base'}>Search</span>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={'flex flex-col gap-4 items-center justify-center'}>
+          <h2 className={''}>Badges</h2>
+          <div className={'flex gap-4 items-center justify-center'}>
+            <Badge className="text-juiStatus-urgency">
+              {count} <CornerDownRightIcon className="stroke-juiSecondary" />
+              {count} <CornerDownRightIcon className="fill-juiSecondary" />
+              {count} <CornerDownRightIcon className="fill-current" />
+            </Badge>
+          </div>
         </div>
         <div className="flex justify-between items-center gap-5">
           <Card>
@@ -163,41 +180,41 @@ export default function Page() {
             </CardHeader>
             <CardContent>
               <p>Card Content</p>
+              <p>Card Content</p>
+              <p>Card Content</p>
+              <p>Card Content</p>
+              <p>Card Content</p>
             </CardContent>
             <CardFooter>
               <p>Card Footer</p>
             </CardFooter>
           </Card>
-          <LogInIcon />
-          <ArrowLeftIcon />
-          <CalendarIcon />
-          <ClockIcon />
-          <EyeIcon />
-          <FilePlusIcon />
-          <FileTextIcon />
-          <ListIcon />
-          <LayoutIcon />
-          <LockIcon />
-          <EditIcon />
-          <GlobeIcon />
-          <ZoomInIcon />
-          <XIcon />
-          <TagIcon />
-          <UserIcon />
-          <HomeIcon />
-          <InfoIcon />
-          <ChevronUpIcon />
-          <ExternalLinkIcon />
-          <ZoomInIcon />
-          <ZoomOutIcon />
-          <UserMinusIcon />
+        </div>
+        <div className={'grid grid-cols-10 gap-4'}>
+          <CalendarIcon color="var(--juiPrimary)" />
+          <ClockIcon variant="secondary" />
+          <ArrowLeftIcon fill="var(--juiError)" />
+          <GlobeIcon variant="default" />
+          <LockIcon variant="disabled" />
+          <ZoomInIcon color="var(--juiStatus-progress)" />
+          <XIcon color="var(--juiStatus-complete)" />
+          <TagIcon fill="var(--juiStatus-failed)" />
+          <UserIcon color="var(--juiStatus-info)" />
+          <HomeIcon fill="var(--juiStatus-alert)" />
+          <EyeIcon size="small" />
+          <FilePlusIcon size="basic" />
+          <FileTextIcon size="medium" />
+          <ListIcon size="large" />
+          <InfoIcon size="small" />
+          <ChevronUpIcon size="basic" />
+          <ExternalLinkIcon size="medium" />
+          <UserMinusIcon size="large" />
           <UserPlusIcon />
           <StarIcon />
           <RotateIcon />
           <QuestionCircleIcon />
           <RepeatIcon />
           <SaveIcon />
-          <SlashIcon />
           <SquareIcon />
           <PrinterIcon />
           <ServerIcon />
@@ -206,23 +223,21 @@ export default function Page() {
           <XCircleIcon />
           <AlertCircleIcon />
           <BookmarkIcon />
-          <EyeOffIcon />
           <BarChartIcon />
           <LayersIcon />
+          <CornerDownLeftIcon />
           <MoreHorizontalIcon />
           <MailIcon />
-          <Maximize2Icon />
           <MaximizeIcon />
           <MinusCircleIcon />
           <Minimize2Icon />
           <PlayIcon />
           <PaperClipIcon />
           <PlusCircleIcon />
+          <PlusSquareIcon />
           <PlusIcon />
-          <SideBarIcon />
-          <TrashIcon />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
