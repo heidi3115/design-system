@@ -1,56 +1,71 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from '@common/ui/components';
+import { AlertDialog } from '@common/ui/components';
+import { AlertCircleIcon, CheckSquareIcon } from '@common/ui/icons';
+import { useState } from 'react';
 import { Button } from '@common/ui';
 
 type AlertDialogStoryArgs = {
-  title: string;
+  titleIcon: keyof typeof ICON_MAP;
   description: string;
+  footerType: string;
+};
+
+const ICON_MAP = {
+  warning: <AlertCircleIcon />,
+  success: <CheckSquareIcon />,
+};
+
+const BUTTON_TYPE = {
+  update: 'update',
+  confirm: 'confirm',
 };
 
 const meta: Meta<AlertDialogStoryArgs> = {
   title: 'ui/AlertDialog',
   component: AlertDialog,
   argTypes: {
-    title: { control: 'text' },
-    description: { control: 'text' },
+    titleIcon: {
+      control: { type: 'radio' },
+      options: Object.keys(ICON_MAP),
+      description: '타이틀 아이콘 선택',
+    },
+    footerType: {
+      control: { type: 'radio' },
+      options: Object.keys(BUTTON_TYPE),
+      description: '버튼 타입 선택',
+    },
+    description: {
+      control: { type: 'text' },
+      description: '내용 입력',
+    },
   },
   args: {
-    title: '사용자 설정',
+    titleIcon: 'warning',
     description: '저장하시겠습니까?',
+    footerType: 'confirm',
   },
 };
 
 export default meta;
 type Story = StoryObj<AlertDialogStoryArgs>;
 
-const Template = (args: AlertDialogStoryArgs) => (
-  <AlertDialog>
-    <AlertDialogTrigger asChild>
-      <Button variant="jui">Alert 열기</Button>
-    </AlertDialogTrigger>
-    <AlertDialogContent>
-      <AlertDialogHeader>
-        <AlertDialogTitle>{args.title}</AlertDialogTitle>
-        <AlertDialogDescription>{args.description}</AlertDialogDescription>
-      </AlertDialogHeader>
-      <AlertDialogFooter>
-        <AlertDialogCancel>취소</AlertDialogCancel>
-        <AlertDialogAction>확인</AlertDialogAction>
-      </AlertDialogFooter>
-    </AlertDialogContent>
-  </AlertDialog>
-);
+const Template = (args: AlertDialogStoryArgs) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setIsOpen(true)}>Alert 활성화</Button>
+      <AlertDialog
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        description={args.description}
+        titleIcon={args.titleIcon}
+        footerType={args.footerType}
+      />
+    </>
+  );
+};
 
 export const Default: Story = {
   render: Template,
