@@ -19,6 +19,7 @@ const buttonVariants = tv({
       error: 'bg-juiError',
       default: 'bg-juiGrey-a700',
       gradient: [
+        // token화 되지 않은 값에 대해 custom
         'bg-transparent bg-[image:linear-gradient(to_right,#4b63eb,#5d2ce9,#7782ff,#5d2ce9,#4b63eb)] bg-position-[0_0] bg-size-[300%_100%]',
         'border-transparent',
         'shadow-md',
