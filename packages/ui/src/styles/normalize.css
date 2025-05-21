@@ -39,10 +39,11 @@ main {
  * `article` contexts in Chrome, Firefox, and Safari.
  */
 
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
-}
+/* 우선순위로 주석처리 */
+/*h1 {*/
+/*    font-size: 2em;*/
+/*    margin: 0.67em 0;*/
+/*}*/
 
 /* Grouping content
    ========================================================================== */
@@ -83,6 +84,7 @@ pre {
 a:not([data-slot='button']) {
   background-color: transparent;
 }
+
 /**
  * 1. Remove the bottom border in Chrome 57-
  * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
@@ -168,20 +170,21 @@ img {
  * 2. Remove the margin in Firefox and Safari.
  */
 
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: inherit;
-  /* 1 */
-  font-size: 100%;
-  /* 1 */
-  line-height: 1.15;
-  /* 1 */
-  margin: 0;
-  /* 2 */
-}
+/* 우선순위로 주석처리 */
+/*button,*/
+/*input,*/
+/* optgroup,*/
+/*select,*/
+/*textarea {*/
+/*  font-family: inherit;*/
+/*  !* 1 *!*/
+/*  font-size: 100%;*/
+/*  !* 1 *!*/
+/*  line-height: 1.15;*/
+/*  !* 1 *!*/
+/*  margin: 0;*/
+/*  !* 2 *!*/
+/*}*/
 
 /**
  * Show the overflow in IE.
@@ -214,7 +217,8 @@ button,
 [type='reset'],
 [type='submit'] {
   -webkit-appearance: button;
-  cursor: pointer;
+  /* 우선순위로 주석 처리 */
+  /*cursor: pointer;*/
 }
 
 /**
