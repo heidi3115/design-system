@@ -53,7 +53,7 @@ import {
   ZoomInIcon,
 } from '@common/ui/icons';
 import Link from 'next/link';
-// import ThemeToggle from '../components/ThemeToggle';
+import ThemeToggle from '../components/ThemeToggle';
 
 export default function Page() {
   const [count, setCount] = useState('1');
@@ -64,7 +64,7 @@ export default function Page() {
 
   return (
     <section className="flex items-center justify-center w-full min-h-svh">
-      {/*<ThemeToggle />*/}
+      <ThemeToggle />
       <div className="flex flex-col gap-4 items-center justify-center">
         <h1 className="text-juiGrey-400 text-5xl font-bold hover:text-white">JUI Design Gallery</h1>
         <div className={'flex flex-col gap-4 items-center justify-center'}>
