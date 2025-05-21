@@ -42,7 +42,7 @@ const inputVariants = tv({
       hasIconLeft: false,
       hasIconRight: false,
       error: true,
-      className: 'pl-4 pr-10',
+      className: 'pl-4 pr-9',
     },
 
     // 왼쪽 아이콘만
@@ -56,7 +56,7 @@ const inputVariants = tv({
       hasIconLeft: true,
       hasIconRight: false,
       error: true,
-      className: 'pl-10 pr-10',
+      className: 'pl-10 pr-9',
     },
 
     // 오른쪽 아이콘만
