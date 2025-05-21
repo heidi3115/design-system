@@ -60,3 +60,15 @@ export const Sizes: Story = {
     </div>
   ),
 };
+
+export const Contents: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap gap-2">
+      {(Object.keys(toggleVariants.variants.size) as (keyof typeof toggleVariants.variants.size)[]).map((size) => (
+        <Toggle key={size} {...args} size={size}>
+          {size}
+        </Toggle>
+      ))}
+    </div>
+  ),
+};
