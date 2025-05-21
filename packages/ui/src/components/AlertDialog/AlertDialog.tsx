@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import { cn } from '../../lib/utils';
 import { Button } from '@common/ui/components';
-import { AlertCircleIcon, CheckSquareIcon } from '@common/ui/icons';
+import { AlertCircleIcon, CheckCircleIcon } from '@common/ui/icons';
 import { alertDialogVariants } from './alertDialogVariants';
 import { AlertDialogTitle } from '@radix-ui/react-alert-dialog';
 
@@ -24,7 +24,7 @@ export function AlertDialog({
 }: UnifiedAlertDialogProps) {
   const iconMap = {
     warning: <AlertCircleIcon />,
-    success: <CheckSquareIcon />,
+    success: <CheckCircleIcon />,
   };
 
   return (

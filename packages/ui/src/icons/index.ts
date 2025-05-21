@@ -10,6 +10,7 @@ export { BookmarkIcon } from './Icon/BookmarkIcon';
 export { CalendarIcon } from './Icon/CalendarIcon';
 export { CheckIcon } from './Icon/CheckIcon';
 export { CheckSquareIcon } from './Icon/CheckSquareIcon';
+export { CheckCircleIcon } from './Icon/CheckCircleIcon';
 export { ChevronDownIcon } from './Icon/ChevronDownIcon';
 export { ChevronLeftIcon } from './Icon/ChevronLeftIcon';
 export { ChevronRightIcon } from './Icon/ChevronRightIcon';

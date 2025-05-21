@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { AlertDialog } from '@common/ui/components';
-import { AlertCircleIcon, CheckSquareIcon } from '@common/ui/icons';
+import { AlertCircleIcon, CheckCircleIcon } from '@common/ui/icons';
 import { useState } from 'react';
 import { Button } from '@common/ui';
 import { Alert, AlertDescription, AlertTitle } from '@common/ui/components/Alert';
@@ -14,7 +14,7 @@ type AlertDialogStoryArgs = {
 
 const ICON_MAP = {
   warning: <AlertCircleIcon />,
-  success: <CheckSquareIcon />,
+  success: <CheckCircleIcon />,
 };
 
 const BUTTON_TYPE = {
@@ -46,6 +46,13 @@ const meta: Meta<AlertDialogStoryArgs> = {
     description: '저장하시겠습니까?',
     footerType: 'confirm',
   },
+  parameters: {
+    docs: {
+      description: {
+        component: 'Alert-dialog 문서',
+      },
+    },
+  },
 };
 
 export default meta;
@@ -74,6 +81,11 @@ export const Default: Story = {
 
 export const TitleIcon: Story = {
   parameters: {
+    docs: {
+      description: {
+        story: 'Alert-dialog의 상단 아이콘 타입을 정할 수 있다. <br/> Warning과 Success 두가지 중에 선택한다.',
+      },
+    },
     controls: {
       exclude: ['titleIcon'],
     },
@@ -113,7 +125,7 @@ export const TitleIcon: Story = {
           <div>Success</div>
           <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
             <AlertTitle className="items-center">
-              <CheckSquareIcon />
+              <CheckCircleIcon />
             </AlertTitle>
             <AlertDescription className="text-white">{args.description}</AlertDescription>
             <div className="flex gap-1">
@@ -129,6 +141,12 @@ export const TitleIcon: Story = {
 
 export const FooterType: Story = {
   parameters: {
+    docs: {
+      description: {
+        story:
+          'Alert-dialog의 하단 버튼 타입을 정할 수 있다. <br/> 확인 / 취소 버튼 노출은 update, 확인 버튼 단독은 confirm으로 제어한다.',
+      },
+    },
     controls: {
       exclude: ['footerType'],
     },
@@ -155,7 +173,7 @@ export const FooterType: Story = {
           <div>Update</div>
           <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
             <AlertTitle className="items-center">
-              {args.titleIcon === 'warning' ? <AlertCircleIcon /> : <CheckSquareIcon />}
+              {args.titleIcon === 'warning' ? <AlertCircleIcon /> : <CheckCircleIcon />}
             </AlertTitle>
             <AlertDescription className="text-white">{args.description}</AlertDescription>
             <div className="flex gap-1">
@@ -168,7 +186,7 @@ export const FooterType: Story = {
           <div>Confirm</div>
           <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
             <AlertTitle className="items-center">
-              {args.titleIcon === 'warning' ? <AlertCircleIcon /> : <CheckSquareIcon />}
+              {args.titleIcon === 'warning' ? <AlertCircleIcon /> : <CheckCircleIcon />}
             </AlertTitle>
             <AlertDescription className="text-white">{args.description}</AlertDescription>
             <div className="flex gap-1">
