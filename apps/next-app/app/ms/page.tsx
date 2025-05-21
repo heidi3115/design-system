@@ -17,6 +17,7 @@ import {
 } from '@common/ui/icons';
 
 import { useForm } from 'react-hook-form';
+import ThemeToggle from '../../components/ThemeToggle';
 
 export default function Page() {
   const [value, setValue] = useState('');
@@ -35,9 +36,10 @@ export default function Page() {
 
   return (
     <form className="p-4" onSubmit={handleSubmit(onValid)}>
+      <ThemeToggle />
       <div className="flex items-center justify-center min-h-svh">
         <div className="flex flex-col items-center justify-center gap-4">
-          <h1 className="text-2xl text-juiGrey-400 font-bold underline">Hello World</h1>
+          <h1 className="text-2xl font-bold underline">Hello World</h1>
           <div className="w-2xs flex flex-col gap-2">
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}

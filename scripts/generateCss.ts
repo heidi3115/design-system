@@ -1,49 +1,81 @@
 import fs from 'fs';
 import path from 'path';
-
 import { palette } from '@common/tokens';
 
+/** 타입 정의 */
+type FlatColor = string;
+type TupleColor = [dark: string, light: string];
+type NamedColor = { main: string; light?: string };
+type ColorValue = FlatColor | TupleColor | NamedColor;
+type Palette = Record<string, ColorValue | Record<string | number, ColorValue>>;
+
 /** CSS 변수 생성 */
-function generateCssVariables(palette: Record<string, string | Record<string | number, string>>): string {
+function generateCssVariables(palette: Palette): string {
   let rootVars = '';
   let themeVars = '';
   let themeInlineVars = '';
+  let lightThemeVars = '';
 
   for (const [color, valueOrShades] of Object.entries(palette)) {
     if (typeof valueOrShades === 'string') {
-      // 1-depth 처리
       const varName = `--${color}`;
       const themeVarName = `--color-${color}`;
 
       rootVars += `  ${varName}: ${valueOrShades};\n`;
       themeVars += `  ${varName}: ${valueOrShades};\n`;
       themeInlineVars += `  ${themeVarName}: var(${varName});\n`;
-    } else if (typeof valueOrShades === 'object') {
-      // 2-depth 처리
-      for (const [shade, value] of Object.entries(valueOrShades)) {
-        const varName = `--${color}-${shade}`;
-        const themeVarName = `--color-${color}-${shade}`;
+    } else if (Array.isArray(valueOrShades)) {
+      const [dark, light] = valueOrShades;
+      const varName = `--${color}`;
+      const themeVarName = `--color-${color}`;
 
-        rootVars += `  ${varName}: ${value};\n`;
-        themeVars += `  ${varName}: ${value};\n`;
-        themeInlineVars += `  ${themeVarName}: var(${varName});\n`;
+      rootVars += `  ${varName}: ${dark};\n`;
+      themeVars += `  ${varName}: ${dark};\n`;
+      themeInlineVars += `  ${themeVarName}: var(${varName});\n`;
+      lightThemeVars += `  ${varName}: ${light};\n`;
+    } else if (typeof valueOrShades === 'object' && valueOrShades !== null) {
+      for (const [shade, shadeValue] of Object.entries(valueOrShades)) {
+        const isMain = shade === 'main';
+        const suffix = isMain ? '' : `-${shade}`;
+        const varName = `--${color}${suffix}`;
+        const themeVarName = `--color-${color}${suffix}`;
+
+        if (typeof shadeValue === 'string') {
+          rootVars += `  ${varName}: ${shadeValue};\n`;
+          themeVars += `  ${varName}: ${shadeValue};\n`;
+          themeInlineVars += `  ${themeVarName}: var(${varName});\n`;
+        } else if (Array.isArray(shadeValue)) {
+          const [dark, light] = shadeValue;
+          rootVars += `  ${varName}: ${dark};\n`;
+          themeVars += `  ${varName}: ${dark};\n`;
+          themeInlineVars += `  ${themeVarName}: var(${varName});\n`;
+          lightThemeVars += `  ${varName}: ${light};\n`;
+        } else if (typeof shadeValue === 'object' && shadeValue !== null && 'main' in shadeValue) {
+          const { main, light } = shadeValue;
+          rootVars += `  ${varName}: ${main};\n`;
+          themeVars += `  ${varName}: ${main};\n`;
+          themeInlineVars += `  ${themeVarName}: var(${varName});\n`;
+          if (light) {
+            lightThemeVars += `  ${varName}: ${light};\n`;
+          }
+        }
       }
     }
   }
 
   const rootSection = `:root {\n${rootVars}}\n\n`;
   const themeSection = `@theme {\n${themeVars}}\n\n`;
-  const themeInlineSection = `@theme inline {\n${themeInlineVars}}\n`;
+  const themeInlineSection = `@theme inline {\n${themeInlineVars}}\n\n`;
+  const lightSection = lightThemeVars ? `.light {\n${lightThemeVars}}\n\n` : '';
 
-  return rootSection + themeSection + themeInlineSection;
+  return rootSection + themeSection + themeInlineSection + lightSection;
 }
 
 /** 경로 및 파일 쓰기 */
 const css = generateCssVariables(palette);
-console.log(__dirname);
 const outputPath = path.resolve(__dirname, '../packages/ui/src/styles/custom.css');
 
-fs.mkdirSync(path.dirname(outputPath), { recursive: true }); // 경로 없으면 생성
-fs.writeFileSync(outputPath, css); // 기존 파일 덮어쓰기
+fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+fs.writeFileSync(outputPath, css);
 
 console.log(`✅ custom.css regenerated at ${outputPath}`);
