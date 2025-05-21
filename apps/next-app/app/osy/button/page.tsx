@@ -4,6 +4,7 @@ import { Button, buttonVariants } from '@common/ui';
 import { CornerDownLeftIcon, LogInIcon, PlusIcon, ZoomInIcon } from '@common/ui/icons';
 import { useState } from 'react';
 import Link from 'next/link';
+// import ThemeToggle from '../../../components/ThemeToggle';
 
 export default function ButtonPage() {
   const [count, setCount] = useState(0);
@@ -16,6 +17,7 @@ export default function ButtonPage() {
             <CornerDownLeftIcon size={'small'} /> to main
           </Link>
         </Button>
+        {/*<ThemeToggle />*/}
       </div>
       <div className={'flex flex-col gap-4 items-center justify-center'}>
         <h2 className={'text-juiText-blue text-3xl font-bold'}>Buttons</h2>
