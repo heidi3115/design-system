@@ -3,23 +3,21 @@ import { tv } from 'tailwind-variants';
 const badgeVariants = tv({
   base: [
     'inline-flex gap-1.5 items-center justify-center px-3 py-1.5 w-fit',
-    'text-juiText-primary text-xs font-bold whitespace-nowrap',
+    'text-white text-xs font-bold whitespace-nowrap', // juiText-primary
     'rounded-full bg-transparent',
   ],
   variants: {
     variant: {
-      status: '',
+      state: '',
       scoring: '',
       text: 'radius-none',
-      icon: '',
-      grade: '',
+      grade: 'radius-none',
       count: '',
     },
     status: {
       default: 'bg-juiGrey-a700',
       primary: 'bg-juiPrimary',
       secondary: 'bg-juiScore-extra',
-      error: 'bg-juiError',
       progress: 'bg-juiStatus-progress',
       complete: 'bg-juiStatus-complete',
       failed: 'bg-juiStatus-failed',
@@ -39,10 +37,9 @@ const badgeVariants = tv({
       practice: 'bg-juiScore-practice',
       alert: 'bg-juiScore-alert',
     },
-    // scoreVal: { true: 'gap-3', false: '' },
   },
   defaultVariants: {
-    variant: 'status',
+    variant: 'state',
   },
 });
 

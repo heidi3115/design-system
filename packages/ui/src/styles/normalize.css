@@ -381,3 +381,15 @@ template {
 [hidden] {
   display: none;
 }
+
+/* Chrome, Safari, Edge 등의 웹킷 브라우저에서 숫자 input의 기본 증감 버튼 제거 */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* 기본 화살표 UI 제거 */
+  margin: 0; /* 불필요한 여백 제거 */
+}
+
+/* Firefox에서 숫자 input의 기본 증감 버튼 제거 */
+input[type='number'] {
+  -moz-appearance: textfield; /* 숫자 입력창을 일반 텍스트 필드처럼 보이게 함 */
+}

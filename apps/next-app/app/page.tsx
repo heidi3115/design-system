@@ -56,7 +56,7 @@ import Link from 'next/link';
 // import ThemeToggle from '../components/ThemeToggle';
 
 export default function Page() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState('1');
 
   useUpdateEffect(() => {
     alert(count);
