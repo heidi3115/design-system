@@ -1,3 +1,5 @@
+// 프로젝트에서 사용하지 않으나 Alert-dialog storybook 예시로 사용하기 위해 추가함.
+
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
