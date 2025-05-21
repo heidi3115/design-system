@@ -18,7 +18,7 @@ export const alertDialogVariants = tv({
       'gap-[10px] border border-juiPrimary pt-[20px] pb-[20px] shadow-lg duration-200 sm:max-w-lg',
     ],
     header: 'flex flex-col gap-2 text-center items-center',
-    footer: 'flex flex gap-2 items-center justify-center',
+    footer: 'flex gap-2 items-center justify-center',
     title: 'text-lg font-semibold text-center',
     description: 'text-muted-foreground text-sm text-weight-500',
   },

@@ -17,7 +17,7 @@ interface UnifiedAlertDialogProps extends React.ComponentProps<typeof AlertDialo
 }
 
 export function AlertDialog({
-  titleIcon = 'warning',
+  titleIcon,
   footerType = 'update',
   description: dialogDescription = '',
   ...props
@@ -34,7 +34,7 @@ export function AlertDialog({
         <AlertDialogPrimitive.Content className={content()}>
           <div className={header()}>
             <AlertDialogTitle className={cn('flex items-center', title())}>
-              {titleIcon && iconMap[titleIcon]}
+              {titleIcon ? iconMap[titleIcon] : null}
             </AlertDialogTitle>
             <div className={description()}>{dialogDescription}</div>
           </div>

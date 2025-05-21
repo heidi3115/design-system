@@ -28,7 +28,7 @@ const meta: Meta<AlertDialogStoryArgs> = {
   argTypes: {
     titleIcon: {
       control: { type: 'radio' },
-      options: Object.keys(ICON_MAP),
+      options: [...Object.keys(ICON_MAP), '미설정'],
       description: '타이틀 아이콘 선택',
     },
     footerType: {
@@ -83,7 +83,7 @@ export const TitleIcon: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Alert-dialog의 상단 아이콘 타입을 정할 수 있다. <br/> Warning과 Success 두가지 중에 선택한다.',
+        story: 'Alert-dialog의 상단 아이콘 타입을 정할 수 있다. <br/> Warning과 Success, 미설정 세 가지 중에 선택한다.',
       },
     },
     controls: {
@@ -134,6 +134,17 @@ export const TitleIcon: Story = {
             </div>
           </Alert>
         </div>
+        <div className="flex flex-col gap-2">
+          <div>미설정</div>
+          <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
+            <AlertTitle className="items-center"></AlertTitle>
+            <AlertDescription className="text-white">{args.description}</AlertDescription>
+            <div className="flex gap-1">
+              <Button variant="primary">확인</Button>
+              {args.footerType !== 'confirm' && <Button>취소</Button>}
+            </div>
+          </Alert>
+        </div>
       </div>
     );
   },
@@ -154,7 +165,7 @@ export const FooterType: Story = {
   argTypes: {
     titleIcon: {
       control: { type: 'radio' },
-      options: Object.keys(ICON_MAP),
+      options: [...Object.keys(ICON_MAP), '미설정'],
       description: '타이틀 아이콘 선택',
     },
     description: {
@@ -173,7 +184,8 @@ export const FooterType: Story = {
           <div>Update</div>
           <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
             <AlertTitle className="items-center">
-              {args.titleIcon === 'warning' ? <AlertCircleIcon /> : <CheckCircleIcon />}
+              {args.titleIcon === 'warning' && <AlertCircleIcon />}
+              {args.titleIcon === 'success' && <CheckCircleIcon />}
             </AlertTitle>
             <AlertDescription className="text-white">{args.description}</AlertDescription>
             <div className="flex gap-1">
@@ -186,7 +198,8 @@ export const FooterType: Story = {
           <div>Confirm</div>
           <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
             <AlertTitle className="items-center">
-              {args.titleIcon === 'warning' ? <AlertCircleIcon /> : <CheckCircleIcon />}
+              {args.titleIcon === 'warning' && <AlertCircleIcon />}
+              {args.titleIcon === 'success' && <CheckCircleIcon />}
             </AlertTitle>
             <AlertDescription className="text-white">{args.description}</AlertDescription>
             <div className="flex gap-1">
