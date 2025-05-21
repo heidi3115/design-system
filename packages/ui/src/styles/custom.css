@@ -26,10 +26,12 @@
   --juiGrey-a700: #3b4154;
   --juiBackground-default: #182036;
   --juiBackground-paper: #182036;
+  --juiBackground-input: rgba(0, 0, 0, 0.3);
   --juiText-primary: #fff;
   --juiText-secondary: rgba(255, 255, 255, 0.4);
   --juiText-disabled: #505050;
   --juiText-blue: #7a97ff;
+  --juiBorder-primary: #e0e0e0;
 }
 
 @theme {
@@ -60,10 +62,12 @@
   --juiGrey-a700: #3b4154;
   --juiBackground-default: #182036;
   --juiBackground-paper: #182036;
+  --juiBackground-input: rgba(0, 0, 0, 0.3);
   --juiText-primary: #fff;
   --juiText-secondary: rgba(255, 255, 255, 0.4);
   --juiText-disabled: #505050;
   --juiText-blue: #7a97ff;
+  --juiBorder-primary: #e0e0e0;
 }
 
 @theme inline {
@@ -94,8 +98,18 @@
   --color-juiGrey-a700: var(--juiGrey-a700);
   --color-juiBackground-default: var(--juiBackground-default);
   --color-juiBackground-paper: var(--juiBackground-paper);
+  --color-juiBackground-input: var(--juiBackground-input);
   --color-juiText-primary: var(--juiText-primary);
   --color-juiText-secondary: var(--juiText-secondary);
   --color-juiText-disabled: var(--juiText-disabled);
   --color-juiText-blue: var(--juiText-blue);
+  --color-juiBorder-primary: var(--juiBorder-primary);
+}
+
+.light {
+  --juiBackground-default: #fff;
+  --juiBackground-paper: #f5f5f5;
+  --juiBackground-input: rgba(0, 0, 0, 0.1);
+  --juiText-primary: #333333;
+  --juiText-secondary: rgba(0, 0, 0, 0.4);
 }

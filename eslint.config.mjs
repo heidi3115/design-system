@@ -9,7 +9,7 @@ export default [
   prettierConfig, // Prettier와 충돌 방지
   {
     files: ['**/*.ts', '**/*.tsx'],
-    ignores: ['**/node_modules/**', '**/dist/**', '**/build/**'],
+    ignores: ['**/node_modules/**', '**/dist/**', '**/build/**', 'storybook/.storybook/**/*'],
     languageOptions: {
       parser: tsEslint.parser,
       parserOptions: {
