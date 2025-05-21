@@ -44,7 +44,7 @@ function Input({
 
   return (
     <div>
-      <div className={cn('relative group', className)}>
+      <div className={cn('relative group min-h-7', className)}>
         {hasIconLeft && (
           <span
             className={cn(

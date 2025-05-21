@@ -2,7 +2,7 @@ import { tv } from 'tailwind-variants';
 
 const inputVariants = tv({
   base: [
-    'w-full px-4',
+    'w-full px-4 min-h-7',
     'text-xs shadow-xs border-none bg-juiBackground-input',
     'placeholder:text-juiText-secondary ',
     'outline outline-transparent focus:outline',
