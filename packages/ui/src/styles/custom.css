@@ -111,4 +111,5 @@
   --juiBackground-paper: #f5f5f5;
   --juiBackground-input: rgba(0, 0, 0, 0.1);
   --juiText-primary: #333333;
+  --juiText-secondary: rgba(0, 0, 0, 0.4);
 }

@@ -12,6 +12,7 @@ import {
   FilePlusIcon,
   FileTextIcon,
   LockIcon,
+  StarIcon,
   TagIcon,
   UserIcon,
 } from '@common/ui/icons';
@@ -47,6 +48,7 @@ export default function Page() {
               error={!!errors.email}
               helperText={errors.email?.message as string}
             />
+            <Input type="number" placeholder="숫자입력" size="large" iconLeft={<StarIcon />} />
             <Input type="text" placeholder="aaaa" size="large" iconLeft={<span>응</span>} />
             <Input type="text" placeholder="aaaa" size="large" iconLeft={<LockIcon />} />
             <Input type="text" placeholder="aaaa" size="large" iconRight={<CalendarIcon />} />

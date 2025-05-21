@@ -6,6 +6,7 @@ import { AlertCircle2Icon } from '@common/ui/icons';
 import inputVariants from './inputVariants';
 import { useInputValue } from './hooks/useInputValue';
 import { cn } from '../../lib/utils';
+import NumberStepper from '@common/ui/components/Input/NumberStepper';
 
 type InputProps = Omit<React.ComponentProps<'input'>, 'size'> &
   VariantProps<typeof inputVariants> & {
@@ -43,7 +44,7 @@ function Input({
 
   return (
     <div>
-      <div className="relative">
+      <div className={cn('relative group', className)}>
         {hasIconLeft && (
           <span
             className={cn(
@@ -70,8 +71,7 @@ function Input({
               className,
             }),
           )}
-          {...props}
-        />
+          {...props}></input>
 
         {error && (
           <span
@@ -93,10 +93,14 @@ function Input({
             {renderIcon(iconRight)}
           </span>
         )}
+
+        {type === 'number' && !hasIconRight && !error && (
+          <NumberStepper inputValue={inputValue} handleChange={handleChange} />
+        )}
       </div>
 
-      {error && helperText && (
-        <p className={cn('text-xs text-juiError mx-1 mt-0.5', disabled && 'opacity-50 cursor-not-allowed')}>
+      {helperText && (
+        <p className={cn('text-xs mx-1 mt-1', error && 'text-juiError', disabled && 'opacity-50 cursor-not-allowed')}>
           {helperText}
         </p>
       )}

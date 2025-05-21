@@ -35,7 +35,7 @@ const palette = {
   },
   juiText: {
     primary: { main: '#fff', light: '#333333' },
-    secondary: { main: 'rgba(255, 255, 255, 0.4)' },
+    secondary: { main: 'rgba(255, 255, 255, 0.4)', light: 'rgba(0, 0, 0, 0.4)' },
     disabled: { main: '#505050' },
     blue: { main: '#7A97FF' },
   },
