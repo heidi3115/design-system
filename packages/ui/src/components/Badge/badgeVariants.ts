@@ -1,18 +1,48 @@
 import { tv } from 'tailwind-variants';
 
 const badgeVariants = tv({
-  base: 'inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden',
+  base: [
+    'inline-flex gap-1.5 items-center justify-center px-3 py-1.5 w-fit',
+    'text-juiText-primary text-xs font-bold whitespace-nowrap',
+    'rounded-full bg-transparent',
+  ],
   variants: {
     variant: {
-      default: 'border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90',
-      secondary: 'border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90',
-      destructive:
-        'border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
-      outline: 'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
+      status: '',
+      scoring: '',
+      text: 'radius-none',
+      icon: '',
+      grade: '',
+      count: '',
     },
+    status: {
+      default: 'bg-juiGrey-a700',
+      primary: 'bg-juiPrimary',
+      secondary: 'bg-juiScore-extra',
+      error: 'bg-juiError',
+      progress: 'bg-juiStatus-progress',
+      complete: 'bg-juiStatus-complete',
+      failed: 'bg-juiStatus-failed',
+      info: 'bg-juiStatus-info',
+      boundary: 'bg-juiStatus-boundary',
+      alert: 'bg-juiStatus-alert',
+      critical: 'bg-juiStatus-critical',
+      urgency: 'bg-juiStatus-urgency',
+    },
+    score: {
+      veryLow: 'bg-juiScore-veryLow',
+      low: 'bg-juiScore-low',
+      normal: 'bg-juiScore-normal',
+      high: 'bg-juiScore-high',
+      veryHigh: 'bg-juiScore-veryHigh',
+      extra: 'bg-juiScore-extra',
+      practice: 'bg-juiScore-practice',
+      alert: 'bg-juiScore-alert',
+    },
+    // scoreVal: { true: 'gap-3', false: '' },
   },
   defaultVariants: {
-    variant: 'default',
+    variant: 'status',
   },
 });
 
