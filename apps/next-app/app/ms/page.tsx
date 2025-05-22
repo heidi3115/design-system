@@ -20,6 +20,7 @@ import {
 import { useForm } from 'react-hook-form';
 import ThemeToggle from '../../components/ThemeToggle';
 import { useUpdateEffect } from '@common/utils';
+import { TvIcon } from 'lucide-react';
 
 export default function Page() {
   const [value, setValue] = useState('');
@@ -55,8 +56,15 @@ export default function Page() {
               Accept terms and conditions
             </label>
           </div>
-          <Checkbox label="이벤트 중복 방지" />
-          <Checkbox id="aa" />
+          <Checkbox label="이벤트 중복 방지" disabled />
+          <Checkbox
+            label={
+              <div className="flex flex-row gap-1">
+                <TvIcon size={15} /> 텔레비젼
+              </div>
+            }
+          />
+          <Checkbox id="aa" defaultChecked />
           <div className="w-2xs flex flex-col gap-2">
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}
