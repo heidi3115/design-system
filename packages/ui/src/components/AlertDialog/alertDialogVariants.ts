@@ -24,19 +24,19 @@ export const alertDialogVariants = tv({
   },
   variants: {
     contentSize: {
-      sm: {
+      small: {
         content: 'sm:max-w-sm p-4',
       },
-      md: {
+      medium: {
         content: 'sm:max-w-md p-6',
       },
-      lg: {
+      large: {
         content: 'sm:max-w-lg p-8',
       },
     },
   },
   defaultVariants: {
-    contentSize: 'md',
+    contentSize: 'medium',
     actionVariant: 'primary',
     title: 'warning',
   },
