@@ -3,35 +3,53 @@ import * as TogglePrimitive from '@radix-ui/react-toggle';
 import { type VariantProps } from 'class-variance-authority';
 import toggleVariants from './toggleVariants';
 import { cn } from '../../lib/utils';
+import { useState } from 'react';
+import type { ReactNode } from 'react';
 
 interface ToggleProps extends React.ComponentProps<typeof TogglePrimitive.Root>, VariantProps<typeof toggleVariants> {
-  onIcon?: React.ReactNode;
-  offIcon?: React.ReactNode;
-  onText?: React.ReactNode;
-  offText?: React.ReactNode;
+  onIcon?: ReactNode;
+  offIcon?: ReactNode;
+  onText?: ReactNode;
+  offText?: ReactNode;
+  onClassName?: string;
+  offClassName?: string;
 }
 
-function Toggle({ className, variant, size, onIcon, offIcon, onText, offText, children, ...props }: ToggleProps) {
-  const [pressed, setPressed] = React.useState(!!props.defaultPressed);
-
-  // controlled 모드 지원
+function Toggle({
+  className,
+  variant,
+  size,
+  onIcon,
+  offIcon,
+  onText,
+  offText,
+  onClassName,
+  offClassName,
+  children,
+  ...props
+}: ToggleProps) {
+  const [pressed, setPressed] = useState(!!props.defaultPressed);
   const isOn = props.pressed !== undefined ? props.pressed : pressed;
 
-  const handlePressedChange = (next: boolean) => {
-    setPressed(next);
-    props.onPressedChange?.(next);
-  };
+  const dynamicClass = isOn ? onClassName : offClassName;
 
   return (
     <TogglePrimitive.Root
-      data-slot="toggle"
-      className={cn(toggleVariants({ variant, size, className }))}
+      className={cn(
+        toggleVariants({
+          variant,
+          size,
+          state: isOn ? 'on' : 'off',
+          class: cn(className, dynamicClass),
+        }),
+      )}
       pressed={isOn}
-      onPressedChange={handlePressedChange}
+      onPressedChange={setPressed}
       {...props}>
       {isOn ? onIcon : offIcon}
-      {(onText || offText) && <span className="ml-1">{isOn ? onText : offText}</span>}
       {children}
+      {isOn && onText && <span>{onText}</span>}
+      {!isOn && offText && <span>{offText}</span>}
     </TogglePrimitive.Root>
   );
 }
