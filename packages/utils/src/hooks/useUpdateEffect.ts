@@ -1,5 +1,5 @@
 'use client';
-import { DependencyList, useEffect, useRef } from 'react';
+import { type DependencyList, useEffect, useRef } from 'react';
 
 /**
  * useUpdateEffect는 컴포넌트가 처음 마운트될 때는 실행되지 않고,
