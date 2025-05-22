@@ -3,12 +3,12 @@
 import { type ChangeEvent, type ComponentType, type ReactNode } from 'react';
 import { type VariantProps } from 'tailwind-variants';
 import { AlertCircle2Icon, type IconProps } from '@common/ui/icons';
+import { sanitizeNumber } from '@common/utils';
 
 import inputVariants from './inputVariants';
 import { useInputValue } from './hooks/useInputValue';
 import NumberStepper from './NumberStepper';
 import { cn } from '../../lib/utils';
-import { sanitizeNumber } from '../../../../utils/src/utils/sanitizeNumber';
 
 type InputProps = Omit<React.ComponentProps<'input'>, 'size'> &
   VariantProps<typeof inputVariants> & {
