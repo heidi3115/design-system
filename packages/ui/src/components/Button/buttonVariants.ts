@@ -10,7 +10,6 @@ const buttonVariants = tv({
     'hover:bg-transparent hover:border-white active:bg-transparent active:border-white focus:bg-transparent focus:border-white focus:outline-none',
     'has-[>svg]:shrink-0 has-[>svg]:gap-1.5', // 직전 자식에 svg 있을 경우 부모(button)에 적용
     '[&_svg]:pointer-events-none',
-    'dark:hover:border-white dark:active:border-white dark:focus:border-white',
   ],
   variants: {
     variant: {
@@ -24,7 +23,6 @@ const buttonVariants = tv({
         'border-transparent',
         'shadow-md',
         'hover:bg-position-[100%_0] hover:border-transparent active:bg-position-[100%_0] active:border-transparent active:scale-95 focus:bg-position-[100%_0] focus:border-transparent',
-        'dark:hover:border-transparent',
       ],
       transparent: 'bg-transparent',
       transparentGrey: 'bg-transparent hover:text-juiGrey-a700 active:text-juiGrey-a700 focus:text-juiGrey-a700',

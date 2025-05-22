@@ -9,12 +9,14 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "typecheck": "tsc --noEmit --project tsconfig.app.json"
   },
   "dependencies": {
     "@common/tokens": "workspace:^",
     "@common/ui": "workspace:^",
     "@common/utils": "workspace:^",
+    "@storybook/preview-api": "^8.6.14",
     "@tailwindcss/vite": "^4.1.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
