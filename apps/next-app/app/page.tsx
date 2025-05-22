@@ -66,7 +66,7 @@ import {
 } from '@common/ui/icons';
 
 export default function Page() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState('1');
 
   useUpdateEffect(() => {
     alert(count);

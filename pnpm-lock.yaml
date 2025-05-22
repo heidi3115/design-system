@@ -77,6 +77,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.1.0(react@19.1.0)
+      react-hook-form:
+        specifier: ^7.56.4
+        version: 7.56.4(react@19.1.0)
     devDependencies:
       '@common/eslint-config':
         specifier: workspace:^
@@ -84,6 +87,9 @@ importers:
       '@common/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
+      '@eslint/js':
+        specifier: ^9.25.0
+        version: 9.27.0
       '@svgr/webpack':
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.8.3)
@@ -96,6 +102,15 @@ importers:
       '@types/react-dom':
         specifier: ^19
         version: 19.1.5(@types/react@19.1.4)
+      eslint:
+        specifier: ^9.25.0
+        version: 9.27.0(jiti@2.4.2)
+      eslint-plugin-react-hooks:
+        specifier: ^5.2.0
+        version: 5.2.0(eslint@9.27.0(jiti@2.4.2))
+      eslint-plugin-react-refresh:
+        specifier: ^0.4.19
+        version: 0.4.20(eslint@9.27.0(jiti@2.4.2))
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.17.48)(typescript@5.8.3)
@@ -277,6 +292,9 @@ importers:
       '@common/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      '@eslint/js':
+        specifier: ^9.25.0
+        version: 9.27.0
       '@tailwindcss/postcss':
         specifier: ^4.0.8
         version: 4.1.7
@@ -292,6 +310,15 @@ importers:
       '@types/react-dom':
         specifier: ^19
         version: 19.1.5(@types/react@19.1.4)
+      eslint:
+        specifier: ^9.25.0
+        version: 9.27.0(jiti@2.4.2)
+      eslint-plugin-react-hooks:
+        specifier: ^5.2.0
+        version: 5.2.0(eslint@9.27.0(jiti@2.4.2))
+      eslint-plugin-react-refresh:
+        specifier: ^0.4.19
+        version: 0.4.20(eslint@9.27.0(jiti@2.4.2))
       tailwindcss:
         specifier: ^4.0.8
         version: 4.1.7
@@ -332,6 +359,9 @@ importers:
       '@common/utils':
         specifier: workspace:^
         version: link:../packages/utils
+      '@storybook/preview-api':
+        specifier: ^8.6.14
+        version: 8.6.14(storybook@8.6.14(prettier@3.5.3))
       '@tailwindcss/vite':
         specifier: ^4.1.6
         version: 4.1.7(vite@6.3.5(@types/node@22.15.19)(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.8.0))
@@ -4062,6 +4092,12 @@ packages:
     resolution: {integrity: sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==}
     peerDependencies:
       react: ^19.1.0
+
+  react-hook-form@7.56.4:
+    resolution: {integrity: sha512-Rob7Ftz2vyZ/ZGsQZPaRdIefkgOSrQSPXfqBdvOPwJfoGnjwRJUs7EM7Kc1mcoDv3NOtqBzPGbcMB8CGn9CKgw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18 || ^19
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -8927,6 +8963,10 @@ snapshots:
     dependencies:
       react: 19.1.0
       scheduler: 0.26.0
+
+  react-hook-form@7.56.4(react@19.1.0):
+    dependencies:
+      react: 19.1.0
 
   react-is@16.13.1: {}
 

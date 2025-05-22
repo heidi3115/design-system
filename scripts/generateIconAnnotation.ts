@@ -60,5 +60,5 @@ async function processIconsDir(dirPath: string) {
   }
 }
 
-const iconsDir = path.resolve(__dirname, './packages/ui/src/icons/Icon');
+const iconsDir = path.resolve(__dirname, '../packages/ui/src/icons/Icon');
 processIconsDir(iconsDir).catch(console.error);
