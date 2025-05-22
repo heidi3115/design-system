@@ -359,6 +359,9 @@ importers:
       '@common/utils':
         specifier: workspace:^
         version: link:../packages/utils
+      '@storybook/addon-actions':
+        specifier: ^8.6.14
+        version: 8.6.14(storybook@8.6.14(prettier@3.5.3))
       '@storybook/preview-api':
         specifier: ^8.6.14
         version: 8.6.14(storybook@8.6.14(prettier@3.5.3))
