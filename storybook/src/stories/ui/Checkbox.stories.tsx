@@ -29,11 +29,17 @@ const meta: Meta<typeof Checkbox> = {
       control: 'text',
       description: '라벨에 추가할 Tailwind 클래스',
     },
+    isBox: {
+      control: 'boolean',
+      description: '박스형 스타일 여부',
+      defaultValue: false,
+    },
   },
   args: {
     label: '체크박스 라벨',
     disabled: false,
     defaultChecked: false,
+    isBox: false,
   },
 };
 
@@ -68,6 +74,21 @@ export const Disabled: Story = {
   },
   argTypes: {
     disabled: {
+      table: {
+        disable: true,
+      },
+    },
+  },
+};
+
+export const Box: Story = {
+  args: {
+    label: '박스 스타일',
+    isBox: true,
+    defaultChecked: true,
+  },
+  argTypes: {
+    isBox: {
       table: {
         disable: true,
       },
@@ -129,6 +150,11 @@ export const showcaseOverview: Story = {
         disable: true,
       },
     },
+    isBox: {
+      table: {
+        disable: true,
+      },
+    },
   },
   parameters: {
     docs: {
@@ -185,6 +211,31 @@ export const showcaseOverview: Story = {
             <div className="flex flex-col gap-2.5 items-start">
               <span className="text-xs text-juiText-blue">checked: false & Disabled</span>
               <Checkbox {...args} checked={false} disabled />
+            </div>
+          </div>
+        </div>
+
+        <hr className="my-8" />
+
+        {/* Box Label */}
+        <span className="text-sm font-bold">Box</span>
+        <div className="flex flex-col gap-4 p-5">
+          <div className="flex flex-wrap gap-8 items-center">
+            <div className="flex flex-col gap-2.5 items-start">
+              <span className="text-xs text-juiText-blue">checked: true</span>
+              <Checkbox {...args} label="동의합니다" checked={true} isBox />
+            </div>
+            <div className="flex flex-col gap-2.5 items-start">
+              <span className="text-xs text-juiText-blue">checked: false</span>
+              <Checkbox {...args} label="동의합니다" checked={false} isBox />
+            </div>
+            <div className="flex flex-col gap-2.5 items-start">
+              <span className="text-xs text-juiText-blue">checked: true & disabled</span>
+              <Checkbox {...args} label="동의합니다" checked={true} disabled isBox />
+            </div>
+            <div className="flex flex-col gap-2.5 items-start">
+              <span className="text-xs text-juiText-blue">checked: false & Disabled</span>
+              <Checkbox {...args} label="동의합니다" checked={false} disabled isBox />
             </div>
           </div>
         </div>

@@ -17,7 +17,7 @@ import {
   UserIcon,
 } from '@common/ui/icons';
 
-import { useForm } from 'react-hook-form';
+import { useController, useForm } from 'react-hook-form';
 import ThemeToggle from '../../components/ThemeToggle';
 import { useUpdateEffect } from '@common/utils';
 import { TvIcon } from 'lucide-react';
@@ -32,13 +32,22 @@ export default function Page() {
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ email: string }>({
+  } = useForm<{ email: string; tv: boolean }>({
     mode: 'onBlur',
   });
 
-  const onValid = (data: Record<string, string>) => {
+  const {
+    field: { ref: tvRef, value: tvValue, onChange: tvOnChange },
+  } = useController({
+    name: 'tv',
+    defaultValue: false,
+    control,
+  });
+
+  const onValid = (data: { email: string; tv: boolean }) => {
     console.log('폼 제출됨', data);
   };
 
@@ -56,14 +65,29 @@ export default function Page() {
               Accept terms and conditions
             </label>
           </div>
-          <Checkbox label="이벤트 중복 방지" disabled />
+          <Checkbox label="이벤트 중복 방지" />
+          {/* <div className="w-4xl"> */}
+          <Checkbox
+            ref={tvRef}
+            checked={tvValue}
+            onCheckedChange={tvOnChange}
+            isBox
+            label={
+              // <div className="flex flex-row gap-1 items-center">
+              //   <TvIcon size={15} /> 텔레비전
+              // </div>
+              'testtesttest testtesttest'
+            }
+          />
+          {/* </div> */}
           <Checkbox
             label={
-              <div className="flex flex-row gap-1">
-                <TvIcon size={15} /> 텔레비젼
+              <div className="flex flex-row gap-1 items-center">
+                <TvIcon size={15} /> 텔레비전
               </div>
             }
           />
+          <Checkbox label="normal" />
           <Checkbox id="aa" defaultChecked />
           <div className="w-2xs flex flex-col gap-2">
             <Input
