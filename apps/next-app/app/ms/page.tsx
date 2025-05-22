@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { Button, Input } from '@common/ui';
+import { Button, Checkbox, Input } from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -41,6 +41,16 @@ export default function Page() {
       <div className="flex items-center justify-center min-h-svh">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
+          <div className="flex items-center space-x-2">
+            <Checkbox id="terms" />
+            <label
+              htmlFor="terms"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Accept terms and conditions
+            </label>
+          </div>
+          <Checkbox label="이벤트 중복 방지" />
+          <Checkbox id="aa" />
           <div className="w-2xs flex flex-col gap-2">
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}
