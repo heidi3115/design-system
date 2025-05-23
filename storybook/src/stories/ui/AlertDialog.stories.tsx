@@ -1,25 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
-import { AlertDialog } from '@common/ui/components';
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from '@common/ui/components';
 import { AlertCircleIcon, CheckCircleIcon } from '@common/ui/icons';
-import { useState } from 'react';
 import { Button } from '@common/ui';
+import { useState } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@common/ui/components/Alert';
 
 type AlertDialogStoryArgs = {
-  titleIcon: keyof typeof ICON_MAP;
+  titleIcon?: 'warning' | 'success' | 'none';
   description: string;
-  footerType: string;
+  footerType: 'update' | 'confirm';
+  contentSize?: 'small' | 'medium' | 'large';
 };
 
 const ICON_MAP = {
   warning: <AlertCircleIcon />,
   success: <CheckCircleIcon />,
-};
-
-const BUTTON_TYPE = {
-  update: 'update',
-  confirm: 'confirm',
 };
 
 const meta: Meta<AlertDialogStoryArgs> = {
@@ -28,28 +33,34 @@ const meta: Meta<AlertDialogStoryArgs> = {
   argTypes: {
     titleIcon: {
       control: { type: 'radio' },
-      options: [...Object.keys(ICON_MAP), '미설정'],
+      options: ['warning', 'success', 'none'],
       description: '타이틀 아이콘 선택',
     },
     footerType: {
       control: { type: 'radio' },
-      options: Object.keys(BUTTON_TYPE),
+      options: ['update', 'confirm'],
       description: '버튼 타입 선택',
     },
     description: {
       control: { type: 'text' },
       description: '내용 입력',
     },
+    contentSize: {
+      control: { type: 'radio' },
+      options: ['small', 'medium', 'large'],
+      description: '컨텐츠 크기',
+    },
   },
   args: {
     titleIcon: 'warning',
     description: '저장하시겠습니까?',
     footerType: 'confirm',
+    contentSize: 'medium',
   },
   parameters: {
     docs: {
       description: {
-        component: 'Alert-dialog 문서',
+        component: '조립식 AlertDialog 컴포넌트 문서',
       },
     },
   },
@@ -58,20 +69,31 @@ const meta: Meta<AlertDialogStoryArgs> = {
 export default meta;
 type Story = StoryObj<AlertDialogStoryArgs>;
 
+const iconMap = {
+  warning: <AlertCircleIcon />,
+  success: <CheckCircleIcon />,
+  none: null,
+};
+
 const Template = (args: AlertDialogStoryArgs) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <>
-      <Button onClick={() => setIsOpen(true)}>Alert 활성화</Button>
-      <AlertDialog
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        description={args.description}
-        titleIcon={args.titleIcon}
-        footerType={args.footerType}
-      />
-    </>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+      <AlertDialogTrigger asChild>
+        <Button>Alert 활성화</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent contentSize={args.contentSize}>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{iconMap[args.titleIcon ?? 'none']}</AlertDialogTitle>
+          <AlertDialogDescription>{args.description}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogAction>확인</AlertDialogAction>
+          {args.footerType !== 'confirm' && <AlertDialogCancel>취소</AlertDialogCancel>}
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 
