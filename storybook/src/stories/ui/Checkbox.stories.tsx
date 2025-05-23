@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Checkbox } from '@common/ui';
-import { PrinterIcon } from '@common/ui/icons';
+import { EyeIcon, EyeOffIcon, PrinterIcon } from '@common/ui/icons';
 
 const meta: Meta<typeof Checkbox> = {
   title: 'UI/Checkbox',
@@ -21,6 +21,7 @@ const meta: Meta<typeof Checkbox> = {
         disable: true,
       },
     },
+
     className: {
       control: 'text',
       description: 'Checkbox에 추가할 Tailwind 클래스',
@@ -37,6 +38,11 @@ const meta: Meta<typeof Checkbox> = {
       control: 'boolean',
       description: '박스형 스타일 여부',
       defaultValue: false,
+    },
+    customIcon: {
+      table: {
+        disable: true,
+      },
     },
   },
   args: {
@@ -134,6 +140,30 @@ export const CustomStyle: Story = {
     docs: {
       description: {
         story: 'className 과 labelClassName 으로 스타일 커스텀을 보여줍니다.',
+      },
+    },
+  },
+};
+
+export const CustomIcon: Story = {
+  args: {
+    label: '커스텀 아이콘 체크박스',
+    customIcon: {
+      CheckedIcon: EyeIcon,
+      UnCheckedIcon: EyeOffIcon,
+    },
+  },
+  argTypes: {
+    label: {
+      table: {
+        disable: true,
+      },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'CustomIcon에 아이콘을 두가지 넣으면 특정 아이콘으로 체크박스를 대체합니다.',
       },
     },
   },
@@ -240,6 +270,104 @@ export const showcaseOverview: Story = {
             <div className="flex flex-col gap-2.5 items-start">
               <span className="text-xs text-juiText-blue">checked: false & Disabled</span>
               <Checkbox {...args} label="동의합니다" checked={false} disabled isBox />
+            </div>
+          </div>
+        </div>
+
+        <hr className="my-8" />
+
+        {/* Custom Icon */}
+        <span className="text-sm font-bold">Custom Icon</span>
+        <div className="flex flex-col gap-4 p-5">
+          <div className="flex flex-wrap gap-8 items-center">
+            <div className="flex flex-col gap-2.5 items-start">
+              <span className="text-xs text-juiText-blue">checked: true</span>
+              <Checkbox
+                {...args}
+                label="동의합니다"
+                checked={true}
+                customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }}
+              />
+            </div>
+            <div className="flex flex-col gap-2.5 items-start">
+              <span className="text-xs text-juiText-blue">checked: false</span>
+              <Checkbox
+                {...args}
+                label="동의합니다"
+                checked={false}
+                customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }}
+              />
+            </div>
+            <div className="flex flex-col gap-2.5 items-start">
+              <span className="text-xs text-juiText-blue">checked: true & disabled</span>
+              <Checkbox
+                {...args}
+                label="동의합니다"
+                checked={true}
+                disabled
+                customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }}
+              />
+            </div>
+            <div className="flex flex-col gap-2.5 items-start">
+              <span className="text-xs text-juiText-blue">checked: false & disabled</span>
+              <Checkbox
+                {...args}
+                label="동의합니다"
+                checked={false}
+                disabled
+                customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <hr className="my-8" />
+
+        {/* Custom Icon With Box*/}
+        <span className="text-sm font-bold">Custom Icon Widh Box</span>
+        <div className="flex flex-col gap-4 p-5">
+          <div className="flex flex-wrap gap-8 items-center">
+            <div className="flex flex-col gap-2.5 items-start">
+              <span className="text-xs text-juiText-blue">checked: true</span>
+              <Checkbox
+                {...args}
+                label="동의합니다"
+                checked={true}
+                isBox
+                customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }}
+              />
+            </div>
+            <div className="flex flex-col gap-2.5 items-start">
+              <span className="text-xs text-juiText-blue">checked: false</span>
+              <Checkbox
+                {...args}
+                label="동의합니다"
+                checked={false}
+                isBox
+                customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }}
+              />
+            </div>
+            <div className="flex flex-col gap-2.5 items-start">
+              <span className="text-xs text-juiText-blue">checked: true & disabled</span>
+              <Checkbox
+                {...args}
+                label="동의합니다"
+                checked={true}
+                isBox
+                disabled
+                customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }}
+              />
+            </div>
+            <div className="flex flex-col gap-2.5 items-start">
+              <span className="text-xs text-juiText-blue">checked: false & disabled</span>
+              <Checkbox
+                {...args}
+                label="동의합니다"
+                checked={false}
+                isBox
+                disabled
+                customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }}
+              />
             </div>
           </div>
         </div>

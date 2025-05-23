@@ -9,6 +9,7 @@ import {
   ClockIcon,
   CornerDownRightIcon,
   EyeIcon,
+  EyeOffIcon,
   FilePlusIcon,
   FileTextIcon,
   LockIcon,
@@ -86,7 +87,7 @@ export default function Page() {
               </div>
             }
           />
-          <Checkbox label="normal" />
+          <Checkbox label="normal" customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }} />
           <Checkbox id="aa" defaultChecked />
           <div className="w-2xs flex flex-col gap-2">
             <Input
