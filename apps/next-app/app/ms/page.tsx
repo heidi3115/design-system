@@ -66,20 +66,17 @@ export default function Page() {
             </label>
           </div>
           <Checkbox label="이벤트 중복 방지" />
-          {/* <div className="w-4xl"> */}
           <Checkbox
             ref={tvRef}
             checked={tvValue}
             onCheckedChange={tvOnChange}
             isBox
             label={
-              // <div className="flex flex-row gap-1 items-center">
-              //   <TvIcon size={15} /> 텔레비전
-              // </div>
-              'testtesttest testtesttest'
+              <div className="flex flex-row gap-1 items-center">
+                <TvIcon size={15} /> <span>텔레비전</span>
+              </div>
             }
           />
-          {/* </div> */}
           <Checkbox
             label={
               <div className="flex flex-row gap-1 items-center">

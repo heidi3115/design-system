@@ -8,10 +8,10 @@ import { tv } from 'tailwind-variants';
 import { cn } from '../../lib/utils';
 
 const wrapperVariants = tv({
-  base: 'flex items-center space-x-2 w-fit',
+  base: 'relative flex items-center w-fit',
   variants: {
     isBox: {
-      true: 'flex-row border h-[38px] px-2.5 py-1.5 transition-colors',
+      true: 'flex-row border h-9 px-2.5 py-1.5 transition-colors',
     },
     isChecked: {
       false: 'border-transparent',
@@ -36,12 +36,14 @@ function Checkbox({
   className,
   label,
   labelClassName,
+  boxClassName,
   onCheckedChange,
   isBox = false,
   ...props
 }: ComponentProps<typeof CheckboxPrimitive.Root> & {
   label?: ReactNode;
   labelClassName?: string;
+  boxClassName?: string;
   isBox?: boolean;
 }) {
   const generatedId = useId();
@@ -61,7 +63,9 @@ function Checkbox({
 
   const normalizedChecked = isChecked === true;
   const Wrapper = label ? 'div' : Fragment;
-  const wrapperProps = label ? { className: wrapperVariants({ isBox, isChecked: normalizedChecked }) } : {};
+  const wrapperProps = label
+    ? { className: cn(wrapperVariants({ isBox, isChecked: normalizedChecked, className: boxClassName })) }
+    : {};
 
   return (
     <Wrapper {...wrapperProps}>
@@ -92,11 +96,11 @@ function Checkbox({
         <label
           htmlFor={inputId}
           className={cn(
-            'text-xs/snug text-juiText-secondary cursor-pointer truncate',
+            'text-xs/normal text-juiText-secondary ps-2 cursor-pointer truncate',
             'peer-disabled:cursor-not-allowed peer-disabled:text-juiText-disabled',
             'peer-disabled:peer-data-[state=checked]:opacity-50',
             'peer-data-[state=checked]:text-juiText-primary',
-            isBox && 'h-[38px] w-full flex items-center',
+            isBox && 'flex items-center before:absolute before:inset-0 before:block before:content-[""]',
             labelClassName,
           )}>
           {label}

@@ -29,6 +29,10 @@ const meta: Meta<typeof Checkbox> = {
       control: 'text',
       description: '라벨에 추가할 Tailwind 클래스',
     },
+    boxClassName: {
+      control: 'text',
+      description: 'isBox 가 true 일때, wrpper를 변형할 Tailwind 클래스',
+    },
     isBox: {
       control: 'boolean',
       description: '박스형 스타일 여부',
