@@ -7,27 +7,39 @@ const icons = {
   EyeIcon: <EyeIcon />,
   EyeOffIcon: <EyeOffIcon />,
   StarIcon: <StarIcon />,
+  noIcon: null,
 };
 
 const meta: Meta<typeof Toggle> = {
   title: 'UI/Toggle',
   component: Toggle,
+  // parameters: {
+  //   controls: {
+  //     include: ['onIcon', 'offIcon'],
+  //   },
+  // },
   argTypes: {
     onText: { control: 'text', description: 'ON 상태 텍스트' },
     offText: { control: 'text', description: 'OFF 상태 텍스트' },
+    onClassName: { control: 'text', description: 'ON 상태 Tailwind 클래스' },
+    offClassName: { control: 'text', description: 'OFF 상태 Tailwind 클래스' },
     onIcon: {
       options: Object.keys(icons),
       mapping: icons,
       control: { type: 'select', labels: { EyeIcon: '눈', EyeOffIcon: '눈 감음', StarIcon: '별' } },
-      description: 'ON 상태 아이콘',
+      description: 'on 상태 아이콘',
     },
     offIcon: {
-      options: Object.keys(icons),
+      options: [...Object.keys(icons)],
       mapping: icons,
-      control: { type: 'select', labels: { EyeIcon: '눈', EyeOffIcon: '눈 감음', StarIcon: '별' } },
-      description: 'OFF 상태 아이콘',
+      control: { type: 'radio' },
+      description: 'off 상태 아이콘',
     },
     children: { control: 'text', description: '항상 보이는 텍스트' },
+  },
+  args: {
+    onIcon: 'EyeIcon',
+    offIcon: 'EyeOffIcon',
   },
 };
 
@@ -42,7 +54,11 @@ export const Default: Story = {
   render: Template,
   args: {
     variant: 'default',
-    children: 'B',
+    children: '이벤트 목록',
+    onClassName: '',
+    offClassName: '',
+    onIcon: 'noIcon',
+    offIcon: 'noIcon',
   },
 };
 
