@@ -73,11 +73,13 @@ export default function Page() {
             isBox
             label={
               <div className="flex flex-row gap-1 items-center">
-                <TvIcon size={15} /> <span>텔레비전</span>
+                <TvIcon size={15} /> <span>텔레비전(from 제출용)</span>
               </div>
             }
           />
           <Checkbox
+            defaultChecked
+            isBox
             label={
               <div className="flex flex-row gap-1 items-center">
                 <TvIcon size={15} /> 텔레비전

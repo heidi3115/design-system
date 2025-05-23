@@ -8,7 +8,7 @@ import { tv } from 'tailwind-variants';
 import { cn } from '../../lib/utils';
 
 const wrapperVariants = tv({
-  base: 'relative flex items-center w-fit',
+  base: ['relative flex items-center w-fit', 'transition-all duration-700 ease-in-out'],
   variants: {
     isBox: {
       true: 'flex-row border h-9 px-2.5 py-1.5 transition-colors',
@@ -21,12 +21,12 @@ const wrapperVariants = tv({
     {
       isBox: true,
       isChecked: false,
-      class: 'bg-juiGrey-50 light:bg-juiBackground-paper',
+      className: 'bg-juiGrey-50 light:bg-juiBackground-paper',
     },
     {
       isBox: true,
       isChecked: true,
-      class: 'border-juiPrimary bg-juiPrimary/20',
+      className: 'border-juiPrimary bg-juiPrimary/20',
     },
   ],
 });
@@ -49,19 +49,12 @@ function Checkbox({
   const generatedId = useId();
   const inputId = id ?? generatedId;
 
-  const [isChecked, setIsChecked] = useState<CheckboxPrimitive.CheckedState>(() => {
-    if (props.checked !== undefined) {
-      return props.checked;
-    }
+  const [internalChecked, setInternalChecked] = useState<CheckboxPrimitive.CheckedState>(props.defaultChecked ?? false);
 
-    if (props.defaultChecked !== undefined) {
-      return props.defaultChecked;
-    }
+  const isControlled = props.checked !== undefined;
+  const currentChecked = isControlled ? props.checked : internalChecked;
+  const normalizedChecked = currentChecked === true;
 
-    return false;
-  });
-
-  const normalizedChecked = isChecked === true;
   const Wrapper = label ? 'div' : Fragment;
   const wrapperProps = label
     ? { className: cn(wrapperVariants({ isBox, isChecked: normalizedChecked, className: boxClassName })) }
@@ -74,7 +67,8 @@ function Checkbox({
         data-slot="checkbox"
         className={cn(
           [
-            'peer border-2 border-juiText-secondary shadow-xs transition-shadow outline-none',
+            'peer', // 자식으로 peer 스타일 공유
+            'border-2 border-juiText-secondary shadow-xs transition-shadow outline-none',
             'size-4 shrink-0 rounded-xs',
             'data-[state=checked]:bg-juiPrimary data-[state=checked]:text-juiBackground-default data-[state=checked]:border-juiPrimary',
             'aria-invalid:ring-juiError/20 aria-invalid:border-juiError/70',
@@ -83,7 +77,7 @@ function Checkbox({
           className,
         )}
         onCheckedChange={(checked) => {
-          setIsChecked(checked === true);
+          if (!isControlled) setInternalChecked(checked === true);
           onCheckedChange?.(checked);
         }}
         {...props}>
