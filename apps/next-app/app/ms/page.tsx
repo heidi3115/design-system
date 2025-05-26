@@ -49,7 +49,7 @@ export default function Page() {
           <h1 className="text-2xl font-bold underline">Hello World</h1>
           <div className="w-2xs flex flex-col gap-2">
             <div className="h-26">
-              <Textarea defaultValue="aaaa" />
+              <Textarea defaultValue="aaaa" size="full" />
             </div>
             <Textarea placeholder="aaa" className="w-3xs" />
             <Textarea placeholder="aaa" size="large" maxHeight={300} />

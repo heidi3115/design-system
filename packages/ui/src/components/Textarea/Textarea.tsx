@@ -48,7 +48,7 @@ function Textarea({
   });
 
   return (
-    <div className={cn('relative h-full w-full overflow-auto', className)}>
+    <div className={cn('relative h-full w-full overflow-hidden', className)}>
       <textarea
         ref={textAreaRef}
         value={textareaInput}

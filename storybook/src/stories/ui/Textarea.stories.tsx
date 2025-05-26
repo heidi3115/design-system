@@ -88,21 +88,23 @@ export const TextareaSizes: Story = {
   render: (args) => {
     // size별 높이 맵 (Textarea 높이 예시)
     const sizeHeightMap: Record<string, string> = {
-      small: '80px',
-      default: '100px',
-      large: '120px',
+      small: '56px',
+      default: '72px',
+      large: '112px',
     };
 
     return (
       <div className="flex flex-col gap-6">
         {(Object.keys(textareaVariaints.variants.size) as (keyof typeof textareaVariaints.variants.size)[]).map(
           (size) => (
-            <div key={size} className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
               <span className="text-sm font-bold">
                 {size}
                 {sizeHeightMap[size] ? ` (height: ${sizeHeightMap[size]})` : ''}
               </span>
-              <Textarea {...args} size={size} placeholder={`Size: ${size}`} style={{ height: sizeHeightMap[size] }} />
+              <div key={size} className="flex flex-col gap-2 h-52">
+                <Textarea {...args} size={size} placeholder={`Size: ${size}`} />
+              </div>
             </div>
           ),
         )}
