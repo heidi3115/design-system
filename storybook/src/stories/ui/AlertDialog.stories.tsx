@@ -4,6 +4,7 @@ import { Button } from '@common/ui';
 import { Alert, AlertDescription, AlertTitle } from '@common/ui/components/Alert';
 import { ConfirmDialog } from '@common/ui/components/AlertDialog';
 import { useEffect, useRef, useState } from 'react';
+import { alertVariants } from '@common/ui/components/Alert/Alert.tsx';
 
 type AlertDialogStoryArgs = {
   title?: 'warning' | 'success';
@@ -125,6 +126,9 @@ export const title: Story = {
       description: {
         story: 'Alert-dialog의 상단 아이콘 타입을 정할 수 있다. <br/> Warning과 Success, 미설정 세 가지 중에 선택한다.',
       },
+      source: {
+        code: null,
+      },
     },
     controls: {
       exclude: ['title', 'onConfirm', 'onCancel', 'portalContainer'],
@@ -146,11 +150,12 @@ export const title: Story = {
     description: '저장하시겠습니까?',
   },
   render: (args) => {
+    console.log(args, 'args');
     return (
       <div className="flex gap-10">
         <div className="flex flex-col gap-2">
           <div>Warning</div>
-          <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
+          <Alert className={alertVariants({ contentSize: args.contentSize })}>
             <AlertTitle className="items-center">
               <AlertCircleIcon />
             </AlertTitle>
@@ -163,7 +168,7 @@ export const title: Story = {
         </div>
         <div className="flex flex-col gap-2">
           <div>Success</div>
-          <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
+          <Alert className={alertVariants({ contentSize: args.contentSize })}>
             <AlertTitle className="items-center">
               <CheckCircleIcon />
             </AlertTitle>
@@ -176,8 +181,7 @@ export const title: Story = {
         </div>
         <div className="flex flex-col gap-2">
           <div>미설정</div>
-          <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
-            <AlertTitle className="items-center"></AlertTitle>
+          <Alert className={alertVariants({ contentSize: args.contentSize })}>
             <AlertDescription className="text-white">{args.description}</AlertDescription>
             <div className="flex gap-1">
               <Button variant="primary">확인</Button>
@@ -196,6 +200,9 @@ export const FooterType: Story = {
       description: {
         story:
           'Alert-dialog의 하단 버튼 타입을 정할 수 있다. <br/> 확인 / 취소 버튼 노출은 update, 확인 버튼 단독은 confirm으로 제어한다.',
+      },
+      source: {
+        code: null,
       },
     },
     controls: {
@@ -222,7 +229,7 @@ export const FooterType: Story = {
       <div className="flex gap-10">
         <div className="flex flex-col gap-2">
           <div>Update</div>
-          <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
+          <Alert className={alertVariants({ contentSize: args.contentSize })}>
             <AlertTitle className="items-center">
               {args.title === 'warning' && <AlertCircleIcon />}
               {args.title === 'success' && <CheckCircleIcon />}
@@ -236,7 +243,7 @@ export const FooterType: Story = {
         </div>
         <div className="flex flex-col gap-2">
           <div>Confirm</div>
-          <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
+          <Alert className={alertVariants({ contentSize: args.contentSize })}>
             <AlertTitle className="items-center">
               {args.title === 'warning' && <AlertCircleIcon />}
               {args.title === 'success' && <CheckCircleIcon />}

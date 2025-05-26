@@ -60,10 +60,12 @@ export default function ConfirmDialog({
       <AlertDialogTrigger asChild>{triggerNode}</AlertDialogTrigger>
 
       <AlertDialogContent portalContainer={portalContainer} contentSize={contentSize}>
-        <AlertDialogHeader>
-          <AlertDialogTitle className="text-accent-foreground"> {title ? iconMap[title] : null}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
-        </AlertDialogHeader>
+        {title && (
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-accent-foreground"> {title ? iconMap[title] : null}</AlertDialogTitle>
+          </AlertDialogHeader>
+        )}
+        <AlertDialogDescription>{description}</AlertDialogDescription>
         <AlertDialogFooter className="flex gap-1">
           <AlertDialogAction onClick={onConfirm}>{confirmLabel}</AlertDialogAction>
           {footerType !== 'confirm' && <AlertDialogCancel onClick={onCancel}>{cancelLabel}</AlertDialogCancel>}
