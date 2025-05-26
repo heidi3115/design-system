@@ -11,9 +11,10 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from './AlertDialog';
+import { AlertCircleIcon, CheckCircleIcon } from '@common/ui/icons';
 
 type BaseProps = {
-  title?: React.ReactNode;
+  title: 'warning' | 'success';
   description?: string;
   confirmLabel?: string;
   cancelLabel?: string;
@@ -30,7 +31,7 @@ type ConfirmDialogProps = OnlyOne<ChildrenType, TriggerType> & BaseProps;
 export default function ConfirmDialog({
   trigger,
   children,
-  title = '',
+  title,
   description,
   confirmLabel = '확인',
   cancelLabel = '취소',
@@ -38,6 +39,10 @@ export default function ConfirmDialog({
   onCancel,
   footerType,
 }: ConfirmDialogProps) {
+  const iconMap = {
+    warning: <AlertCircleIcon />,
+    success: <CheckCircleIcon />,
+  };
   const triggerNode = children ?? trigger;
 
   if (!isValidElement(triggerNode)) {
@@ -52,7 +57,7 @@ export default function ConfirmDialog({
 
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-accent-foreground">{title}</AlertDialogTitle>
+          <AlertDialogTitle className="text-accent-foreground"> {title ? iconMap[title] : null}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex gap-1">
