@@ -150,7 +150,6 @@ export const title: Story = {
     description: '저장하시겠습니까?',
   },
   render: (args) => {
-    console.log(args, 'args');
     return (
       <div className="flex gap-10">
         <div className="flex flex-col gap-2">
