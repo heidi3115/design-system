@@ -1,26 +1,30 @@
 'use client';
 
-import { useRef, type TextareaHTMLAttributes } from 'react';
+import { cloneElement, useRef, type ReactElement, type TextareaHTMLAttributes } from 'react';
 import { type VariantProps } from 'tailwind-variants';
+import { AlertCircle2Icon } from '@common/ui/icons';
 
 import { useInputValue } from '../hooks/useInputValue';
 import { useAutosizeTextarea } from './hooks/useAutosizeTextarea';
 import textareaVariaints from './textareaVariaints';
+import { type ButtonProps } from '../Button';
 import { cn } from '../../lib/utils';
 
 type AutosizeTextareaProps = {
   maxHeight?: number;
   minHeight?: number;
+  rightButton?: ReactElement<ButtonProps>;
   error?: boolean;
 } & TextareaHTMLAttributes<HTMLTextAreaElement> &
   VariantProps<typeof textareaVariaints>;
 
 function Textarea({
-  maxHeight = Number.MAX_SAFE_INTEGER,
-  minHeight,
   className,
   disabled,
   size = 'default',
+  maxHeight,
+  minHeight,
+  rightButton,
   onChange,
   defaultValue,
   value,
@@ -35,36 +39,46 @@ function Textarea({
     onChange,
   });
 
-  // size에 따른 minHeight 기본값 매핑
-  const sizeToMinHeightMap: Record<NonNullable<typeof size>, number> = {
-    small: 48, // 12 * 4px = 48px
-    default: 64, // 16 * 4px = 64px
-    large: 80, // 20 * 4px = 80px
-  };
+  const isMinHeightSize = typeof minHeight === 'number';
+  const isMaxHeightSize = typeof maxHeight === 'number';
 
   useAutosizeTextarea({
     textAreaRef,
     triggerAutoSize: textareaInput,
-    maxHeight,
-    minHeight: minHeight ?? sizeToMinHeightMap[size],
   });
 
   return (
-    <textarea
-      {...props}
-      ref={textAreaRef}
-      value={textareaInput}
-      disabled={disabled}
-      className={cn(
-        textareaVariaints({
-          error,
-          size,
-          disabled,
-          className,
-        }),
+    <div className={cn('relative h-full w-full overflow-auto', className)}>
+      <textarea
+        ref={textAreaRef}
+        value={textareaInput}
+        disabled={disabled}
+        style={{
+          ...(isMinHeightSize && { minHeight: `${minHeight}px` }),
+          ...(isMaxHeightSize && { maxHeight: `${maxHeight}px` }),
+        }}
+        className={cn(
+          textareaVariaints({
+            error,
+            isRightButton: !!rightButton,
+            size,
+            disabled,
+            className,
+          }),
+        )}
+        onChange={handleChange}
+        {...props}
+      />
+      {error && !rightButton && (
+        <AlertCircle2Icon variant="error" size="small" className="absolute top-1/2 right-2.5 -translate-y-1/2" />
       )}
-      onChange={handleChange}
-    />
+      {rightButton && (
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-24 px-4 flex flex-col items-center gap-1">
+          {cloneElement(rightButton, { className: 'inline-block !overflow-hidden w-full truncate' })}
+          {error && <AlertCircle2Icon variant="error" size="small" />}
+        </div>
+      )}
+    </div>
   );
 }
 

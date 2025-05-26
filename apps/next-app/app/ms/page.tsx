@@ -48,13 +48,22 @@ export default function Page() {
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
           <div className="w-2xs flex flex-col gap-2">
-            <div className="h-32">
+            <div className="h-26">
               <Textarea defaultValue="aaaa" />
             </div>
-            <Textarea placeholder="aaa" />
+            <Textarea placeholder="aaa" className="w-3xs" />
             <Textarea placeholder="aaa" size="large" maxHeight={300} />
-            <Textarea placeholder="aaa" size="small" error />
-            <Textarea placeholder="aaa" size="small" disabled />
+            <Textarea placeholder="aaa" error />
+            <Textarea placeholder="aaa" size="small" />
+            <Textarea
+              placeholder="aaa"
+              error
+              rightButton={
+                <Button variant="primary" onClick={() => console.log('callback')}>
+                  Query
+                </Button>
+              }
+            />
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}
               placeholder="email"

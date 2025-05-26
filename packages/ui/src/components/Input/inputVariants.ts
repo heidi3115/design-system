@@ -7,6 +7,7 @@ const inputVariants = tv({
     'placeholder:text-juiText-secondary ',
     'outline outline-transparent light:outline-juiBorder-primary focus:outline',
     'transition-all duration-700 ease-in-out',
+    'overflow-auto',
   ],
   variants: {
     error: {

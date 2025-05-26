@@ -1,49 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 type UseAutosizeTextareaProps = {
   textAreaRef: React.RefObject<HTMLTextAreaElement | null>;
-  minHeight: number;
-  maxHeight?: number;
   triggerAutoSize: string;
 };
 
-export const useAutosizeTextarea = ({
-  textAreaRef,
-  triggerAutoSize,
-  minHeight,
-  maxHeight,
-}: UseAutosizeTextareaProps) => {
-  const [init, setInit] = useState(true);
-
+export const useAutosizeTextarea = ({ textAreaRef, triggerAutoSize }: UseAutosizeTextareaProps) => {
   useEffect(() => {
-    const offsetBorder = 10;
     const textAreaElement = textAreaRef.current;
-
     if (!textAreaElement) return;
 
-    const parentHeight = textAreaElement.parentElement?.clientHeight ?? Infinity;
+    // 높이 초기화 (scrollHeight를 올바르게 계산하기 위해)
+    textAreaElement.style.height = 'auto';
 
-    // 부모보다 큰 minHeight나 maxHeight를 방지
-    const safeMinHeight = Math.min(minHeight + offsetBorder, parentHeight);
-    const safeMaxHeight = typeof maxHeight === 'number' ? Math.min(maxHeight, parentHeight) : parentHeight;
-
-    if (init) {
-      textAreaElement.style.minHeight = `${safeMinHeight}px`;
-      textAreaElement.style.maxHeight = `${safeMaxHeight}px`;
-      setInit(false);
-    }
-
-    // 초기화
-    textAreaElement.style.height = `${safeMinHeight}px`;
-
+    // 실제 내용 높이만큼 높이 설정
     const scrollHeight = textAreaElement.scrollHeight;
 
-    if (scrollHeight > safeMaxHeight) {
-      textAreaElement.style.height = `${safeMaxHeight}px`;
-      textAreaElement.style.overflowY = 'auto'; // 필요시 추가
-    } else {
-      textAreaElement.style.height = `${scrollHeight}px`;
-      textAreaElement.style.overflowY = 'hidden';
-    }
-  }, [textAreaRef.current, triggerAutoSize]);
+    textAreaElement.style.height = `${scrollHeight}px`;
+  }, [textAreaRef, triggerAutoSize]);
 };
