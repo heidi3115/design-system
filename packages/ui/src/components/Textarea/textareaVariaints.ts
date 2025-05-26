@@ -23,7 +23,7 @@ const textareaVariaints = tv({
     },
     size: {
       default: 'min-h-18', // 3줄
-      small: 'min-h-13', // 2줄
+      small: 'min-h-14', // 2줄
       large: 'min-h-28', // 5줄
       full: 'min-h-full',
     },

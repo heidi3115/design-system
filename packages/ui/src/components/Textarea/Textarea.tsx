@@ -73,8 +73,10 @@ function Textarea({
         <AlertCircle2Icon variant="error" size="small" className="absolute top-1/2 right-2.5 -translate-y-1/2" />
       )}
       {rightButton && (
-        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-24 px-4 flex flex-col items-center gap-1">
-          {cloneElement(rightButton, { className: 'inline-block !overflow-hidden w-full truncate' })}
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-24 px-2 flex flex-col items-center gap-1">
+          {cloneElement(rightButton, {
+            className: 'inline-flex w-full truncate !overflow-hidden',
+          })}
           {error && <AlertCircle2Icon variant="error" size="small" />}
         </div>
       )}

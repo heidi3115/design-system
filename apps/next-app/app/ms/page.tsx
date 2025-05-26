@@ -33,7 +33,7 @@ export default function Page() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ email: string }>({
+  } = useForm<{ email: string; area: string }>({
     mode: 'onBlur',
   });
 
@@ -54,12 +54,14 @@ export default function Page() {
             <Textarea placeholder="aaa" className="w-3xs" />
             <Textarea placeholder="aaa" size="large" maxHeight={300} />
             <Textarea placeholder="aaa" error />
+            <Textarea {...register('area', { required: '이메일은 필수입니다' })} error={!!errors.area} />
             <Textarea placeholder="aaa" size="small" />
             <Textarea
               placeholder="aaa"
               error
               rightButton={
                 <Button variant="primary" onClick={() => console.log('callback')}>
+                  <TagIcon />
                   Query
                 </Button>
               }
