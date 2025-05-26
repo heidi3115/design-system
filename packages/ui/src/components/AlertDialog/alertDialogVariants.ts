@@ -13,8 +13,7 @@ export const alertDialogVariants = tv({
       'data-[state=open]:animate-in data-[state=closed]:animate-out',
       'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
       'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
-      'fixed top-[50%] left-[50%] z-50 grid min-w-58.5',
-      'w-58.5 translate-x-[-50%] translate-y-[-50%]',
+      'z-50 grid min-w-58.5 w-58.5',
       'gap-2.5 border border-juiPrimary pt-5 pb-5 shadow-lg duration-200 sm:max-w-lg',
     ],
     header: 'flex flex-col gap-2 text-center items-center',
@@ -34,10 +33,15 @@ export const alertDialogVariants = tv({
         content: 'sm:max-w-lg p-8',
       },
     },
+    positioning: {
+      fixed: { content: 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' },
+      absolute: { content: 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' },
+    },
   },
   defaultVariants: {
     contentSize: 'medium',
     actionVariant: 'primary',
     title: 'warning',
+    positioning: 'fixed',
   },
 });

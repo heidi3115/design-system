@@ -14,13 +14,15 @@ import {
 import { AlertCircleIcon, CheckCircleIcon } from '@common/ui/icons';
 
 type BaseProps = {
-  title: 'warning' | 'success';
+  title?: 'warning' | 'success';
   description?: string;
   confirmLabel?: string;
   cancelLabel?: string;
   onConfirm?: () => void;
   onCancel?: () => void;
   footerType?: string;
+  portalContainer?: HTMLElement | null;
+  contentSize?: 'small' | 'medium' | 'large';
 };
 
 type ChildrenType = { children: React.ReactElement };
@@ -38,6 +40,8 @@ export default function ConfirmDialog({
   onConfirm,
   onCancel,
   footerType,
+  portalContainer,
+  contentSize,
 }: ConfirmDialogProps) {
   const iconMap = {
     warning: <AlertCircleIcon />,
@@ -55,7 +59,7 @@ export default function ConfirmDialog({
     <AlertDialog>
       <AlertDialogTrigger asChild>{triggerNode}</AlertDialogTrigger>
 
-      <AlertDialogContent>
+      <AlertDialogContent portalContainer={portalContainer} contentSize={contentSize}>
         <AlertDialogHeader>
           <AlertDialogTitle className="text-accent-foreground"> {title ? iconMap[title] : null}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>

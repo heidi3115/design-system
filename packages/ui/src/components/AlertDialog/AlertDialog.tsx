@@ -6,7 +6,7 @@ import { cn } from '../../lib/utils';
 import { Button, buttonVariants } from '../Button';
 import { alertDialogVariants } from './alertDialogVariants'; // 추가
 
-const { overlay, content, header, footer, title, description } = alertDialogVariants();
+const { overlay, header, footer, title, description } = alertDialogVariants();
 
 function AlertDialog({ ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
   return <AlertDialogPrimitive.Root {...props} />;
@@ -26,13 +26,22 @@ function AlertDialogOverlay({ className, ...props }: React.ComponentProps<typeof
 
 interface AlertDialogContentProps extends React.ComponentProps<typeof AlertDialogPrimitive.Content> {
   contentSize?: 'small' | 'medium' | 'large';
+  portalContainer?: HTMLElement | null;
 }
 
-function AlertDialogContent({ className, contentSize = 'medium', ...props }: AlertDialogContentProps) {
+function AlertDialogContent({ portalContainer, className, contentSize = 'medium', ...props }: AlertDialogContentProps) {
+  const positioning = portalContainer ? 'absolute' : 'fixed';
+
+  const { content } = alertDialogVariants({
+    positioning,
+    contentSize,
+    className,
+  });
+
   return (
-    <AlertDialogPortal>
+    <AlertDialogPortal container={portalContainer}>
       <AlertDialogOverlay />
-      <AlertDialogPrimitive.Content className={cn(content({ contentSize }), className)} {...props} />
+      <AlertDialogPrimitive.Content className={content()} {...props} />
     </AlertDialogPortal>
   );
 }
@@ -45,7 +54,6 @@ function AlertDialogFooter({ className, ...props }: React.ComponentProps<'div'>)
   return <div className={cn(footer(), className)} {...props} />;
 }
 
-// 8. Title 컴포넌트 (Variants 적용)
 function AlertDialogTitle({ className, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Title>) {
   return <AlertDialogPrimitive.Title className={cn(title(), className)} {...props} />;
 }

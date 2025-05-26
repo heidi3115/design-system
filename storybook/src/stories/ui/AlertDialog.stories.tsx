@@ -1,25 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogAction,
-  AlertDialogCancel,
-} from '@common/ui/components';
 import { AlertCircleIcon, CheckCircleIcon } from '@common/ui/icons';
 import { Button } from '@common/ui';
-import { useState } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@common/ui/components/Alert';
+import { ConfirmDialog } from '@common/ui/components/AlertDialog';
+import { useEffect, useRef, useState } from 'react';
 
 type AlertDialogStoryArgs = {
-  titleIcon?: 'warning' | 'success' | 'none';
+  title?: 'warning' | 'success';
   description: string;
   footerType: 'update' | 'confirm';
   contentSize?: 'small' | 'medium' | 'large';
+  confirmLabel?: string;
+  cancelLabel?: string;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+  portalContainer?: string;
 };
 
 const ICON_MAP = {
@@ -29,9 +24,9 @@ const ICON_MAP = {
 
 const meta: Meta<AlertDialogStoryArgs> = {
   title: 'ui/AlertDialog',
-  component: AlertDialog,
+  component: ConfirmDialog,
   argTypes: {
-    titleIcon: {
+    title: {
       control: { type: 'radio' },
       options: ['warning', 'success', 'none'],
       description: '타이틀 아이콘 선택',
@@ -50,12 +45,34 @@ const meta: Meta<AlertDialogStoryArgs> = {
       options: ['small', 'medium', 'large'],
       description: '컨텐츠 크기',
     },
+    confirmLabel: {
+      control: { type: 'text' },
+      description: '확인 버튼',
+    },
+    cancelLabel: {
+      control: { type: 'text' },
+      description: '확인 버튼',
+    },
+    onConfirm: {
+      description: '확인 후 처리',
+    },
+    onCancel: {
+      description: '취소',
+    },
+    portalContainer: {
+      control: { type: 'radio' },
+      options: ['body', 'area'],
+      description: '포탈 위치 선택 (body=전역, area=특정 영역)',
+    },
   },
   args: {
-    titleIcon: 'warning',
+    title: 'warning',
     description: '저장하시겠습니까?',
     footerType: 'confirm',
     contentSize: 'medium',
+    confirmLabel: '확인',
+    cancelLabel: '취소',
+    portalContainer: 'body',
   },
   parameters: {
     docs: {
@@ -69,31 +86,32 @@ const meta: Meta<AlertDialogStoryArgs> = {
 export default meta;
 type Story = StoryObj<AlertDialogStoryArgs>;
 
-const iconMap = {
-  warning: <AlertCircleIcon />,
-  success: <CheckCircleIcon />,
-  none: null,
-};
-
 const Template = (args: AlertDialogStoryArgs) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const shouldUseArea = args.portalContainer === 'area';
+  const dialogAreaRef = useRef<HTMLDivElement | null>(null);
+  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (dialogAreaRef.current) {
+      setPortalContainer(dialogAreaRef.current);
+    }
+  }, []);
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger asChild>
-        <Button>Alert 활성화</Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent contentSize={args.contentSize}>
-        <AlertDialogHeader>
-          <AlertDialogTitle>{iconMap[args.titleIcon ?? 'none']}</AlertDialogTitle>
-          <AlertDialogDescription>{args.description}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogAction>확인</AlertDialogAction>
-          {args.footerType !== 'confirm' && <AlertDialogCancel>취소</AlertDialogCancel>}
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <div className="relative" ref={dialogAreaRef}>
+      <ConfirmDialog
+        title={args.title}
+        trigger={<Button>클릭</Button>}
+        footerType={args.footerType}
+        description={args.description}
+        contentSize={args.contentSize}
+        confirmLabel={args.confirmLabel}
+        cancelLabel={args.cancelLabel}
+        onConfirm={() => console.log('확인')}
+        onCancel={() => console.log('취소')}
+        portalContainer={shouldUseArea ? portalContainer : undefined}
+      />
+    </div>
   );
 };
 
@@ -101,7 +119,7 @@ export const Default: Story = {
   render: Template,
 };
 
-export const TitleIcon: Story = {
+export const title: Story = {
   parameters: {
     docs: {
       description: {
@@ -109,7 +127,7 @@ export const TitleIcon: Story = {
       },
     },
     controls: {
-      exclude: ['titleIcon'],
+      exclude: ['title', 'onConfirm', 'onCancel', 'portalContainer'],
     },
   },
   argTypes: {
@@ -181,11 +199,11 @@ export const FooterType: Story = {
       },
     },
     controls: {
-      exclude: ['footerType'],
+      exclude: ['footerType', 'portalContainer', 'onConfirm', 'onCancel'],
     },
   },
   argTypes: {
-    titleIcon: {
+    title: {
       control: { type: 'radio' },
       options: [...Object.keys(ICON_MAP), '미설정'],
       description: '타이틀 아이콘 선택',
@@ -206,8 +224,8 @@ export const FooterType: Story = {
           <div>Update</div>
           <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
             <AlertTitle className="items-center">
-              {args.titleIcon === 'warning' && <AlertCircleIcon />}
-              {args.titleIcon === 'success' && <CheckCircleIcon />}
+              {args.title === 'warning' && <AlertCircleIcon />}
+              {args.title === 'success' && <CheckCircleIcon />}
             </AlertTitle>
             <AlertDescription className="text-white">{args.description}</AlertDescription>
             <div className="flex gap-1">
@@ -220,8 +238,8 @@ export const FooterType: Story = {
           <div>Confirm</div>
           <Alert className="flex flex-col w-[243px] border border-juiPrimary items-center gap-[10px] bg-juiBackground text-white rounded-none p-[20px]">
             <AlertTitle className="items-center">
-              {args.titleIcon === 'warning' && <AlertCircleIcon />}
-              {args.titleIcon === 'success' && <CheckCircleIcon />}
+              {args.title === 'warning' && <AlertCircleIcon />}
+              {args.title === 'success' && <CheckCircleIcon />}
             </AlertTitle>
             <AlertDescription className="text-white">{args.description}</AlertDescription>
             <div className="flex gap-1">
