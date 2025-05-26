@@ -181,7 +181,7 @@ export const WithRightButton: Story = {
 
 export const ErrorWithRightButton: Story = {
   args: {
-    rightButton: <Button variant="primary">QueryQueryQueryQueryQuery</Button>,
+    rightButton: <Button variant="primary">Query</Button>,
     error: true,
     placeholder: '에러 + 버튼 조합',
   },
