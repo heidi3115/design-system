@@ -12,4 +12,4 @@ export {
   AlertDialogCancel,
 } from './AlertDialog';
 
-// export { default as ConfirmDialog } from './ConfirmAlertDialog';
+export { default as ConfirmDialog } from './ConfirmAlertDialog';
