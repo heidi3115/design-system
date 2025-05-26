@@ -19,6 +19,7 @@ type BaseProps = {
   cancelLabel?: string;
   onConfirm?: () => void;
   onCancel?: () => void;
+  footerType?: string;
 };
 
 type ChildrenType = { children: React.ReactElement };
@@ -35,6 +36,7 @@ export default function ConfirmDialog({
   cancelLabel = '취소',
   onConfirm,
   onCancel,
+  footerType,
 }: ConfirmDialogProps) {
   const triggerNode = children ?? trigger;
 
@@ -55,7 +57,7 @@ export default function ConfirmDialog({
         </AlertDialogHeader>
         <AlertDialogFooter className="flex gap-1">
           <AlertDialogAction onClick={onConfirm}>{confirmLabel}</AlertDialogAction>
-          <AlertDialogCancel onClick={onCancel}>{cancelLabel}</AlertDialogCancel>
+          {footerType !== 'confirm' && <AlertDialogCancel onClick={onCancel}>{cancelLabel}</AlertDialogCancel>}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
