@@ -76,6 +76,7 @@ function Textarea({
         <div className="absolute top-1/2 right-0 -translate-y-1/2 w-24 px-2 flex flex-col items-center gap-1">
           {cloneElement(rightButton, {
             className: 'inline-flex w-full truncate !overflow-hidden',
+            disabled,
           })}
           {error && <AlertCircle2Icon variant="error" size="small" />}
         </div>
