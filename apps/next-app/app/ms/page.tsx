@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { Button, Input, Textarea } from '@common/ui';
 import {
@@ -22,6 +22,7 @@ import ThemeToggle from '../../components/ThemeToggle';
 
 export default function Page() {
   const [value, setValue] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
