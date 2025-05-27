@@ -112,7 +112,7 @@
 .light {
   --juiBackground-default: #fff;
   --juiBackground-paper: #f5f5f5;
-  --juiBackground-input: rgba(0, 0, 0, 0.1);
+  --juiBackground-input: #fff;
   --juiText-primary: #333333;
   --juiText-secondary: rgba(0, 0, 0, 0.4);
 }

@@ -5,13 +5,14 @@ const inputVariants = tv({
     'w-full px-4 min-h-7',
     'text-xs shadow-xs border-none bg-juiBackground-input',
     'placeholder:text-juiText-secondary ',
-    'outline outline-transparent focus:outline',
+    'outline outline-transparent light:outline-juiBorder-primary focus:outline',
     'transition-all duration-700 ease-in-out',
+    'overflow-auto',
   ],
   variants: {
     error: {
-      true: 'outline-juiError', // 에러일 때 빨간색 고정
-      false: 'focus:outline-juiText-primary', // 에러 아닐 때만 기본 파란색 포커스
+      true: 'outline-juiError light:outline-juiError', // 에러일 때 빨간색 고정
+      false: 'focus:outline-juiText-primary light:focus:outline-juiText-secondary', // 에러 아닐 때만 기본 파란색 포커스
     },
     size: {
       default: 'h-8',

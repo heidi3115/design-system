@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 
-import { Button, Checkbox, Input, SplitOtpInput } from '@common/ui';
+import { Button, Checkbox, Input, SplitOtpInput, Textarea } from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -106,6 +106,24 @@ export default function Page() {
           <Checkbox label="normal" customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }} />
           <Checkbox id="aa" defaultChecked />
           <div className="w-2xs flex flex-col gap-2">
+            <div className="h-26">
+              <Textarea defaultValue="aaaa" size="full" />
+            </div>
+            <Textarea placeholder="aaa" className="w-3xs" />
+            <Textarea placeholder="aaa" size="large" maxHeight={300} />
+            <Textarea placeholder="aaa" error />
+            <Textarea {...register('area', { required: '이메일은 필수입니다' })} error={!!errors.area} />
+            <Textarea placeholder="aaa" size="small" />
+            <Textarea
+              placeholder="aaa"
+              error
+              rightButton={
+                <Button variant="primary" onClick={() => console.log('callback')}>
+                  <TagIcon />
+                  Query
+                </Button>
+              }
+            />
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}
               placeholder="email"
