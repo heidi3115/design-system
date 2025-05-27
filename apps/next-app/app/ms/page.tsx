@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 
-import { Button, Checkbox, Input, InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@common/ui';
+import { Button, Checkbox, Input, SplitOtpInput } from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -58,19 +58,22 @@ export default function Page() {
       <div className="flex items-center justify-center min-h-svh">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
-          <InputOTP maxLength={6}>
-            <InputOTPGroup>
-              <InputOTPSlot index={0} />
-              <InputOTPSlot index={1} />
-              <InputOTPSlot index={2} />
-            </InputOTPGroup>
-            <InputOTPSeparator />
-            <InputOTPGroup>
-              <InputOTPSlot index={3} />
-              <InputOTPSlot index={4} />
-              <InputOTPSlot index={5} />
-            </InputOTPGroup>
-          </InputOTP>
+          <SplitOtpInput maxLength={5} inputType="all" />
+          <SplitOtpInput />
+          <SplitOtpInput size="large" />
+          <SplitOtpInput size="small" />
+          <SplitOtpInput size="small" variant="secondary" />
+          <p></p>
+          <span>비제어</span>
+          <SplitOtpInput
+            size="small"
+            variant="normal"
+            ref={inputRef}
+            onBlur={() => console.log('비제어', inputRef.current?.value)}
+          />
+          <p></p>
+          <span>제어</span>
+          <SplitOtpInput size="small" variant="normal" value={value} onChange={(e) => setValue(e)} />
           <div className="flex items-center space-x-2">
             <Checkbox id="terms" />
             <label

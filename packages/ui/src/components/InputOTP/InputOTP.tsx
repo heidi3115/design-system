@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { OTPInput, OTPInputContext } from 'input-otp';
-import { MinusIcon } from 'lucide-react';
 
+import { type IconProps } from '@common/ui/icons';
 import { cn } from '../../lib/utils';
 
 function InputOTP({
@@ -33,6 +33,7 @@ function InputOTPSlot({
   ...props
 }: React.ComponentProps<'div'> & {
   index: number;
+  type?: 'letter' | 'number' | 'any';
 }) {
   const inputOTPContext = React.useContext(OTPInputContext);
   const { char, hasFakeCaret, isActive } = inputOTPContext?.slots[index] ?? {};
@@ -42,7 +43,28 @@ function InputOTPSlot({
       data-slot="input-otp-slot"
       data-active={isActive}
       className={cn(
-        'data-[active=true]:border-ring data-[active=true]:ring-ring/50 data-[active=true]:aria-invalid:ring-destructive/20 dark:data-[active=true]:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[active=true]:aria-invalid:border-destructive dark:bg-input/30 border-input relative flex h-9 w-9 items-center justify-center border-y border-r text-sm shadow-xs transition-all outline-none first:rounded-l-md first:border-l last:rounded-r-md data-[active=true]:z-10 data-[active=true]:ring-[3px]',
+        [
+          // 레이아웃 및 정렬
+          'relative flex items-center justify-center',
+          // 상태 기반
+          'data-[active=true]:z-10',
+          'data-[active=true]:border-none',
+          'data-[active=true]:ring-2',
+          'data-[active=true]:ring-juiPrimary',
+          // 크기
+          'h-14 w-14',
+          // 테두리
+          'border-y border-r first:border-l border-input',
+          // 모서리 둥글기
+          'first:rounded-l-xs',
+          'last:rounded-r-xs',
+          // 타이포그래피
+          'text-2xl text-juiText-blue',
+          // 시각 효과 및 애니메이션
+          'shadow-xs',
+          'transition-all',
+          'outline-none',
+        ],
         className,
       )}
       {...props}>
@@ -56,10 +78,17 @@ function InputOTPSlot({
   );
 }
 
-function InputOTPSeparator({ ...props }: React.ComponentProps<'div'>) {
+function InputOTPSeparator({
+  icon,
+  ...props
+}: React.ComponentProps<'div'> & {
+  icon?: React.ComponentType<IconProps>;
+}) {
+  const Icon = icon;
+
   return (
-    <div data-slot="input-otp-separator" role="separator" {...props}>
-      <MinusIcon />
+    <div data-slot="input-otp-separator" role="separator" className="w-fit" {...props}>
+      {Icon ? <Icon /> : <div className="w-1 h-1 bg-current rounded-full" />}
     </div>
   );
 }
