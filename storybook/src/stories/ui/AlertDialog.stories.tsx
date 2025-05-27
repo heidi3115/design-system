@@ -193,7 +193,7 @@ export const title: Story = {
   },
 };
 
-export const Size: Story = {
+export const ContentSize: Story = {
   parameters: {
     docs: {
       description: {
