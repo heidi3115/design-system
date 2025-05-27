@@ -5,7 +5,7 @@ import { cn } from '@common/ui/lib/utils';
 import type { badgeScoreType, badgeStatusType } from './badgeVariants';
 
 export type CountBadgePropsType = React.ComponentProps<'span'> &
-  Omit<VariantProps<typeof badgeVariants>, 'variant'> & {
+  Omit<VariantProps<typeof badgeVariants>, 'variant' | 'grade'> & {
     /**
      * asChild 설정
      */
@@ -13,7 +13,7 @@ export type CountBadgePropsType = React.ComponentProps<'span'> &
     /**
      * scoreVal : 안에 보여줄 숫자 점수값. 옵션인 경우는 asChild 설정에 따라서 children 에서 표기하는 부분을 고려하였습니다.
      */
-    scoreVal?: number;
+    scoreVal: number;
     /**
      * maxVal : 최대값. 최대값 설정 시 scoreVal >= maxVal 이면 최대값+으로 처리됩니다.
      */
@@ -21,7 +21,7 @@ export type CountBadgePropsType = React.ComponentProps<'span'> &
     /**
      * color : 색상값. 커스텀인 부분을 고려해서 string 시 tailwind v4의 색상 클래스 bg-* 으로 처리 가능하며, badgeVariants의 status, score도 활용 가능합니다.
      */
-    color?: string | badgeStatusType | badgeScoreType;
+    color: badgeStatusType | badgeScoreType | string;
   };
 
 /**
@@ -32,7 +32,7 @@ export type CountBadgePropsType = React.ComponentProps<'span'> &
  */
 
 function CountBadge(props: CountBadgePropsType) {
-  const { asChild, scoreVal = null, maxVal = 0, color, className, children, ...restProps } = props;
+  const { asChild, scoreVal = null, maxVal = 0, color = 'default', className, children, ...restProps } = props;
 
   const isValidScoreVal = typeof scoreVal === 'number' && !Number.isNaN(scoreVal);
   const displayScore = maxVal > 0 && isValidScoreVal && scoreVal >= maxVal ? `${maxVal}+` : scoreVal;
@@ -51,12 +51,12 @@ function CountBadge(props: CountBadgePropsType) {
 
   return (
     <Badge
+      {...restProps}
       asChild={asChild}
       variant={'count'}
       status={status as badgeStatusType}
       score={score as badgeScoreType}
-      className={cn(colorClass, className)}
-      {...restProps}>
+      className={cn(colorClass, className)}>
       {children ?? displayScore}
     </Badge>
   );

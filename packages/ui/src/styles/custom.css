@@ -31,6 +31,7 @@
   --juiText-secondary: rgba(255, 255, 255, 0.4);
   --juiText-disabled: #505050;
   --juiText-blue: #7a97ff;
+  --juiText-purple: #9747ff;
   --juiBorder-primary: #e0e0e0;
   --juiScore-veryLow: #8294ff;
   --juiScore-low: #5873ff;
@@ -75,6 +76,7 @@
   --juiText-secondary: rgba(255, 255, 255, 0.4);
   --juiText-disabled: #505050;
   --juiText-blue: #7a97ff;
+  --juiText-purple: #9747ff;
   --juiBorder-primary: #e0e0e0;
   --juiScore-veryLow: #8294ff;
   --juiScore-low: #5873ff;
@@ -119,6 +121,7 @@
   --color-juiText-secondary: var(--juiText-secondary);
   --color-juiText-disabled: var(--juiText-disabled);
   --color-juiText-blue: var(--juiText-blue);
+  --color-juiText-purple: var(--juiText-purple);
   --color-juiBorder-primary: var(--juiBorder-primary);
   --color-juiScore-veryLow: var(--juiScore-veryLow);
   --color-juiScore-low: var(--juiScore-low);
@@ -133,7 +136,7 @@
 .light {
   --juiBackground-default: #fff;
   --juiBackground-paper: #f5f5f5;
-  --juiBackground-input: rgba(0, 0, 0, 0.1);
+  --juiBackground-input: #fff;
   --juiText-primary: #333333;
   --juiText-secondary: rgba(0, 0, 0, 0.4);
 }

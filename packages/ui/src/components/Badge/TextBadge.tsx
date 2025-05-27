@@ -10,8 +10,8 @@ import { getStringFromChildren } from '@common/ui/components/Badge/badgeUtils';
 export type TextBadgeContentProps = {
   children?: React.ReactNode | string;
   className?: string;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   textOnly?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
 export type TextBadgePropsType = React.ComponentProps<'span'> &
@@ -25,6 +25,7 @@ function TextBadgeContent({ children, onClick, textOnly }: TextBadgeContentProps
       className={cn(
         `${textOnly ? 'inline-block align-middle' : 'inline-flex gap-1.5 items-center justify-center'}`,
         textOnly && 'overflow-hidden text-ellipsis whitespace-nowrap',
+        '[&>svg]:basis-[1.4em]] [&>svg]:min-w-4',
       )}
       aria-hidden={textOnly ? 'true' : undefined}>
       {children}
@@ -54,6 +55,7 @@ function TextBadge(props: TextBadgePropsType) {
 
   if (asChild && React.isValidElement(children)) {
     return React.cloneElement(child, {
+      ...restProps,
       'data-slot': 'badge',
       variant: undefined,
       className: cn(
@@ -69,19 +71,18 @@ function TextBadge(props: TextBadgePropsType) {
         </TextBadgeContent>
       ),
       title: computedTitle,
-      ...restProps,
     });
   }
 
   return (
     <Badge
+      {...restProps}
       asChild={asChild}
       variant={'text'}
       status={undefined}
       score={undefined}
       className={className}
-      title={computedTitle}
-      {...restProps}>
+      title={computedTitle}>
       <TextBadgeContent onClick={onClick} textOnly={textOnly}>
         {children}
       </TextBadgeContent>

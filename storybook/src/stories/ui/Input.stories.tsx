@@ -2,7 +2,7 @@ import { useRef, useState, type ComponentProps, type ComponentType } from 'react
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
-import { Input, inputVariants } from '@common/ui/components';
+import { Input, inputVariants } from '@common/ui';
 import { CalendarIcon, LockIcon, type IconProps } from '@common/ui/icons';
 
 const ICON_MAP: Record<string, ComponentType<IconProps> | undefined> = {
@@ -18,19 +18,31 @@ const meta: Meta<typeof Input> = {
     type: {
       control: 'select',
       options: ['text', 'number', 'color'],
+      table: {
+        defaultValue: { summary: 'text' },
+      },
     },
     size: {
       control: 'select',
       options: Object.keys(inputVariants.variants.size),
       description: 'Input의 높이를 조절합니다.',
+      table: {
+        defaultValue: { summary: 'default' },
+      },
     },
     error: {
       control: 'boolean',
       description: '에러 상태일 경우 테두리가 빨간색으로 표시됩니다.',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
     },
     disabled: {
       control: 'boolean',
       description: '비활성화 상태 여부입니다.',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
     },
     hasIconLeft: {
       table: {
@@ -64,13 +76,10 @@ const meta: Meta<typeof Input> = {
     },
   },
   args: {
-    size: 'default',
-    type: 'text',
     error: false,
     disabled: false,
     iconLeft: undefined,
     iconRight: undefined,
-    helperText: '',
     placeholder: '입력해 주세요',
   },
   parameters: {

@@ -152,16 +152,22 @@ export default function BadgePage() {
               <div className={'flex flex-col'}>
                 <h6>Link & Link with scoreVal, 내부 + 처리 한 것과 안 한 것</h6>
                 <div className={'flex flex-col gap-3'}>
-                  <CountBadge asChild>test</CountBadge>
+                  <CountBadge asChild scoreVal={count} color={'default'}>
+                    test
+                  </CountBadge>
                 </div>
                 <h6>Link & Link with scoreVal, 내부 + 처리 한 것과 안 한 것</h6>
                 <div className={'flex flex-col gap-3'}>
-                  <CountBadge asChild color={'critical'} onClick={() => setCount((prev) => (prev += 1))}>
+                  <CountBadge
+                    asChild
+                    scoreVal={count}
+                    color={'critical'}
+                    onClick={() => setCount((prev) => (prev += 1))}>
                     <Link href={'/osy/badge'}>{count}</Link>
                   </CountBadge>
                   <CountBadge
                     asChild
-                    status={'critical'}
+                    color={'critical'}
                     scoreVal={count + 90}
                     maxVal={MAX_VAL}
                     onClick={() => setCount((prev) => (prev += 1))}>
@@ -200,7 +206,7 @@ export default function BadgePage() {
               </div>
               <div className={'flex flex-col'}>
                 <h6>Button with no scoreVal:</h6>
-                <CountBadge asChild color={'critical'} onClick={() => setCount((prev) => (prev += 1))}>
+                <CountBadge asChild scoreVal={count} color={'critical'} onClick={() => setCount((prev) => (prev += 1))}>
                   <Button>{count}</Button>
                 </CountBadge>
                 <h6>Button with scoreVal & children(count) :</h6>
@@ -208,7 +214,7 @@ export default function BadgePage() {
                   <Button>{count} test</Button>
                 </CountBadge>
                 <h6>Button :</h6>
-                <CountBadge asChild color={'critical'} onClick={() => setCount((prev) => (prev += 1))}>
+                <CountBadge asChild scoreVal={count} color={'critical'} onClick={() => setCount((prev) => (prev += 1))}>
                   <Button>{count}</Button>
                 </CountBadge>
                 <h6>Button with scoreVal & children :</h6>

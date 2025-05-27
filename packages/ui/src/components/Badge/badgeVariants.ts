@@ -3,7 +3,7 @@ import { tv } from 'tailwind-variants';
 const badgeVariants = tv({
   base: [
     'inline-flex gap-1.5 items-center justify-center px-2.5 py-1.5 size-fit',
-    'text-white text-xs font-bold whitespace-nowrap',
+    'text-white text-xs font-bold',
     'rounded-full bg-transparent outline-none',
   ],
   variants: {

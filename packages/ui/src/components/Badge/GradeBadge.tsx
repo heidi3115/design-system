@@ -2,9 +2,9 @@ import * as React from 'react';
 import { type VariantProps } from 'class-variance-authority';
 
 import { cn } from '../../lib/utils';
-import type { badgeGradeType } from '@common/ui/components/Badge/badgeVariants';
 import { badgeVariants } from '@common/ui/components/Badge';
 import { Badge } from '@common/ui/components';
+import type { badgeGradeType } from '@common/ui/components/Badge/badgeVariants';
 import type { CloneBadgeChildProps } from '@common/ui/components/Badge/badgeUtils';
 import { getStringFromChildren } from '@common/ui/components/Badge/badgeUtils';
 import { FolderFilledIcon } from '@common/ui/icons/Icon/FolderFilledIcon';
@@ -16,6 +16,7 @@ import { AlertFilledIcon } from '@common/ui/icons/Icon/AlertFilledIcon';
 export type GradeBadgePropsType = React.ComponentProps<'span'> &
   Omit<VariantProps<typeof badgeVariants>, 'variant' | 'status' | 'score'> & {
     asChild?: boolean;
+    grade: badgeGradeType;
   };
 
 export const gradeIconMapper: Record<badgeGradeType, React.ReactNode> = {
@@ -51,6 +52,7 @@ function GradeBadge(props: GradeBadgePropsType) {
 
   if (asChild && React.isValidElement(children)) {
     return React.cloneElement(child, {
+      ...restProps,
       'data-slot': 'badge',
       variant: undefined,
       className: cn(
@@ -67,20 +69,19 @@ function GradeBadge(props: GradeBadgePropsType) {
         </GradeBadgeContent>
       ),
       title: computedTitle,
-      ...restProps,
     });
   }
 
   return (
     <Badge
+      {...restProps}
       asChild={asChild}
       variant={'grading'}
       grade={grade}
       status={undefined}
       score={undefined}
       className={cn(className)}
-      title={computedTitle}
-      {...restProps}>
+      title={computedTitle}>
       <GradeBadgeContent grade={grade} iconColor={iconColor}>
         {children}
       </GradeBadgeContent>

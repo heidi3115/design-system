@@ -6,7 +6,7 @@ import { AlertCircle2Icon, type IconProps } from '@common/ui/icons';
 import { sanitizeNumber } from '@common/utils';
 
 import inputVariants from './inputVariants';
-import { useInputValue } from './hooks/useInputValue';
+import { useInputValue } from '../hooks/useInputValue';
 import NumberStepper from './NumberStepper';
 import { cn } from '../../lib/utils';
 

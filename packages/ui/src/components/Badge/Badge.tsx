@@ -19,6 +19,7 @@ function Badge(props: BadgePropsType) {
 
   return (
     <Comp
+      {...restProps}
       data-slot="badge"
       tabIndex={0}
       className={cn(
@@ -29,7 +30,6 @@ function Badge(props: BadgePropsType) {
         }),
         className,
       )}
-      {...restProps}
     />
   );
 }
