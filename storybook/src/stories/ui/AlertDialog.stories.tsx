@@ -193,6 +193,86 @@ export const title: Story = {
   },
 };
 
+export const Size: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Alert-dialog의 하단 버튼 타입을 정할 수 있다. <br/> 확인 / 취소 버튼 노출은 update, 확인 버튼 단독은 confirm으로 제어한다.',
+      },
+      source: {
+        code: null,
+      },
+    },
+    controls: {
+      exclude: ['contentSize', 'portalContainer', 'onConfirm', 'onCancel'],
+    },
+  },
+  argTypes: {
+    title: {
+      control: { type: 'radio' },
+      options: [...Object.keys(ICON_MAP), '미설정'],
+      description: '타이틀 아이콘 선택',
+    },
+    description: {
+      control: { type: 'text' },
+      description: '내용 입력',
+    },
+  },
+  args: {
+    footerType: 'confirm',
+    description: '저장하시겠습니까?',
+  },
+  render: (args) => {
+    return (
+      <div className="flex gap-10">
+        <div className="flex flex-col gap-2">
+          <div>small</div>
+          <Alert className={alertVariants({ contentSize: 'small' })}>
+            <AlertTitle className="items-center">
+              {args.title === 'warning' && <AlertCircleIcon />}
+              {args.title === 'success' && <CheckCircleIcon />}
+            </AlertTitle>
+            <AlertDescription className="text-white">{args.description}</AlertDescription>
+            <div className="flex gap-1">
+              <Button variant="primary">{args.confirmLabel}</Button>
+              {args.footerType !== 'confirm' && <Button>{args.cancelLabel}</Button>}
+            </div>
+          </Alert>
+        </div>
+        <div className="flex flex-col gap-2">
+          <div>midium</div>
+          <Alert className={alertVariants({ contentSize: 'medium' })}>
+            <AlertTitle className="items-center">
+              {args.title === 'warning' && <AlertCircleIcon />}
+              {args.title === 'success' && <CheckCircleIcon />}
+            </AlertTitle>
+            <AlertDescription className="text-white">{args.description}</AlertDescription>
+            <div className="flex gap-1">
+              <Button variant="primary">{args.confirmLabel}</Button>
+              {args.footerType !== 'confirm' && <Button>{args.cancelLabel}</Button>}
+            </div>
+          </Alert>
+        </div>
+        <div className="flex flex-col gap-2">
+          <div>large</div>
+          <Alert className={alertVariants({ contentSize: 'large' })}>
+            <AlertTitle className="items-center">
+              {args.title === 'warning' && <AlertCircleIcon />}
+              {args.title === 'success' && <CheckCircleIcon />}
+            </AlertTitle>
+            <AlertDescription className="text-white">{args.description}</AlertDescription>
+            <div className="flex gap-1">
+              <Button variant="primary">{args.confirmLabel}</Button>
+              {args.footerType !== 'confirm' && <Button>{args.cancelLabel}</Button>}
+            </div>
+          </Alert>
+        </div>
+      </div>
+    );
+  },
+};
+
 export const FooterType: Story = {
   parameters: {
     docs: {
