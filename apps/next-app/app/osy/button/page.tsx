@@ -5,6 +5,7 @@ import { CornerDownLeftIcon, LogInIcon, PlusIcon, ZoomInIcon } from '@common/ui/
 import { useState } from 'react';
 import Link from 'next/link';
 import ThemeToggle from '../../../components/ThemeToggle';
+import { ScoringBadge } from '@common/ui/components/Badge';
 
 export default function ButtonPage() {
   const [count, setCount] = useState(0);
@@ -13,7 +14,7 @@ export default function ButtonPage() {
     <section>
       <div>
         <Button asChild variant={'transparent'} size={'large'}>
-          <Link href="/">
+          <Link href="/" title={'to main'}>
             <CornerDownLeftIcon size={'small'} /> to main
           </Link>
         </Button>
@@ -22,6 +23,9 @@ export default function ButtonPage() {
       <div className={'flex flex-col gap-4 items-center justify-center'}>
         <h2 className={'text-juiText-blue text-3xl font-bold'}>Buttons</h2>
         <div className={'flex flex-col gap-4'}>
+          <h3>basic Button</h3>
+          <Button>no variant</Button>
+          <Button variant={'secondary'}>secondary</Button>
           <h3 className={'text-juiText-blue text-lg font-bold'}>Colors(variant)</h3>
           <div className={'flex gap-4 flex-row items-center justify-center'}>
             {(Object.keys(buttonVariants.variants.variant) as Array<keyof typeof buttonVariants.variants.variant>).map(
@@ -91,6 +95,46 @@ export default function ButtonPage() {
               <Button variant={'gradient'} size={'large'}>
                 <PlusIcon />
                 <span className={'font-bold text-base'}>{count}</span>
+              </Button>
+            </div>
+          </div>
+        </div>
+        <div className={'flex flex-col gap-4'}>
+          <h3 className={'text-juiText-blue text-lg font-bold'}>asChild</h3>
+          <strong className={'text-juiError'}>
+            <Link
+              href={'https://www.radix-ui.com/primitives/docs/utilities/slot#basic-example'}
+              target={'_blank'}
+              title={'to Raidx page'}>
+              {`Radix UI 의 Slot 시, asChild={true}일 경우, single children element 이어야 하며, 여러 개의 요소 시 에러 나는 내역 확인`}
+            </Link>
+          </strong>
+          <div className={''}>
+            <h4 className={'my-3 text-base'}>Count with asChild Badge</h4>
+            <strong>asChild에 순수 문자열만 넣으면 렌더링 되지 않고 무시되는 것 확인</strong>
+            <div className={'flex flex-row gap-4'}>
+              <Button asChild variant={'primary'} size={'large'}>
+                {'asChild TextOnly'}
+              </Button>
+              <Button asChild variant={'gradient'} size={'large'} onClick={() => setCount((prev) => (prev += 1))}>
+                <ScoringBadge scoreVal={count}>btn asChild ScoringBadge</ScoringBadge>
+              </Button>
+              <Button
+                asChild
+                variant={'transparentGrey'}
+                size={'large'}
+                onClick={() => setCount((prev) => (prev += 1))}>
+                <ScoringBadge scoreVal={count}>transparentGrey asChild ScoringBadge</ScoringBadge>
+              </Button>
+              <Button>
+                <Link href={'https://www.radix-ui.com/primitives/docs/utilities/slot#basic-example'} target={'_blank'}>
+                  to Radix-ui(asChild=false)
+                </Link>
+              </Button>
+              <Button asChild>
+                <Link href={'https://www.radix-ui.com/primitives/docs/utilities/slot#basic-example'} target={'_blank'}>
+                  to Radix-ui(asChild=true)
+                </Link>
               </Button>
             </div>
           </div>

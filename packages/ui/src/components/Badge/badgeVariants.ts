@@ -2,17 +2,17 @@ import { tv } from 'tailwind-variants';
 
 const badgeVariants = tv({
   base: [
-    'inline-flex gap-1.5 items-center justify-center px-3 py-1.5 w-fit',
-    'text-white text-xs font-bold whitespace-nowrap', // juiText-primary
-    'rounded-full bg-transparent',
+    'inline-flex gap-1.5 items-center justify-center px-2.5 py-1.5 size-fit',
+    'text-white text-xs font-bold whitespace-nowrap',
+    'rounded-full bg-transparent outline-none',
   ],
   variants: {
     variant: {
       state: '',
       scoring: '',
-      text: 'radius-none',
-      grade: 'radius-none',
-      count: '',
+      grading: 'rounded-none',
+      count: 'z-2', // z-index는 임의로 수정 가능하나 혹시나 해서 z-index 를 2 정도로
+      text: ['text-juiText-primary bg-juiGrey-50 rounded-xs border border-juiGrey-100 ', 'light:border-juiGrey-900'],
     },
     status: {
       default: 'bg-juiGrey-a700',
@@ -35,7 +35,14 @@ const badgeVariants = tv({
       veryHigh: 'bg-juiScore-veryHigh',
       extra: 'bg-juiScore-extra',
       practice: 'bg-juiScore-practice',
-      alert: 'bg-juiScore-alert',
+      scoreAlert: 'bg-juiScore-alert',
+    },
+    grade: {
+      info: 'text-juiStatus-info',
+      boundary: 'text-juiStatus-boundary',
+      alert: 'text-juiStatus-alert',
+      critical: 'text-juiStatus-critical',
+      urgency: 'text-juiStatus-urgency',
     },
   },
   defaultVariants: {
@@ -44,3 +51,6 @@ const badgeVariants = tv({
 });
 
 export default badgeVariants;
+export type badgeStatusType = keyof typeof badgeVariants.variants.status;
+export type badgeScoreType = keyof typeof badgeVariants.variants.score;
+export type badgeGradeType = keyof typeof badgeVariants.variants.grade;

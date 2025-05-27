@@ -7,31 +7,20 @@ import badgeVariants from '@common/ui/components/Badge/badgeVariants';
 
 export type BadgePropsType = React.ComponentProps<'span'> &
   VariantProps<typeof badgeVariants> & {
+    /**
+     * asChild : slot을 이용한
+     */
     asChild?: boolean;
-    scoreVal?: number | null;
-    maxVal?: number;
   };
 
 function Badge(props: BadgePropsType) {
-  const {
-    className,
-    children,
-    variant,
-    status,
-    score,
-    scoreVal = null,
-    maxVal = 0,
-    asChild = false,
-    ...restProps
-  } = props;
+  const { className, variant, status, score, asChild = false, ...restProps } = props;
   const Comp = asChild ? Slot : 'span';
-  const isValidScoreVal = typeof scoreVal === 'number' && !Number.isNaN(scoreVal);
-  const hasSiblings = React.Children.count(children) > 0;
-  const displayScore = maxVal > 0 && isValidScoreVal && scoreVal >= maxVal ? `${maxVal}+` : scoreVal;
 
   return (
     <Comp
       data-slot="badge"
+      tabIndex={0}
       className={cn(
         badgeVariants({
           variant,
@@ -40,12 +29,8 @@ function Badge(props: BadgePropsType) {
         }),
         className,
       )}
-      {...restProps}>
-      {isValidScoreVal && (
-        <span className={hasSiblings ? 'pr-1.5 border-r-1 border-juiGrey-100' : ''}>{displayScore}</span>
-      )}
-      {children}
-    </Comp>
+      {...restProps}
+    />
   );
 }
 

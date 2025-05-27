@@ -49,7 +49,7 @@ const palette = {
     high: { main: '#BC2FFF' },
     veryHigh: { main: '#FE3284' },
     extra: { main: '#5630E3' },
-    practice: { main: '#4B63EB33' },
+    practice: { main: '#232D5B' },
     alert: { main: '#ff0000' },
   },
 };
