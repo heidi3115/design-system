@@ -117,14 +117,18 @@ export default function ButtonPage() {
                 {'asChild TextOnly'}
               </Button>
               <Button asChild variant={'gradient'} size={'large'} onClick={() => setCount((prev) => (prev += 1))}>
-                <ScoringBadge scoreVal={count}>btn asChild ScoringBadge</ScoringBadge>
+                <ScoringBadge score={'veryLow'} scoreVal={count}>
+                  btn asChild ScoringBadge
+                </ScoringBadge>
               </Button>
               <Button
                 asChild
                 variant={'transparentGrey'}
                 size={'large'}
                 onClick={() => setCount((prev) => (prev += 1))}>
-                <ScoringBadge scoreVal={count}>transparentGrey asChild ScoringBadge</ScoringBadge>
+                <ScoringBadge score={'veryHigh'} scoreVal={count}>
+                  transparentGrey asChild ScoringBadge
+                </ScoringBadge>
               </Button>
               <Button>
                 <Link href={'https://www.radix-ui.com/primitives/docs/utilities/slot#basic-example'} target={'_blank'}>
