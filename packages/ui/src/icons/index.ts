@@ -1,3 +1,4 @@
+export type { IconProps } from './types';
 export { AlertCircleIcon } from './Icon/AlertCircleIcon';
 export { AlertCircle2Icon } from './Icon/AlertCircle2Icon';
 export { AlertTriangleIcon } from './Icon/AlertTriangleIcon';
