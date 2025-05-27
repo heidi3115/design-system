@@ -31,6 +31,7 @@
   --juiText-secondary: rgba(255, 255, 255, 0.4);
   --juiText-disabled: #505050;
   --juiText-blue: #7a97ff;
+  --juiText-purple: #9747ff;
   --juiBorder-primary: #e0e0e0;
 }
 
@@ -67,6 +68,7 @@
   --juiText-secondary: rgba(255, 255, 255, 0.4);
   --juiText-disabled: #505050;
   --juiText-blue: #7a97ff;
+  --juiText-purple: #9747ff;
   --juiBorder-primary: #e0e0e0;
 }
 
@@ -103,6 +105,7 @@
   --color-juiText-secondary: var(--juiText-secondary);
   --color-juiText-disabled: var(--juiText-disabled);
   --color-juiText-blue: var(--juiText-blue);
+  --color-juiText-purple: var(--juiText-purple);
   --color-juiBorder-primary: var(--juiBorder-primary);
 }
 

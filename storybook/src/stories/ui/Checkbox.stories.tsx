@@ -13,6 +13,9 @@ const meta: Meta<typeof Checkbox> = {
     disabled: {
       control: 'boolean',
       description: '비활성화 여부입니다.',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
     },
     defaultChecked: {
       control: 'boolean',
@@ -37,7 +40,9 @@ const meta: Meta<typeof Checkbox> = {
     isBox: {
       control: 'boolean',
       description: '박스형 스타일 여부',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
     },
     customIcon: {
       table: {

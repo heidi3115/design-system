@@ -38,6 +38,7 @@ const palette = {
     secondary: { main: 'rgba(255, 255, 255, 0.4)', light: 'rgba(0, 0, 0, 0.4)' },
     disabled: { main: '#505050' },
     blue: { main: '#7A97FF' },
+    purple: { main: '#9747FF' },
   },
   juiBorder: {
     primary: { main: '#E0E0E0' },
