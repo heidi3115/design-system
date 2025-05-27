@@ -2,7 +2,7 @@ import { useRef, useState, type ComponentProps, type ComponentType } from 'react
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
-import { Input, inputVariants } from '@common/ui/components';
+import { Input, inputVariants } from '@common/ui';
 import { CalendarIcon, LockIcon, type IconProps } from '@common/ui/icons';
 
 const ICON_MAP: Record<string, ComponentType<IconProps> | undefined> = {
