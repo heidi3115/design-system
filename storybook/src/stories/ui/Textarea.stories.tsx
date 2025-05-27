@@ -14,10 +14,16 @@ const meta: Meta<typeof Textarea> = {
     error: {
       control: 'boolean',
       description: '에러 상태를 설정합니다.',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
     },
     disabled: {
       control: 'boolean',
       description: '비활성화 상태를 설정합니다.',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
     },
     minHeight: {
       control: 'number',
@@ -39,7 +45,6 @@ const meta: Meta<typeof Textarea> = {
   },
   args: {
     placeholder: '입력해주세요...',
-    size: 'default',
     error: false,
     disabled: false,
   },
