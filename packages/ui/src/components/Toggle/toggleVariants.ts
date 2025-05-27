@@ -35,12 +35,12 @@ const toggleVariants = tv({
       outline: 'border border-input bg-transparent shadow-xs',
     },
     size: {
-      default: 'h-9 px-2 min-w-15',
       small: 'h-8 px-1.5 min-w-8',
+      medium: 'h-9 px-2 min-w-15',
       large: 'h-10 px-2.5 min-w-30',
     },
     state: {
-      on: 'text-white-500',
+      on: 'text-white-500 border',
       off: 'text-juiText-secondary',
     },
   },
@@ -48,12 +48,11 @@ const toggleVariants = tv({
     {
       variant: 'outline',
       state: 'on',
-      class: 'border-blue-500',
     },
   ],
   defaultVariants: {
     variant: 'default',
-    size: 'default',
+    size: 'small',
     state: 'off',
   },
 });

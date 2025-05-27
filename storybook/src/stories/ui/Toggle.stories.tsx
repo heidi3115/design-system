@@ -1,41 +1,25 @@
 import { toggleVariants, Toggle } from '@common/ui/components';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { ComponentProps } from 'react';
-import { EyeIcon, EyeOffIcon, StarIcon } from '@common/ui/icons';
-
-const icons = {
-  EyeIcon: <EyeIcon />,
-  EyeOffIcon: <EyeOffIcon />,
-  StarIcon: <StarIcon />,
-  noIcon: null,
-};
 
 const meta: Meta<typeof Toggle> = {
   title: 'UI/Toggle',
   component: Toggle,
-  // parameters: {
-  //   controls: {
-  //     include: ['onIcon', 'offIcon'],
-  //   },
-  // },
   argTypes: {
-    onText: { control: 'text', description: 'ON 상태 텍스트' },
-    offText: { control: 'text', description: 'OFF 상태 텍스트' },
-    onClassName: { control: 'text', description: 'ON 상태 Tailwind 클래스' },
-    offClassName: { control: 'text', description: 'OFF 상태 Tailwind 클래스' },
     onIcon: {
-      options: Object.keys(icons),
-      mapping: icons,
-      control: { type: 'select', labels: { EyeIcon: '눈', EyeOffIcon: '눈 감음', StarIcon: '별' } },
-      description: 'on 상태 아이콘',
+      options: ['EyeIcon', 'EyeOffIcon', 'StarIcon', 'noIcon'],
+      control: { type: 'radio' },
     },
     offIcon: {
-      options: [...Object.keys(icons)],
-      mapping: icons,
+      options: ['EyeIcon', 'EyeOffIcon', 'StarIcon', 'noIcon'],
       control: { type: 'radio' },
-      description: 'off 상태 아이콘',
     },
-    children: { control: 'text', description: '항상 보이는 텍스트' },
+    children: { control: 'text', description: '텍스트' },
+    size: {
+      control: 'radio',
+      description: '사이즈 선택',
+      options: Object.keys(toggleVariants.variants.size),
+    },
   },
   args: {
     onIcon: 'EyeIcon',
@@ -54,11 +38,8 @@ export const Default: Story = {
   render: Template,
   args: {
     variant: 'default',
-    children: '이벤트 목록',
-    onClassName: '',
-    offClassName: '',
-    onIcon: 'noIcon',
-    offIcon: 'noIcon',
+    children: '',
+    size: 'small',
   },
 };
 
@@ -82,11 +63,9 @@ export const Variants: Story = {
 export const WithIcon: Story = {
   render: (args) => (
     <div className="flex flex-wrap gap-2">
-      {(Object.keys(toggleVariants.variants.size) as (keyof typeof toggleVariants.variants.size)[]).map((size) => (
-        <Toggle key={size} {...args} size={size}>
-          {size}
-        </Toggle>
-      ))}
+      <Toggle size={args.size} onIcon={args.onIcon} offIcon={args.offIcon}>
+        {args.children}
+      </Toggle>
     </div>
   ),
 };
@@ -95,18 +74,13 @@ export const Sizes: Story = {
   render: (args) => (
     <div className="flex flex-wrap gap-2">
       {(Object.keys(toggleVariants.variants.size) as (keyof typeof toggleVariants.variants.size)[]).map((size) => (
-        <Toggle key={size} {...args} size={size}>
-          {size}
-        </Toggle>
+        <div className="flex flex-col gap-2">
+          <div>{size}</div>
+          <Toggle key={size} {...args} size={size}>
+            {size}
+          </Toggle>
+        </div>
       ))}
     </div>
   ),
-};
-
-export const CustomStyle: Story = {
-  args: {
-    children: 'Custom',
-    // onClassName: 'bg-green-500 border-green-700 text-white shadow-md',
-    // offClassName: 'bg-gray-200 text-gray-500',
-  },
 };
