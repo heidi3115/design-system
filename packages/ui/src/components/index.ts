@@ -4,3 +4,16 @@ export { Input, inputVariants } from './Input';
 export { Checkbox } from './Checkbox';
 export { Textarea, textareaVariaints } from './Textarea';
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
+export {
+  AlertDialog,
+  AlertDialogTitle,
+  AlertDialogPortal,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogAction,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogDescription,
+  AlertDialogOverlay,
+} from './AlertDialog';
