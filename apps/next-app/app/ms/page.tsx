@@ -9,7 +9,6 @@ import {
   ClockIcon,
   CornerDownRightIcon,
   EyeIcon,
-  EyeOffIcon,
   FilePlusIcon,
   FileTextIcon,
   LockIcon,
@@ -18,37 +17,22 @@ import {
   UserIcon,
 } from '@common/ui/icons';
 
-import { useController, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import ThemeToggle from '../../components/ThemeToggle';
-import { useUpdateEffect } from '@common/utils';
-import { TvIcon } from 'lucide-react';
 
 export default function Page() {
   const [value, setValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useUpdateEffect(() => {
-    console.log('제어', value);
-  }, [value]);
-
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ email: string; tv: boolean }>({
+  } = useForm({
     mode: 'onBlur',
   });
 
-  const {
-    field: { ref: tvRef, value: tvValue, onChange: tvOnChange },
-  } = useController({
-    name: 'tv',
-    defaultValue: false,
-    control,
-  });
-
-  const onValid = (data: { email: string; tv: boolean }) => {
+  const onValid = (data: Record<string, string>) => {
     console.log('폼 제출됨', data);
   };
 
@@ -110,30 +94,25 @@ export default function Page() {
               {...register('email', { required: '이메일은 필수입니다' })}
               placeholder="email"
               error={!!errors.email}
-              helperText={errors.email?.message}
+              helperText={errors.email?.message as string}
             />
-            <Input type="number" placeholder="숫자입력" size="large" iconLeft={StarIcon} />
-            <Input type="text" placeholder="aaaa" size="large" />
-            <Input type="text" placeholder="aaaa" size="large" iconLeft={LockIcon} />
-            <Input type="text" placeholder="aaaa" size="large" iconRight={CalendarIcon} />
+            <Input type="number" placeholder="숫자입력" size="large" iconLeft={<StarIcon />} />
+            <Input type="text" placeholder="aaaa" size="large" iconLeft={<span>응</span>} />
+            <Input type="text" placeholder="aaaa" size="large" iconLeft={<LockIcon />} />
+            <Input type="text" placeholder="aaaa" size="large" iconRight={<CalendarIcon />} />
             <p></p>
             <span>제어</span>
             <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder="Controlled input" />
             <p></p>
             <span>비제어</span>
-            <Input
-              ref={inputRef}
-              defaultValue="비제어"
-              placeholder="Uncontrolled input"
-              onBlur={() => console.log('비제어', inputRef.current?.value)}
-            />
+            <Input placeholder="Uncontrolled input" onBlur={(e) => console.log(e.target.value)} />
 
             <Input
               type="text"
               placeholder="aaaa"
               size="large"
-              iconLeft={LockIcon}
-              iconRight={CalendarIcon}
+              iconLeft={<LockIcon />}
+              iconRight={<CalendarIcon />}
               error
               helperText="aaaaa"
               disabled

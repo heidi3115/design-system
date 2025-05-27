@@ -5,3 +5,16 @@ export { Checkbox } from './Checkbox';
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator, SplitOtpInput } from './InputOTP';
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
+export {
+  AlertDialog,
+  AlertDialogTitle,
+  AlertDialogPortal,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogAction,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogDescription,
+  AlertDialogOverlay,
+} from './AlertDialog';
