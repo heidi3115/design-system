@@ -212,13 +212,12 @@ select {
  * Correct the inability to style clickable types in iOS and Safari.
  */
 
-button,
-[type='button'],
-[type='reset'],
-[type='submit'] {
+button:not(:disabled),
+[type='button']:not(:disabled),
+[type='reset']:not(:disabled),
+[type='submit']:not(:disabled) {
   -webkit-appearance: button;
-  /* 우선순위로 주석 처리 */
-  /*cursor: pointer;*/
+  cursor: pointer;
 }
 
 /**
