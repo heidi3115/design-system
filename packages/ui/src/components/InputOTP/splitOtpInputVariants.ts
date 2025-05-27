@@ -1,6 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 const splitOtpInputVariants = tv({
+  base: 'border-juiGrey-a400',
   variants: {
     variant: {
       primary: 'data-[active=true]:ring-juiPrimary text-juiText-blue',
