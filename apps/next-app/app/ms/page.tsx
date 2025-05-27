@@ -1,15 +1,14 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { Button, Checkbox, Input } from '@common/ui';
+import { Button, Input } from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
   ClockIcon,
   CornerDownRightIcon,
   EyeIcon,
-  EyeOffIcon,
   FilePlusIcon,
   FileTextIcon,
   LockIcon,
@@ -18,37 +17,21 @@ import {
   UserIcon,
 } from '@common/ui/icons';
 
-import { useController, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import ThemeToggle from '../../components/ThemeToggle';
-import { useUpdateEffect } from '@common/utils';
-import { TvIcon } from 'lucide-react';
 
 export default function Page() {
   const [value, setValue] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useUpdateEffect(() => {
-    console.log('제어', value);
-  }, [value]);
 
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ email: string; tv: boolean }>({
+  } = useForm({
     mode: 'onBlur',
   });
 
-  const {
-    field: { ref: tvRef, value: tvValue, onChange: tvOnChange },
-  } = useController({
-    name: 'tv',
-    defaultValue: false,
-    control,
-  });
-
-  const onValid = (data: { email: string; tv: boolean }) => {
+  const onValid = (data: Record<string, string>) => {
     console.log('폼 제출됨', data);
   };
 
@@ -58,66 +41,30 @@ export default function Page() {
       <div className="flex items-center justify-center min-h-svh">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="terms" />
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Accept terms and conditions
-            </label>
-          </div>
-          <Checkbox label="이벤트 중복 방지" />
-          <Checkbox
-            ref={tvRef}
-            checked={tvValue}
-            onCheckedChange={tvOnChange}
-            isBox
-            label={
-              <div className="flex flex-row gap-1 items-center">
-                <TvIcon size={15} /> <span>텔레비전(from 제출용)</span>
-              </div>
-            }
-          />
-          <Checkbox
-            defaultChecked
-            isBox
-            label={
-              <div className="flex flex-row gap-1 items-center">
-                <TvIcon size={15} /> 텔레비전
-              </div>
-            }
-          />
-          <Checkbox label="normal" customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }} />
-          <Checkbox id="aa" defaultChecked />
           <div className="w-2xs flex flex-col gap-2">
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}
               placeholder="email"
               error={!!errors.email}
-              helperText={errors.email?.message}
+              helperText={errors.email?.message as string}
             />
-            <Input type="number" placeholder="숫자입력" size="large" iconLeft={StarIcon} />
-            <Input type="text" placeholder="aaaa" size="large" />
-            <Input type="text" placeholder="aaaa" size="large" iconLeft={LockIcon} />
-            <Input type="text" placeholder="aaaa" size="large" iconRight={CalendarIcon} />
+            <Input type="number" placeholder="숫자입력" size="large" iconLeft={<StarIcon />} />
+            <Input type="text" placeholder="aaaa" size="large" iconLeft={<span>응</span>} />
+            <Input type="text" placeholder="aaaa" size="large" iconLeft={<LockIcon />} />
+            <Input type="text" placeholder="aaaa" size="large" iconRight={<CalendarIcon />} />
             <p></p>
             <span>제어</span>
             <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder="Controlled input" />
             <p></p>
             <span>비제어</span>
-            <Input
-              ref={inputRef}
-              defaultValue="비제어"
-              placeholder="Uncontrolled input"
-              onBlur={() => console.log('비제어', inputRef.current?.value)}
-            />
+            <Input placeholder="Uncontrolled input" onBlur={(e) => console.log(e.target.value)} />
 
             <Input
               type="text"
               placeholder="aaaa"
               size="large"
-              iconLeft={LockIcon}
-              iconRight={CalendarIcon}
+              iconLeft={<LockIcon />}
+              iconRight={<CalendarIcon />}
               error
               helperText="aaaaa"
               disabled
