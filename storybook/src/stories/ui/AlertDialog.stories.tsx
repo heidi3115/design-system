@@ -158,7 +158,7 @@ export const title: Story = {
             <AlertTitle className="items-center">
               <AlertCircleIcon />
             </AlertTitle>
-            <AlertDescription className="text-white">{args.description}</AlertDescription>
+            <AlertDescription className="text-juiText-primary">{args.description}</AlertDescription>
             <div className="flex gap-1">
               <Button variant="primary">확인</Button>
               {args.footerType !== 'confirm' && <Button>취소</Button>}
@@ -171,7 +171,7 @@ export const title: Story = {
             <AlertTitle className="items-center">
               <CheckCircleIcon />
             </AlertTitle>
-            <AlertDescription className="text-white">{args.description}</AlertDescription>
+            <AlertDescription className="text-juiText-primary">{args.description}</AlertDescription>
             <div className="flex gap-1">
               <Button variant="primary">확인</Button>
               {args.footerType !== 'confirm' && <Button>취소</Button>}
@@ -181,7 +181,7 @@ export const title: Story = {
         <div className="flex flex-col gap-2">
           <div>미설정</div>
           <Alert className={alertVariants({ contentSize: args.contentSize })}>
-            <AlertDescription className="text-white">{args.description}</AlertDescription>
+            <AlertDescription className="text-juiText-primary">{args.description}</AlertDescription>
             <div className="flex gap-1">
               <Button variant="primary">확인</Button>
               {args.footerType !== 'confirm' && <Button>취소</Button>}
@@ -233,7 +233,7 @@ export const ContentSize: Story = {
               {args.title === 'warning' && <AlertCircleIcon />}
               {args.title === 'success' && <CheckCircleIcon />}
             </AlertTitle>
-            <AlertDescription className="text-white">{args.description}</AlertDescription>
+            <AlertDescription className="text-juiText-primary">{args.description}</AlertDescription>
             <div className="flex gap-1">
               <Button variant="primary">{args.confirmLabel}</Button>
               {args.footerType !== 'confirm' && <Button>{args.cancelLabel}</Button>}
@@ -247,7 +247,7 @@ export const ContentSize: Story = {
               {args.title === 'warning' && <AlertCircleIcon />}
               {args.title === 'success' && <CheckCircleIcon />}
             </AlertTitle>
-            <AlertDescription className="text-white">{args.description}</AlertDescription>
+            <AlertDescription className="text-juiText-primary">{args.description}</AlertDescription>
             <div className="flex gap-1">
               <Button variant="primary">{args.confirmLabel}</Button>
               {args.footerType !== 'confirm' && <Button>{args.cancelLabel}</Button>}
@@ -261,7 +261,7 @@ export const ContentSize: Story = {
               {args.title === 'warning' && <AlertCircleIcon />}
               {args.title === 'success' && <CheckCircleIcon />}
             </AlertTitle>
-            <AlertDescription className="text-white">{args.description}</AlertDescription>
+            <AlertDescription className="text-juiText-primary">{args.description}</AlertDescription>
             <div className="flex gap-1">
               <Button variant="primary">{args.confirmLabel}</Button>
               {args.footerType !== 'confirm' && <Button>{args.cancelLabel}</Button>}
@@ -313,7 +313,7 @@ export const FooterType: Story = {
               {args.title === 'warning' && <AlertCircleIcon />}
               {args.title === 'success' && <CheckCircleIcon />}
             </AlertTitle>
-            <AlertDescription className="text-white">{args.description}</AlertDescription>
+            <AlertDescription className="text-juiText-primary">{args.description}</AlertDescription>
             <div className="flex gap-1">
               <Button variant="primary">확인</Button>
               <Button>취소</Button>
@@ -327,7 +327,7 @@ export const FooterType: Story = {
               {args.title === 'warning' && <AlertCircleIcon />}
               {args.title === 'success' && <CheckCircleIcon />}
             </AlertTitle>
-            <AlertDescription className="text-white">{args.description}</AlertDescription>
+            <AlertDescription className="text-juiText-primary">{args.description}</AlertDescription>
             <div className="flex gap-1">
               <Button variant="primary">확인</Button>
             </div>

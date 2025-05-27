@@ -62,7 +62,7 @@ export default function ConfirmDialog({
       <AlertDialogContent portalContainer={portalContainer} contentSize={contentSize}>
         {title && (
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-accent-foreground"> {title ? iconMap[title] : null}</AlertDialogTitle>
+            <AlertDialogTitle> {title ? iconMap[title] : null}</AlertDialogTitle>
           </AlertDialogHeader>
         )}
         <AlertDialogDescription>{description}</AlertDialogDescription>
