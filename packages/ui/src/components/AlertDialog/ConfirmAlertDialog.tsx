@@ -41,7 +41,7 @@ export default function ConfirmDialog({
   onCancel,
   footerType,
   portalContainer,
-  contentSize,
+  contentSize = 'small',
 }: ConfirmDialogProps) {
   const iconMap = {
     warning: <AlertCircleIcon />,

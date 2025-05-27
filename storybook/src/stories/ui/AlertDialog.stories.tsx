@@ -197,8 +197,7 @@ export const ContentSize: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'Alert-dialog의 하단 버튼 타입을 정할 수 있다. <br/> 확인 / 취소 버튼 노출은 update, 확인 버튼 단독은 confirm으로 제어한다.',
+        story: 'Alert-dialog의 사이즈를 확인할 수 있다. 기본값은 small이다.<br/>',
       },
       source: {
         code: null,

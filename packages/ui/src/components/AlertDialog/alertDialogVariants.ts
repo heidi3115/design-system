@@ -40,8 +40,6 @@ export const alertDialogVariants = tv({
   },
   defaultVariants: {
     contentSize: 'medium',
-    actionVariant: 'primary',
-    title: 'warning',
     positioning: 'fixed',
   },
 });
