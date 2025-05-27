@@ -6,6 +6,7 @@ const splitOtpInputVariants = tv({
       primary: 'data-[active=true]:ring-juiPrimary text-juiText-blue',
       secondary: 'data-[active=true]:ring-juiSecondary text-juiText-purple',
       normal: 'data-[active=true]:ring-juiBorder-primary text-juiText-primary',
+      error: 'data-[active=true]:ring-juiError text-juiError',
     },
     size: {
       small: 'h-10 w-10 text-base',

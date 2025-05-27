@@ -62,7 +62,7 @@ export default function Page() {
           <SplitOtpInput />
           <SplitOtpInput size="large" />
           <SplitOtpInput size="small" />
-          <SplitOtpInput size="small" variant="secondary" />
+          <SplitOtpInput size="small" variant="error" />
           <p></p>
           <span>비제어</span>
           <SplitOtpInput
