@@ -1,8 +1,8 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { Button, Checkbox, Input, SplitOtpInput, Textarea } from '@common/ui';
+import { Button, Checkbox, Input, RadioGroup, SplitOtpInput, Textarea } from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -52,12 +52,37 @@ export default function Page() {
     control,
   });
 
+  const options = [
+    { label: 'Apple', value: 'apple' },
+    { label: 'Banana', value: 'banana' },
+    { label: 'Orange', value: 'orange' },
+  ];
+
+  const [radioValue, setRaidoValue] = useState('apple');
+  const radioRef = useRef(null);
+
+  useEffect(() => {
+    console.log('제어', radioValue);
+  }, [radioValue]);
+
   return (
     <form className="p-4" onSubmit={handleSubmit(onValid)}>
       <ThemeToggle />
       <div className="flex items-center justify-center min-h-svh">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
+          <RadioGroup valueRef={radioRef} defaultValue="banana" options={options} />
+          <Button
+            onMouseEnter={() => {
+              if (radioRef.current) {
+                console.log('비제어', radioRef.current);
+              }
+            }}>
+            라디오그룹 비제어
+          </Button>
+
+          <RadioGroup direction="horizontal" value={radioValue} onValueChange={setRaidoValue} options={options} />
+
           <SplitOtpInput maxLength={5} inputType="all" />
           <SplitOtpInput />
           <SplitOtpInput size="large" />

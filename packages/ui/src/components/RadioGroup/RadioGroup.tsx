@@ -1,31 +1,75 @@
 'use client';
 
-import * as React from 'react';
-import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
-import { CircleIcon } from 'lucide-react';
-
+import { RadioGroupItem, RadioGroupRoot } from './RadioGroupParts';
 import { cn } from '../../lib/utils';
+import { type ComponentProps, type Ref, useId, useImperativeHandle, useState } from 'react';
 
-function RadioGroup({ className, ...props }: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
-  return <RadioGroupPrimitive.Root data-slot="radio-group" className={cn('grid gap-3', className)} {...props} />;
-}
+type Direction = 'vertical' | 'horizontal';
 
-function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof RadioGroupPrimitive.Item>) {
+type Option<Value extends string = string> = {
+  label: string;
+  value: Value;
+};
+
+type BaseProps = Omit<ComponentProps<typeof RadioGroupRoot>, 'defaultValue' | 'value' | 'onValueChange'>;
+
+type RadioGroupProps<T extends readonly Option[] = Option[]> = BaseProps & {
+  options: T;
+  direction?: Direction;
+  className?: string;
+  defaultValue?: T[number]['value'];
+  value?: T[number]['value'];
+  valueRef?: Ref<string | undefined>;
+  onValueChange?: (value: T[number]['value']) => void;
+};
+
+function RadioGroup<const T extends readonly Option<string>[]>({
+  options,
+  direction = 'vertical',
+  className,
+  defaultValue,
+  valueRef,
+  value: controlledValue,
+  onValueChange,
+  ...props
+}: RadioGroupProps<T>) {
+  const groupId = useId(); // 고유 그룹 id 생성
+
+  const isControlled = controlledValue !== undefined && onValueChange !== undefined;
+
+  const isValidDefault = options.some((opt) => opt.value === defaultValue);
+  const [uncontrolledValue, setUncontrolledValue] = useState(isValidDefault ? defaultValue : (options[0]?.value ?? ''));
+
+  const currentValue = isControlled ? controlledValue : uncontrolledValue;
+
+  useImperativeHandle(valueRef, () => currentValue);
+
+  const handleChange = (val: string) => {
+    if (isControlled) {
+      onValueChange?.(val);
+    } else {
+      setUncontrolledValue(val);
+    }
+  };
+
   return (
-    <RadioGroupPrimitive.Item
-      data-slot="radio-group-item"
-      className={cn(
-        'border-input text-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 aspect-square size-4 shrink-0 rounded-full border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
-        className,
-      )}
+    <RadioGroupRoot
+      value={currentValue}
+      onValueChange={handleChange}
+      className={cn('flex', direction === 'vertical' ? 'flex-col space-y-2' : 'flex-row space-x-4', className)}
       {...props}>
-      <RadioGroupPrimitive.Indicator
-        data-slot="radio-group-indicator"
-        className="relative flex items-center justify-center">
-        <CircleIcon className="fill-primary absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2" />
-      </RadioGroupPrimitive.Indicator>
-    </RadioGroupPrimitive.Item>
+      {options.map((option) => (
+        <div key={option.value} className="flex items-center space-x-2">
+          <RadioGroupItem id={`${groupId}-${option.value}`} value={option.value} />
+          <label
+            htmlFor={`${groupId}-${option.value}`}
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+            {option.label}
+          </label>
+        </div>
+      ))}
+    </RadioGroupRoot>
   );
 }
 
-export { RadioGroup, RadioGroupItem };
+export default RadioGroup;
