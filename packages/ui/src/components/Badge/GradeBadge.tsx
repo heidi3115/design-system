@@ -7,11 +7,13 @@ import { Badge } from '@common/ui/components';
 import type { badgeGradeType } from '@common/ui/components/Badge/badgeVariants';
 import type { CloneBadgeChildProps } from '@common/ui/components/Badge/badgeUtils';
 import { getStringFromChildren } from '@common/ui/components/Badge/badgeUtils';
-import { FolderFilledIcon } from '@common/ui/icons/Icon/FolderFilledIcon';
-import { SearchFilledIcon } from '@common/ui/icons/Icon/SearchFilledIcon';
-import { BellFilledIcon } from '@common/ui/icons/Icon/BellFilledIcon';
-import { AlertTriangleFilledIcon } from '@common/ui/icons/Icon/AlertTriangleFilledIcon';
-import { AlertFilledIcon } from '@common/ui/icons/Icon/AlertFilledIcon';
+import {
+  AlertFilledIcon,
+  AlertTriangleFilledIcon,
+  BellFilledIcon,
+  FolderFilledIcon,
+  SearchFilledIcon,
+} from '@common/ui/icons';
 
 export type GradeBadgePropsType = React.ComponentProps<'span'> &
   Omit<VariantProps<typeof badgeVariants>, 'variant' | 'status' | 'score'> & {

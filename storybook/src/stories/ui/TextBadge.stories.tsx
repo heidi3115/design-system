@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { BookmarkIcon, CheckIcon } from '@common/ui/icons';
+import { BookmarkIcon, CheckIcon, FolderFilledIcon } from '@common/ui/icons';
 import { Button, TextBadge } from '@common/ui';
-import { FolderFilledIcon } from '@common/ui/icons/Icon/FolderFilledIcon.tsx';
 
 const textMap = {
   short: ['짧은 텍스트', 'text'],
