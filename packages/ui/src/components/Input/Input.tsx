@@ -1,19 +1,21 @@
-import { type ReactElement, type SVGProps, isValidElement, cloneElement } from 'react';
+'use client';
+
+import { type ChangeEvent, type ComponentType, type ReactNode } from 'react';
 import { type VariantProps } from 'tailwind-variants';
-import { type IconProps } from '@common/ui/icons/types';
-import { AlertCircle2Icon } from '@common/ui/icons';
+import { AlertCircle2Icon, type IconProps } from '@common/ui/icons';
+import { sanitizeNumber } from '@common/utils';
 
 import inputVariants from './inputVariants';
-import { useInputValue } from './hooks/useInputValue';
+import { useInputValue } from '../hooks/useInputValue';
+import NumberStepper from './NumberStepper';
 import { cn } from '../../lib/utils';
-import NumberStepper from '@common/ui/components/Input/NumberStepper';
 
 type InputProps = Omit<React.ComponentProps<'input'>, 'size'> &
   VariantProps<typeof inputVariants> & {
-    iconLeft?: ReactElement<SVGProps<SVGSVGElement>>;
-    iconRight?: ReactElement<SVGProps<SVGSVGElement>>;
+    iconLeft?: ComponentType<IconProps>;
+    iconRight?: ComponentType<IconProps>;
     error?: boolean;
-    helperText?: string;
+    helperText?: ReactNode;
   };
 
 function Input({
@@ -39,19 +41,23 @@ function Input({
     onChange,
   });
 
-  const renderIcon = (icon: ReactElement<SVGProps<SVGSVGElement>> | undefined) =>
-    isValidElement<IconProps>(icon) ? cloneElement(icon, { size: 'small' }) : icon;
+  const IconLeft = iconLeft;
+  const IconRitght = iconRight;
+
+  const preventInvalidInput = (event: ChangeEvent<HTMLInputElement>) => {
+    event.target.value = sanitizeNumber(event.target.value);
+  };
 
   return (
     <div>
       <div className={cn('relative group min-h-7', className)}>
-        {hasIconLeft && (
+        {IconLeft && (
           <span
             className={cn(
               'absolute left-3 top-1/2 -translate-y-1/2 text-current pointer-events-none',
               disabled && 'opacity-50 cursor-not-allowed',
             )}>
-            {renderIcon(iconLeft)}
+            <IconLeft size="small" />
           </span>
         )}
 
@@ -61,6 +67,7 @@ function Input({
           data-slot="input"
           value={inputValue}
           onChange={handleChange}
+          {...(type === 'number' && { type: 'text', onInput: preventInvalidInput })}
           className={cn(
             inputVariants({
               error,
@@ -71,7 +78,8 @@ function Input({
               className,
             }),
           )}
-          {...props}></input>
+          {...props}
+        />
 
         {error && (
           <span
@@ -84,13 +92,13 @@ function Input({
           </span>
         )}
 
-        {hasIconRight && (
+        {IconRitght && (
           <span
             className={cn(
               'absolute right-3 top-1/2 -translate-y-1/2 text-current pointer-events-none',
               disabled && 'opacity-50 cursor-not-allowed',
             )}>
-            {renderIcon(iconRight)}
+            <IconRitght size="small" />
           </span>
         )}
 

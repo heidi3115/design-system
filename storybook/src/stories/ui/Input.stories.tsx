@@ -1,12 +1,14 @@
-import { useState, type ComponentProps, type ReactElement, type SVGProps } from 'react';
+import { useRef, useState, type ComponentProps, type ComponentType } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Input, inputVariants } from '@common/ui/components';
-import { CalendarIcon, LockIcon } from '@common/ui/icons';
+import { action } from '@storybook/addon-actions';
 
-const iconMap = {
-  none: null,
-  lock: <LockIcon />,
-  calendar: <CalendarIcon />,
+import { Input, inputVariants } from '@common/ui';
+import { CalendarIcon, LockIcon, type IconProps } from '@common/ui/icons';
+
+const ICON_MAP: Record<string, ComponentType<IconProps> | undefined> = {
+  none: undefined,
+  lock: LockIcon,
+  calendar: CalendarIcon,
 };
 
 const meta: Meta<typeof Input> = {
@@ -16,19 +18,31 @@ const meta: Meta<typeof Input> = {
     type: {
       control: 'select',
       options: ['text', 'number', 'color'],
+      table: {
+        defaultValue: { summary: 'text' },
+      },
     },
     size: {
       control: 'select',
       options: Object.keys(inputVariants.variants.size),
       description: 'Input의 높이를 조절합니다.',
+      table: {
+        defaultValue: { summary: 'default' },
+      },
     },
     error: {
       control: 'boolean',
       description: '에러 상태일 경우 테두리가 빨간색으로 표시됩니다.',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
     },
     disabled: {
       control: 'boolean',
       description: '비활성화 상태 여부입니다.',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
     },
     hasIconLeft: {
       table: {
@@ -62,13 +76,10 @@ const meta: Meta<typeof Input> = {
     },
   },
   args: {
-    size: 'default',
-    type: 'text',
     error: false,
     disabled: false,
     iconLeft: undefined,
     iconRight: undefined,
-    helperText: '',
     placeholder: '입력해 주세요',
   },
   parameters: {
@@ -102,8 +113,8 @@ export const Disabled: Story = {
   args: {
     placeholder: '비활성 Input',
     disabled: true,
-    iconLeft: <CalendarIcon />,
-    iconRight: <LockIcon />,
+    iconLeft: CalendarIcon,
+    iconRight: LockIcon,
     helperText: '비활성 helper text',
     className: 'w-3xl',
   },
@@ -207,36 +218,30 @@ export const IconPosition: Story = {
         <div className="flex flex-col gap-2">
           <span className="text-sm font-bold">왼쪽 아이콘</span>
           <div className="w-72">
-            <Input {...args} placeholder="왼쪽 아이콘" iconLeft={<LockIcon />} />
+            <Input {...args} placeholder="왼쪽 아이콘" iconLeft={LockIcon} />
           </div>
         </div>
         <div className="flex flex-col gap-2">
           <span className="text-sm font-bold">오른쪽 아이콘</span>
           <div className="w-72">
-            <Input {...args} placeholder="오른쪽 아이콘" iconRight={<CalendarIcon />} />
+            <Input {...args} placeholder="오른쪽 아이콘" iconRight={CalendarIcon} />
           </div>
         </div>
         <div className="flex flex-col gap-2">
           <span className="text-sm font-bold">양쪽 아이콘</span>
           <div className="w-72">
-            <Input {...args} placeholder="양쪽 아이콘" iconLeft={<LockIcon />} iconRight={<CalendarIcon />} />
+            <Input {...args} placeholder="양쪽 아이콘" iconLeft={LockIcon} iconRight={CalendarIcon} />
           </div>
         </div>
         <div className="flex flex-col gap-2">
           <span className="text-sm font-bold">양쪽 아이콘 with 에러</span>
           <div className="w-72">
-            <Input {...args} placeholder="양쪽 아이콘" iconLeft={<LockIcon />} iconRight={<CalendarIcon />} error />
+            <Input {...args} placeholder="양쪽 아이콘" iconLeft={LockIcon} iconRight={CalendarIcon} error />
           </div>
         </div>
       </div>
     );
   },
-};
-
-type IconKey = keyof typeof iconMap;
-type InputStoryProps = Omit<ComponentProps<typeof Input>, 'iconLeft' | 'iconRight'> & {
-  iconLeft: IconKey;
-  iconRight: IconKey;
 };
 
 export const ErrorStates: Story = {
@@ -290,6 +295,12 @@ export const ErrorStates: Story = {
   ),
 };
 
+type IconKey = keyof typeof ICON_MAP;
+type InputStoryProps = Omit<ComponentProps<typeof Input>, 'iconLeft' | 'iconRight'> & {
+  iconLeft: IconKey;
+  iconRight: IconKey;
+};
+
 export const IconControl: StoryObj<InputStoryProps> = {
   argTypes: {
     iconLeft: {
@@ -336,8 +347,8 @@ export const IconControl: StoryObj<InputStoryProps> = {
     },
   },
   render: ({ iconLeft, iconRight, ...args }) => {
-    const IconLeftComponent = iconMap[iconLeft] as ReactElement<SVGProps<SVGSVGElement>> | undefined;
-    const IconRightComponent = iconMap[iconRight] as ReactElement<SVGProps<SVGSVGElement>> | undefined;
+    const IconLeftComponent = ICON_MAP?.[iconLeft];
+    const IconRightComponent = ICON_MAP?.[iconRight];
 
     return (
       <Input
@@ -358,8 +369,8 @@ export const Controlled: Story = {
   },
   argTypes: {
     value: { control: false },
-    onChange: { action: 'Controlled' },
-    onBlur: { action: 'unControlld' },
+    onChange: { action: '제어형 onChange Event' },
+    onBlur: { action: '비제어형 onBlur Event' },
     size: { control: false, table: { disable: true } },
     error: { control: false, table: { disable: true } },
     hasIconLeft: { control: false, table: { disable: true } },
@@ -381,10 +392,22 @@ export const Controlled: Story = {
   },
   render: ({ value: initialValue, onChange, onBlur, ...args }) => {
     const [value, setValue] = useState(initialValue);
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const logControlledChange = action('제어형 onChange 발생');
+    const logUncontrolledBlur = action('비제어형 onBlur 발생');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setValue(e.target.value);
+      logControlledChange(value);
       onChange?.(e); // 스토리북 action 로그용
+    };
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      if (inputRef.current) {
+        logUncontrolledBlur(e.target.value);
+        onBlur?.(e);
+      }
     };
 
     return (
@@ -396,9 +419,9 @@ export const Controlled: Story = {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <span className="text-sm font-bold">제어형 입력</span>
+          <span className="text-sm font-bold">비제어형 입력</span>
           <div className="w-3xs">
-            <Input {...args} onBlur={onBlur} />
+            <Input {...args} ref={inputRef} onBlur={handleBlur} />
           </div>
         </div>
       </div>
