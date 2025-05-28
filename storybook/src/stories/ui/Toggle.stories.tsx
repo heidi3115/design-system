@@ -60,7 +60,10 @@ export const Variants: Story = {
   ),
 };
 
-export const WithIcon: Story = {
+export const WithText: Story = {
+  args: {
+    children: '텍스트 추가',
+  },
   render: (args) => (
     <div className="flex flex-wrap gap-2">
       <Toggle size={args.size} onIcon={args.onIcon} offIcon={args.offIcon}>
