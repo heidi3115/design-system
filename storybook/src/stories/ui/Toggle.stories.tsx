@@ -216,7 +216,7 @@ export const Controlled: Story = {
     const pressedRef = useRef(null);
 
     const logControlledChange = action('제어형 onChange 발생');
-    const logUncontrolledBlur = action('비제어형 onBlur 발생');
+    const logUncontrolledConfirm = action('비제어형 확인');
 
     const controlledhandleChange = (press: boolean) => {
       setIsPress(press);
@@ -225,7 +225,7 @@ export const Controlled: Story = {
     };
 
     const unControlledhandleChange = () => {
-      logUncontrolledBlur(pressedRef.current);
+      logUncontrolledConfirm(pressedRef.current);
     };
 
     return (
