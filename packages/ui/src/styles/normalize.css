@@ -392,3 +392,33 @@ input[type='number']::-webkit-outer-spin-button {
 input[type='number'] {
   -moz-appearance: textfield; /* 숫자 입력창을 일반 텍스트 필드처럼 보이게 함 */
 }
+
+/**
+ * 스크롤바 전체 너비와 높이 설정
+ */
+::-webkit-scrollbar {
+  width: 10px; /* 세로 스크롤바 너비 */
+  height: 10px; /* 가로 스크롤바 높이 */
+}
+
+/**
+ * 스크롤바 손잡이(thumb) 스타일: 색상과 둥근 모서리 적용
+ */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.5); /* 반투명 회색 */
+  border-radius: 8px; /* 모서리 둥글게 */
+}
+
+/**
+ * 스크롤바 트랙(바탕) 스타일: 투명하게 처리
+ */
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/**
+ * 스크롤바 코너(수평/수직 스크롤이 만나는 부분) 배경색 설정
+ */
+::-webkit-scrollbar-corner {
+  background-color: rgba(100, 100, 100, 0.5);
+}

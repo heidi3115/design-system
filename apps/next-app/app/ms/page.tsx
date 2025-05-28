@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 
-import { Button, Checkbox, Input } from '@common/ui';
+import { Button, Checkbox, Input, SplitOtpInput, Textarea } from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -36,9 +36,13 @@ export default function Page() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ email: string; tv: boolean }>({
+  } = useForm<{ email: string; tv: boolean; area: string }>({
     mode: 'onBlur',
   });
+
+  const onValid = (data: { email: string; tv: boolean; area: string }) => {
+    console.log('폼 제출됨', data);
+  };
 
   const {
     field: { ref: tvRef, value: tvValue, onChange: tvOnChange },
@@ -48,16 +52,28 @@ export default function Page() {
     control,
   });
 
-  const onValid = (data: { email: string; tv: boolean }) => {
-    console.log('폼 제출됨', data);
-  };
-
   return (
     <form className="p-4" onSubmit={handleSubmit(onValid)}>
       <ThemeToggle />
       <div className="flex items-center justify-center min-h-svh">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
+          <SplitOtpInput maxLength={5} inputType="all" />
+          <SplitOtpInput />
+          <SplitOtpInput size="large" />
+          <SplitOtpInput size="small" />
+          <SplitOtpInput size="small" variant="error" />
+          <p></p>
+          <span>비제어</span>
+          <SplitOtpInput
+            size="small"
+            variant="normal"
+            ref={inputRef}
+            onBlur={() => console.log('비제어', inputRef.current?.value)}
+          />
+          <p></p>
+          <span>제어</span>
+          <SplitOtpInput size="small" variant="normal" value={value} onChange={(e: string) => setValue(e)} />
           <div className="flex items-center space-x-2">
             <Checkbox id="terms" />
             <label
@@ -90,6 +106,24 @@ export default function Page() {
           <Checkbox label="normal" customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }} />
           <Checkbox id="aa" defaultChecked />
           <div className="w-2xs flex flex-col gap-2">
+            <div className="h-26">
+              <Textarea defaultValue="aaaa" size="full" />
+            </div>
+            <Textarea placeholder="aaa" className="w-3xs" />
+            <Textarea placeholder="aaa" size="large" maxHeight={300} />
+            <Textarea placeholder="aaa" error />
+            <Textarea {...register('area', { required: '이메일은 필수입니다' })} error={!!errors.area} />
+            <Textarea placeholder="aaa" size="small" />
+            <Textarea
+              placeholder="aaa"
+              error
+              rightButton={
+                <Button variant="primary" onClick={() => console.log('callback')}>
+                  <TagIcon />
+                  Query
+                </Button>
+              }
+            />
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}
               placeholder="email"

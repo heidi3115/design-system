@@ -1,16 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
 
-export function useInputValue({
+type InputLikeElement = HTMLInputElement | HTMLTextAreaElement;
+
+export function useInputValue<T extends InputLikeElement = HTMLInputElement>({
   value,
   defaultValue,
   onChange,
 }: {
   value?: React.ComponentProps<'input'>['value'];
   defaultValue?: React.ComponentProps<'input'>['defaultValue'];
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<T>) => void;
 }) {
   const isControlled = value !== undefined;
-  const [internalValue, setInternalValue] = useState(defaultValue ?? '');
+  const [internalValue, setInternalValue] = useState(defaultValue?.toString() ?? '');
 
   useEffect(() => {
     if (isControlled) {
@@ -19,14 +21,11 @@ export function useInputValue({
   }, [value, isControlled]);
 
   const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!isControlled) {
-        setInternalValue(e.target.value);
-      }
-
+    (e: React.ChangeEvent<T>) => {
+      setInternalValue(e.target.value); // 안전: T는 value 속성이 있는 타입임
       onChange?.(e);
     },
-    [onChange, isControlled],
+    [onChange],
   );
 
   return {
