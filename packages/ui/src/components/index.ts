@@ -7,6 +7,7 @@ export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator, SplitOtpInput
 export { RadioGroupRoot, RadioGroupItem, RadioGroup } from './RadioGroup';
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
+export { Toggle, toggleVariants } from './Toggle';
 export {
   AlertDialog,
   AlertDialogTitle,
