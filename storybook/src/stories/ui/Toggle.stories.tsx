@@ -44,6 +44,7 @@ const meta: Meta<typeof Toggle> = {
     onIcon: <EyeIcon />,
     offIcon: <EyeOffIcon />,
     disabled: false,
+    size: 'small',
     children: '',
     onText: '',
     offText: '',
