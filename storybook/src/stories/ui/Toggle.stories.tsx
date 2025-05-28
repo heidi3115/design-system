@@ -7,10 +7,12 @@ const meta: Meta<typeof Toggle> = {
   component: Toggle,
   argTypes: {
     onIcon: {
+      description: 'on 아이콘',
       options: ['EyeIcon', 'EyeOffIcon', 'StarIcon', 'noIcon'],
       control: { type: 'radio' },
     },
     offIcon: {
+      description: 'off 아이콘',
       options: ['EyeIcon', 'EyeOffIcon', 'StarIcon', 'noIcon'],
       control: { type: 'radio' },
     },
@@ -22,7 +24,7 @@ const meta: Meta<typeof Toggle> = {
     },
     disabled: {
       control: 'boolean',
-      description: '비활성',
+      description: '비활성 여부',
       options: [true, false],
     },
   },
@@ -30,6 +32,7 @@ const meta: Meta<typeof Toggle> = {
     onIcon: 'EyeIcon',
     offIcon: 'EyeOffIcon',
     disabled: false,
+    children: '',
   },
 };
 
