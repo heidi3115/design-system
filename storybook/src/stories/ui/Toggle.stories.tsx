@@ -1,6 +1,18 @@
 import { toggleVariants, Toggle } from '@common/ui/components';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ComponentType } from 'react';
+import { EyeIcon, EyeOffIcon, type IconProps } from '@common/ui/icons';
+
+const ICON_MAP: Record<string, ComponentType<IconProps> | undefined> = {
+  none: undefined,
+  eyeIcon: EyeIcon,
+  eyeOffIcon: EyeOffIcon,
+};
+type IconKey = keyof typeof ICON_MAP;
+type ToggleIconProps = Omit<ComponentProps<typeof Toggle>, 'onIcon' | 'offIocn'> & {
+  onIcon: IconKey;
+  offIcon: IconKey;
+};
 
 const meta: Meta<typeof Toggle> = {
   title: 'UI/Toggle',
@@ -10,13 +22,11 @@ const meta: Meta<typeof Toggle> = {
     offText: { control: 'text', description: 'OFF 상태 텍스트' },
     onIcon: {
       description: 'on 아이콘',
-      options: ['EyeIcon', 'EyeOffIcon', 'StarIcon', 'noIcon'],
-      control: { type: 'radio' },
+      control: { disable: true },
     },
     offIcon: {
       description: 'off 아이콘',
-      options: ['EyeIcon', 'EyeOffIcon', 'StarIcon', 'noIcon'],
-      control: { type: 'radio' },
+      control: { disable: true },
     },
     children: { control: 'text', description: '텍스트' },
     disabled: {
@@ -24,10 +34,15 @@ const meta: Meta<typeof Toggle> = {
       description: '비활성 여부',
       options: [true, false],
     },
+    size: {
+      control: 'radio',
+      description: '사이즈 선택',
+      options: Object.keys(toggleVariants.variants.size),
+    },
   },
   args: {
-    onIcon: 'EyeIcon',
-    offIcon: 'EyeOffIcon',
+    onIcon: <EyeIcon />,
+    offIcon: <EyeOffIcon />,
     disabled: false,
     children: '',
     onText: '',
@@ -56,7 +71,51 @@ export const Default: Story = {
     size: 'small',
   },
 };
-
+export const ControlIcons: StoryObj<ToggleIconProps> = {
+  argTypes: {
+    onIcon: {
+      description: 'on 아이콘',
+      options: ['eyeIcon', 'eyeOffIcon', 'none'],
+      control: { type: 'radio', disable: false },
+    },
+    offIcon: {
+      description: 'off 아이콘',
+      options: ['eyeIcon', 'eyeOffIcon', 'none'],
+      control: { type: 'radio', disable: false },
+    },
+    children: { control: 'text', description: '텍스트' },
+    disabled: {
+      control: 'boolean',
+      description: '비활성 여부',
+      options: [true, false],
+    },
+    size: {
+      control: 'radio',
+      description: '사이즈 선택',
+      options: Object.keys(toggleVariants.variants.size),
+    },
+  },
+  args: {
+    onIcon: 'eyeIcon',
+    offIcon: 'eyeOffIcon',
+    disabled: false,
+    size: 'small',
+    children: '',
+    onText: '',
+    offText: '',
+  },
+  render: ({ onIcon, offIcon, ...args }) => {
+    const OnIconComponent = ICON_MAP?.[onIcon];
+    const OffIconComponent = ICON_MAP?.[offIcon];
+    return (
+      <Toggle
+        {...args}
+        onIcon={OnIconComponent ? <OnIconComponent /> : undefined}
+        offIcon={OffIconComponent ? <OffIconComponent /> : undefined}
+      />
+    );
+  },
+};
 export const WithText: Story = {
   parameters: {
     docs: {
@@ -70,9 +129,7 @@ export const WithText: Story = {
   },
   render: (args) => (
     <div className="flex flex-wrap gap-2">
-      <Toggle size={args.size} onIcon={args.onIcon} offIcon={args.offIcon} onText={args.onText} offText={args.offText}>
-        {args.children}
-      </Toggle>
+      <Toggle {...args}>{args.children}</Toggle>
     </div>
   ),
 };
