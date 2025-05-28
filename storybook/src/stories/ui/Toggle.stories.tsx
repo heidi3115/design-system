@@ -74,24 +74,6 @@ export const Default: Story = {
   },
 };
 
-export const Text: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'children으로 원하는 텍스트를 추가할 수 있다.',
-      },
-    },
-  },
-  args: {
-    children: '텍스트 추가',
-  },
-  render: (args) => (
-    <div className="flex flex-wrap gap-2">
-      <Toggle {...args}>{args.children}</Toggle>
-    </div>
-  ),
-};
-
 export const Sizes: Story = {
   parameters: {
     docs: {
@@ -121,40 +103,6 @@ type IconKey = keyof typeof ICON_MAP;
 type IconStoryProps = Omit<ComponentProps<typeof Toggle>, 'onIcon' | 'offIcon'> & {
   onIcon: IconKey;
   offIcon: IconKey;
-};
-
-export const Icon: StoryObj<IconStoryProps> = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'children으로 원하는 텍스트를 추가할 수 있다.',
-      },
-    },
-  },
-  args: {
-    onIcon: 'eyeOn',
-    offIcon: 'eyeOff',
-  },
-  argTypes: {
-    onIcon: {
-      table: { disable: false },
-    },
-    offIcon: {
-      table: { disable: false },
-    },
-  },
-  render: ({ onIcon, offIcon, ...args }) => {
-    const IconOnComp = ICON_MAP?.[onIcon];
-    const IconOffComp = ICON_MAP?.[offIcon];
-
-    return (
-      <div className="flex flex-wrap gap-2">
-        <Toggle size={args.size} onIcon={IconOnComp} offIcon={IconOffComp}>
-          {args.children}
-        </Toggle>
-      </div>
-    );
-  },
 };
 
 export const IconAndText: StoryObj<IconStoryProps> = {
