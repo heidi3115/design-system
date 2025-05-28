@@ -82,6 +82,9 @@ export const Sizes: Story = {
         story: 'small, medium, large 세가지로 나누어져있고, 기본 값은 small이다.',
       },
     },
+    controls: {
+      exclude: ['size'],
+    },
   },
   render: (args) => (
     <div className="flex flex-wrap gap-2">
