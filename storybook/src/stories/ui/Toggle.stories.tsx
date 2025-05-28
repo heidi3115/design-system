@@ -42,13 +42,9 @@ const meta: Meta<typeof Toggle> = {
     },
   },
   args: {
-    onIcon: EyeIcon,
-    offIcon: EyeOffIcon,
     disabled: false,
     size: 'small',
-    children: '',
-    onText: '',
-    offText: '',
+    children: 'Toggle',
   },
 };
 
