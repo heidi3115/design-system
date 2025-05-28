@@ -6,6 +6,7 @@ export { Textarea, textareaVariaints } from './Textarea';
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator, SplitOtpInput } from './InputOTP';
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
+export { Toggle, toggleVariants } from './Toggle';
 export {
   AlertDialog,
   AlertDialogTitle,
