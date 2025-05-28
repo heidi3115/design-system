@@ -1,43 +1,57 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Checkbox, Label } from '@common/ui';
+import { Checkbox, Input, Label } from '@common/ui';
 
-type AlertDialogStoryArgs = {
-  title?: 'warning' | 'success';
-  description: string;
-  footerType: 'update' | 'confirm';
-  contentSize?: 'small' | 'medium' | 'large';
-  confirmLabel?: string;
-  cancelLabel?: string;
-  onConfirm?: () => void;
-  onCancel?: () => void;
-  portalContainer?: string;
+type ComponentExample = 'checkbox' | 'input';
+
+type Args = {
+  componentExample: ComponentExample;
+  children: string;
+  htmlFor: string;
 };
 
-const meta: Meta<AlertDialogStoryArgs> = {
+const meta: Meta<Args> = {
   title: 'ui/Label',
   component: Label,
-  args: {},
+  argTypes: {
+    componentExample: {
+      control: {
+        type: 'select',
+      },
+      description: 'Label 연결 컴포넌트(예시)',
+      options: ['checkbox', 'input'],
+    },
+    children: {
+      control: 'text',
+    },
+    htmlFor: {
+      control: 'text',
+      description: '연결하고자 하는 컴포넌트와 동일하게 지정',
+    },
+  },
+  args: {
+    componentExample: 'checkbox',
+    children: 'Label Text',
+    htmlFor: 'testId',
+  },
   parameters: {
     docs: {
       description: {
-        component: '조립식 AlertDialog 컴포넌트 문서',
+        component: 'Label 컴포넌트 문서',
       },
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<AlertDialogStoryArgs>;
-
-const Template = () => {
-  return (
-    <div className="flex items-center space-x-2">
-      <Checkbox id="terms" />
-      <Label htmlFor="terms">Accept terms and conditions</Label>
-    </div>
-  );
-};
+type Story = StoryObj<Args>;
 
 export const Default: Story = {
-  render: Template,
+  render: ({ componentExample, children, htmlFor }) => {
+    return (
+      <div className="flex items-center space-x-2">
+        {componentExample === 'checkbox' ? <Checkbox id={htmlFor} /> : <Input id={htmlFor} />}
+        <Label htmlFor={htmlFor}>{children}</Label>
+      </div>
+    );
+  },
 };

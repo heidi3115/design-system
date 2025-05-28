@@ -19,4 +19,4 @@ export {
   AlertDialogDescription,
   AlertDialogOverlay,
 } from './AlertDialog';
-export { Label, labelVariants } from './Label';
+export { Label } from './Label';
