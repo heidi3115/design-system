@@ -1,29 +1,29 @@
 'use client';
 
+import { type ComponentProps, type Ref, useId, useImperativeHandle, useState } from 'react';
 import { RadioGroupItem, RadioGroupRoot } from './RadioGroupParts';
 import { cn } from '../../lib/utils';
-import { type ComponentProps, type Ref, useId, useImperativeHandle, useState } from 'react';
 
 type Direction = 'vertical' | 'horizontal';
 
-type Option<Value extends string = string> = {
+type Option = {
   label: string;
-  value: Value;
+  value: string;
 };
 
-type BaseProps = Omit<ComponentProps<typeof RadioGroupRoot>, 'defaultValue' | 'value' | 'onValueChange'>;
+type BaseProps = Omit<ComponentProps<typeof RadioGroupRoot>, 'defaultValue' | 'value' | 'onValueChange' | 'children'>;
 
-type RadioGroupProps<T extends readonly Option[] = Option[]> = BaseProps & {
-  options: T;
+type RadioGroupProps = BaseProps & {
+  options: Option[];
   direction?: Direction;
   className?: string;
-  defaultValue?: T[number]['value'];
-  value?: T[number]['value'];
+  defaultValue?: string;
+  value?: string;
   valueRef?: Ref<string | undefined>;
-  onValueChange?: (value: T[number]['value']) => void;
+  onValueChange?: (value: string) => void;
 };
 
-function RadioGroup<const T extends readonly Option<string>[]>({
+function RadioGroup({
   options,
   direction = 'vertical',
   className,
@@ -32,7 +32,7 @@ function RadioGroup<const T extends readonly Option<string>[]>({
   value: controlledValue,
   onValueChange,
   ...props
-}: RadioGroupProps<T>) {
+}: RadioGroupProps) {
   const groupId = useId(); // 고유 그룹 id 생성
 
   const isControlled = controlledValue !== undefined && onValueChange !== undefined;
@@ -59,11 +59,15 @@ function RadioGroup<const T extends readonly Option<string>[]>({
       className={cn('flex', direction === 'vertical' ? 'flex-col space-y-2' : 'flex-row space-x-4', className)}
       {...props}>
       {options.map((option) => (
-        <div key={option.value} className="flex items-center space-x-2">
-          <RadioGroupItem id={`${groupId}-${option.value}`} value={option.value} />
+        <div key={option.value} className="flex items-center">
+          <RadioGroupItem
+            id={`${groupId}-${option.value}`}
+            value={option.value}
+            className="peer data-[state=checked]:text-juiText-primary"
+          />
           <label
             htmlFor={`${groupId}-${option.value}`}
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+            className="ps-2 text-juiText-disabled peer-data-[state=checked]:text-juiText-primary text-sm font-medium leading-none hover:cursor-pointer">
             {option.label}
           </label>
         </div>

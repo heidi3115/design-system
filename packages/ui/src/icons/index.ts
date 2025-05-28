@@ -87,3 +87,4 @@ export { XIcon } from './Icon/XIcon';
 export { XSquareIcon } from './Icon/XSquareIcon';
 export { ZoomInIcon } from './Icon/ZoomInIcon';
 export { ZoomOutIcon } from './Icon/ZoomOutIcon';
+export { CircleIcon } from './Icon/CircleIcon';
