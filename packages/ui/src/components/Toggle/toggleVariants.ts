@@ -30,10 +30,6 @@ const toggleVariants = tv({
     'transition-[color,box-shadow]',
   ],
   variants: {
-    variant: {
-      default: 'bg-transparent',
-      outline: 'border border-input bg-transparent shadow-xs',
-    },
     size: {
       small: 'h-8 px-1.5 min-w-8',
       medium: 'h-9 px-2 min-w-15',

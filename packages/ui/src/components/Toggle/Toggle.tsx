@@ -20,7 +20,7 @@ interface ToggleProps extends React.ComponentProps<typeof TogglePrimitive.Root>,
   offIcon?: IconKey | React.ReactNode;
 }
 
-function Toggle({ variant, size, onIcon = 'noIcon', offIcon = 'noIcon', children, ...props }: ToggleProps) {
+function Toggle({ size, onIcon = 'noIcon', offIcon = 'noIcon', children, ...props }: ToggleProps) {
   const [pressed, setPressed] = useState(!!props.defaultPressed);
   const isOn = props.pressed !== undefined ? props.pressed : pressed;
 
@@ -37,7 +37,6 @@ function Toggle({ variant, size, onIcon = 'noIcon', offIcon = 'noIcon', children
     <TogglePrimitive.Root
       className={cn(
         toggleVariants({
-          variant,
           size,
           state: isOn ? 'on' : 'off',
         }),
