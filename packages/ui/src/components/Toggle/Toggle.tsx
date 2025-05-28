@@ -1,54 +1,63 @@
-import * as React from 'react';
+'use client';
+
+import { useImperativeHandle, useState, type ComponentType, type Ref, type ComponentProps } from 'react';
 import * as TogglePrimitive from '@radix-ui/react-toggle';
-import { type VariantProps } from 'class-variance-authority';
+
+import { type IconProps } from '@common/ui/icons';
+import { type VariantProps } from 'tailwind-variants';
 import toggleVariants from './toggleVariants';
 import { cn } from '../../lib/utils';
-import { EyeIcon, EyeOffIcon, StarIcon } from '@common/ui/icons';
-import { useState } from 'react';
 
-const icons = {
-  EyeIcon: <EyeIcon />,
-  EyeOffIcon: <EyeOffIcon />,
-  StarIcon: <StarIcon />,
-  noIcon: null,
-} as const;
-
-type IconKey = keyof typeof icons;
-
-interface ToggleProps extends React.ComponentProps<typeof TogglePrimitive.Root>, VariantProps<typeof toggleVariants> {
-  onIcon?: IconKey | React.ReactNode;
-  offIcon?: IconKey | React.ReactNode;
-}
-
-function Toggle({ size, onIcon = 'noIcon', offIcon = 'noIcon', children, ...props }: ToggleProps) {
-  const [pressed, setPressed] = useState(!!props.defaultPressed);
-  const isOn = props.pressed !== undefined ? props.pressed : pressed;
-
-  // 문자열 키 → 아이콘 변환
-  const resolveIcon = (icon: IconKey | React.ReactNode) => {
-    if (typeof icon === 'string') {
-      return icons[icon as IconKey] ?? null;
-    }
-
-    return icon;
+export type ToggleProps = ComponentProps<typeof TogglePrimitive.Root> &
+  VariantProps<typeof toggleVariants> & {
+    onIcon?: ComponentType<IconProps>;
+    offIcon?: ComponentType<IconProps>;
+    onText?: string;
+    offText?: string;
+    pressedRef?: Ref<boolean>;
   };
+
+function Toggle({
+  size,
+  onIcon,
+  offIcon,
+  onText,
+  offText,
+  children,
+  pressedRef,
+  onPressedChange,
+  ...props
+}: ToggleProps) {
+  const [internalPressed, setInternalPressed] = useState(props.defaultPressed ?? false);
+
+  const isControlled = props.pressed !== undefined;
+  const currentPressed = isControlled ? !!props.pressed : internalPressed;
+
+  // 비제어 상태값
+  useImperativeHandle(pressedRef, () => currentPressed);
+
+  const IconComponent = currentPressed ? onIcon : offIcon;
+
+  const contentText = currentPressed ? (onText ?? children) : (offText ?? children);
 
   return (
     <TogglePrimitive.Root
+      data-slot="toggle"
       className={cn(
         toggleVariants({
           size,
-          state: isOn ? 'on' : 'off',
+          state: currentPressed ? 'on' : 'off',
         }),
       )}
-      pressed={isOn}
-      onPressedChange={setPressed}
+      onPressedChange={(press) => {
+        if (!isControlled) setInternalPressed(press);
+        onPressedChange?.(press);
+      }}
       {...props}>
-      {isOn ? resolveIcon(onIcon) : resolveIcon(offIcon)}
-      {children}
+      {IconComponent && <IconComponent size="small" />}
+      {contentText}
     </TogglePrimitive.Root>
   );
 }
 
-export { toggleVariants };
 export default Toggle;

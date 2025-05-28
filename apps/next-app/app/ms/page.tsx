@@ -1,8 +1,8 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { Button, Checkbox, Input, SplitOtpInput, Textarea } from '@common/ui';
+import { Button, Checkbox, Input, SplitOtpInput, Textarea, Toggle } from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -52,12 +52,41 @@ export default function Page() {
     control,
   });
 
+  const [isPress, setIsPress] = useState(false);
+  const pressedRef = useRef(null);
+
+  useEffect(() => {
+    console.log(isPress, '제어 toggle');
+  }, [isPress]);
+
   return (
     <form className="p-4" onSubmit={handleSubmit(onValid)}>
       <ThemeToggle />
       <div className="flex items-center justify-center min-h-svh">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
+
+          <Toggle
+            defaultPressed
+            pressedRef={pressedRef}
+            onIcon={CalendarIcon}
+            onText="on"
+            offText="off"
+            onPressedChange={(on) => console.log('toggle', on)}>
+            비제어
+          </Toggle>
+
+          <Button
+            onMouseEnter={() => {
+              console.log(pressedRef.current, '비제어 toggle');
+            }}>
+            비제어 토글 확인
+          </Button>
+
+          <Toggle pressed={isPress} onPressedChange={(on) => setIsPress(on)}>
+            제어
+          </Toggle>
+
           <SplitOtpInput maxLength={5} inputType="all" />
           <SplitOtpInput />
           <SplitOtpInput size="large" />

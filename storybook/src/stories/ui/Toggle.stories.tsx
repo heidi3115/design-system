@@ -1,22 +1,36 @@
-import { toggleVariants, Toggle } from '@common/ui/components';
+import { toggleVariants, Toggle, Button } from '@common/ui/components';
+import { EyeIcon, EyeOffIcon, type IconProps } from '@common/ui/icons';
+import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { ComponentProps } from 'react';
+import { useRef, useState, type ComponentProps, type ComponentType } from 'react';
+
+const ICON_MAP: Record<string, ComponentType<IconProps> | undefined> = {
+  none: undefined,
+  eyeOn: EyeIcon,
+  eyeOff: EyeOffIcon,
+};
 
 const meta: Meta<typeof Toggle> = {
   title: 'UI/Toggle',
   component: Toggle,
   argTypes: {
+    children: { control: 'text', description: '텍스트' },
     onIcon: {
-      description: 'on 아이콘',
-      options: ['EyeIcon', 'EyeOffIcon', 'StarIcon', 'noIcon'],
-      control: { type: 'radio' },
+      control: 'select',
+      options: ['none', 'eyeOn', 'eyeOff'],
+      table: { disable: true },
     },
     offIcon: {
-      description: 'off 아이콘',
-      options: ['EyeIcon', 'EyeOffIcon', 'StarIcon', 'noIcon'],
-      control: { type: 'radio' },
+      control: 'select',
+      options: ['none', 'eyeOn', 'eyeOff'],
+      table: { disable: true },
     },
-    children: { control: 'text', description: '텍스트' },
+    onText: {
+      control: 'text',
+    },
+    offText: {
+      control: 'text',
+    },
     size: {
       control: 'radio',
       description: '사이즈 선택',
@@ -27,12 +41,12 @@ const meta: Meta<typeof Toggle> = {
       description: '비활성 여부',
       options: [true, false],
     },
+    pressedRef: {
+      table: { disable: true },
+    },
   },
   args: {
-    onIcon: 'EyeIcon',
-    offIcon: 'EyeOffIcon',
     disabled: false,
-    children: '',
   },
 };
 
@@ -53,12 +67,11 @@ export const Default: Story = {
   },
   render: Template,
   args: {
-    children: '',
-    size: 'small',
+    children: '토글',
   },
 };
 
-export const WithText: Story = {
+export const Text: Story = {
   parameters: {
     docs: {
       description: {
@@ -101,4 +114,140 @@ export const Sizes: Story = {
       ))}
     </div>
   ),
+};
+
+type IconKey = keyof typeof ICON_MAP;
+type IconStoryProps = Omit<ComponentProps<typeof Toggle>, 'onIcon' | 'offIcon'> & {
+  onIcon: IconKey;
+  offIcon: IconKey;
+};
+
+export const Icon: StoryObj<IconStoryProps> = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'children으로 원하는 텍스트를 추가할 수 있다.',
+      },
+    },
+  },
+  args: {
+    onIcon: 'eyeOn',
+    offIcon: 'eyeOff',
+  },
+  argTypes: {
+    onIcon: {
+      table: { disable: false },
+    },
+    offIcon: {
+      table: { disable: false },
+    },
+  },
+  render: ({ onIcon, offIcon, ...args }) => {
+    const IconOnComp = ICON_MAP?.[onIcon];
+    const IconOffComp = ICON_MAP?.[offIcon];
+
+    return (
+      <div className="flex flex-wrap gap-2">
+        <Toggle size={args.size} onIcon={IconOnComp} offIcon={IconOffComp}>
+          {args.children}
+        </Toggle>
+      </div>
+    );
+  },
+};
+
+export const IconAndText: StoryObj<IconStoryProps> = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'children으로 원하는 텍스트를 추가할 수 있다.',
+      },
+    },
+  },
+  args: {
+    onIcon: 'eyeOn',
+    offIcon: 'eyeOff',
+    onText: 'ON',
+    offText: 'OFF',
+  },
+  argTypes: {
+    onIcon: {
+      table: { disable: false },
+    },
+    offIcon: {
+      table: { disable: false },
+    },
+  },
+  render: ({ onIcon, offIcon, ...args }) => {
+    const IconOnComp = ICON_MAP?.[onIcon];
+    const IconOffComp = ICON_MAP?.[offIcon];
+
+    return (
+      <div className="flex flex-wrap gap-2">
+        <Toggle onIcon={IconOnComp} offIcon={IconOffComp} {...args} />
+      </div>
+    );
+  },
+};
+
+export const Controlled: Story = {
+  args: {},
+  argTypes: {
+    offText: {
+      table: { disable: true },
+    },
+    onText: {
+      table: { disable: true },
+    },
+    children: {
+      table: { disable: true },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '제어형(Controlled) Input 사용 예시입니다. 입력값을 상태로 관리합니다.',
+      },
+      disable: true,
+    },
+  },
+  render: ({ onPressedChange, ...args }) => {
+    const [isPress, setIsPress] = useState(false);
+    const pressedRef = useRef(null);
+
+    const logControlledChange = action('제어형 onChange 발생');
+    const logUncontrolledBlur = action('비제어형 onBlur 발생');
+
+    const controlledhandleChange = (press: boolean) => {
+      setIsPress(press);
+      logControlledChange(press);
+      onPressedChange?.(press); // 스토리북 action 로그용
+    };
+
+    const unControlledhandleChange = () => {
+      logUncontrolledBlur(pressedRef.current);
+    };
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-bold">제어형 토글</span>
+          <div className="w-3xs">
+            <Toggle {...args} pressed={isPress} onPressedChange={controlledhandleChange}>
+              제어
+            </Toggle>
+          </div>
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-bold">비제어형 토글(변경 후 외부 클릭)</span>
+          <div className="w-3xs flex gap-2">
+            <Toggle {...args} pressedRef={pressedRef}>
+              비제어
+            </Toggle>
+            <Button onClick={unControlledhandleChange}>비제어 확인 Click</Button>
+          </div>
+        </div>
+      </div>
+    );
+  },
 };
