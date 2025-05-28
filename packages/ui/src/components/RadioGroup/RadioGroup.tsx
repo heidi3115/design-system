@@ -60,14 +60,10 @@ function RadioGroup({
       {...props}>
       {options.map((option) => (
         <div key={option.value} className="flex items-center">
-          <RadioGroupItem
-            id={`${groupId}-${option.value}`}
-            value={option.value}
-            className="peer data-[state=checked]:text-juiText-primary"
-          />
+          <RadioGroupItem id={`${groupId}-${option.value}`} value={option.value} className="peer" />
           <label
             htmlFor={`${groupId}-${option.value}`}
-            className="ps-2 text-juiText-disabled peer-data-[state=checked]:text-juiText-primary text-sm font-medium leading-none hover:cursor-pointer">
+            className="ps-2 text-juiText-disabled peer-disabled:opacity-50 peer-disabled:cursor-not-allowed peer-data-[state=checked]:text-juiText-primary text-sm font-medium leading-none">
             {option.label}
           </label>
         </div>

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AlertCircleIcon, CheckCircleIcon } from '@common/ui/icons';
 import { Button } from '@common/ui';
 import { Alert, AlertDescription, AlertTitle } from '@common/ui/components/Alert';
-import { ConfirmDialog } from '@common/ui/components/AlertDialog';
+import { ConfirmAlertDialog } from '@common/ui/components/AlertDialog';
 import { useEffect, useRef, useState } from 'react';
 import { alertVariants } from '@common/ui/components/Alert/Alert.tsx';
 
@@ -24,8 +24,8 @@ const ICON_MAP = {
 };
 
 const meta: Meta<AlertDialogStoryArgs> = {
-  title: 'ui/AlertDialog',
-  component: ConfirmDialog,
+  title: 'ui/AlertDialog/ConfirmAlertDialog',
+  component: ConfirmAlertDialog,
   argTypes: {
     title: {
       control: { type: 'radio' },
@@ -78,7 +78,7 @@ const meta: Meta<AlertDialogStoryArgs> = {
   parameters: {
     docs: {
       description: {
-        component: '조립식 AlertDialog 컴포넌트 문서',
+        component: '저장이나 삭제 확인용 CorfimAlertDialog 컴포넌트 문서',
       },
     },
   },
@@ -100,7 +100,7 @@ const Template = (args: AlertDialogStoryArgs) => {
 
   return (
     <div className="relative" ref={dialogAreaRef}>
-      <ConfirmDialog
+      <ConfirmAlertDialog
         title={args.title}
         trigger={<Button>클릭</Button>}
         footerType={args.footerType}

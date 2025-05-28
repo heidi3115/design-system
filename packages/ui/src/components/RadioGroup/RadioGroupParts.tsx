@@ -18,7 +18,7 @@ function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof Rad
           // ✅ 기본 스타일
           'border-input',
           'text-juiPrimary',
-          'border-2 border-juiText-secondary',
+          'border-1 border-juiText-secondary',
           'aspect-square',
           'size-4',
           'shrink-0',
@@ -27,10 +27,10 @@ function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof Rad
 
           'data-[state=checked]:border-juiPrimary',
 
-          // 🟦 포커스 상태
-          'focus-visible:border-ring',
-          'focus-visible:ring-ring/50',
-          'focus-visible:ring-[3px]',
+          // 포커스 상태
+          'hover:border-ring',
+          'hover:ring-juiPrimary/15',
+          'hover:ring-8',
 
           // 🟥 aria-invalid 상태 (에러)
           'aria-invalid:ring-destructive/20',
