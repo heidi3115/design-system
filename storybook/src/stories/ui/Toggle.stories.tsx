@@ -6,6 +6,8 @@ const meta: Meta<typeof Toggle> = {
   title: 'UI/Toggle',
   component: Toggle,
   argTypes: {
+    onText: { control: 'text', description: 'ON 상태 텍스트' },
+    offText: { control: 'text', description: 'OFF 상태 텍스트' },
     onIcon: {
       description: 'on 아이콘',
       options: ['EyeIcon', 'EyeOffIcon', 'StarIcon', 'noIcon'],
@@ -17,11 +19,6 @@ const meta: Meta<typeof Toggle> = {
       control: { type: 'radio' },
     },
     children: { control: 'text', description: '텍스트' },
-    size: {
-      control: 'radio',
-      description: '사이즈 선택',
-      options: Object.keys(toggleVariants.variants.size),
-    },
     disabled: {
       control: 'boolean',
       description: '비활성 여부',
@@ -33,6 +30,8 @@ const meta: Meta<typeof Toggle> = {
     offIcon: 'EyeOffIcon',
     disabled: false,
     children: '',
+    onText: '',
+    offText: '',
   },
 };
 
@@ -53,7 +52,7 @@ export const Default: Story = {
   },
   render: Template,
   args: {
-    children: '',
+    children: '이벤트 목록',
     size: 'small',
   },
 };
@@ -71,7 +70,7 @@ export const WithText: Story = {
   },
   render: (args) => (
     <div className="flex flex-wrap gap-2">
-      <Toggle size={args.size} onIcon={args.onIcon} offIcon={args.offIcon}>
+      <Toggle size={args.size} onIcon={args.onIcon} offIcon={args.offIcon} onText={args.onText} offText={args.offText}>
         {args.children}
       </Toggle>
     </div>

@@ -3,35 +3,19 @@ import * as TogglePrimitive from '@radix-ui/react-toggle';
 import { type VariantProps } from 'class-variance-authority';
 import toggleVariants from './toggleVariants';
 import { cn } from '../../lib/utils';
-import { EyeIcon, EyeOffIcon, StarIcon } from '@common/ui/icons';
 import { useState } from 'react';
-
-const icons = {
-  EyeIcon: <EyeIcon />,
-  EyeOffIcon: <EyeOffIcon />,
-  StarIcon: <StarIcon />,
-  noIcon: null,
-} as const;
-
-type IconKey = keyof typeof icons;
+import type { ReactNode } from 'react';
 
 interface ToggleProps extends React.ComponentProps<typeof TogglePrimitive.Root>, VariantProps<typeof toggleVariants> {
-  onIcon?: IconKey | React.ReactNode;
-  offIcon?: IconKey | React.ReactNode;
+  onIcon?: ReactNode;
+  offIcon?: ReactNode;
+  onText?: ReactNode;
+  offText?: ReactNode;
 }
 
-function Toggle({ size, onIcon = 'noIcon', offIcon = 'noIcon', children, ...props }: ToggleProps) {
+function Toggle({ size, onIcon, offIcon, onText, offText, children, ...props }: ToggleProps) {
   const [pressed, setPressed] = useState(!!props.defaultPressed);
   const isOn = props.pressed !== undefined ? props.pressed : pressed;
-
-  // 문자열 키 → 아이콘 변환
-  const resolveIcon = (icon: IconKey | React.ReactNode) => {
-    if (typeof icon === 'string') {
-      return icons[icon as IconKey] ?? null;
-    }
-
-    return icon;
-  };
 
   return (
     <TogglePrimitive.Root
@@ -44,8 +28,10 @@ function Toggle({ size, onIcon = 'noIcon', offIcon = 'noIcon', children, ...prop
       pressed={isOn}
       onPressedChange={setPressed}
       {...props}>
-      {isOn ? resolveIcon(onIcon) : resolveIcon(offIcon)}
+      {isOn ? onIcon : offIcon}
       {children}
+      {isOn && onText && <span>{onText}</span>}
+      {!isOn && offText && <span>{offText}</span>}
     </TogglePrimitive.Root>
   );
 }
