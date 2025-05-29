@@ -33,6 +33,14 @@
   --juiText-blue: #7a97ff;
   --juiText-purple: #9747ff;
   --juiBorder-primary: #e0e0e0;
+  --juiScore-veryLow: #8294ff;
+  --juiScore-low: #5873ff;
+  --juiScore-normal: #7635ff;
+  --juiScore-high: #bc2fff;
+  --juiScore-veryHigh: #fe3284;
+  --juiScore-extra: #5630e3;
+  --juiScore-practice: #232d5b;
+  --juiScore-alert: #ff0000;
 }
 
 @theme {
@@ -70,6 +78,14 @@
   --juiText-blue: #7a97ff;
   --juiText-purple: #9747ff;
   --juiBorder-primary: #e0e0e0;
+  --juiScore-veryLow: #8294ff;
+  --juiScore-low: #5873ff;
+  --juiScore-normal: #7635ff;
+  --juiScore-high: #bc2fff;
+  --juiScore-veryHigh: #fe3284;
+  --juiScore-extra: #5630e3;
+  --juiScore-practice: #232d5b;
+  --juiScore-alert: #ff0000;
 }
 
 @theme inline {
@@ -107,6 +123,14 @@
   --color-juiText-blue: var(--juiText-blue);
   --color-juiText-purple: var(--juiText-purple);
   --color-juiBorder-primary: var(--juiBorder-primary);
+  --color-juiScore-veryLow: var(--juiScore-veryLow);
+  --color-juiScore-low: var(--juiScore-low);
+  --color-juiScore-normal: var(--juiScore-normal);
+  --color-juiScore-high: var(--juiScore-high);
+  --color-juiScore-veryHigh: var(--juiScore-veryHigh);
+  --color-juiScore-extra: var(--juiScore-extra);
+  --color-juiScore-practice: var(--juiScore-practice);
+  --color-juiScore-alert: var(--juiScore-alert);
 }
 
 .light {

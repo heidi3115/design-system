@@ -6,38 +6,47 @@ import { AlertCircleIcon, FilePlusIcon, SaveIcon, StarIcon } from '@common/ui/ic
 const meta: Meta<typeof Button> = {
   title: 'UI/Button',
   component: Button,
-  argTypes: {
-    variant: {
-      control: 'select',
-      options: Object.keys(buttonVariants.variants.variant),
-      description:
-        'select를 통해 버튼의 색상 스타일 타입(primary, secondary, error, default, gradient, transparent, transparentGrey 등)을 지정합니다.',
-    },
-    size: {
-      control: 'select',
-      options: Object.keys(buttonVariants.variants.size),
-      description: 'select를 통해 버튼의 크기(basic, small, medium, large 등)를 지정합니다.',
-    },
-    disabled: {
-      control: 'boolean',
-      description: '버튼 비활성화 여부',
-    },
-    asChild: {
-      control: 'boolean',
-      description: 'button 태그 대신 다른 태그(a, label 등)에 버튼 스타일을 적용할 때 사용',
-    },
-    children: { control: 'text', description: '버튼 내부에 들어갈 내용' },
-    className: {
-      control: 'text',
-      description: '추가적으로 적용할 Tailwind CSS 클래스',
-    },
-  },
   args: {
     children: 'Button',
     variant: 'default',
     size: 'basic',
     disabled: false,
     asChild: false,
+  },
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: Object.keys(buttonVariants.variants.variant),
+      table: { defaultValue: { summary: 'default' } },
+      description:
+        'select를 통해 버튼의 색상 스타일 타입(primary, secondary, error, default, gradient, transparent, transparentGrey 등)을 지정합니다.',
+    },
+    size: {
+      control: 'select',
+      options: Object.keys(buttonVariants.variants.size),
+      table: { defaultValue: { summary: 'basic' } },
+      description: 'select를 통해 버튼의 크기(basic, small, medium, large 등)를 지정합니다.',
+    },
+    disabled: {
+      control: 'boolean',
+      table: { defaultValue: { summary: 'false' } },
+      description: '버튼 비활성화 여부',
+    },
+    asChild: {
+      control: 'boolean',
+      table: { defaultValue: { summary: 'false' } },
+      description: 'button 태그 대신 다른 태그(a, label 등)에 버튼 스타일을 적용할 때 사용',
+    },
+    children: {
+      control: 'text',
+      table: { defaultValue: { summary: 'Button' } },
+      description: '버튼 내부에 들어갈 내용',
+    },
+    className: {
+      control: 'text',
+      table: { defaultValue: { summary: '' } },
+      description: '추가적으로 적용할 Tailwind CSS 클래스',
+    },
   },
   parameters: {
     docs: {
@@ -159,7 +168,7 @@ export const Sizes: Story = {
     },
     children: {
       control: false,
-      table: { disable: true },
+      table: { disable: true, defaultValue: { summary: '사이즈 버튼' } },
     },
     size: {
       control: false,
@@ -245,9 +254,11 @@ export const AsChildDynamic: StoryAsChild = {
         disable: false,
       },
     },
+    children: { table: { defaultValue: { summary: '링크 버튼' } } },
     childTag: {
       control: 'select',
       options: ['a', 'span', 'div'],
+      table: { defaultValue: { summary: 'a' } },
       if: { arg: 'asChild', truthy: true },
     },
   },
@@ -299,7 +310,7 @@ export const asChildIsFile: StoryObj<AsChildIsFileArgs> = {
   argTypes: {
     asChild: {
       control: 'boolean',
-      table: { disable: false },
+      table: { disable: false, defaultValue: { summary: 'true' } },
     },
     children: {
       table: { disable: true },
