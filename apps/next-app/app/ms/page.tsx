@@ -2,7 +2,20 @@
 
 import { useRef, useState } from 'react';
 
-import { Button, Checkbox, Input, SplitOtpInput, Textarea } from '@common/ui';
+import {
+  Button,
+  Checkbox,
+  Input,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValue,
+  SplitOtpInput,
+  Textarea,
+} from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -124,6 +137,23 @@ export default function Page() {
                 </Button>
               }
             />
+
+            <SelectRoot>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select a fruit" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Fruits</SelectLabel>
+                  <SelectItem value="apple">Apple</SelectItem>
+                  <SelectItem value="banana">Banana</SelectItem>
+                  <SelectItem value="blueberry">Blueberry</SelectItem>
+                  <SelectItem value="grapes">Grapes</SelectItem>
+                  <SelectItem value="pineapple">Pineapple</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </SelectRoot>
+
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}
               placeholder="email"
@@ -171,6 +201,7 @@ export default function Page() {
             <TagIcon />
             <UserIcon />
           </div>
+
           <Button type="submit">제출</Button>
         </div>
       </div>
