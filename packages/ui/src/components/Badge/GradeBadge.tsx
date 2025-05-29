@@ -5,8 +5,6 @@ import { cn } from '../../lib/utils';
 import { badgeVariants } from '@common/ui/components/Badge';
 import { Badge } from '@common/ui/components';
 import type { badgeGradeType } from '@common/ui/components/Badge/badgeVariants';
-import type { CloneBadgeChildProps } from '@common/ui/components/Badge/badgeUtils';
-import { getStringFromChildren } from '@common/ui/components/Badge/badgeUtils';
 import {
   AlertFilledIcon,
   AlertTriangleFilledIcon,
@@ -15,10 +13,16 @@ import {
   SearchFilledIcon,
 } from '@common/ui/icons';
 
-export type GradeBadgePropsType = React.ComponentProps<'span'> &
+export type GradeBadgePropsType = Omit<React.ComponentProps<'span'>, 'children'> &
   Omit<VariantProps<typeof badgeVariants>, 'variant' | 'status' | 'score'> & {
-    asChild?: boolean;
+    /**
+     * grade : badgeVariants.variants.grade 의 내역만 사용가능하도록 제어
+     */
     grade: badgeGradeType;
+    /**
+     * GradeBadge 내부는 아이콘 및 형태, 스타일이 고정되어있으므로 children은 필수값으로서 string 으로만 받도록 고정.
+     */
+    children: string;
   };
 
 export const gradeIconMapper: Record<badgeGradeType, React.ReactNode> = {
@@ -34,12 +38,12 @@ function GradeBadgeContent({
   grade,
   iconColor,
 }: {
-  children: React.ReactNode | string;
-  grade: badgeGradeType;
+  children: string;
   iconColor?: string;
+  grade: badgeGradeType;
 }) {
   return (
-    <span className="inline-flex gap-x-1.5 items-center justify-center py-1 font-normal text-juiText-primary">
+    <span className="inline-flex gap-x-1.5 items-center justify-center py-1 font-normal">
       {<span className={cn(iconColor)}>{gradeIconMapper[grade]}</span>}
       {children}
     </span>
@@ -47,43 +51,19 @@ function GradeBadgeContent({
 }
 
 function GradeBadge(props: GradeBadgePropsType) {
-  const { asChild = false, className, grade = 'info', title, children, ...restProps } = props;
-  const computedTitle = title ?? getStringFromChildren(children);
-  const child = children as React.ReactElement<CloneBadgeChildProps & GradeBadgePropsType>;
-  const iconColor = badgeVariants.variants.grade[grade] || 'text-juiStatus-info';
+  const { className, grade = 'info', children = '', ...restProps } = props;
 
-  if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(child, {
-      ...restProps,
-      'data-slot': 'badge',
-      variant: undefined,
-      className: cn(
-        badgeVariants({
-          variant: 'grading',
-          grade: grade,
-        }),
-        className,
-        child.props?.className,
-      ),
-      children: (
-        <GradeBadgeContent grade={grade} iconColor={iconColor}>
-          {child?.props?.children}
-        </GradeBadgeContent>
-      ),
-      title: computedTitle,
-    });
-  }
+  const iconColor = badgeVariants.variants.grade[grade] || 'text-juiStatus-info';
 
   return (
     <Badge
       {...restProps}
-      asChild={asChild}
+      asChild={false}
       variant={'grading'}
       grade={grade}
       status={undefined}
       score={undefined}
-      className={cn(className)}
-      title={computedTitle}>
+      className={cn(className)}>
       <GradeBadgeContent grade={grade} iconColor={iconColor}>
         {children}
       </GradeBadgeContent>
