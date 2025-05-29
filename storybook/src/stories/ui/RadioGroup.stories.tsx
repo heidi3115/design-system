@@ -79,7 +79,6 @@ export const Horizontal: Story = {
       { label: '오른쪽', value: 'right' },
     ],
     direction: 'horizontal',
-    defaultValue: 'right',
   },
   parameters: {
     docs: {
