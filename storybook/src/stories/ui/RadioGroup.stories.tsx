@@ -32,19 +32,25 @@ const meta: Meta<typeof RadioGroup> = {
       table: { disable: true },
     },
     className: {
-      control: 'text',
+      control: {
+        type: 'text',
+        disable: true,
+      },
       description: 'radio group 전체의 클래스네임을 설정할 수 있습니다.',
-      table: { disable: true },
     },
     itemClassName: {
-      control: 'text',
+      control: {
+        type: 'text',
+        disable: true,
+      },
       description: 'indecator의 클래스네임을 설정할 수 있습니다.',
-      table: { disable: true },
     },
     labelClassName: {
-      control: 'text',
+      control: {
+        type: 'text',
+        disable: true,
+      },
       description: 'label의 클래스네임을 설정할 수 있습니다.',
-      table: { disable: true },
     },
     valueRef: {
       table: { disable: true },
@@ -102,13 +108,22 @@ export const CustomClass: Story = {
   },
   argTypes: {
     itemClassName: {
-      table: { disable: false },
+      control: {
+        type: 'text',
+        disable: false,
+      },
     },
     labelClassName: {
-      table: { disable: false },
+      control: {
+        type: 'text',
+        disable: false,
+      },
     },
     className: {
-      table: { disable: false },
+      control: {
+        type: 'text',
+        disable: false,
+      },
     },
   },
   parameters: {
