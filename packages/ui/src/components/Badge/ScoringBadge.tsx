@@ -69,14 +69,7 @@ function ScoringBadge(props: ScoringBadgePropsType) {
   const displayScore = maxVal > 0 && isValidScoreVal && scoreVal >= maxVal ? `${maxVal}+` : scoreVal;
 
   return (
-    <Badge
-      {...restProps}
-      asChild={false}
-      isBtn={isBtn}
-      variant={'scoring'}
-      status={undefined}
-      score={score}
-      grade={undefined}>
+    <Badge {...restProps} asChild={false} isBtn={isBtn} variant={'scoring'} score={score}>
       <ScoringBadgeContent displayScore={displayScore} icon={icon} iconPosition={iconPosition}>
         {children}
       </ScoringBadgeContent>

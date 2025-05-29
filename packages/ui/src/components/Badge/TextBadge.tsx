@@ -39,7 +39,7 @@ function TextBadgeContent({ children, onClick, textOnly }: TextBadgeContentProps
           type={'button'}
           className={cn(
             'inline-flex gap-x-1 [&_svg]:cursor-pointer',
-            'hover:[&_svg]:opacity-6\0 active:[&_svg]:opacity-60 focus:[&_svg]:opacity-60',
+            'hover:[&_svg]:opacity-60 active:[&_svg]:opacity-60 focus:[&_svg]:opacity-60',
           )}
           onClick={(e) => {
             e.stopPropagation();
@@ -60,14 +60,7 @@ function TextBadge(props: TextBadgePropsType) {
   const { isBtn = false, textOnly = false, children, onClick, ...restProps } = props;
 
   return (
-    <Badge
-      {...restProps}
-      asChild={false}
-      isBtn={isBtn}
-      variant={'text'}
-      status={undefined}
-      score={undefined}
-      grade={undefined}>
+    <Badge {...restProps} asChild={false} isBtn={isBtn} variant={'text'}>
       <TextBadgeContent onClick={onClick} textOnly={textOnly}>
         {children}
       </TextBadgeContent>

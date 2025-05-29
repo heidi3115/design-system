@@ -56,14 +56,7 @@ function GradeBadge(props: GradeBadgePropsType) {
   const iconColor = badgeVariants.variants.grade[grade] || 'text-juiStatus-info';
 
   return (
-    <Badge
-      {...restProps}
-      asChild={false}
-      isBtn={isBtn}
-      variant={'grading'}
-      grade={grade}
-      status={undefined}
-      score={undefined}>
+    <Badge {...restProps} asChild={false} isBtn={isBtn} variant={'grading'} grade={grade}>
       <GradeBadgeContent grade={grade} iconColor={iconColor}>
         {children}
       </GradeBadgeContent>

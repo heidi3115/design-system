@@ -13,7 +13,16 @@ export type BadgePropsType = React.ComponentProps<'span'> &
   };
 
 function Badge(props: BadgePropsType) {
-  const { asChild = false, isBtn = false, className, variant, status, score, grade, ...restProps } = props;
+  const {
+    asChild = false,
+    isBtn = false,
+    className,
+    variant,
+    status = undefined,
+    score = undefined,
+    grade = undefined,
+    ...restProps
+  } = props;
   const Comp = asChild ? Slot : 'span';
 
   return (

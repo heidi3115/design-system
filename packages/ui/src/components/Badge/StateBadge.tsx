@@ -15,14 +15,7 @@ function StateBadge(props: StateBadgePropsType) {
   const { isBtn = false, status = 'default', children, ...restProps } = props;
 
   return (
-    <Badge
-      {...restProps}
-      asChild={false}
-      isBtn={isBtn}
-      variant={'state'}
-      status={status}
-      score={undefined}
-      grade={undefined}>
+    <Badge {...restProps} asChild={false} isBtn={isBtn} variant={'state'} status={status}>
       {children}
     </Badge>
   );
