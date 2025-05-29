@@ -2,7 +2,6 @@ import * as React from 'react';
 import { type VariantProps } from 'class-variance-authority';
 import { Badge, badgeVariants } from '@common/ui';
 import { cn } from '@common/ui/lib/utils';
-import type { badgeScoreType, badgeStatusType } from './badgeVariants';
 
 export type CountBadgePropsType = Omit<React.ComponentProps<'span'>, 'children'> &
   Omit<VariantProps<typeof badgeVariants>, 'variant' | 'grade'> & {
@@ -17,7 +16,7 @@ export type CountBadgePropsType = Omit<React.ComponentProps<'span'>, 'children'>
     /**
      * color: 색상값. 커스텀인 부분을 고려해서 string 시 tailwind v4의 색상 클래스 bg-* 으로 처리 가능하며, badgeVariants의 status, score도 활용 가능합니다.
      */
-    color: badgeStatusType | badgeScoreType | string;
+    color: string;
     /**
      * icon: CountBadge 내부의 icon
      */
@@ -42,18 +41,11 @@ function CountBadge(props: CountBadgePropsType) {
 
   const isValidScoreVal = typeof scoreVal === 'number' && !Number.isNaN(scoreVal);
   const displayScore = maxVal > 0 && isValidScoreVal && scoreVal >= maxVal ? `${maxVal}+` : scoreVal;
-  // color prop이 status/score key라면 실제 클래스로 변환
-  let colorClass = color || 'bg-juiGrey-a700';
-  let status = undefined;
-  let score = undefined;
 
-  if (color && color in badgeVariants.variants.status) {
-    status = color;
-    colorClass = '';
-  } else if (color && color in badgeVariants.variants.score) {
-    score = color;
-    colorClass = '';
-  }
+  const colorClass =
+    !isKeyOf(badgeVariants.variants.status, color) || !isKeyOf(badgeVariants.variants.score, color)
+      ? (color ?? 'bg-juiGrey-a700')
+      : '';
 
   return (
     <Badge
@@ -61,8 +53,8 @@ function CountBadge(props: CountBadgePropsType) {
       asChild={false}
       isBtn={isBtn}
       variant={'count'}
-      status={status as badgeStatusType}
-      score={score as badgeScoreType}
+      {...(isKeyOf(badgeVariants.variants.status, color) && { status: color })}
+      {...(isKeyOf(badgeVariants.variants.score, color) && { score: color })}
       className={cn(colorClass, className)}>
       {iconPosition === 'left' && icon}
       {displayScore}
