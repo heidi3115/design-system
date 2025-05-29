@@ -11,10 +11,6 @@ const meta: Meta<typeof RadioGroup> = {
     options: {
       control: 'object',
       description: '라디오 버튼 항목 배열입니다. 각 항목은 label과 value로 구성됩니다.',
-      defaultValue: [
-        { label: '옵션 1', value: 'option1' },
-        { label: '옵션 2', value: 'option2' },
-      ],
     },
     direction: {
       control: {
@@ -22,9 +18,7 @@ const meta: Meta<typeof RadioGroup> = {
         options: ['vertical', 'horizontal'],
       },
       description: '라디오 버튼의 배치 방향입니다.',
-      defaultValue: 'vertical',
     },
-
     defaultValue: {
       control: 'text',
       description: '초기 선택값입니다 (uncontrolled).',
@@ -68,7 +62,6 @@ export const Default: Story = {
       { label: '옵션 A', value: 'A' },
       { label: '옵션 B', value: 'B' },
     ],
-    defaultValue: 'A',
   },
   parameters: {
     docs: {
