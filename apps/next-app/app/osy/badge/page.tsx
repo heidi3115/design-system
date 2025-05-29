@@ -387,10 +387,11 @@ export default function BadgePage() {
                 );
               })}
             </div>
-            <h5 className={'text-base font-bold'}>CountBadge - 음수, 소수점</h5>
+            <h5 className={'text-base font-bold'}>CountBadge - 음수, 소수점, 커스텀 색상(&#39;bg-lime-400&#39;)</h5>
             <div className={'flex flex-row gap-x-2.5'}>
               <CountBadge color={'practice'} scoreVal={-count} onClick={() => setCount((prev) => (prev += 1))} />
               <CountBadge color={'urgency'} scoreVal={count / 2} onClick={() => setCount((prev) => (prev += 1))} />
+              <CountBadge color={'bg-lime-400'} scoreVal={count / 2} onClick={() => setCount((prev) => (prev += 1))} />
             </div>
             <h5 className={'text-base font-bold'}>
               CountBadge - color 별(with maxVal)<span className={'block text-xs'}>현재 maxVal : {MAX_VAL}</span>
