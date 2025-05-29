@@ -15,34 +15,28 @@ function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof Rad
       data-slot="radio-group-item"
       className={cn(
         [
-          // ✅ 기본 스타일
-          'border-input',
-          'text-juiPrimary',
-          'border-1 border-juiText-secondary',
+          // 기본 스타일
+          'border-input border-2 border-juiText-secondary rounded-full',
+          'outline-none',
           'aspect-square',
-          'size-4',
-          'shrink-0',
-          'rounded-full',
-          'shadow-xs',
-
-          'data-[state=checked]:border-juiPrimary',
+          'size-4 shrink-0 shadow-xs',
 
           // 포커스 상태
-          'hover:border-ring',
-          'hover:ring-juiPrimary/15',
-          'hover:ring-8',
+          'active:border-ring',
+          'active:ring-juiPrimary/20',
+          'active:ring-8',
 
-          // 🟥 aria-invalid 상태 (에러)
-          'aria-invalid:ring-destructive/20',
-          'aria-invalid:border-destructive',
+          // 활성 상태
+          'data-[state=checked]:border-juiPrimary',
 
-          // ⚫ 비활성화 상태
+          // 비활성화 상태
           'disabled:cursor-not-allowed',
           'disabled:opacity-50',
+          'disabled:ring-0',
 
-          // 🔄 기타
-          'transition-[color,box-shadow]',
-          'outline-none',
+          // 기타
+          'transition-[color,box-shadow,ring]',
+          'transition-all duration-300 ease-in-out',
         ],
         className,
       )}
@@ -50,7 +44,7 @@ function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof Rad
       <RadioGroupPrimitive.Indicator
         data-slot="radio-group-indicator"
         className="relative flex items-center justify-center">
-        <span className="bg-juiPrimary border-none rounded-full size-2" />
+        <span className="bg-juiPrimary border-none rounded-full size-2 transition-all duration-300 ease-in-out" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   );

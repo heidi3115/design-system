@@ -1,4 +1,5 @@
 import { toggleVariants, Toggle, Button } from '@common/ui/components';
+import type { ToggleProps } from '@common/ui/components/Toggle/Toggle';
 import { EyeIcon, EyeOffIcon, type IconProps } from '@common/ui/icons';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -83,14 +84,16 @@ export const Sizes: Story = {
   },
   render: (args) => (
     <div className="flex flex-wrap gap-2">
-      {(Object.keys(toggleVariants.variants.size) as (keyof typeof toggleVariants.variants.size)[]).map((size) => (
-        <div className="flex flex-col gap-2">
-          <div>{size}</div>
-          <Toggle key={size} {...args} size={size}>
-            {size}
-          </Toggle>
-        </div>
-      ))}
+      {(Object.keys(toggleVariants.variants.size) as (keyof typeof toggleVariants.variants.size)[]).map(
+        (size, index) => (
+          <div key={index} className="flex flex-col gap-2">
+            <div>{size}</div>
+            <Toggle key={size} {...args} size={size}>
+              {size}
+            </Toggle>
+          </div>
+        ),
+      )}
     </div>
   ),
 };
@@ -135,6 +138,46 @@ export const IconAndText: StoryObj<IconStoryProps> = {
   },
 };
 
+const ControllComp = ({ onPressedChange, ...args }: ToggleProps) => {
+  const [isPress, setIsPress] = useState(false);
+  const pressedRef = useRef(null);
+
+  const logControlledChange = action('제어형 onChange 발생');
+  const logUncontrolledConfirm = action('비제어형 확인');
+
+  const controlledhandleChange = (press: boolean) => {
+    setIsPress(press);
+    logControlledChange(press);
+    onPressedChange?.(press); // 스토리북 action 로그용
+  };
+
+  const unControlledhandleChange = () => {
+    logUncontrolledConfirm(pressedRef.current);
+  };
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-bold">제어형 토글</span>
+        <div className="w-3xs">
+          <Toggle {...args} pressed={isPress} onPressedChange={controlledhandleChange}>
+            제어
+          </Toggle>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-bold">비제어형 토글(변경 후 외부 클릭)</span>
+        <div className="w-3xs flex gap-2">
+          <Toggle {...args} pressedRef={pressedRef}>
+            비제어
+          </Toggle>
+          <Button onClick={unControlledhandleChange}>비제어 확인 Click</Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const Controlled: Story = {
   args: {},
   argTypes: {
@@ -156,43 +199,5 @@ export const Controlled: Story = {
       disable: true,
     },
   },
-  render: ({ onPressedChange, ...args }) => {
-    const [isPress, setIsPress] = useState(false);
-    const pressedRef = useRef(null);
-
-    const logControlledChange = action('제어형 onChange 발생');
-    const logUncontrolledConfirm = action('비제어형 확인');
-
-    const controlledhandleChange = (press: boolean) => {
-      setIsPress(press);
-      logControlledChange(press);
-      onPressedChange?.(press); // 스토리북 action 로그용
-    };
-
-    const unControlledhandleChange = () => {
-      logUncontrolledConfirm(pressedRef.current);
-    };
-
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-bold">제어형 토글</span>
-          <div className="w-3xs">
-            <Toggle {...args} pressed={isPress} onPressedChange={controlledhandleChange}>
-              제어
-            </Toggle>
-          </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-bold">비제어형 토글(변경 후 외부 클릭)</span>
-          <div className="w-3xs flex gap-2">
-            <Toggle {...args} pressedRef={pressedRef}>
-              비제어
-            </Toggle>
-            <Button onClick={unControlledhandleChange}>비제어 확인 Click</Button>
-          </div>
-        </div>
-      </div>
-    );
-  },
+  render: (args) => <ControllComp {...args} />,
 };

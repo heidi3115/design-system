@@ -63,7 +63,17 @@ function RadioGroup({
           <RadioGroupItem id={`${groupId}-${option.value}`} value={option.value} className="peer" />
           <label
             htmlFor={`${groupId}-${option.value}`}
-            className="ps-2 text-juiText-disabled peer-disabled:opacity-50 peer-disabled:cursor-not-allowed peer-data-[state=checked]:text-juiText-primary text-sm font-medium leading-none">
+            className={cn([
+              // 텍스트 스타일 관련
+              'text-juiText-secondary leading-none',
+              // padding 관련
+              'ps-2',
+              // peer 상태 관련
+              'hover: cursor-pointer',
+              'peer-disabled:opacity-50',
+              'peer-disabled:cursor-not-allowed',
+              'peer-data-[state=checked]:text-juiText-primary',
+            ])}>
             {option.label}
           </label>
         </div>

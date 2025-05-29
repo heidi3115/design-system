@@ -362,6 +362,44 @@ export const IconControl: StoryObj<InputStoryProps> = {
   },
 };
 
+const ControllComp = ({ value: initialValue, onChange, onBlur, ...args }: ComponentProps<typeof Input>) => {
+  const [value, setValue] = useState(initialValue);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const logControlledChange = action('제어형 onChange 발생');
+  const logUncontrolledBlur = action('비제어형 onBlur 발생');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    logControlledChange(value);
+    onChange?.(e); // 스토리북 action 로그용
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (inputRef.current) {
+      logUncontrolledBlur(e.target.value);
+      onBlur?.(e);
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-bold">제어형 입력</span>
+        <div className="w-3xs">
+          <Input {...args} value={value} onChange={handleChange} />
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-bold">비제어형 입력</span>
+        <div className="w-3xs">
+          <Input {...args} ref={inputRef} onBlur={handleBlur} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const Controlled: Story = {
   args: {
     value: '제어형 기본값',
@@ -390,41 +428,5 @@ export const Controlled: Story = {
       disable: true,
     },
   },
-  render: ({ value: initialValue, onChange, onBlur, ...args }) => {
-    const [value, setValue] = useState(initialValue);
-    const inputRef = useRef<HTMLInputElement>(null);
-
-    const logControlledChange = action('제어형 onChange 발생');
-    const logUncontrolledBlur = action('비제어형 onBlur 발생');
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(e.target.value);
-      logControlledChange(value);
-      onChange?.(e); // 스토리북 action 로그용
-    };
-
-    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-      if (inputRef.current) {
-        logUncontrolledBlur(e.target.value);
-        onBlur?.(e);
-      }
-    };
-
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-bold">제어형 입력</span>
-          <div className="w-3xs">
-            <Input {...args} value={value} onChange={handleChange} />
-          </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-bold">비제어형 입력</span>
-          <div className="w-3xs">
-            <Input {...args} ref={inputRef} onBlur={handleBlur} />
-          </div>
-        </div>
-      </div>
-    );
-  },
+  render: (args) => <ControllComp {...args} />,
 };
