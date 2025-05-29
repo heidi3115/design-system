@@ -4,20 +4,25 @@ import { badgeVariants } from '@common/ui/components/Badge';
 import { Badge } from '@common/ui/components';
 import { XIcon } from '@common/ui/icons';
 import { cn } from '@common/ui/lib/utils';
-import type { CloneBadgeChildProps } from '@common/ui/components/Badge/badgeUtils';
-import { getStringFromChildren } from '@common/ui/components/Badge/badgeUtils';
 
 export type TextBadgeContentProps = {
-  children?: React.ReactNode | string;
-  className?: string;
+  /**
+   * textOnly: TextBadge 내부의 삭제 버튼을 제거하고 텍스트 태그만으로서 작동할지의 여부
+   */
   textOnly?: boolean;
+  /**
+   * children: TextBadge 내부는 아이콘 및 형태, 스타일이 고정되어 있으므로 children은 필수값으로서 string 으로만 받도록 고정.
+   */
+  children: string;
+  /**
+   * onClick: TextBadge 내부의 textOnly가 false 일 때 삭제 버튼의 클릭 이벤트 처리.
+   */
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
-export type TextBadgePropsType = React.ComponentProps<'span'> &
-  Omit<VariantProps<typeof badgeVariants>, 'variant' | 'status' | 'score' | 'grade'> & {
-    asChild?: boolean;
-  } & TextBadgeContentProps;
+export type TextBadgePropsType = Omit<React.ComponentProps<'span'>, 'children'> &
+  Omit<VariantProps<typeof badgeVariants>, 'variant' | 'status' | 'score' | 'grade'> &
+  TextBadgeContentProps;
 
 function TextBadgeContent({ children, onClick, textOnly }: TextBadgeContentProps) {
   return (
@@ -32,7 +37,10 @@ function TextBadgeContent({ children, onClick, textOnly }: TextBadgeContentProps
       {!textOnly && (
         <button
           type={'button'}
-          className={cn('inline-flex gap-x-1 [&_svg]:cursor-pointer')}
+          className={cn(
+            'inline-flex gap-x-1 [&_svg]:cursor-pointer',
+            'hover:[&_svg]:opacity-6\0 active:[&_svg]:opacity-60 focus:[&_svg]:opacity-60',
+          )}
           onClick={(e) => {
             e.stopPropagation();
             onClick?.(e);
@@ -49,40 +57,17 @@ function TextBadgeContent({ children, onClick, textOnly }: TextBadgeContentProps
 }
 
 function TextBadge(props: TextBadgePropsType) {
-  const { asChild = false, className, children, onClick, textOnly = false, title, ...restProps } = props;
-  const child = children as React.ReactElement<CloneBadgeChildProps & TextBadgeContentProps>;
-  const computedTitle = title ?? getStringFromChildren(children);
-
-  if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(child, {
-      ...restProps,
-      'data-slot': 'badge',
-      variant: undefined,
-      className: cn(
-        badgeVariants({
-          variant: 'text',
-        }),
-        className,
-        child.props?.className,
-      ),
-      children: (
-        <TextBadgeContent onClick={onClick} textOnly={textOnly}>
-          {child?.props?.children}
-        </TextBadgeContent>
-      ),
-      title: computedTitle,
-    });
-  }
+  const { isBtn = false, textOnly = false, children, onClick, ...restProps } = props;
 
   return (
     <Badge
       {...restProps}
-      asChild={asChild}
+      asChild={false}
+      isBtn={isBtn}
       variant={'text'}
       status={undefined}
       score={undefined}
-      className={className}
-      title={computedTitle}>
+      grade={undefined}>
       <TextBadgeContent onClick={onClick} textOnly={textOnly}>
         {children}
       </TextBadgeContent>

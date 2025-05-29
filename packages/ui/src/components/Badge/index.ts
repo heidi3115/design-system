@@ -1,7 +1,8 @@
+export { default as badgeVariants } from './badgeVariants';
+
 export { default as Badge } from './Badge';
 export type { BadgePropsType } from './Badge';
 
-export { default as badgeVariants } from './badgeVariants';
 export { default as StateBadge } from './StateBadge';
 export type { StateBadgePropsType } from './StateBadge';
 

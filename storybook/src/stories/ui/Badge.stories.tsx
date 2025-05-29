@@ -1,12 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Badge } from '@common/ui/components';
-import { badgeVariants } from '@common/ui/components/Badge';
-import { CountBadge, GradeBadge, ScoringBadge, StateBadge, TextBadge } from '@common/ui';
+import {
+  Badge,
+  badgeVariants,
+  CountBadge,
+  GradeBadge,
+  ScoringBadge,
+  StateBadge,
+  TextBadge,
+} from '@common/ui/components/Badge';
 
 const meta: Meta<typeof Badge> = {
   title: 'UI/Badge',
   component: Badge,
   args: {
+    isBtn: false,
     asChild: false,
     children: 'Badge',
     variant: 'state',
@@ -19,6 +26,12 @@ const meta: Meta<typeof Badge> = {
       control: 'boolean',
       table: { defaultValue: { summary: 'false' } },
       description: 'Slot을 통해 Badge 스타일을 다른 태그에 이식하여 badge 스타일을 적용할 때 사용하실 수 있습니다.',
+    },
+    isBtn: {
+      control: 'boolean',
+      table: { defaultValue: { summary: 'false' } },
+      description:
+        'isBtn 활성화 시, 버튼처럼 hover:, active:, focus:의 이벤트 상태 시 변화가 추가되며, cursor 및 pointer events 관련 css가 추가됩니다. asChild를 사용하는 게 아닌 버튼같은 이펙트만 필요하신 경우 사용하실 수 있습니다.',
     },
     variant: {
       control: 'select',
@@ -66,7 +79,7 @@ const meta: Meta<typeof Badge> = {
     docs: {
       description: {
         component:
-          'Badge 컴포넌트의 문서입니다. Badge 컴포넌트는 기본적으로 data-slot="badge" 으로 분류되나 span을 기본으로 하며 레이블이나 태그 등 <br/>Badge의 경우 스타일 및 경우의 수의 다양화로 variant의 선택에 따라 필수값 등이 달라지므로 유의 바랍니다.<br/>공통적으로 적용되는 Badge의 스타일의 경우 inline-flex로서 size-fit을 기본으로 한다는 것을 고려해주시고, 상세 내역은 하단 혹은 각 스토리를 참조해주세요.',
+          'Badge 컴포넌트의 문서입니다. Badge 컴포넌트는 기본적으로 data-slot="badge" 으로 분류되나 span을 기본으로 하며 레이블이나 태그 등 <br/>Badge의 경우 스타일 및 경우의 수의 다양화로 variant의 선택에 따라 필수값 등이 달라지므로 유의 바랍니다.<br/>공통적으로 적용되는 Badge의 스타일의 경우 inline-flex 로서 size-fit을 기본으로 한다는 것을 고려해주시고, 상세 내역은 하단 혹은 각 스토리를 참조해주세요.',
       },
     },
   },
@@ -88,7 +101,6 @@ export const Default: Story = {
     const {
       asChild,
       isBtn = false,
-      variant,
       status = 'default',
       score = 'veryLow',
       grade = 'alert',
@@ -100,44 +112,36 @@ export const Default: Story = {
 
     return (
       <div className={'flex flex-row gap-4'}>
-        <div className={'flex flex-col gap-1'}>
-          <h4 className={'text-xs text-juiText-blue text-center'}></h4>
-          <Badge
-            asChild={asChild}
-            isBtn={isBtn}
-            variant={variant}
-            status={status}
-            score={score}
-            grade={grade}
-            {...restProps}
-          />
+        <div className={'flex flex-col gap-1 items-center'}>
+          <h4 className={'text-xs text-juiText-blue text-center'}>default</h4>
+          <Badge asChild={asChild} isBtn={isBtn} {...restProps}>
+            {children}
+          </Badge>
         </div>
         {(Object.keys(badgeVariants.variants.variant) as Array<keyof typeof badgeVariants.variants.variant>).map(
           (variant) => {
             return (
-              <div className={'flex flex-col gap-1'}>
-                <h4 className={'text-xs text-juiText-blue text-center'}></h4>
-                {/*state, scoring, grading, count, text*/}
+              <div className={'flex flex-col gap-1'} key={variant}>
+                <h4 className={'text-xs text-juiText-blue text-center'}>variant: {variant}</h4>
                 {variant === 'state' ? (
                   <StateBadge isBtn={isBtn} status={status} children={children} {...restProps} />
                 ) : variant === 'scoring' ? (
-                  <ScoringBadge isBtn={isBtn} score={score} scoreVal={TEMP_VAL} children={children} {...restProps} />
-                ) : variant === 'grading' ? (
-                  <GradeBadge isBtn={isBtn} grade={grade} {...restProps}>
-                    {grade}
-                  </GradeBadge> // children={children}
-                ) : variant === 'count' ? (
-                  <CountBadge
+                  <ScoringBadge
                     isBtn={isBtn}
-                    color={grade}
+                    score={score}
                     scoreVal={TEMP_VAL}
-                    maxVal={TEMP_MAX_VAL}
-                    // children={null}
+                    children={(children || '').toString()}
                     {...restProps}
                   />
+                ) : variant === 'grading' ? (
+                  <GradeBadge isBtn={isBtn} grade={grade} children={(children || '').toString()} {...restProps} />
+                ) : variant === 'count' ? (
+                  <CountBadge isBtn={isBtn} color={grade} scoreVal={TEMP_VAL} maxVal={TEMP_MAX_VAL} {...restProps} />
                 ) : (
                   //variant === 'text'
-                  <TextBadge isBtn={isBtn} children={children} {...restProps} />
+                  <TextBadge isBtn={isBtn} {...restProps}>
+                    {(children || '').toString()}
+                  </TextBadge>
                 )}
               </div>
             );

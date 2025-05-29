@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { badgeVariants } from '@common/ui/components/Badge';
-import { GradeBadge } from '@common/ui';
+import { badgeVariants, GradeBadge } from '@common/ui/components/Badge';
 
 const gradeKeys = Object.keys(badgeVariants.variants.grade) as (keyof typeof badgeVariants.variants.grade)[];
 
@@ -8,9 +7,9 @@ const meta: Meta<typeof GradeBadge> = {
   title: 'UI/Badge/GradeBadge',
   component: GradeBadge,
   args: {
-    children: 'GradeBadge',
-    grade: 'info',
     isBtn: false,
+    grade: 'info',
+    children: 'GradeBadge',
   },
   argTypes: {
     isBtn: {
@@ -86,7 +85,8 @@ export const Grade: GradeStory = {
   parameters: {
     docs: {
       description: {
-        story: 'GradeBadge 에서 쓰이는 모든 `grade`의 종류와 다양한 예시들을 확인하실 수 있습니다.<br/>',
+        story:
+          'GradeBadge 에서 쓰이는 모든 `grade`의 종류와 다양한 예시들을 확인하실 수 있습니다.<br/>GradeBadge 의 경우, grade 별 아이콘이 고정되어 있고 기본값은 `info` 로 처리되고 있습니다.',
       },
     },
   },
@@ -96,21 +96,7 @@ export const Grade: GradeStory = {
         <span className="text-sm font-bold">Text</span>
         <div className="flex flex-wrap gap-4 p-5">
           {(Object.keys(badgeVariants.variants.grade) as (keyof typeof badgeVariants.variants.grade)[]).map((grade) => (
-            <div className={'flex flex-col gap-0.5'} key={grade}>
-              <span className="text-xs text-juiText-blue">{grade}</span>
-              <GradeBadge {...args} grade={grade}>
-                {grade}
-              </GradeBadge>
-            </div>
-          ))}
-        </div>
-      </div>
-      <hr />
-      <div className={'flex flex-col gap-3'}>
-        <span className="text-sm font-bold">With Icon</span>
-        <div className="flex flex-wrap gap-4 p-5">
-          {gradeKeys.map((grade) => (
-            <div className={'flex flex-col gap-0.5'} key={grade}>
+            <div className={'flex flex-col gap-0.5 text-center'} key={grade}>
               <span className="text-xs text-juiText-blue">{grade}</span>
               <GradeBadge {...args} grade={grade}>
                 {grade}
@@ -162,8 +148,8 @@ export const IsBtn: GradeStory = {
       </span>
       <div className="flex flex-row flex-wrap gap-4 p-5">
         {gradeKeys.map((grade) => (
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`isBtn: ${args.isBtn}`}</span>
+          <div className={'flex flex-col gap-1 text-center'}>
+            <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}`}</span>
             <GradeBadge {...args} grade={grade} />
           </div>
         ))}

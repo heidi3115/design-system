@@ -124,7 +124,7 @@ export const Color: CountStory = {
         <span className="text-sm font-bold">scoreVal Only</span>
         <div className="flex flex-wrap gap-4 p-5">
           {combinedKeys.map((color) => (
-            <div className={'flex flex-col gap-0.5'} key={color}>
+            <div className={'flex flex-col gap-0.5 text-center'} key={color}>
               <span className="text-xs text-juiText-blue">{color}</span>
               <CountBadge {...args} color={color} maxVal={MAX_VAL} />
             </div>
@@ -136,7 +136,7 @@ export const Color: CountStory = {
         <span className="text-sm font-bold">With maxVal</span>
         <div className="flex flex-wrap gap-4 p-5">
           {combinedKeys.map((color) => (
-            <div className={'flex flex-col gap-0.5'} key={color}>
+            <div className={'flex flex-col gap-0.5 text-center'} key={color}>
               <span className="text-xs text-juiText-blue">{color}</span>
               <CountBadge {...args} color={color} />
             </div>
@@ -151,16 +151,16 @@ export const Color: CountStory = {
         </span>
         <div className="flex flex-wrap gap-4 p-5">
           {combinedKeys.map((color) => (
-            <div className={'flex flex-col gap-0.5'} key={color}>
-              <span className="text-xs text-juiText-blue">{color} with left icon</span>
+            <div className={'flex flex-col gap-0.5 text-center'} key={color}>
+              <span className="text-xs text-juiText-blue">{color}</span>
               <CountBadge {...args} color={color} icon={<BookmarkIcon size={'small'} />} />
             </div>
           ))}
         </div>
         <div className="flex flex-wrap gap-4 p-5">
           {combinedKeys.map((color) => (
-            <div className={'flex flex-col gap-0.5'} key={color}>
-              <span className="text-xs text-juiText-blue">{color} with right icon</span>
+            <div className={'flex flex-col gap-0.5 text-center'} key={color}>
+              <span className="text-xs text-juiText-blue">{color}</span>
               <CountBadge {...args} color={color} icon={<BookmarkIcon size={'small'} />} iconPosition={'right'} />
             </div>
           ))}
@@ -208,17 +208,17 @@ export const IsBtn: CountStory = {
           isBtn 를 적용해도 해당의 컴포넌트 및 태그 자체는 Badge 에서 벗어나는 것은 아닙니다.
         </span>
       </span>
-      <div className={'flex flex-row gap-3'}>
+      <div className={'flex flex-row gap-3 text-center'}>
         <div className={'flex flex-col gap-1'}>
-          <span className="text-xs text-juiText-blue text-center">{`isBtn: ${args.isBtn}`}</span>
+          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}`}</span>
           <CountBadge {...args} />
         </div>
         <div className={'flex flex-col gap-1'}>
-          <span className="text-xs text-juiText-blue text-center">{`isBtn: ${args.isBtn}`}</span>
+          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}`}</span>
           <CountBadge {...args} icon={<AlertCircleIcon size={'small'} />} />
         </div>
         <div className={'flex flex-col gap-1'}>
-          <span className="text-xs text-juiText-blue text-center">{`isBtn: ${args.isBtn}`}</span>
+          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}`}</span>
           <CountBadge {...args} icon={<AlertCircleIcon size={'small'} />} iconPosition={'right'} />
         </div>
       </div>

@@ -16,11 +16,11 @@ import {
 export type GradeBadgePropsType = Omit<React.ComponentProps<'span'>, 'children'> &
   Omit<VariantProps<typeof badgeVariants>, 'variant' | 'status' | 'score'> & {
     /**
-     * grade : badgeVariants.variants.grade 의 내역만 사용가능하도록 제어
+     * grade: badgeVariants.variants.grade 의 내역만 사용가능하도록 제어
      */
     grade: badgeGradeType;
     /**
-     * GradeBadge 내부는 아이콘 및 형태, 스타일이 고정되어있으므로 children은 필수값으로서 string 으로만 받도록 고정.
+     * children: GradeBadge 내부는 아이콘 및 형태, 스타일이 고정되어있으므로 children은 필수값으로서 string 으로만 받도록 고정.
      */
     children: string;
   };
@@ -51,7 +51,7 @@ function GradeBadgeContent({
 }
 
 function GradeBadge(props: GradeBadgePropsType) {
-  const { className, grade = 'info', children = '', ...restProps } = props;
+  const { isBtn = false, grade = 'info', children = '', ...restProps } = props;
 
   const iconColor = badgeVariants.variants.grade[grade] || 'text-juiStatus-info';
 
@@ -59,11 +59,11 @@ function GradeBadge(props: GradeBadgePropsType) {
     <Badge
       {...restProps}
       asChild={false}
+      isBtn={isBtn}
       variant={'grading'}
       grade={grade}
       status={undefined}
-      score={undefined}
-      className={cn(className)}>
+      score={undefined}>
       <GradeBadgeContent grade={grade} iconColor={iconColor}>
         {children}
       </GradeBadgeContent>

@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { BookmarkIcon, CheckIcon, FolderFilledIcon } from '@common/ui/icons';
-import { Button, TextBadge } from '@common/ui';
+import { TextBadge } from '@common/ui/components/Badge';
 
 const textMap = {
   short: ['짧은 텍스트', 'text'],
   long: [
     '긴 텍스트',
-    '긴 텍스트 TextBadge는 텍스트 태그를 위함으로서 텍스트만 있는 textOnly와 삭제 버튼 활용이 가능한 2가지를 고려한 내역입니다.',
+    '긴 텍스트 TextBadge는 텍스트 태그를 위함으로서 텍스트만 있는 textOnly와 삭제 버튼 활용이 가능한 2가지를 고려한 내역입니다. 내용이 긴 텍스트로서의 크기 제한은 별도로 width 지정으로 가능합니다.',
   ],
 };
 
@@ -14,18 +13,19 @@ const meta: Meta<typeof TextBadge> = {
   title: 'UI/Badge/TextBadge',
   component: TextBadge,
   args: {
-    children: 'TextBadge',
+    isBtn: false,
     textOnly: false,
-    asChild: false,
+    children: 'TextBadge',
     onClick: () => {
       alert('TextBadge click Event(공통)');
     },
   },
   argTypes: {
-    asChild: {
+    isBtn: {
       control: 'boolean',
-      description: 'Slot을 통해 Badge 스타일을 다른 태그에 이식하여 badge 스타일을 적용할 때 사용',
       table: { defaultValue: { summary: 'false' } },
+      description:
+        'isBtn 활성화 시, 버튼처럼 hover:, active:, focus:의 이벤트 상태 시 변화가 추가되며, cursor 및 pointer events 관련 css가 추가됩니다.',
     },
     textOnly: {
       control: 'boolean',
@@ -36,7 +36,7 @@ const meta: Meta<typeof TextBadge> = {
     children: {
       control: 'text',
       table: { defaultValue: { summary: 'TextBadge' } },
-      description: 'TextBadge 내부에 들어갈 내용을 표기합니다.',
+      description: 'TextBadge 내부에 들어갈 내용을 표기합니다. `string` 만 받을 수 있습니다.',
     },
     className: {
       control: 'text',
@@ -50,14 +50,14 @@ const meta: Meta<typeof TextBadge> = {
         type: { summary: '(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void' },
         defaultValue: { summary: '현재로서는 클릭 시 공통으로 alert가 활성화 됩니다.' },
       },
-      description: '삭제 버튼 클릭 시 호출되는 이벤트 핸들러입니다. (textOnly=false일 때만 활성화됩니다)',
+      description: '삭제 버튼 클릭 시 호출되는 이벤트 핸들러입니다. (textOnly=false 일 때만 활성화 됩니다)',
     },
   },
   parameters: {
     docs: {
       description: {
         component:
-          'TextBadge 컴포넌트의 문서입니다. TextBadge 의 경우 기본 Badge 에서 variant는 "text" 를 고정한 컴포넌트로서, TextBadge 는 textOnly, onClick 을 옵션값으로 받습니다.<br/>asChild로 전환을 하더라도 해당 TextBadge 의 스타일을 우선적으로 받도록 되어있으니 해당 부분에 유의하셔야 합니다.<br/>기본적인 스타일은 Badge를 따르되 내부에서는 커스텀한 스타일이 있습니다.<br/>또한 TextBadge의 경우 textOnly 옵션에 따라 children을 감싼 내부 부모의 스타일이 바뀌는 부분이 있으니 유의해야 합니다.',
+          'TextBadge 컴포넌트의 문서입니다. TextBadge 는 텍스트 태그를 기반으로 하는 Badge 로서 형태가 고정되어 있습니다.<br/>TextBadge 의 경우 기본 Badge 에서 variant는 "text" 를 고정한 컴포넌트로서, TextBadge 는 children 이 필수값이며 textOnly, onClick 을 옵션값으로 받습니다.<br/>children는 `string` 으로만 받을 수 있으며 textOnly 활성화 시, onClick은 버튼이 없어지므로 비활성화 됩니다.<br/>기본적인 스타일은 Badge를 따르되 TextBadge의 별도 스타일이 고정되어 있습니다.<br/>또한 TextBadge의 경우 textOnly 옵션에 따라 children을 감싼 내부 부모의 스타일이 바뀌는 부분이 있으니 유의해야 합니다.<br/>props 들의 예시와 isBtn 대한 내역은 아래 스토리에서 확인해주세요. 다만, asChild는 기본 Badge 컴포넌트에서만 가능하다는 것을 유의해주세요.',
       },
     },
   },
@@ -80,20 +80,19 @@ export const Default: TextStory = {
   },
 };
 
-// variant : text 일 때의 Badge 렌더링 스토리
 export const Basic: TextStory = {
   args: {
-    asChild: false,
+    isBtn: false,
     textOnly: false,
   },
   argTypes: {
-    asChild: {
+    isBtn: {
       control: 'boolean',
       table: { disable: true },
     },
     children: {
       control: 'text',
-      table: { disable: true, defaultValue: { summary: 'TextBadge' } },
+      table: { disable: true },
     },
     textOnly: {
       table: { disable: true },
@@ -102,7 +101,8 @@ export const Basic: TextStory = {
   parameters: {
     docs: {
       description: {
-        story: 'variant 가 `text` 일 때의 Badge 렌더링 스토리입니다. ',
+        story:
+          'TextBadge 에서의 다양한 예시들을 확인하실 수 있습니다. 삭제 버튼의 경우 storybook 한정으로 임의로 alert이 뜨도록 설정하였습니다.',
       },
     },
   },
@@ -123,50 +123,31 @@ export const Basic: TextStory = {
       </div>
       <hr />
       <div className={'flex flex-col gap-3'}>
-        <span className="text-sm font-bold">With Icon</span>
+        <span className="text-sm font-bold">textOnly(true)</span>
         <div className="flex flex-wrap gap-4 p-5">
           <div className={'flex flex-col gap-0.5'}>
             <span className="text-xs text-juiText-blue">{textMap.short[0]}</span>
-            <TextBadge {...args}>
-              <BookmarkIcon size={'small'} /> {textMap.short[1]}
-            </TextBadge>
+            <TextBadge {...args} textOnly></TextBadge>
           </div>
           <div className={'flex flex-col gap-0.5'}>
             <span className="text-xs text-juiText-blue">{textMap.long[0]}</span>
-            <TextBadge {...args}>
-              <BookmarkIcon size={'small'} />
+            <TextBadge {...args} textOnly>
               {textMap.long[1]}
             </TextBadge>
           </div>
         </div>
       </div>
       <hr />
-      <div className={'flex flex-col gap-3'}>
-        <span className="text-sm font-bold">
-          Only Icon
-          <span className={'block text-xs'}>
-            children안에 Icon만 있다 하더라도 TextBadge 스타일 자체는 유지되니 유의해주세요.
-          </span>
-        </span>
-        <div className="flex flex-wrap gap-4 p-5">
-          <div className={'flex flex-col gap-0.5'}>
-            <span className="text-xs text-juiText-blue">{args.children}</span>
-            <TextBadge {...args}>
-              <FolderFilledIcon size={'small'} />
-            </TextBadge>
-          </div>
-        </div>
-      </div>
     </div>
   ),
 };
 export const TextOnly: TextStory = {
   args: {
-    asChild: false,
+    isBtn: false,
     textOnly: true,
   },
   argTypes: {
-    asChild: {
+    isBtn: {
       control: 'boolean',
       table: { disable: true },
     },
@@ -181,7 +162,7 @@ export const TextOnly: TextStory = {
   parameters: {
     docs: {
       description: {
-        story: 'variant 가 `text` 일 때의 Badge 렌더링 스토리입니다. ',
+        story: 'textOnly가 true일 경우에 대한 다양하나 예시들을 확인하실 수 있습니다.',
       },
     },
   },
@@ -245,7 +226,7 @@ export const TextOnly: TextStory = {
       <hr />
       <div className={'flex flex-col gap-3'}>
         <span className="text-sm font-bold">
-          With Icon
+          isBtn: true인 경우
           <span className={'block text-xs'}>
             {
               'textOnly인 경우는 문자열만 들어가므로 크기에 따라서 말줄임이 필요할 수 있을 거라는 고려로 인해서 추가되었으며,'
@@ -259,49 +240,32 @@ export const TextOnly: TextStory = {
         <div className="flex flex-wrap gap-4 p-5">
           <div className={'flex flex-col gap-0.5'}>
             <span className="text-xs text-juiText-blue">{textMap.short[0]}</span>
-            <TextBadge {...args}>
-              <CheckIcon size={'small'} />
+            <TextBadge {...args} isBtn>
               {textMap.short[1]}
             </TextBadge>
           </div>
           <div className={'flex flex-col gap-0.5'}>
             <span className="text-xs text-juiText-blue">{textMap.long[0]}</span>
-            <TextBadge {...args}>
-              <CheckIcon size={'small'} />
+            <TextBadge {...args} isBtn>
               {textMap.long[1]}
             </TextBadge>
           </div>
         </div>
       </div>
       <hr />
-      <div className={'flex flex-col gap-3'}>
-        <span className="text-sm font-bold">
-          Only Icon
-          <span className={'block text-xs'}>
-            children 안에 Icon만 있다 하더라도 기본 TextBadge 스타일 자체는 유지되니 유의해주세요.
-          </span>
-        </span>
-        <div className="flex flex-wrap gap-4 p-5">
-          <div className={'flex flex-col gap-0.5'}>
-            <span className="text-xs text-juiText-blue">{'BookmarkIcon'}</span>
-            <TextBadge {...args}>
-              <BookmarkIcon size={'small'} />
-            </TextBadge>
-          </div>
-        </div>
-      </div>
     </div>
   ),
 };
 
-export const AsChild: TextStory = {
+export const IsBtn: TextStory = {
   args: {
-    asChild: true,
+    isBtn: true,
     textOnly: false,
     children: 'asChild',
+    className: 'w-[250px]',
   },
   argTypes: {
-    asChild: {
+    isBtn: {
       control: 'boolean',
       table: { disable: false, defaultValue: { summary: 'true' } },
     },
@@ -312,137 +276,203 @@ export const AsChild: TextStory = {
     textOnly: {
       table: { disable: false, defaultValue: { summary: 'false' } },
     },
+    className: {
+      table: { disable: true, defaultValue: { summary: 'w-[250px]' } },
+    },
   },
   parameters: {
     docs: {
       description: {
         story:
-          'asChild 는 boolean 으로서 true 시 Slot을 이용하여 자식의 컴포넌트 혹은 태그로 치환되고 스타일은 부모의 것을 유지할 수 있게 됩니다. 현재로서는 대표적인 예시를 Button, a, div 로 잡았습니다.',
+          'isBtn 는 boolean 으로서 true 시 button 처럼 hover:, active:, focus:의 이벤트 적인 내역들에 대한 이펙트가 추가됩니다. 기본적으로는 false 입니다.<br/>TextBadge 의 경우 isBtn 활성화 시의 이펙트가 조금 다르게 처리됩니다. 또한 TextBadge 자체에 대한 이벤트 처리와 내부 버튼에 대한 내역이 다르니 유의해주세요.',
       },
     },
   },
   render: (args) => (
     <div className={'flex flex-col gap-4'}>
-      <div className={'flex flex-col gap-3'}>
-        <span className="text-sm font-bold">
-          asChild - Button
-          <span className={'block text-xs'}>asChild를 적용 시 children 언제나 단일 요소여야 합니다.</span>
+      <span className="text-sm font-bold">
+        isBtn
+        <span className={'block text-xs'}>
+          isBtn 를 적용해도 해당의 컴포넌트 및 태그 자체는 Badge 에서 벗어나는 것은 아닙니다.
         </span>
-        <div className="flex flex-row flex-wrap gap-4 p-5">
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`textOnly: ${args.textOnly}`}</span>
-            <TextBadge {...args}>
-              <Button>{args.children}</Button>
+      </span>
+      <span className="text-sm font-bold">Default</span>
+      <div className="flex flex-col flex-wrap gap-2 p-5 items-center">
+        <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn} | textOnly: ${args.textOnly}`}</span>
+        <TextBadge
+          {...args}
+          className={(args?.className || '')
+            .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim()}>
+          {args.children}
+        </TextBadge>
+      </div>
+      <hr />
+      <span className="text-sm font-bold">Examples</span>
+      <div className="flex flex-col flex-wrap gap-4 p-5 items-center">
+        <div className={'flex flex-col gap-1 text-center'}>
+          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn} | textOnly: ${false}`}</span>
+          <div className={'flex flex-row flex-wrap gap-2 items-center'}>
+            <TextBadge
+              {...args}
+              textOnly={false}
+              className={(args?.className || '')
+                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()}>
+              {textMap.short[1]}
+            </TextBadge>
+            <TextBadge
+              {...args}
+              textOnly={false}
+              className={(args?.className || '')
+                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()}>
+              {textMap.short[1]}
+            </TextBadge>
+            <TextBadge
+              {...args}
+              textOnly={false}
+              className={(args?.className || '')
+                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()}>
+              {textMap.short[1]}
             </TextBadge>
           </div>
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`textOnly: ${args.textOnly}`}</span>
-            <TextBadge {...args}>
-              <Button>
-                <BookmarkIcon size={'small'} />
-                {args.children}
-              </Button>
+        </div>
+        <div className={'flex flex-col gap-1 text-center items-center'}>
+          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn} | textOnly: ${false}`}</span>
+          <div className={'flex flex-row flex-wrap gap-2 items-center'}>
+            <TextBadge
+              {...args}
+              textOnly={false}
+              className={(args?.className || '')
+                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()}>
+              {textMap.long[1]}
+            </TextBadge>
+            <TextBadge
+              {...args}
+              textOnly={false}
+              className={(args?.className || '')
+                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()}>
+              {textMap.long[1]}
+            </TextBadge>
+            <TextBadge
+              {...args}
+              textOnly={false}
+              className={(args?.className || '')
+                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()}>
+              {textMap.long[1]}
             </TextBadge>
           </div>
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`textOnly: ${args.textOnly}`}</span>
-            <TextBadge {...args}>
-              <Button>{textMap.long[1]}</Button>
+        </div>
+      </div>
+      <div className="flex flex-row flex-wrap gap-4 p-5 ">
+        <div className={'flex flex-col gap-1 text-center items-center w-full'}>
+          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn} | textOnly: ${true}`}</span>
+          <div className={'flex flex-row flex-wrap gap-2 items-center'}>
+            <TextBadge
+              {...args}
+              textOnly
+              className={(args?.className || '')
+                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()}>
+              {textMap.short[1]}
+            </TextBadge>
+            <TextBadge
+              {...args}
+              textOnly
+              className={(args?.className || '')
+                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()}>
+              {textMap.short[1]}
+            </TextBadge>
+            <TextBadge
+              {...args}
+              textOnly
+              className={(args?.className || '')
+                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()}>
+              {textMap.short[1]}
             </TextBadge>
           </div>
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`textOnly: ${args.textOnly}`}</span>
-            <TextBadge {...args}>
-              <Button>
-                <BookmarkIcon size={'small'} />
-                {textMap.long[1]}
-              </Button>
+        </div>
+        <div className={'flex flex-col gap-1 text-center justify-center'}>
+          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}  | textOnly: ${true}`}</span>
+          <div className={'flex flex-row flex-wrap gap-2 justify-center'}>
+            <TextBadge
+              {...args}
+              textOnly
+              className={(args?.className || '')
+                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()}>
+              {textMap.long[1]}
+            </TextBadge>
+            <TextBadge
+              {...args}
+              textOnly
+              className={(args?.className || '')
+                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()}>
+              {textMap.long[1]}
+            </TextBadge>
+            <TextBadge
+              {...args}
+              textOnly
+              className={(args?.className || '')
+                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()}>
+              {textMap.long[1]}
             </TextBadge>
           </div>
         </div>
       </div>
       <hr />
-      <div className={'flex flex-col gap-3'}>
-        <span className="text-sm font-bold">
-          asChild - a 태그
-          <span className={'block text-xs'}>
-            a 태그의 경우, normalize.css 에서 data-slot이 button이 아닌 경우 배경이 transparent 으로 고정되는 부분
-            유의해주세요.
-          </span>
-        </span>
-        <div className="flex flex-row flex-wrap gap-4 p-5">
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`textOnly: ${args.textOnly}`}</span>
-            <TextBadge {...args}>
-              <a href={'/'} target={'_blank'}>
-                {args.children}
-              </a>
-            </TextBadge>
-          </div>
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`textOnly: ${args.textOnly}`}</span>
-            <TextBadge {...args}>
-              <a href={'/'} target={'_blank'}>
-                <BookmarkIcon size={'small'} />
-                {args.children}
-              </a>
-            </TextBadge>
-          </div>
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`textOnly: ${args.textOnly}`}</span>
-            <TextBadge {...args}>
-              <a href={'/'} target={'_blank'}>
-                {textMap.long[1]}
-              </a>
-            </TextBadge>
-          </div>
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`textOnly: ${args.textOnly}`}</span>
-            <TextBadge {...args}>
-              <a href={'/'} target={'_blank'}>
-                <BookmarkIcon size={'small'} />
-                {textMap.long[1]}
-              </a>
-            </TextBadge>
-          </div>
+      <span className="text-sm font-bold">Specific width by className : w-[250px]</span>
+      <div className="flex flex-row flex-wrap gap-4 p-5 justify-center">
+        <div className={'flex flex-col gap-1 text-center'}>
+          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn} | textOnly: ${false}`}</span>
+          <TextBadge {...args} textOnly={false}>
+            {textMap.short[1]}
+          </TextBadge>
+        </div>
+        <div className={'flex flex-col gap-1 text-center'}>
+          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn} | textOnly: ${false}`}</span>
+          <TextBadge {...args} textOnly={false}>
+            {textMap.long[1]}
+          </TextBadge>
+        </div>
+      </div>
+      <div className="flex flex-row flex-wrap gap-4 p-5 justify-center">
+        <div className={'flex flex-col gap-1 text-center items-center'}>
+          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn} | textOnly: ${true}`}</span>
+          <TextBadge {...args} textOnly>
+            {textMap.short[1]}
+          </TextBadge>
+        </div>
+        <div className={'flex flex-col gap-1 text-center justify-center'}>
+          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}  | textOnly: ${true}`}</span>
+          <TextBadge {...args} textOnly>
+            {textMap.long[1]}
+          </TextBadge>
         </div>
       </div>
       <hr />
-      <div className={'flex flex-col gap-3'}>
-        <span className="text-sm font-bold">asChild - div 태그</span>
-        <div className="flex flex-row flex-wrap gap-4 p-5">
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`textOnly: ${args.textOnly}`}</span>
-            <TextBadge {...args}>
-              <div>{args.children}</div>
-            </TextBadge>
-          </div>
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`textOnly: ${args.textOnly}`}</span>
-            <TextBadge {...args}>
-              <div>
-                <BookmarkIcon size={'small'} />
-                {args.children}
-              </div>
-            </TextBadge>
-          </div>
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`textOnly: ${args.textOnly}`}</span>
-            <TextBadge {...args}>
-              <div>{textMap.long[1]}</div>
-            </TextBadge>
-          </div>
-          <div className={'flex flex-col gap-1'}>
-            <span className="text-xs text-juiText-blue text-center">{`textOnly: ${args.textOnly}`}</span>
-            <TextBadge {...args}>
-              <div>
-                <BookmarkIcon size={'small'} />
-                {textMap.long[1]}
-              </div>
-            </TextBadge>
-          </div>
-        </div>
-      </div>
     </div>
   ),
 };
