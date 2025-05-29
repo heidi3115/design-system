@@ -302,7 +302,7 @@ export const IsBtn: TextStory = {
         <TextBadge
           {...args}
           className={(args?.className || '')
-            .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
+            .replace(/(^|\s)w-(\[[^\]]+\]|[\w-]+)(?=\s|$)/g, ' ')
             .replace(/\s+/g, ' ')
             .trim()}>
           {args.children}
@@ -313,130 +313,58 @@ export const IsBtn: TextStory = {
       <div className="flex flex-col flex-wrap gap-4 p-5 items-center">
         <div className={'flex flex-col gap-1 text-center'}>
           <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn} | textOnly: ${false}`}</span>
-          <div className={'flex flex-row flex-wrap gap-2 items-center'}>
-            <TextBadge
-              {...args}
-              textOnly={false}
-              className={(args?.className || '')
-                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()}>
+          <div className={'flex flex-row gap-2 items-center'}>
+            <TextBadge {...args} textOnly={false} className={''}>
               {textMap.short[1]}
             </TextBadge>
-            <TextBadge
-              {...args}
-              textOnly={false}
-              className={(args?.className || '')
-                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()}>
+            <TextBadge {...args} textOnly={false} className={''}>
               {textMap.short[1]}
             </TextBadge>
-            <TextBadge
-              {...args}
-              textOnly={false}
-              className={(args?.className || '')
-                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()}>
+            <TextBadge {...args} textOnly={false} className={''}>
               {textMap.short[1]}
             </TextBadge>
           </div>
         </div>
         <div className={'flex flex-col gap-1 text-center items-center'}>
           <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn} | textOnly: ${false}`}</span>
-          <div className={'flex flex-row flex-wrap gap-2 items-center'}>
-            <TextBadge
-              {...args}
-              textOnly={false}
-              className={(args?.className || '')
-                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()}>
+          <div className={'flex flex-row gap-2 items-center'}>
+            <TextBadge {...args} textOnly={false} className={''}>
               {textMap.long[1]}
             </TextBadge>
-            <TextBadge
-              {...args}
-              textOnly={false}
-              className={(args?.className || '')
-                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()}>
+            <TextBadge {...args} textOnly={false} className={''}>
               {textMap.long[1]}
             </TextBadge>
-            <TextBadge
-              {...args}
-              textOnly={false}
-              className={(args?.className || '')
-                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()}>
+            <TextBadge {...args} textOnly={false} className={''}>
               {textMap.long[1]}
             </TextBadge>
           </div>
         </div>
       </div>
-      <div className="flex flex-row flex-wrap gap-4 p-5 ">
-        <div className={'flex flex-col gap-1 text-center items-center w-full'}>
+      <div className="flex flex-col flex-wrap gap-4 p-5 items-center">
+        <div className={'flex flex-col gap-1 text-center items-center'}>
           <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn} | textOnly: ${true}`}</span>
-          <div className={'flex flex-row flex-wrap gap-2 items-center'}>
-            <TextBadge
-              {...args}
-              textOnly
-              className={(args?.className || '')
-                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()}>
+          <div className={'flex flex-row gap-2 items-center'}>
+            <TextBadge {...args} textOnly className={''}>
               {textMap.short[1]}
             </TextBadge>
-            <TextBadge
-              {...args}
-              textOnly
-              className={(args?.className || '')
-                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()}>
+            <TextBadge {...args} textOnly className={''}>
               {textMap.short[1]}
             </TextBadge>
-            <TextBadge
-              {...args}
-              textOnly
-              className={(args?.className || '')
-                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()}>
+            <TextBadge {...args} textOnly className={''}>
               {textMap.short[1]}
             </TextBadge>
           </div>
         </div>
-        <div className={'flex flex-col gap-1 text-center justify-center'}>
+        <div className={'flex flex-col flex-wrap gap-1 text-center justify-center'}>
           <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}  | textOnly: ${true}`}</span>
-          <div className={'flex flex-row flex-wrap gap-2 justify-center'}>
-            <TextBadge
-              {...args}
-              textOnly
-              className={(args?.className || '')
-                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()}>
+          <div className={'flex flex-row flex-wrap gap-2 items-center'}>
+            <TextBadge {...args} textOnly className={''}>
               {textMap.long[1]}
             </TextBadge>
-            <TextBadge
-              {...args}
-              textOnly
-              className={(args?.className || '')
-                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()}>
+            <TextBadge {...args} textOnly className={''}>
               {textMap.long[1]}
             </TextBadge>
-            <TextBadge
-              {...args}
-              textOnly
-              className={(args?.className || '')
-                .replace(/(^|\s)w-(\[[^]]+\]|[\w-]+)(?=\s|$)/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()}>
+            <TextBadge {...args} textOnly className={''}>
               {textMap.long[1]}
             </TextBadge>
           </div>
@@ -444,7 +372,7 @@ export const IsBtn: TextStory = {
       </div>
       <hr />
       <span className="text-sm font-bold">Specific width by className : w-[250px]</span>
-      <div className="flex flex-row flex-wrap gap-4 p-5 justify-center">
+      <div className="flex flex-row gap-4 p-5 justify-center">
         <div className={'flex flex-col gap-1 text-center'}>
           <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn} | textOnly: ${false}`}</span>
           <TextBadge {...args} textOnly={false}>

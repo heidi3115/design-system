@@ -15,10 +15,12 @@ const meta: Meta<typeof CountBadge> = {
   title: 'UI/Badge/CountBadge',
   component: CountBadge,
   args: {
+    isBtn: false,
     color: 'default',
     scoreVal: DEFAULT_VAL,
     maxVal: MAX_VAL,
-    isBtn: false,
+    icon: null,
+    iconPosition: 'left',
   },
   argTypes: {
     isBtn: {
@@ -107,7 +109,7 @@ export const Color: CountStory = {
       table: { disable: true },
     },
     iconPosition: {
-      table: { disable: true },
+      table: { disable: false },
     },
   },
   parameters: {
@@ -149,19 +151,11 @@ export const Color: CountStory = {
           IconPosition with maxVal
           <span className={'block text-xs'}>CountBadge의 경우 IconPosition 의 기본값은 &#39;left&#39; 입니다니다.</span>
         </span>
-        <div className="flex flex-wrap gap-4 p-5">
+        <div className="grid grid-cols-4 gap-4 p-5 items-center justify-center">
           {combinedKeys.map((color) => (
-            <div className={'flex flex-col gap-0.5 text-center'} key={color}>
-              <span className="text-xs text-juiText-blue">{color}</span>
+            <div className={'flex flex-col gap-0.5 items-center'} key={color}>
+              <span className="text-xs text-juiText-blue">{`color: ${color} | iconPosition: ${args.iconPosition}`}</span>
               <CountBadge {...args} color={color} icon={<BookmarkIcon size={'small'} />} />
-            </div>
-          ))}
-        </div>
-        <div className="flex flex-wrap gap-4 p-5">
-          {combinedKeys.map((color) => (
-            <div className={'flex flex-col gap-0.5 text-center'} key={color}>
-              <span className="text-xs text-juiText-blue">{color}</span>
-              <CountBadge {...args} color={color} icon={<BookmarkIcon size={'small'} />} iconPosition={'right'} />
             </div>
           ))}
         </div>
@@ -182,7 +176,7 @@ export const IsBtn: CountStory = {
     },
     color: {
       control: 'select',
-      options: Object.keys(badgeVariants.variants.status),
+      options: combinedKeys,
       table: { disable: false },
     },
     icon: {
@@ -209,16 +203,16 @@ export const IsBtn: CountStory = {
         </span>
       </span>
       <div className={'flex flex-row gap-3 text-center'}>
-        <div className={'flex flex-col gap-1'}>
-          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}`}</span>
+        <div className={'flex flex-col gap-1 items-center'}>
+          <span className="text-xs text-juiText-blue">{`color: ${args.color}`}</span>
           <CountBadge {...args} />
         </div>
-        <div className={'flex flex-col gap-1'}>
-          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}`}</span>
+        <div className={'flex flex-col gap-1 items-center'}>
+          <span className="text-xs text-juiText-blue">{`color: ${args.color} | iconPosition: left`}</span>
           <CountBadge {...args} icon={<AlertCircleIcon size={'small'} />} />
         </div>
-        <div className={'flex flex-col gap-1'}>
-          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}`}</span>
+        <div className={'flex flex-col gap-1 items-center'}>
+          <span className="text-xs text-juiText-blue">{`color: ${args.color} | iconPosition: right`}</span>
           <CountBadge {...args} icon={<AlertCircleIcon size={'small'} />} iconPosition={'right'} />
         </div>
       </div>

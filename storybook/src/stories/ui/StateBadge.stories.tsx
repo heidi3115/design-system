@@ -94,10 +94,10 @@ export const Status: StateStory = {
     <div className={'flex flex-col gap-4'}>
       <div className={'flex flex-col gap-3'}>
         <span className="text-sm font-bold">Text</span>
-        <div className="flex flex-wrap gap-4 p-5">
+        <div className="flex flex-wrap gap-4 p-5 items-center justify-center">
           {(Object.keys(badgeVariants.variants.status) as (keyof typeof badgeVariants.variants.status)[]).map(
             (status) => (
-              <div className={'flex flex-col gap-0.5'} key={status}>
+              <div className={'flex flex-col gap-0.5 items-center'} key={status}>
                 <span className="text-xs text-juiText-blue">{status}</span>
                 <StateBadge {...args} status={status}>
                   {status}
@@ -110,10 +110,10 @@ export const Status: StateStory = {
       <hr />
       <div className={'flex flex-col gap-3'}>
         <span className="text-sm font-bold">With Icon</span>
-        <div className="flex flex-wrap gap-4 p-5">
+        <div className="flex flex-wrap gap-4 p-5 items-center justify-center">
           {(Object.keys(badgeVariants.variants.status) as (keyof typeof badgeVariants.variants.status)[]).map(
             (status) => (
-              <div className={'flex flex-col gap-0.5'} key={status}>
+              <div className={'flex flex-col gap-0.5 items-center'} key={status}>
                 <span className="text-xs text-juiText-blue">{status}</span>
                 <StateBadge {...args} status={status}>
                   <CheckIcon size={'small'} />
@@ -127,10 +127,10 @@ export const Status: StateStory = {
       <hr />
       <div className={'flex flex-col gap-3'}>
         <span className="text-sm font-bold">Only Icon</span>
-        <div className="flex flex-wrap gap-4 p-5">
+        <div className="flex flex-wrap gap-4 p-5 items-center justify-center">
           {(Object.keys(badgeVariants.variants.status) as (keyof typeof badgeVariants.variants.status)[]).map(
             (status) => (
-              <div className={'flex flex-col gap-0.5'} key={status}>
+              <div className={'flex flex-col gap-0.5 items-center'} key={status}>
                 <span className="text-xs text-juiText-blue">{status}</span>
                 <StateBadge {...args} status={status}>
                   <BookmarkIcon size={'small'} />

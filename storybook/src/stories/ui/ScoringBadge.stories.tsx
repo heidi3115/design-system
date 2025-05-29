@@ -138,7 +138,7 @@ export const Score: ScoringStory = {
         <div className="flex flex-wrap gap-4 p-5">
           {scoreKeys.map((score) => (
             <div className={'flex flex-col gap-0.5 text-center'} key={score}>
-              <span className="text-xs text-juiText-blue">{score}</span>
+              <span className="text-xs text-juiText-blue">{`score : ${score} | iconPosition: ${args.iconPosition}`}</span>
               <ScoringBadge {...args} score={score} />
             </div>
           ))}
@@ -154,6 +154,7 @@ export const IsBtn: ScoringStory = {
     isBtn: true,
     score: 'normal',
     icon: <AlertCircleIcon size={'small'} />,
+    iconPosition: 'right',
   },
   argTypes: {
     isBtn: {
@@ -168,6 +169,9 @@ export const IsBtn: ScoringStory = {
       control: 'select',
       options: scoreKeys,
       table: { disable: false },
+    },
+    icon: {
+      table: { disable: true },
     },
   },
   parameters: {
@@ -187,12 +191,12 @@ export const IsBtn: ScoringStory = {
         </span>
       </span>
       <div className={'flex flex-row gap-3 text-center'}>
-        <div className={'flex flex-col gap-1'}>
-          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}`}</span>
+        <div className={'flex flex-col gap-1 items-center'}>
+          <span className="text-xs text-juiText-blue">{`score: ${args.score} | isBtn: ${args.isBtn}`}</span>
           <ScoringBadge {...args} icon={null} />
         </div>
-        <div className={'flex flex-col gap-1'}>
-          <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}`}</span>
+        <div className={'flex flex-col gap-1 items-center'}>
+          <span className="text-xs text-juiText-blue">{`score: ${args.score} | isBtn: ${args.isBtn} | iconPosition: ${args.iconPosition}`}</span>
           <ScoringBadge {...args} />
         </div>
       </div>

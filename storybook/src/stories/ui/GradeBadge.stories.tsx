@@ -127,7 +127,7 @@ export const IsBtn: GradeStory = {
     grade: {
       control: 'select',
       options: gradeKeys,
-      table: { disable: false },
+      table: { disable: true },
     },
   },
   parameters: {
@@ -149,7 +149,7 @@ export const IsBtn: GradeStory = {
       <div className="flex flex-row flex-wrap gap-4 p-5">
         {gradeKeys.map((grade) => (
           <div className={'flex flex-col gap-1 text-center'}>
-            <span className="text-xs text-juiText-blue">{`isBtn: ${args.isBtn}`}</span>
+            <span className="text-xs text-juiText-blue">{`grage: ${grade} | isBtn: ${args.isBtn}`}</span>
             <GradeBadge {...args} grade={grade} />
           </div>
         ))}
