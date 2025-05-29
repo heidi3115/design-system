@@ -81,9 +81,9 @@ export default function Page() {
       <div className="flex items-center justify-center min-h-svh">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
-          <RadioGroup disabled direction="horizontal" defaultValue="banana" valueRef={radioRef} options={options} />
+          <RadioGroup direction="horizontal" defaultValue="banana" valueRef={radioRef} options={options} />
           <Button
-            onMouseEnter={() => {
+            onClick={() => {
               if (radioRef.current) {
                 console.log('비제어', radioRef.current);
               }
@@ -92,7 +92,7 @@ export default function Page() {
           </Button>
 
           <RadioGroup
-            direction="horizontal"
+            direction="vertical"
             ref={fruitRef}
             value={fruitValue}
             onChange={fruitOnChange}

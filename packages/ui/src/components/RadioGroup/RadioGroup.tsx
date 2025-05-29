@@ -56,7 +56,7 @@ function RadioGroup({
     <RadioGroupRoot
       value={currentValue}
       onValueChange={handleChange}
-      className={cn('flex', direction === 'vertical' ? 'flex-col space-y-2' : 'flex-row space-x-4', className)}
+      className={cn('flex', direction === 'vertical' ? 'flex-col space-y-1' : 'flex-row space-x-1', className)}
       {...props}>
       {options.map((option) => (
         <div key={option.value} className="flex items-center">
