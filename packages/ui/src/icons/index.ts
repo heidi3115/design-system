@@ -92,3 +92,4 @@ export { AlertTriangleFilledIcon } from './Icon/AlertTriangleFilledIcon';
 export { BellFilledIcon } from './Icon/BellFilledIcon';
 export { FolderFilledIcon } from './Icon/FolderFilledIcon';
 export { SearchFilledIcon } from './Icon/SearchFilledIcon';
+export { CircleIcon } from './Icon/CircleIcon';

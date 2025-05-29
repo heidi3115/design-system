@@ -10,7 +10,7 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from './AlertDialog';
+} from './AlertDialogParts';
 import { AlertCircleIcon, CheckCircleIcon } from '@common/ui/icons';
 
 type BaseProps = {
@@ -30,7 +30,7 @@ type TriggerType = { trigger: React.ReactElement };
 
 type ConfirmDialogProps = OnlyOne<ChildrenType, TriggerType> & BaseProps;
 
-export default function ConfirmDialog({
+function ConfirmAlertDialog({
   trigger,
   children,
   title,
@@ -74,3 +74,5 @@ export default function ConfirmDialog({
     </AlertDialog>
   );
 }
+
+export default ConfirmAlertDialog;

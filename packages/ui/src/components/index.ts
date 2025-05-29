@@ -4,6 +4,8 @@ export { Input, inputVariants } from './Input';
 export { Checkbox } from './Checkbox';
 export { Textarea, textareaVariaints } from './Textarea';
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator, SplitOtpInput } from './InputOTP';
+export { RadioGroupRoot, RadioGroupItem, RadioGroup } from './RadioGroup';
+
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
 export { Toggle, toggleVariants } from './Toggle';
 export {
