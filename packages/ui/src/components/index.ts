@@ -20,3 +20,4 @@ export {
   AlertDialogDescription,
   AlertDialogOverlay,
 } from './AlertDialog';
+export { Switch } from './Switch';
