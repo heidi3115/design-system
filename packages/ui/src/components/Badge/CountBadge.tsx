@@ -2,6 +2,7 @@ import * as React from 'react';
 import { type VariantProps } from 'class-variance-authority';
 import { Badge, badgeVariants } from '@common/ui';
 import { cn } from '@common/ui/lib/utils';
+import { isKeyOf } from '@common/utils';
 
 export type CountBadgePropsType = Omit<React.ComponentProps<'span'>, 'children'> &
   Omit<VariantProps<typeof badgeVariants>, 'variant' | 'grade'> & {
