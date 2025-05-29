@@ -19,6 +19,7 @@ export {
   AlertDialogDescription,
   AlertDialogOverlay,
 } from './AlertDialog';
+export { Label } from './Label';
 
 export type {
   BadgePropsType,
