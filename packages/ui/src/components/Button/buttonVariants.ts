@@ -7,7 +7,7 @@ const buttonVariants = tv({
     'rounded-none border-2 border-transparent outline-0',
     'transition-all duration-500 ease-in-out shrink-0',
     'cursor-pointer select-none',
-    'hover:bg-transparent hover:border-white active:bg-transparent active:border-white focus:bg-transparent focus:border-white focus:outline-none',
+    'hover:text-juiText-primary hover:bg-transparent hover:border-juiText-primary active:bg-transparent active:border-juiText-primary focus:bg-transparent focus:border-juiText-primary focus:outline-none',
     'has-[>svg]:shrink-0 has-[>svg]:gap-1.5', // 직전 자식에 svg 있을 경우 부모(button)에 적용
     '[&_svg]:pointer-events-none',
   ],
@@ -22,10 +22,11 @@ const buttonVariants = tv({
         'bg-transparent bg-[image:linear-gradient(to_right,#4b63eb,#5d2ce9,#7782ff,#5d2ce9,#4b63eb)] bg-position-[0_0] bg-size-[300%_100%]',
         'border-transparent',
         'shadow-md',
-        'hover:bg-position-[100%_0] hover:border-transparent active:bg-position-[100%_0] active:border-transparent active:scale-95 focus:bg-position-[100%_0] focus:border-transparent',
+        'hover:text-white hover:bg-position-[100%_0] hover:border-transparent active:bg-position-[100%_0] active:border-transparent active:scale-95 focus:bg-position-[100%_0] focus:border-transparent',
       ],
-      transparent: 'bg-transparent',
-      transparentGrey: 'bg-transparent hover:text-juiGrey-a700 active:text-juiGrey-a700 focus:text-juiGrey-a700',
+      transparent: 'text-juiText-primary bg-transparent',
+      transparentGrey:
+        'text-juiText-primary dark:border-juiText-primary bg-transparent hover:text-juiBackground-input active:text-juiBackground-input focus:text-juiBackground-input',
     },
     size: {
       small: 'px-2 h-5.5 text-xs',
