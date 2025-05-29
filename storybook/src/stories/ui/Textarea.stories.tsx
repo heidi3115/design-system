@@ -101,8 +101,8 @@ export const TextareaSizes: Story = {
     return (
       <div className="flex flex-col gap-6">
         {(Object.keys(textareaVariaints.variants.size) as (keyof typeof textareaVariaints.variants.size)[]).map(
-          (size) => (
-            <div className="flex flex-col gap-2">
+          (size, index) => (
+            <div key={index} className="flex flex-col gap-2">
               <span className="text-sm font-bold">
                 {size}
                 {sizeHeightMap[size] ? ` (height: ${sizeHeightMap[size]})` : ''}

@@ -17,6 +17,8 @@ type RadioGroupProps = BaseProps & {
   options: Option[];
   direction?: Direction;
   className?: string;
+  itemClassName?: string;
+  labelClassName?: string;
   defaultValue?: string;
   value?: string;
   valueRef?: Ref<string | undefined>;
@@ -27,6 +29,8 @@ function RadioGroup({
   options,
   direction = 'vertical',
   className,
+  itemClassName,
+  labelClassName,
   defaultValue,
   valueRef,
   value: controlledValue,
@@ -60,20 +64,27 @@ function RadioGroup({
       {...props}>
       {options.map((option) => (
         <div key={option.value} className="flex items-center">
-          <RadioGroupItem id={`${groupId}-${option.value}`} value={option.value} className="peer" />
+          <RadioGroupItem
+            id={`${groupId}-${option.value}`}
+            value={option.value}
+            className={cn('peer', itemClassName)}
+          />
           <label
             htmlFor={`${groupId}-${option.value}`}
-            className={cn([
-              // 텍스트 스타일 관련
-              'text-juiText-secondary leading-none',
-              // padding 관련
-              'ps-2',
-              // peer 상태 관련
-              'hover: cursor-pointer',
-              'peer-disabled:opacity-50',
-              'peer-disabled:cursor-not-allowed',
-              'peer-data-[state=checked]:text-juiText-primary',
-            ])}>
+            className={cn(
+              [
+                // 텍스트 스타일 관련
+                'text-juiText-secondary font-bold leading-none',
+                // padding 관련
+                'ps-2',
+                // peer 상태 관련
+                'hover: cursor-pointer',
+                'peer-disabled:opacity-50',
+                'peer-disabled:cursor-not-allowed',
+                'peer-data-[state=checked]:text-juiText-primary',
+              ],
+              labelClassName,
+            )}>
             {option.label}
           </label>
         </div>

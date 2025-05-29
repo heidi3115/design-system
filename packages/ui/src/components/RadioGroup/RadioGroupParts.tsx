@@ -36,15 +36,22 @@ function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof Rad
 
           // 기타
           'transition-[color,box-shadow,ring]',
-          'transition-all duration-300 ease-in-out',
+          'transition-all duration-300 ease-in-out font-',
         ],
         className,
+        // 배경색 지움
+        'bg-transparent',
       )}
       {...props}>
       <RadioGroupPrimitive.Indicator
         data-slot="radio-group-indicator"
         className="relative flex items-center justify-center">
-        <span className="bg-juiPrimary border-none rounded-full size-2 transition-all duration-300 ease-in-out" />
+        <span
+          className={cn(
+            'bg-juiPrimary border-none rounded-full size-2 transition-all duration-300 ease-in-out',
+            className,
+          )}
+        />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   );

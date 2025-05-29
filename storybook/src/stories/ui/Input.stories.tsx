@@ -390,6 +390,7 @@ const ControllComp = ({ value: initialValue, onChange, onBlur, ...args }: Compon
           <Input {...args} value={value} onChange={handleChange} />
         </div>
       </div>
+      <hr />
       <div className="flex flex-col gap-2">
         <span className="text-sm font-bold">비제어형 입력</span>
         <div className="w-3xs">

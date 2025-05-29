@@ -165,6 +165,7 @@ const ControllComp = ({ onPressedChange, ...args }: ToggleProps) => {
           </Toggle>
         </div>
       </div>
+      <hr />
       <div className="flex flex-col gap-2">
         <span className="text-sm font-bold">비제어형 토글(변경 후 외부 클릭)</span>
         <div className="w-3xs flex gap-2">
