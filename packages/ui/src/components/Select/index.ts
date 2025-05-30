@@ -10,3 +10,5 @@ export {
   SelectTrigger,
   SelectValue,
 } from './SelectParts';
+
+export { default as Select } from './Select';

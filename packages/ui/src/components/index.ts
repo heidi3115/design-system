@@ -15,6 +15,7 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
+  Select,
 } from './Select';
 export { RadioGroupRoot, RadioGroupItem, RadioGroup } from './RadioGroup';
 

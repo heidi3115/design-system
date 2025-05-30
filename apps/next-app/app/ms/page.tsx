@@ -2,22 +2,7 @@
 
 import { useRef, useState } from 'react';
 
-import {
-  Button,
-  Checkbox,
-  Input,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectRoot,
-  SelectTrigger,
-  SelectValue,
-  RadioGroup,
-  SplitOtpInput,
-  Textarea,
-  Toggle,
-} from '@common/ui';
+import { Button, Checkbox, Input, Select, RadioGroup, SplitOtpInput, Textarea, Toggle } from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -92,8 +77,10 @@ export default function Page() {
 
   return (
     <form className="p-4" onSubmit={handleSubmit(onValid)}>
-      <ThemeToggle />
-      <div className="flex items-center justify-center min-h-svh">
+      <div className="sticky top-2 z-10">
+        <ThemeToggle />
+      </div>
+      <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
           <RadioGroup direction="horizontal" defaultValue="banana" valueRef={radioRef} options={options} />
@@ -203,21 +190,21 @@ export default function Page() {
               }
             />
 
-            <SelectRoot>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a fruit" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Fruits</SelectLabel>
-                  <SelectItem value="apple">Apple</SelectItem>
-                  <SelectItem value="banana">Banana</SelectItem>
-                  <SelectItem value="blueberry">Blueberry</SelectItem>
-                  <SelectItem value="grapes">Grapes</SelectItem>
-                  <SelectItem value="pineapple">Pineapple</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </SelectRoot>
+            <Select
+              options={[
+                { label: 'Eastern Standard Time (EST)', value: 'est1' },
+                { label: 'Pacific Standard Time (PST)', value: 'pst1' },
+                { type: 'separator' },
+                {
+                  type: 'group',
+                  label: 'North America',
+                  items: [
+                    { label: 'Eastern Standard Time (EST)', value: 'est' },
+                    { label: 'Pacific Standard Time (PST)', value: 'pst' },
+                  ],
+                },
+              ]}
+            />
 
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}
