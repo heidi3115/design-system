@@ -7,14 +7,14 @@ const meta: Meta<typeof Switch> = {
   title: 'UI/Switch',
   component: Switch,
   argTypes: {
-    children: { control: 'text', description: '텍스트' },
+    // children: { control: 'text', description: '텍스트' },
     checkedRef: {
       table: { disable: true },
     },
   },
   args: {
     disabled: false,
-    children: 'Switch on/off',
+    // children: 'Switch on/off',
   },
 };
 
@@ -27,7 +27,7 @@ const Template = (args: SwitchArgs) => {
   return (
     <div className="flex gap-2">
       <Switch id="testId" {...args} />
-      <label htmlFor="testId">{args.children}</label>
+      {/*<label htmlFor="testId">{args.children}</label>*/}
     </div>
   );
 };
@@ -46,9 +46,9 @@ export const Default: Story = {
 export const Controlled: Story = {
   args: {},
   argTypes: {
-    children: {
-      table: { disable: true },
-    },
+    // children: {
+    //   table: { disable: true },
+    // },
   },
   parameters: {
     docs: {
