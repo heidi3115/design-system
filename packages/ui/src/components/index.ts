@@ -1,5 +1,5 @@
 export { Button, buttonVariants } from './Button';
-export { Badge, badgeVariants } from './Badge';
+export { Badge, StateBadge, ScoringBadge, GradeBadge, CountBadge, TextBadge, badgeVariants } from './Badge';
 export { Input, inputVariants } from './Input';
 export { Checkbox } from './Checkbox';
 export { Textarea, textareaVariaints } from './Textarea';
@@ -16,6 +16,7 @@ export {
   SelectTrigger,
   SelectValue,
 } from './Select';
+export { RadioGroupRoot, RadioGroupItem, RadioGroup } from './RadioGroup';
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
 export { Toggle, toggleVariants } from './Toggle';
@@ -32,3 +33,13 @@ export {
   AlertDialogDescription,
   AlertDialogOverlay,
 } from './AlertDialog';
+export { Label } from './Label';
+
+export type {
+  BadgePropsType,
+  StateBadgePropsType,
+  ScoringBadgePropsType,
+  GradeBadgePropsType,
+  CountBadgePropsType,
+  TextBadgePropsType,
+} from './Badge';

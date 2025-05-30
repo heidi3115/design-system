@@ -13,8 +13,10 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValue,
+  RadioGroup,
   SplitOtpInput,
   Textarea,
+  Toggle,
 } from '@common/ui';
 import {
   ArrowLeftIcon,
@@ -49,11 +51,11 @@ export default function Page() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ email: string; tv: boolean; area: string }>({
+  } = useForm<{ email: string; tv: boolean; area: string; fruit: string }>({
     mode: 'onBlur',
   });
 
-  const onValid = (data: { email: string; tv: boolean; area: string }) => {
+  const onValid = (data: { email: string; tv: boolean; area: string; fruit: string }) => {
     console.log('폼 제출됨', data);
   };
 
@@ -65,12 +67,75 @@ export default function Page() {
     control,
   });
 
+  const {
+    field: { ref: fruitRef, value: fruitValue, onChange: fruitOnChange, ...fruitField },
+  } = useController({
+    name: 'fruit',
+    defaultValue: 'apple',
+    control,
+  });
+
+  const [isPress, setIsPress] = useState(false);
+  const pressedRef = useRef(null);
+
+  useUpdateEffect(() => {
+    console.log(isPress, '제어 toggle');
+  }, [isPress]);
+
+  const options = [
+    { label: 'Apple', value: 'apple' },
+    { label: 'Banana', value: 'banana' },
+    { label: 'Orange', value: 'orange' },
+  ];
+
+  const radioRef = useRef(null);
+
   return (
     <form className="p-4" onSubmit={handleSubmit(onValid)}>
       <ThemeToggle />
       <div className="flex items-center justify-center min-h-svh">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
+          <RadioGroup direction="horizontal" defaultValue="banana" valueRef={radioRef} options={options} />
+          <Button
+            onClick={() => {
+              if (radioRef.current) {
+                console.log('비제어', radioRef.current);
+              }
+            }}>
+            라디오그룹 비제어
+          </Button>
+
+          <RadioGroup
+            direction="vertical"
+            ref={fruitRef}
+            value={fruitValue}
+            onChange={fruitOnChange}
+            options={options}
+            {...fruitField}
+          />
+
+          <Toggle
+            defaultPressed
+            pressedRef={pressedRef}
+            onIcon={CalendarIcon}
+            onText="on"
+            offText="off"
+            onPressedChange={(on) => console.log('toggle', on)}>
+            비제어
+          </Toggle>
+
+          <Button
+            onMouseEnter={() => {
+              console.log(pressedRef.current, '비제어 toggle');
+            }}>
+            비제어 토글 확인
+          </Button>
+
+          <Toggle pressed={isPress} onPressedChange={(on) => setIsPress(on)}>
+            제어
+          </Toggle>
+
           <SplitOtpInput maxLength={5} inputType="all" />
           <SplitOtpInput />
           <SplitOtpInput size="large" />

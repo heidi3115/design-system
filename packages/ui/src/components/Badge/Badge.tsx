@@ -1,31 +1,47 @@
 import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-
+import { type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
+import { Slot } from '@radix-ui/react-slot';
+import badgeVariants from '@common/ui/components/Badge/badgeVariants';
 
-const badgeVariants = cva(
-  'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-  {
-    variants: {
-      variant: {
-        default: `border-transparent bg-cyan-400 text-gray-0 shadow hover:bg-primary/80`,
-        secondary: 'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        destructive: 'border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80',
-        outline: 'text-foreground',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
-  },
-);
+export type BadgePropsType = React.ComponentProps<'span'> &
+  VariantProps<typeof badgeVariants> & {
+    /**
+     * asChild: slot을 이용하기 위한 부분
+     */
+    asChild?: boolean;
+  };
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {}
+function Badge(props: BadgePropsType) {
+  const {
+    asChild = false,
+    isBtn = false,
+    className,
+    variant,
+    status = undefined,
+    score = undefined,
+    grade = undefined,
+    ...restProps
+  } = props;
+  const Comp = asChild ? Slot : 'span';
 
-function Badge({ className, variant, ...props }: BadgeProps) {
-  return <div className={cn(badgeVariants({ variant }), className)} {...props} />;
+  return (
+    <Comp
+      {...restProps}
+      data-slot="badge"
+      tabIndex={0}
+      className={cn(
+        badgeVariants({
+          variant,
+          status: status ? status : !variant || variant === 'state' ? 'default' : undefined,
+          score,
+          grade,
+          isBtn,
+        }),
+        className,
+      )}
+    />
+  );
 }
-
-export { badgeVariants };
 
 export default Badge;

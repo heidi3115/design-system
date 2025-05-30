@@ -82,11 +82,10 @@ function Checkbox({
 
   const isControlled = props.checked !== undefined;
   const currentChecked = isControlled ? props.checked : internalChecked;
-  const normalizedChecked = currentChecked === true;
 
   const Wrapper = label ? 'div' : Fragment;
   const wrapperProps = label
-    ? { className: cn(wrapperVariants({ isBox, isChecked: normalizedChecked, className: boxClassName })) }
+    ? { className: cn(wrapperVariants({ isBox, isChecked: !!currentChecked, className: boxClassName })) }
     : {};
 
   return (
@@ -105,7 +104,7 @@ function Checkbox({
         </CheckboxPrimitive.Indicator>
 
         {isCustomIcon &&
-          (normalizedChecked ? (
+          (currentChecked ? (
             <customIcon.CheckedIcon size="small" variant="primary" />
           ) : (
             <customIcon.UnCheckedIcon size="small" color="var(--juiText-secondary)" />

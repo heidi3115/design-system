@@ -36,6 +36,7 @@ export function sanitizeNumber(input: string | number | undefined | null): strin
   // 5. e 뒤에는 + 또는 -가 한 번만 올 수 있음
   val = val.replace(/(e[+-]?)(.*)/i, (_, prefix, rest) => {
     rest = rest.replace(/[+-]/g, '');
+
     return prefix + rest;
   });
 
