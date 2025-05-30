@@ -9,7 +9,7 @@ import { Badge, CountBadge, StateBadge } from '@common/ui/components/Badge';
 import GradeBadge from '@common/ui/src/components/Badge/GradeBadge';
 import TextBadge from '@common/ui/src/components/Badge/TextBadge';
 
-export const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '80%', height: '2px' }} />;
+const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '80%', height: '2px' }} />;
 
 export default function BadgePage() {
   const MAX_VAL = 20;
