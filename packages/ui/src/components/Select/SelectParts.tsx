@@ -32,10 +32,10 @@ function SelectTrigger({
       data-size={size}
       className={cn(
         // 레이아웃 및 플렉스 관련
-        'flex items-center justify-between gap-2 whitespace-nowrap',
+        'flex w-full items-center justify-between gap-2 whitespace-nowrap',
 
         // 박스 모델 (패딩, 보더, 라운드, 쉐도우)
-        'px-3 py-2 w-full light:border light:border-juiBorder-primary shadow-xs',
+        'px-3 py-2 light:border light:border-juiBorder-primary shadow-xs',
         'data-[state=open]:border data-[state=open]:border-juiBorder-primary light:data-[state=open]:border-juiText-secondary',
 
         // 색상 및 배경색
@@ -53,7 +53,7 @@ function SelectTrigger({
         'data-[size=default]:h-8 data-[size=small]:h-7 data-[size=large]:h-9 min-w-24',
 
         // 슬롯(select-value) 관련 자식 요소 스타일
-        '*:data-[slot=select-value]:w-full *:data-[slot=select-value]:truncate',
+        '*:data-[slot=select-value]:truncate',
 
         // SVG 관련 스타일
         '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:opacity-100',
@@ -141,7 +141,7 @@ function SelectLabel({ className, ...props }: React.ComponentProps<typeof Select
   return (
     <SelectPrimitive.Label
       data-slot="select-label"
-      className={cn('text-juiText-primary px-2 py-1.5', className)}
+      className={cn('text-juiText-secondary px-2 py-1.5', className)}
       {...props}
     />
   );
