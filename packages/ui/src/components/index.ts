@@ -1,8 +1,16 @@
-export { Button, buttonVariants } from './Button';
+export { Button, buttonVariants, type ButtonProps } from './Button';
 export { Badge, StateBadge, ScoringBadge, GradeBadge, CountBadge, TextBadge, badgeVariants } from './Badge';
-export { Input, inputVariants } from './Input';
+export type {
+  BadgePropsType,
+  StateBadgePropsType,
+  ScoringBadgePropsType,
+  GradeBadgePropsType,
+  CountBadgePropsType,
+  TextBadgePropsType,
+} from './Badge';
 export { Checkbox } from './Checkbox';
 export { Textarea, textareaVariaints } from './Textarea';
+export { Input, inputVariants } from './Input';
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator, SplitOtpInput } from './InputOTP';
 export { RadioGroupRoot, RadioGroupItem, RadioGroup } from './RadioGroup';
 
@@ -22,12 +30,3 @@ export {
   AlertDialogOverlay,
 } from './AlertDialog';
 export { Label } from './Label';
-
-export type {
-  BadgePropsType,
-  StateBadgePropsType,
-  ScoringBadgePropsType,
-  GradeBadgePropsType,
-  CountBadgePropsType,
-  TextBadgePropsType,
-} from './Badge';
