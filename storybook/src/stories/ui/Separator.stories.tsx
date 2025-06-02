@@ -7,8 +7,6 @@ const colorArray = Object.keys(
 
 const sizeArray = Object.keys(separatorVariants.variants.size) as (keyof typeof separatorVariants.variants.size)[];
 
-export const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '80%', height: '2px' }} />;
-
 const meta: Meta<typeof Separator> = {
   title: 'UI/Separator',
   component: Separator,
@@ -258,7 +256,7 @@ export const Orientation: Story = {
               ))}
             </div>
           </div>
-          <Line />
+          <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '80%', height: '2px' }} />
           <div className={'flex flex-col gap-2 items-center justify-center text-lg'}>
             <span className={'mb-4 text-xl font-bold'}>orientation : horizontal</span>
             <div className={'flex flex-row gap-4'}>
