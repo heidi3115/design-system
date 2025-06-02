@@ -36,11 +36,11 @@ export default function Page() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ email: string; tv: boolean; area: string; fruit: string }>({
+  } = useForm<{ email: string; tv: boolean; area: string; fruit: string; timeZone: string }>({
     mode: 'onBlur',
   });
 
-  const onValid = (data: { email: string; tv: boolean; area: string; fruit: string }) => {
+  const onValid = (data: { email: string; tv: boolean; area: string; fruit: string; timeZone: string }) => {
     console.log('폼 제출됨', data);
   };
 
@@ -60,6 +60,14 @@ export default function Page() {
     control,
   });
 
+  const {
+    field: { value: timeZoneValue, onChange: timeZoneOnChange, ...timeZoneField },
+  } = useController({
+    name: 'timeZone',
+    defaultValue: 'est1',
+    control,
+  });
+
   const [isPress, setIsPress] = useState(false);
   const pressedRef = useRef(null);
 
@@ -74,6 +82,13 @@ export default function Page() {
   ];
 
   const radioRef = useRef(null);
+
+  const [selectValue, setSelectValue] = useState('');
+  const selectRef = useRef(null);
+
+  useUpdateEffect(() => {
+    console.log(selectValue);
+  }, [selectValue]);
 
   return (
     <form className="p-4" onSubmit={handleSubmit(onValid)}>
@@ -191,7 +206,11 @@ export default function Page() {
             />
 
             <Select
+              defaultValue="pst"
+              value={selectValue}
+              onValueChange={setSelectValue}
               size="large"
+              isContentfitTriggerWidth
               options={[
                 { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
                 { label: 'Pacific Standard Time (PST)', value: 'pst1' },
@@ -206,6 +225,53 @@ export default function Page() {
                 },
               ]}
             />
+
+            <Select
+              defaultValue={timeZoneValue}
+              onValueChange={timeZoneOnChange}
+              options={[
+                { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
+                { label: 'Pacific Standard Time (PST)', value: 'pst1' },
+                { type: 'separator' },
+                {
+                  type: 'group',
+                  label: 'North America',
+                  items: [
+                    { label: 'Eastern Standard Time (EST)', value: 'est', disabled: true },
+                    { label: 'Pacific Standard Time (PST)', value: 'pst' },
+                  ],
+                },
+              ]}
+              {...timeZoneField}
+            />
+
+            <Select
+              selectRef={selectRef}
+              defaultValue="pst"
+              size="small"
+              width={200}
+              isContentfitTriggerWidth
+              options={[
+                { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
+                { label: 'Pacific Standard Time (PST)', value: 'pst' },
+                { label: 'Eastern Standard Time (EST)', value: 'est3' },
+                { label: 'Pacific Standard Time (PST)', value: 'pst2' },
+                { label: 'Pacific Standard Time (PST)', value: 'pst6' },
+                { label: 'ㅅㅅㅅ', value: 'ttt' },
+                { label: 'ㅅㅅㅅ1', value: 'ttt1', disabled: true },
+                { label: 'ㅅㅅㅅ2', value: 'ttt2' },
+                { label: 'ㅅㅅㅅ3', value: 'ttt3' },
+                { label: 'ㅅㅅㅅ4', value: 'ttt4' },
+              ]}
+            />
+            <Button
+              onClick={() => {
+                if (selectRef.current) {
+                  console.log('비제어', selectRef.current);
+                }
+              }}>
+              select 비제어
+            </Button>
 
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}

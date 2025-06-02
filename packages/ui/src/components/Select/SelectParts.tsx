@@ -80,9 +80,12 @@ function SelectTrigger({
 function SelectContent({
   className,
   children,
+  isContentfitTriggerWidth,
   position = 'popper',
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Content> & {}) {
+}: React.ComponentProps<typeof SelectPrimitive.Content> & {
+  isContentfitTriggerWidth?: boolean;
+}) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -113,7 +116,9 @@ function SelectContent({
           // 박스 스타일
           'shadow-md',
 
-          'w-[var(--radix-select-trigger-width)]',
+          // isContentfitTriggerWidth 이 true 이면 트리거 input의 넓이에 맞추고 아니면 option의 길이에 맞춤
+          isContentfitTriggerWidth ? 'w-[var(--radix-select-trigger-width)]' : 'w-fit',
+
           // 포지션이 popper일 때 위치 보정
           position === 'popper' &&
             'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
@@ -151,9 +156,11 @@ function SelectItem({
   className,
   children,
   size,
+  isSelectIndicator,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Item> & {
   size?: 'small' | 'default' | 'large';
+  isSelectIndicator?: boolean;
 }) {
   return (
     <SelectPrimitive.Item
@@ -163,10 +170,11 @@ function SelectItem({
         // 상태 및 상호작용 관련
         'focus:bg-current/5 focus:text-juiText-primary',
         'data-[state=checked]:bg-juiPrimary/15',
-        'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+        'data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
 
         // 레이아웃 및 정렬
-        'relative flex w-full items-center gap-2 pr-8 pl-2 py-1.5',
+        'relative flex w-full items-center gap-2 pr-2 pl-2 py-1.5',
+        isSelectIndicator && 'pr-8',
 
         // 타이포그래피 및 사용자 선택
         'text-sm select-none',
@@ -189,13 +197,15 @@ function SelectItem({
         className,
       )}
       {...props}>
-      <span className="absolute right-2 flex size-3.5 items-center justify-center">
-        <SelectPrimitive.ItemIndicator>
-          <CheckIcon className="size-4" />
-        </SelectPrimitive.ItemIndicator>
-      </span>
+      {isSelectIndicator && (
+        <span className="absolute right-2 flex size-3.5 items-center justify-center">
+          <SelectPrimitive.ItemIndicator>
+            <CheckIcon className="size-4" />
+          </SelectPrimitive.ItemIndicator>
+        </span>
+      )}
       <div className="block overflow-hidden text-ellipsis">
-        <SelectPrimitive.ItemText className="flex">{children}</SelectPrimitive.ItemText>
+        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
       </div>
     </SelectPrimitive.Item>
   );

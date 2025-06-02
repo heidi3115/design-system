@@ -1,6 +1,6 @@
 'use client';
 
-import { type ComponentProps } from 'react';
+import { type Ref, useImperativeHandle, useState, type ComponentProps } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 import {
@@ -32,6 +32,7 @@ type OptionItem = {
   type?: 'item'; // 생략 시 기본값 처리
   label: string;
   value: string;
+  disabled?: boolean;
 };
 
 type OptionSeparator = {
@@ -52,21 +53,48 @@ type SelectProps = ComponentProps<typeof SelectRoot> &
     options: SelectOptions;
     placeholder?: string;
     size?: 'small' | 'default' | 'large';
-    width?: VariantProps<typeof selectVariaints>['width'] | number; // ← number 추가
+    width?: VariantProps<typeof selectVariaints>['width'] | number;
+    isSelectIndicator?: boolean;
+    isContentfitTriggerWidth?: boolean;
+    selectRef?: Ref<string>;
   };
 
-function Select({ options, placeholder, size, width, ...props }: SelectProps) {
+function Select({
+  options,
+  size,
+  width,
+  placeholder = '-',
+  isSelectIndicator = false,
+  isContentfitTriggerWidth = false,
+  value: controlledValue,
+  onValueChange,
+  selectRef,
+  ...props
+}: SelectProps) {
   const isNumberWidth = typeof width === 'number';
+  const [interanlValue, setInternalValue] = useState(props.defaultValue ?? '');
+
+  const isControlled = controlledValue !== undefined;
+  const currentValue = isControlled ? controlledValue : interanlValue;
+
+  // 비제어 선택값
+  useImperativeHandle(selectRef, () => currentValue);
 
   return (
-    <SelectRoot {...props}>
+    <SelectRoot
+      value={currentValue}
+      onValueChange={(value) => {
+        if (!isControlled) setInternalValue(value);
+        onValueChange?.(value);
+      }}
+      {...props}>
       <SelectTrigger
         size={size}
         className={cn(!isNumberWidth && selectVariaints({ width }))}
         style={isNumberWidth ? { width: `${width}px` } : undefined}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent isContentfitTriggerWidth={isContentfitTriggerWidth}>
         {options.map((opt, idx) => {
           // 그룹일 경우
           if ('type' in opt && opt.type === 'group') {
@@ -79,7 +107,12 @@ function Select({ options, placeholder, size, width, ...props }: SelectProps) {
                   }
 
                   return (
-                    <SelectItem key={item.value} value={item.value} size={size}>
+                    <SelectItem
+                      key={item.value}
+                      value={item.value}
+                      disabled={item.disabled}
+                      size={size}
+                      isSelectIndicator={isSelectIndicator}>
                       {item.label}
                     </SelectItem>
                   );
@@ -97,7 +130,12 @@ function Select({ options, placeholder, size, width, ...props }: SelectProps) {
           const item = opt as OptionItem;
 
           return (
-            <SelectItem key={item.value} value={item.value} size={size}>
+            <SelectItem
+              key={item.value}
+              value={item.value}
+              disabled={item.disabled}
+              size={size}
+              isSelectIndicator={isSelectIndicator}>
               {item.label}
             </SelectItem>
           );
