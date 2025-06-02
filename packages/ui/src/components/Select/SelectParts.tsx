@@ -82,12 +82,14 @@ function SelectContent({
   children,
   isContentfitTriggerWidth,
   position = 'popper',
+  container = document.body,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content> & {
   isContentfitTriggerWidth?: boolean;
+  container?: HTMLElement;
 }) {
   return (
-    <SelectPrimitive.Portal>
+    <SelectPrimitive.Portal container={container}>
       <SelectPrimitive.Content
         data-slot="select-content"
         className={cn(

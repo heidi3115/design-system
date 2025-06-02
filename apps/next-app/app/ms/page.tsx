@@ -206,9 +206,9 @@ export default function Page() {
             />
 
             <Select
-              defaultValue="pst"
               value={selectValue}
               onValueChange={setSelectValue}
+              placeholder="test"
               size="large"
               isContentfitTriggerWidth
               options={[
