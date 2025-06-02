@@ -15,7 +15,7 @@ export type SwitchProps = ComponentProps<typeof SwitchPrimitive.Root> & {
 const switchVariants = tv({
   base: cn(
     'peer inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
-    'light:data-[state=unchecked]:bg-black/10',
+    'light:data-[state=unchecked]:bg-juiGrey-a200',
     'data-[state=unchecked]:bg-juiGrey-200',
   ),
   variants: {
@@ -34,7 +34,7 @@ const thumbVariants = tv({
   base: cn(
     'block w-4 h-4 rounded-full transition-transform',
     'data-[state=checked]:translate-x-[calc(100%-3px)] data-[state=unchecked]:translate-x-[1px]',
-    'light:data-[state=unchecked]:bg-black/10',
+    'light:data-[state=unchecked]:bg-juiGrey-a400',
     'data-[state=unchecked]:bg-juiGrey-200',
   ),
   variants: {
