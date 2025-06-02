@@ -1,5 +1,8 @@
 'use client';
 
+import { type ComponentProps } from 'react';
+import { tv, type VariantProps } from 'tailwind-variants';
+
 import {
   SelectContent,
   SelectGroup,
@@ -10,6 +13,20 @@ import {
   SelectValue,
   SelectSeparator,
 } from './SelectParts';
+import { cn } from '../../lib/utils';
+
+const selectVariaints = tv({
+  base: '',
+  variants: {
+    width: {
+      full: 'w-full',
+      fit: 'w-fit',
+    },
+  },
+  defaultVariants: {
+    width: 'full',
+  },
+});
 
 type OptionItem = {
   type?: 'item'; // 생략 시 기본값 처리
@@ -30,15 +47,23 @@ type OptionGroup = {
 type OptionType = OptionGroup | OptionItem | OptionSeparator;
 type SelectOptions = OptionType[];
 
-type Props = {
-  options: SelectOptions;
-  placeholder?: string;
-};
+type SelectProps = ComponentProps<typeof SelectRoot> &
+  Omit<VariantProps<typeof selectVariaints>, 'width'> & {
+    options: SelectOptions;
+    placeholder?: string;
+    size?: 'small' | 'default' | 'large';
+    width?: VariantProps<typeof selectVariaints>['width'] | number; // ← number 추가
+  };
 
-function Select({ options, placeholder = 'Select a value' }: Props) {
+function Select({ options, placeholder, size, width, ...props }: SelectProps) {
+  const isNumberWidth = typeof width === 'number';
+
   return (
-    <SelectRoot>
-      <SelectTrigger>
+    <SelectRoot {...props}>
+      <SelectTrigger
+        size={size}
+        className={cn(!isNumberWidth && selectVariaints({ width }))}
+        style={isNumberWidth ? { width: `${width}px` } : undefined}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
@@ -54,7 +79,7 @@ function Select({ options, placeholder = 'Select a value' }: Props) {
                   }
 
                   return (
-                    <SelectItem key={item.value} value={item.value}>
+                    <SelectItem key={item.value} value={item.value} size={size}>
                       {item.label}
                     </SelectItem>
                   );
@@ -72,7 +97,7 @@ function Select({ options, placeholder = 'Select a value' }: Props) {
           const item = opt as OptionItem;
 
           return (
-            <SelectItem key={item.value} value={item.value}>
+            <SelectItem key={item.value} value={item.value} size={size}>
               {item.label}
             </SelectItem>
           );

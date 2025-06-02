@@ -191,8 +191,9 @@ export default function Page() {
             />
 
             <Select
+              size="large"
               options={[
-                { label: 'Eastern Standard Time (EST)', value: 'est1' },
+                { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
                 { label: 'Pacific Standard Time (PST)', value: 'pst1' },
                 { type: 'separator' },
                 {

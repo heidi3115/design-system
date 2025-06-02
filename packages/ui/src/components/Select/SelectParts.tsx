@@ -32,7 +32,7 @@ function SelectTrigger({
       data-size={size}
       className={cn(
         // 레이아웃 및 플렉스 관련
-        'flex w-full items-center justify-between gap-2 whitespace-nowrap',
+        'flex min-w-24 items-center justify-between gap-2 whitespace-nowrap',
 
         // 박스 모델 (패딩, 보더, 라운드, 쉐도우)
         'px-3 py-2 light:border light:border-juiBorder-primary shadow-xs',
@@ -50,7 +50,7 @@ function SelectTrigger({
         'data-[placeholder]:text-juiText-secondary',
 
         // 사이즈 관련 (data attribute)
-        'data-[size=default]:h-8 data-[size=small]:h-7 data-[size=large]:h-9 min-w-24',
+        'data-[size=default]:h-8 data-[size=small]:h-7 data-[size=large]:h-9',
 
         // 슬롯(select-value) 관련 자식 요소 스타일
         '*:data-[slot=select-value]:truncate',
@@ -82,7 +82,7 @@ function SelectContent({
   children,
   position = 'popper',
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Content>) {
+}: React.ComponentProps<typeof SelectPrimitive.Content> & {}) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -113,6 +113,7 @@ function SelectContent({
           // 박스 스타일
           'shadow-md',
 
+          'w-[var(--radix-select-trigger-width)]',
           // 포지션이 popper일 때 위치 보정
           position === 'popper' &&
             'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
@@ -125,9 +126,8 @@ function SelectContent({
         <SelectScrollUpButton />
         <SelectPrimitive.Viewport
           className={cn(
-            'p-1',
-            position === 'popper' &&
-              'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1',
+            position === 'popper' && 'w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1',
+            'whitespace-nowrap overflow-hidden text-ellipsis',
           )}>
           {children}
         </SelectPrimitive.Viewport>
@@ -147,10 +147,18 @@ function SelectLabel({ className, ...props }: React.ComponentProps<typeof Select
   );
 }
 
-function SelectItem({ className, children, ...props }: React.ComponentProps<typeof SelectPrimitive.Item>) {
+function SelectItem({
+  className,
+  children,
+  size,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Item> & {
+  size?: 'small' | 'default' | 'large';
+}) {
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
+      data-size={size}
       className={cn(
         // 상태 및 상호작용 관련
         'focus:bg-current/5 focus:text-juiText-primary',
@@ -166,9 +174,6 @@ function SelectItem({ className, children, ...props }: React.ComponentProps<type
         // 커서 및 반응성
         'cursor-pointer outline-hidden',
 
-        // 박스 스타일
-        // 'rounded-sm',
-
         // SVG 관련
         '[&_svg]:pointer-events-none [&_svg]:shrink-0',
         "[&_svg:not([class*='size-'])]:size-4",
@@ -176,6 +181,9 @@ function SelectItem({ className, children, ...props }: React.ComponentProps<type
 
         // 마지막 span 관련 스타일
         '*:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2',
+
+        // size 에 따른 높이값
+        'data-[size=default]:h-8 data-[size=small]:h-7 data-[size=large]:h-9',
 
         // 외부 전달 클래스
         className,
@@ -186,7 +194,9 @@ function SelectItem({ className, children, ...props }: React.ComponentProps<type
           <CheckIcon className="size-4" />
         </SelectPrimitive.ItemIndicator>
       </span>
-      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+      <div className="block overflow-hidden text-ellipsis">
+        <SelectPrimitive.ItemText className="flex">{children}</SelectPrimitive.ItemText>
+      </div>
     </SelectPrimitive.Item>
   );
 }
@@ -195,7 +205,7 @@ function SelectSeparator({ className, ...props }: React.ComponentProps<typeof Se
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn('bg-juiBorder-primary pointer-events-none mx-1 my-1 h-px', className)}
+      className={cn('bg-juiText-secondary pointer-events-none mx-1 my-1 h-px', className)}
       {...props}
     />
   );
