@@ -10,6 +10,6 @@ export {
   AlertDialogDescription,
   AlertDialogAction,
   AlertDialogCancel,
-} from './AlertDialog';
+} from './AlertDialogParts';
 
-export { default as ConfirmDialog } from './ConfirmAlertDialog';
+export { default as ConfirmAlertDialog } from './ConfirmAlertDialog';

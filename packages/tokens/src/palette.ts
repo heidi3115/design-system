@@ -43,6 +43,16 @@ const palette = {
   juiBorder: {
     primary: { main: '#E0E0E0' },
   },
+  juiScore: {
+    veryLow: { main: '#8294FF' },
+    low: { main: '#5873FF' },
+    normal: { main: '#7635FF' },
+    high: { main: '#BC2FFF' },
+    veryHigh: { main: '#FE3284' },
+    extra: { main: '#5630E3' },
+    practice: { main: '#232D5B' },
+    alert: { main: '#ff0000' },
+  },
 };
 
 export default palette;
