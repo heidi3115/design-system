@@ -30,4 +30,4 @@ export {
   AlertDialogOverlay,
 } from './AlertDialog';
 export { Label } from './Label';
-export { Skeleton } from './Skeleton';
+export { Skeleton, CardSkeleton } from './Skeleton';
