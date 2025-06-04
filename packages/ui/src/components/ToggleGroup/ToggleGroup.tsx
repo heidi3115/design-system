@@ -1,6 +1,6 @@
 'use client';
 
-import { type ComponentProps, type Ref, useImperativeHandle, useState } from 'react';
+import { type ComponentProps, type ElementType, type Ref, useImperativeHandle, useState } from 'react';
 import * as ToggleGroupPrimitive from '@radix-ui/react-toggle-group';
 import { cn } from '../../lib/utils';
 import { toggleVariants } from '@common/ui';
@@ -8,19 +8,16 @@ import { toggleVariants } from '@common/ui';
 type Option = {
   label?: string;
   value: string;
-  icon?: React.ElementType;
+  icon?: ElementType;
 };
-
-type Direction = 'vertical' | 'horizontal';
 
 type BaseProps = Omit<
   ComponentProps<typeof ToggleGroupPrimitive.Root>,
   'type' | 'value' | 'defaultValue' | 'onValueChange' | 'children'
 >;
 
-type ToggleGroupProps = BaseProps & {
+export type ToggleGroupProps = BaseProps & {
   options: Option[];
-  direction?: Direction;
   className?: string;
   itemClassName?: string;
   size?: 'small' | 'medium' | 'large';
@@ -32,7 +29,6 @@ type ToggleGroupProps = BaseProps & {
 
 function ToggleGroup({
   options,
-  direction = 'horizontal',
   className,
   itemClassName,
   size = 'small',
@@ -63,7 +59,7 @@ function ToggleGroup({
       type="single"
       value={currentValue}
       onValueChange={handleChange}
-      className={cn('flex', direction === 'vertical' ? 'flex-col gap-1' : 'flex-row gap-1', className)}
+      className={cn(className)}
       {...props}>
       {options.map((option) => {
         const isOn = currentValue === option.value;
