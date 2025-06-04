@@ -1,10 +1,33 @@
 import { cn } from '../../lib/utils';
 import { type ComponentProps } from 'react';
+import { tv, type VariantProps } from 'tailwind-variants';
 
-function Skeleton({ className, ...props }: ComponentProps<'div'>) {
-  return (
-    <div data-slot="skeleton" className={cn('bg-juiScore-practice animate-pulse rounded-md', className)} {...props} />
-  );
+export const skeletonVariants = tv({
+  base: 'bg-juiScore-practice animate-pulse rounded-md w-30 h-5',
+  variants: {
+    variant: {
+      default: 'bg-juiScore-practice',
+      primary: 'bg-juiPrimary',
+      secondary: 'bg-juiSecondary',
+      error: 'bg-juiError',
+    },
+    size: {
+      basic: 'w-40 h-5',
+      small: 'w-20 h-5',
+      medium: 'w-20 h-20',
+      large: 'w-60 h-30',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+    size: 'basic',
+  },
+});
+
+export type SkeletonProps = ComponentProps<'div'> & VariantProps<typeof skeletonVariants>;
+
+function Skeleton({ variant, size, className, ...props }: SkeletonProps) {
+  return <div data-slot="skeleton" className={cn(skeletonVariants({ variant, size }), className)} {...props} />;
 }
 
 export default Skeleton;
