@@ -30,3 +30,13 @@ export {
   AlertDialogOverlay,
 } from './AlertDialog';
 export { Label } from './Label';
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './Dialog';
