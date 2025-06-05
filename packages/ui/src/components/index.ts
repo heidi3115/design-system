@@ -31,7 +31,7 @@ export {
 } from './AlertDialog';
 export { Label } from './Label';
 export {
-  Dialog,
+  DialogRoot,
   DialogClose,
   DialogContent,
   DialogDescription,
