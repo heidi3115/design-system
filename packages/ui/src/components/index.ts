@@ -44,3 +44,4 @@ export {
 } from './AlertDialog';
 export { Label } from './Label';
 export { Switch } from './Switch';
+export { TooltipRoot, TooltipTrigger, TooltipContent, TooltipProvider } from './Tooltip';
