@@ -93,3 +93,4 @@ export { BellFilledIcon } from './Icon/BellFilledIcon';
 export { FolderFilledIcon } from './Icon/FolderFilledIcon';
 export { SearchFilledIcon } from './Icon/SearchFilledIcon';
 export { CircleIcon } from './Icon/CircleIcon';
+export { UserFilledIcon } from './Icon/UserFilledIcon';

@@ -19,4 +19,9 @@
   body {
     @apply bg-juiBackground-default text-juiText-primary font-pretendard antialiased text-xs;
   }
+
+  button,
+  input {
+    @apply overflow-visible;
+  }
 }
