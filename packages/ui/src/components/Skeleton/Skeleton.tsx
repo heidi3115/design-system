@@ -6,10 +6,10 @@ export const skeletonVariants = tv({
   base: 'bg-juiScore-practice animate-pulse rounded-md w-30 h-5',
   variants: {
     variant: {
-      default: 'bg-juiScore-practice',
-      primary: 'bg-juiPrimary',
-      secondary: 'bg-juiSecondary',
-      error: 'bg-juiError',
+      default: 'bg-gray-200',
+      primary: 'bg-juiScore-practice',
+      secondary: 'bg-juiPrimary',
+      error: 'bg-juiSecondary',
     },
     size: {
       basic: 'w-40 h-5',
