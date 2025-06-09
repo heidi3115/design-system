@@ -24,6 +24,10 @@ const meta: Meta<typeof ToggleGroup> = {
       control: 'text',
       description: '초기 선택값(uncontrolled).',
     },
+    disabled: {
+      control: 'boolean',
+      description: 'Toggle Group 활성화 여부',
+    },
     value: {
       control: 'text',
       description: '선택된 값(controlled).',
@@ -52,6 +56,9 @@ const meta: Meta<typeof ToggleGroup> = {
     valueRef: {
       table: { disable: true },
     },
+  },
+  args: {
+    disabled: false,
   },
 };
 
