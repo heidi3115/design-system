@@ -1,9 +1,11 @@
 'use client';
 
-import { type ComponentProps, type ElementType, type Ref, useImperativeHandle, useState } from 'react';
+import { type ComponentProps, type ElementType, type Ref } from 'react';
 import * as ToggleGroupPrimitive from '@radix-ui/react-toggle-group';
-import { cn } from '../../lib/utils';
-import { toggleVariants } from '@common/ui';
+import MultipleToggleGroup, {
+  type MultipleToggleGroupProps,
+} from '@common/ui/components/ToggleGroup/MultipleToggleGroup';
+import SingleToggleGroup from '@common/ui/components/ToggleGroup/SingleToggleGroup';
 
 type Option = {
   label?: string;
@@ -17,6 +19,7 @@ type BaseProps = Omit<
 >;
 
 export type ToggleGroupProps = BaseProps & {
+  type?: 'single' | 'multiple';
   options: Option[];
   className?: string;
   itemClassName?: string;
@@ -27,56 +30,12 @@ export type ToggleGroupProps = BaseProps & {
   onValueChange?: (val: string) => void;
 };
 
-function ToggleGroup({
-  options,
-  className,
-  itemClassName,
-  size = 'small',
-  value,
-  defaultValue,
-  valueRef,
-  onValueChange,
-  ...props
-}: ToggleGroupProps) {
-  const isControlled = value !== undefined && onValueChange !== undefined;
+function ToggleGroup(props: ToggleGroupProps) {
+  if (props.type === 'multiple') {
+    return <MultipleToggleGroup {...(props as MultipleToggleGroupProps)} />;
+  }
 
-  const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue ?? options[0]?.value ?? '');
-
-  const currentValue = isControlled ? value : uncontrolledValue;
-
-  useImperativeHandle(valueRef, () => currentValue);
-
-  const handleChange = (val: string) => {
-    if (isControlled) {
-      onValueChange?.(val);
-    } else {
-      setUncontrolledValue(val);
-    }
-  };
-
-  return (
-    <ToggleGroupPrimitive.Root
-      type="single"
-      value={currentValue}
-      onValueChange={handleChange}
-      className={cn(className)}
-      {...props}>
-      {options.map((option) => {
-        const isOn = currentValue === option.value;
-        const Icon = option.icon;
-
-        return (
-          <ToggleGroupPrimitive.Item
-            key={option.value}
-            value={option.value}
-            className={cn(toggleVariants({ state: isOn ? 'on' : 'off', size }), itemClassName)}>
-            {Icon && <Icon size="small" />}
-            {option.label}
-          </ToggleGroupPrimitive.Item>
-        );
-      })}
-    </ToggleGroupPrimitive.Root>
-  );
+  return <SingleToggleGroup {...props} />;
 }
 
 export default ToggleGroup;

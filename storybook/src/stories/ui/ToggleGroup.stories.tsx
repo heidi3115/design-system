@@ -4,11 +4,17 @@ import { action } from '@storybook/addon-actions';
 import { Button, ToggleGroup } from '@common/ui';
 import { useRef, useState, type ComponentProps } from 'react';
 import { MinusIcon, PlusIcon } from '@common/ui/icons';
+import MultipleToggleGroup from '@common/ui/components/ToggleGroup/MultipleToggleGroup.tsx';
+import SingleToggleGroup from '@common/ui/components/ToggleGroup/SingleToggleGroup.tsx';
 
 const meta: Meta<typeof ToggleGroup> = {
   title: 'UI/ToggleGroup',
   component: ToggleGroup,
   argTypes: {
+    type: {
+      control: 'radio',
+      description: 'Toggle Group의 type을 설정할 수 있다. single, multiple로 구분된다.',
+    },
     options: {
       control: 'object',
       description:
@@ -60,6 +66,7 @@ export const Default: Story = {
       { label: 'AND', value: 'and' },
     ],
     size: 'small',
+    type: 'single',
   },
   parameters: {
     docs: {
@@ -69,6 +76,51 @@ export const Default: Story = {
     },
   },
 };
+export const Type: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'single, multiple 중 타입을 선택할 수 있다.',
+      },
+    },
+  },
+  args: {
+    options: [
+      { label: 'OR', value: 'or' },
+      { label: 'AND', value: 'and' },
+    ],
+    size: 'small',
+    type: 'single',
+  },
+  argTypes: {
+    type: { table: { disable: true }, control: false },
+    size: { table: { disable: true }, control: false },
+    className: { table: { disable: true }, control: false },
+    itemClassName: { table: { disable: true }, control: false },
+  },
+  render: () => (
+    <div className="flex gap-3">
+      <div className="p-2 flex flex-col gap-2">
+        <span>Multiple</span>
+        <MultipleToggleGroup
+          options={[
+            { label: 'OR', value: 'or', icon: PlusIcon },
+            { label: 'AND', value: 'and', icon: MinusIcon },
+          ]}
+        />
+      </div>
+      <div className="p-2 flex flex-col gap-2">
+        <span>Single</span>
+        <SingleToggleGroup
+          options={[
+            { label: 'OR', value: 'or', icon: PlusIcon },
+            { label: 'AND', value: 'and', icon: MinusIcon },
+          ]}
+        />
+      </div>
+    </div>
+  ),
+};
 
 export const WithIcon: Story = {
   args: {
@@ -77,6 +129,7 @@ export const WithIcon: Story = {
       { label: 'AND', value: 'and', icon: MinusIcon },
     ],
     size: 'small',
+    type: 'single',
   },
   argTypes: {
     options: {
@@ -92,6 +145,7 @@ export const Size: Story = {
       { label: 'AND', value: 'and' },
     ],
     size: 'small',
+    type: 'single',
   },
   parameters: {
     docs: {
@@ -110,6 +164,7 @@ export const CustomClass: Story = {
     ],
     defaultValue: 'or',
     size: 'small',
+    type: 'single',
     className: 'flex gap-2',
     itemClassName: 'data-[state=checked]:border-juiPrimary bg-juiPrimary rounded-none',
   },
@@ -178,6 +233,7 @@ export const Controlled: Story = {
       { label: 'AND', value: 'and' },
     ],
     size: 'small',
+    type: 'single',
   },
   argTypes: {
     defaultValue: { control: false, table: { disable: true } },
