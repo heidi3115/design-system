@@ -32,6 +32,7 @@ const palette = {
     default: { main: '#182036', light: '#fff' },
     paper: { main: '#182036', light: '#f5f5f5' },
     input: { main: 'rgba(0, 0, 0, 0.3)', light: '#fff' },
+    skeleton: { main: '#3c4f6b', light: '#e0e0e0' },
   },
   juiText: {
     primary: { main: '#fff', light: '#333333' },

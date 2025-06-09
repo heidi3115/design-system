@@ -3,10 +3,10 @@ import { type ComponentProps } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 export const skeletonVariants = tv({
-  base: 'bg-juiScore-practice animate-pulse rounded-md w-30 h-5',
+  base: 'bg-juiBackground-skeleton animate-pulse rounded-md w-30 h-5',
   variants: {
     variant: {
-      default: 'bg-gray-200',
+      default: 'bg-juiBackground-skeleton',
       primary: 'bg-juiScore-practice',
       secondary: 'bg-juiPrimary',
       error: 'bg-juiSecondary',
