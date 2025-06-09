@@ -1,20 +1,20 @@
 'use client';
 
-import * as React from 'react';
+import { useState, useEffect, type ComponentProps } from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@common/ui/icons';
 
 import { cn } from '../../lib/utils';
 
-function SelectRoot({ ...props }: React.ComponentProps<typeof SelectPrimitive.Root>) {
+function SelectRoot({ ...props }: ComponentProps<typeof SelectPrimitive.Root>) {
   return <SelectPrimitive.Root data-slot="select" {...props} />;
 }
 
-function SelectGroup({ ...props }: React.ComponentProps<typeof SelectPrimitive.Group>) {
+function SelectGroup({ ...props }: ComponentProps<typeof SelectPrimitive.Group>) {
   return <SelectPrimitive.Group data-slot="select-group" {...props} />;
 }
 
-function SelectValue({ ...props }: React.ComponentProps<typeof SelectPrimitive.Value>) {
+function SelectValue({ ...props }: ComponentProps<typeof SelectPrimitive.Value>) {
   return <SelectPrimitive.Value data-slot="select-value" {...props} />;
 }
 
@@ -23,7 +23,7 @@ function SelectTrigger({
   size = 'default',
   children,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
+}: ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: 'small' | 'default' | 'large';
 }) {
   return (
@@ -82,14 +82,24 @@ function SelectContent({
   children,
   isContentfitTriggerWidth,
   position = 'popper',
-  container = document.body,
+  container,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Content> & {
+}: ComponentProps<typeof SelectPrimitive.Content> & {
   isContentfitTriggerWidth?: boolean;
   container?: HTMLElement;
 }) {
+  const [mounted, setMounted] = useState(false);
+  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+    setPortalContainer(container ?? document.body);
+  }, [container]);
+
+  if (!mounted || !portalContainer) return null;
+
   return (
-    <SelectPrimitive.Portal container={container}>
+    <SelectPrimitive.Portal container={portalContainer}>
       <SelectPrimitive.Content
         data-slot="select-content"
         className={cn(
@@ -144,7 +154,7 @@ function SelectContent({
   );
 }
 
-function SelectLabel({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) {
+function SelectLabel({ className, ...props }: ComponentProps<typeof SelectPrimitive.Label>) {
   return (
     <SelectPrimitive.Label
       data-slot="select-label"
@@ -160,7 +170,7 @@ function SelectItem({
   size,
   isSelectIndicator,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Item> & {
+}: ComponentProps<typeof SelectPrimitive.Item> & {
   size?: 'small' | 'default' | 'large';
   isSelectIndicator?: boolean;
 }) {
@@ -213,7 +223,7 @@ function SelectItem({
   );
 }
 
-function SelectSeparator({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Separator>) {
+function SelectSeparator({ className, ...props }: ComponentProps<typeof SelectPrimitive.Separator>) {
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
@@ -223,7 +233,7 @@ function SelectSeparator({ className, ...props }: React.ComponentProps<typeof Se
   );
 }
 
-function SelectScrollUpButton({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
+function SelectScrollUpButton({ className, ...props }: ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
   return (
     <SelectPrimitive.ScrollUpButton
       data-slot="select-scroll-up-button"
@@ -234,10 +244,7 @@ function SelectScrollUpButton({ className, ...props }: React.ComponentProps<type
   );
 }
 
-function SelectScrollDownButton({
-  className,
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
+function SelectScrollDownButton({ className, ...props }: ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
   return (
     <SelectPrimitive.ScrollDownButton
       data-slot="select-scroll-down-button"
