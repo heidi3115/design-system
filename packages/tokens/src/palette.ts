@@ -30,7 +30,7 @@ const palette = {
   },
   juiBackground: {
     default: { main: '#182036', light: '#fff' },
-    paper: { main: '#182036', light: '#f5f5f5' },
+    paper: { main: 'rgba(255, 255, 255, 0.05)', light: 'rgba(0, 0, 0, 0.05)' },
     input: { main: 'rgba(0, 0, 0, 0.3)', light: '#fff' },
   },
   juiText: {
