@@ -58,7 +58,7 @@ function MultipleToggleGroup(props: MultipleToggleGroupProps) {
             key={option.value}
             value={option.value}
             className={cn(toggleVariants({ state: isOn ? 'on' : 'off', size }), itemClassName)}>
-            {Icon && <Icon size="small" />}
+            {Icon && <Icon />}
             {option.label}
           </ToggleGroupPrimitive.Item>
         );
