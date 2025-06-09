@@ -154,6 +154,11 @@ export const WithSelectIndicator: Story = {
     isSelectIndicator: true,
     options: baseOptions,
   },
+  argTypes: {
+    isSelectIndicator: {
+      table: { disable: true },
+    },
+  },
   render: (args) => {
     return (
       <div className="flex gap-4 h-36">
