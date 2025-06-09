@@ -43,3 +43,4 @@ export {
   AlertDialogOverlay,
 } from './AlertDialog';
 export { Label } from './Label';
+export { Switch } from './Switch';
