@@ -1,12 +1,10 @@
 'use client';
 
-import type { Ref } from 'react';
-import * as React from 'react';
+import React, { isValidElement, useImperativeHandle, useState } from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
-
-import { cn } from '../../lib/utils';
 import type { VariantProps } from 'tailwind-variants';
-import { BasicTooltipVariants } from '@common/ui/components/Tooltip/BasicTooltip';
+import { cn } from '../../lib/utils';
+import { BasicTooltipVariants, DEFAULT_DELAY_DURATION } from '@common/ui/components/Tooltip';
 
 export type TooltipProviderProps = React.ComponentProps<typeof TooltipPrimitive.Provider>;
 
@@ -46,7 +44,6 @@ function TooltipContent({ className, sideOffset = 0, ...props }: TooltipContentP
       data-slot="tooltip-content"
       sideOffset={sideOffset}
       className={cn(className)}
-      // 'bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance'
       {...props}
     />
   );
@@ -55,35 +52,32 @@ function TooltipContent({ className, sideOffset = 0, ...props }: TooltipContentP
 export type TooltipWrapperProps = {
   providerProps?: Omit<TooltipProviderProps, 'children'>;
   rootProps?: TooltipRootProps;
+  tooltipOpenStatusRef?: React.Ref<boolean>;
   children?: React.ReactNode;
-  tooltipOpenStatusRef?: Ref<boolean>;
 };
 
 function TooltipWrapper({
-  providerProps = { delayDuration: 0 },
+  providerProps = { delayDuration: DEFAULT_DELAY_DURATION },
   rootProps = { defaultOpen: false },
+  tooltipOpenStatusRef = undefined,
   children,
-  // tooltipOpenStatusRef,
 }: TooltipWrapperProps) {
-  // const isControlled = open !== undefined;
-  // const [internalOpen, setInternalOpen] = useState(rootProps?.defaultOpen ?? false);
-  // const currentOpen = isControlled ? open : internalOpen;
+  const { open, defaultOpen, onOpenChange, ...restRootProps } = rootProps || {};
+  const isControlled = open !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false);
+  const currentOpen = isControlled ? open : internalOpen;
 
   // 비제어 선택값
-  // useImperativeHandle(tooltipOpenStatusRef, (): boolean => currentOpen);
+  useImperativeHandle(tooltipOpenStatusRef, (): boolean => currentOpen);
 
   const handleTooltipOpenChange = (nextOpen: boolean) => {
-    // if (!isControlled) setInternalOpen(nextOpen);
-    rootProps?.onOpenChange?.(nextOpen);
+    if (!isControlled) setInternalOpen(nextOpen);
+    onOpenChange?.(nextOpen);
   };
 
   return (
     <TooltipProvider {...providerProps}>
-      <TooltipRoot
-        {...rootProps}
-        onOpenChange={handleTooltipOpenChange}
-        // open={currentOpen}
-      >
+      <TooltipRoot {...restRootProps} onOpenChange={handleTooltipOpenChange}>
         {children}
       </TooltipRoot>
     </TooltipProvider>
@@ -91,33 +85,56 @@ function TooltipWrapper({
 }
 
 export type TooltipContainerProps = {
-  triggerProps: TooltipTriggerProps;
-  portalProps: TooltipPortalProps;
-  contentProps: TooltipContentProps & { contentSize: VariantProps<typeof BasicTooltipVariants>['size'] };
-  arrowProps: TooltipArrowProps;
-  contents: React.ReactNode | string;
-  children: React.ReactElement;
+  triggerProps?: Omit<TooltipTriggerProps, 'asChild'>;
+  portalProps?: TooltipPortalProps;
+  contentProps: TooltipContentProps & { size?: VariantProps<typeof BasicTooltipVariants>['size'] };
+  arrowProps?: TooltipArrowProps;
+  trigger: React.ReactElement;
+  children?: React.ReactNode | string;
   isShowArrow?: boolean;
+  asChild?: boolean;
   className?: string;
 };
 
 function TooltipContainer({
-  triggerProps,
-  portalProps,
-  contentProps,
+  asChild = true,
+  portalProps = { forceMount: undefined },
+  contentProps = { size: 'medium', side: 'top', align: 'center' },
   arrowProps,
+  trigger,
   children,
-  contents,
   className,
   isShowArrow = true,
+  ...props
 }: TooltipContainerProps) {
+  const { content, arrow, base } = BasicTooltipVariants();
+  const contentClass = cn(
+    base({
+      size: contentProps.size,
+      side: contentProps.side,
+      align: contentProps.align,
+      fadeOut: portalProps.forceMount,
+    }),
+    content(),
+    className,
+  );
+  const arrowClass = cn(arrow());
+
+  if (!isValidElement(trigger)) {
+    console.warn('TooltipContainer: 유효한 trigger 가 필요합니다.');
+
+    return null;
+  }
+
   return (
     <>
-      <TooltipTrigger {...triggerProps}>{children}</TooltipTrigger>
+      <TooltipTrigger {...(props?.triggerProps || {})} asChild={asChild}>
+        {trigger}
+      </TooltipTrigger>
       <TooltipPortal {...portalProps}>
-        <TooltipContent {...contentProps} className={className}>
-          {contents}
-          {isShowArrow && <TooltipArrow {...arrowProps} />}
+        <TooltipContent {...contentProps} className={contentClass}>
+          {children}
+          {isShowArrow && <TooltipArrow {...arrowProps} className={arrowClass} />}
         </TooltipContent>
       </TooltipPortal>
     </>

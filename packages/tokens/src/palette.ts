@@ -35,6 +35,7 @@ const palette = {
     skeleton: { main: '#3c4f6b', light: '#e0e0e0' },
   },
   juiText: {
+    default: { main: '#000', light: '#fff' },
     primary: { main: '#fff', light: '#333333' },
     secondary: { main: 'rgba(255, 255, 255, 0.4)', light: 'rgba(0, 0, 0, 0.4)' },
     disabled: { main: '#505050' },

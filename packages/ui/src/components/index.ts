@@ -61,23 +61,26 @@ export {
   type AvatarContentsProps,
 } from './Avatar';
 export {
-  TooltipWrapper,
-  TooltipContainer,
   TooltipProvider,
   TooltipRoot,
   TooltipTrigger,
   TooltipPortal,
   TooltipContent,
   TooltipArrow,
+  TooltipWrapper,
+  TooltipContainer,
   Tooltip,
+  BasicTooltipVariants,
+  DEFAULT_DELAY_DURATION,
 } from './Tooltip';
 export type {
-  TooltipWrapperProps,
-  TooltipContainerProps,
   TooltipProviderProps,
   TooltipRootProps,
   TooltipTriggerProps,
   TooltipPortalProps,
   TooltipContentProps,
   TooltipArrowProps,
+  TooltipWrapperProps,
+  TooltipContainerProps,
+  TooltipProps,
 } from './Tooltip';

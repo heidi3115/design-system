@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, TooltipContent, TooltipTrigger, TooltipWrapper } from '@common/ui';
+import { Button, Tooltip, TooltipContainer, TooltipContent, TooltipTrigger, TooltipWrapper } from '@common/ui';
 import Link from 'next/link';
 import { CornerDownLeftIcon } from '@common/ui/icons';
 import ThemeToggle from '../../../components/ThemeToggle';
@@ -28,20 +28,35 @@ export default function TooltipPage() {
               <span className={'text-3xl font-bold'}></span>
               <div className={'flex flex-row gap-3'}>
                 <Button>basic Btn</Button>
-                {/*<Tooltip trigger={<Button>basic Btn with Tooltip</Button>}>hover Btn</Tooltip>*/}
               </div>
             </div>
             <div className={'flex flex-col gap-2'}>
-              <span className={'text-3xl font-bold'}>TooltipParts</span>
-              <div className={'flex flex-row gap-3'}>
-                {/*<Button>basic Btn</Button>*/}
-                {/*<Tooltip trigger={<Button>BasicTooltip trigger</Button>}>BasicTooltip - hover Btn</Tooltip>*/}
-                {/*<Tooltip contents={'BasicTooltip - BasicTooltipContent'}>*/}
-                {/*  <Button>BasicTooltip trigger</Button>*/}
-                {/*</Tooltip>*/}
+              <span className={'text-3xl font-bold'}>Tooltip Test</span>
+              <div className={'flex flex-row gap-20'}>
+                <Tooltip trigger={<Button variant={'primary'}>small trigger</Button>} size={'small'}>
+                  small Tooltip contents
+                </Tooltip>
+                <Tooltip trigger={<Button variant={'primary'}>medium trigger</Button>} size={'medium'}>
+                  medium Tooltip contents
+                </Tooltip>
+                <Tooltip trigger={<Button variant={'primary'}>large trigger</Button>} size={'large'}>
+                  large Tooltip contents
+                </Tooltip>
+              </div>
+            </div>
+            <div className={'flex flex-col gap-2'}>
+              <span className={'text-3xl font-bold'}>TooltipParts Test</span>
+              <div className={'flex flex-row gap-4'}>
+                <TooltipWrapper>
+                  <TooltipContainer
+                    trigger={<Button variant={'secondary'}>TooltipParts btn trigger</Button>}
+                    contentProps={{ size: 'medium' }}>
+                    TooltipContainer test
+                  </TooltipContainer>
+                </TooltipWrapper>
                 <TooltipWrapper>
                   <TooltipTrigger asChild>
-                    <Button>TooltipParts trigger</Button>
+                    <Button variant={'gradient'}>TooltipParts TooltipTrigger</Button>
                   </TooltipTrigger>
                   <TooltipContent>TooltipParts - TooltipContent</TooltipContent>
                 </TooltipWrapper>

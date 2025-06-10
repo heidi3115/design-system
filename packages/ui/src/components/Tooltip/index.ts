@@ -21,4 +21,5 @@ export type {
 } from './TooltipParts';
 
 export { default as Tooltip } from './BasicTooltip';
-export { type BasicTooltipProps } from './BasicTooltip';
+export type { BasicTooltipProps as TooltipProps } from './BasicTooltip';
+export { default as BasicTooltipVariants, DEFAULT_DELAY_DURATION } from './TooltipUtils';
