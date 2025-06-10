@@ -29,6 +29,7 @@ export { RadioGroupRoot, RadioGroupItem, RadioGroup } from './RadioGroup';
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
 export { Toggle, toggleVariants } from './Toggle';
+export { ToggleGroup } from './ToggleGroup';
 export {
   AlertDialog,
   AlertDialogTitle,
