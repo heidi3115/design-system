@@ -29,6 +29,7 @@ export { RadioGroupRoot, RadioGroupItem, RadioGroup } from './RadioGroup';
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
 export { Toggle, toggleVariants } from './Toggle';
+export { ToggleGroup } from './ToggleGroup';
 export {
   AlertDialog,
   AlertDialogTitle,
@@ -54,3 +55,18 @@ export {
   DialogTrigger,
 } from './Dialog';
 export { Switch } from './Switch';
+export { Skeleton, CardSkeleton } from './Skeleton';
+export {
+  Avatar,
+  AvatarRoot,
+  AvatarImage,
+  AvatarFallback,
+  AvatarContents,
+  avatarWrapperVariants,
+  avatarImageVariants,
+  type AvatarProps,
+  type AvatarWrapperVariantsType,
+  type AvatarImageVariantsType,
+  type AvatarLoadingStatus,
+  type AvatarContentsProps,
+} from './Avatar';

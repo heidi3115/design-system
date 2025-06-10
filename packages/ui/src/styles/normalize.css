@@ -191,11 +191,12 @@ img {
  * 1. Show the overflow in Edge.
  */
 
-button,
-input {
-  /* 1 */
-  overflow: visible;
-}
+/* 우선순위로 주석처리 */
+/*button,*/
+/*input {*/
+/*  !* 1 *!*/
+/*  overflow: visible;*/
+/*}*/
 
 /**
  * Remove the inheritance of text transform in Edge, Firefox, and IE.
