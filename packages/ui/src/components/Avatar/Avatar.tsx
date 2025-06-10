@@ -1,11 +1,12 @@
 'use client';
 
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 import { cn } from '../../lib/utils';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
-import { RotateIcon, UserFilledIcon } from '@common/ui/icons';
+import { UserFilledIcon } from '@common/ui/icons';
+import { Skeleton } from '@common/ui/components/Skeleton';
 
 const DEFAULT_DELAY_MS = 700;
 
@@ -15,7 +16,7 @@ export const avatarWrapperVariants = tv({
     'overflow-hidden relative flex shrink-0 items-center justify-center whitespace-nowrap',
     '[&_svg]:items-center [&_svg]:justify-center [&_svg]:fill-current [&_svg]:pointer-events-none',
     '[&:has([data-slot=avatar-fallback],[data-slot=avatar-image]):not(:has(svg,img))]:size-fit', // fallback 용
-    '[&:has([data-slot=avatar-fallback],[data-slot=avatar-image]):has(svg,img)]',
+    '[&:has(data-slot=skeleton)]:size-auto',
   ],
   variants: {
     size: {
@@ -41,7 +42,10 @@ export const avatarWrapperVariants = tv({
 
 // Avatar 내부 이미지 스타일 variant
 export const avatarImageVariants = tv({
-  base: ['flex flex-col gap-1.5 size-full items-center justify-center m-0 bg-transparent', 'has-[svg]:bg-juiGrey-a700'],
+  base: [
+    'flex flex-col gap-1.5 items-center justify-center m-0 bg-transparent',
+    'has-[svg]:bg-juiGrey-a700 has-[svg,img]:size-full',
+  ],
   variants: {
     size: {
       small: '[&_svg]:size-6/10',
@@ -106,7 +110,7 @@ function AvatarFallback({ className, asChild = false, size, alt, delayMs, ...pro
           size,
           className,
         }),
-        'aspect-square',
+        'has-[img]:aspect-square', // 이미지 있을 때만
         '[&:not(:has(img,svg))]:p-2',
       )}
       delayMs={delayMs}
@@ -156,6 +160,7 @@ function AvatarContents(props: AvatarContentsProps) {
     ...rest
   } = props;
 
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isSrcLoading, setIsSrcLoading] = useState(false);
 
   useEffect(() => {
@@ -168,17 +173,42 @@ function AvatarContents(props: AvatarContentsProps) {
     setIsSrcLoading(true);
   }, [src]);
 
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <>
-      {isSrcLoading && <RotateIcon className={'animate-spin'} />}
+      {isSrcLoading && (
+        <Skeleton
+          className={`${size === 'small' ? 'size-5' : size === 'basic' ? 'size-7.5' : size === 'medium' ? 'size-10' : size === 'large' ? 'size-15' : 'size-fit'} rounded-full`}
+        />
+      )}
       <AvatarImage
         src={src}
         alt={alt}
         size={size}
         className={cn(className, isSrcLoading && 'invisible')}
         onLoadingStatusChange={(newStatus: AvatarLoadingStatus) => {
-          setIsSrcLoading(newStatus === 'loading');
-          if (onLoadingStatusChange) onLoadingStatusChange(newStatus);
+          const isLoading = newStatus === 'loading';
+
+          if (isLoading) {
+            setIsSrcLoading(isLoading);
+          } else if (newStatus === 'error') {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+            timeoutRef.current = setTimeout(() => {
+              setIsSrcLoading(false);
+            }, delayMs);
+          } else {
+            setIsSrcLoading(isLoading);
+          }
+
+          onLoadingStatusChange?.(newStatus);
         }}
         {...rest}
       />
@@ -230,12 +260,7 @@ function Avatar(props: AvatarProps) {
     <AvatarRoot
       asChild={asChild}
       className={cn(
-        avatarWrapperVariants({
-          size,
-          shape,
-          disabled,
-          className,
-        }),
+        avatarWrapperVariants({ size, shape, disabled, className }),
         'm-0 p-0 break-words whitespace-wrap',
         // 하위에 data-slot=avatar-fallback나 data-slot=avatar-image 가 없을 때: size-fit
         '[&:not(:has([data-slot=avatar-fallback],[data-slot=avatar-image]))]:size-fit',

@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect, useState } from 'react';
 import {
   Avatar,
+  AvatarContents,
   type AvatarLoadingStatus,
   type AvatarProps,
   avatarWrapperVariants,
 } from '@common/ui/components/Avatar';
-import { RotateIcon } from '@common/ui/icons';
-import { AvatarContents } from '@common/ui/components/Avatar/Avatar.tsx';
+import { Skeleton } from '@common/ui/components/Skeleton';
 import { Button } from '@common/ui/components/Button';
 
 const sizeArr = Object.keys(
@@ -404,28 +404,27 @@ function MockAvatar({
           {'alt 와 fallback 은 아래 예시를 제외하고 Avatar Mock 에서는 둘 다 미지정입니다.'}
         </span>
       </span>
-      <div className={'flex flex-col'}>
-        <div className={'flex flex-row gap-4 '}>
-          <div className={'flex flex-col gap-2'}>
+      <div className={'flex flex-col items-center'}>
+        <div className={'flex flex-row gap-4 w-8/10'}>
+          <div className={'flex flex-col flex-1 gap-2 items-center'}>
             <span className={'text-xs text-juiText-blue'}>status: idle</span>
             <Avatar {...args} src={'wrong'} fallback={' '} />
           </div>
-          <div className={'flex flex-col gap-2 items-center'}>
-            <span
-              className={`text-xs text-juiText-blue ${args.size === 'large' || args.size === 'fit' ? 'mb-[20%]' : args.size === 'small' ? 'mb-[5%]' : args.size === 'basic' ? 'mb-[10%]' : 'mb-[15%]'}`}>
-              status: loading
-            </span>
-            <RotateIcon className={'animate-spin'} size={args.size === 'fit' ? 'large' : args.size} />
+          <div className={'flex flex-col gap-2 flex-1 items-center'}>
+            <span className={`text-xs text-juiText-blue`}>status: loading</span>
+            <Skeleton
+              className={`${args.size === 'small' ? 'size-5' : args.size === 'basic' ? 'size-7.5' : args.size === 'medium' ? 'size-10' : 'size-15'} rounded-full`}
+            />
           </div>
-          <div className={'flex flex-col gap-2 items-center'}>
+          <div className={'flex flex-col gap-2 flex-1 items-center'}>
             <span className={'text-xs text-juiText-blue'}>status: loaded</span>
             <Avatar {...args} src={srcArr[2]} delayMs={50} />
           </div>
-          <div className={'flex flex-col gap-2 items-center'}>
+          <div className={'flex flex-col gap-2 flex-1 items-center'}>
             <span className={'text-xs text-juiText-blue'}>status: error(fallback 미지정 시)</span>
             <Avatar {...args} src={'wrong'} delayMs={50} fallback={''} />
           </div>
-          <div className={'flex flex-col gap-2 items-center'}>
+          <div className={'flex flex-col gap-2 flex-1 items-center'}>
             <span className={'text-xs text-juiText-blue'}>status: error(fallback 지정시)</span>
             <Avatar {...args} src={'wrong'} delayMs={50} />
           </div>
@@ -440,11 +439,25 @@ function MockAvatar({
           </span>
         </span>
         <div className={'flex items-center justify-center'}>
-          <div className={'flex flex-col items-center justify-center w-150 h-fit p-4 border rounded-lg'}>
-            <span className="text-sm font-bold">
+          <div className={'flex flex-col justify-center w-150 h-fit p-4 border rounded-lg'}>
+            <span className="text-base font-bold">
               {`Avatar Mock`}
               <span className="block mb-2 text-xs font-bold">
-                {`delayMs: ${delayMs} | status : ${status} `}
+                {`delayMs: `}
+                <span className={'text-juiText-blue'}>{delayMs}</span>
+                {` | status : `}
+                <span
+                  className={
+                    status === 'idle'
+                      ? 'text-juiBackground-input'
+                      : status === 'loading'
+                        ? 'text-orange-400'
+                        : status === 'loaded'
+                          ? 'text-green-800'
+                          : 'text-red-800'
+                  }>
+                  {status}
+                </span>
                 <br />
                 {` src : ${src}`}
                 <br />
@@ -454,7 +467,11 @@ function MockAvatar({
             <div className={'flex flex-col gap-6 items-center justify-center w-full'}>
               <div className="flex items-center justify-center w-20 h-20 rounded-sm bg-juiText-primary/20 text-2xl font-bold">
                 {status === 'idle' && ''}
-                {status === 'loading' && <RotateIcon className={'animate-spin'} />}
+                {status === 'loading' && (
+                  <Skeleton
+                    className={`${args.size === 'small' ? 'size-5' : args.size === 'basic' ? 'size-7.5' : args.size === 'medium' ? 'size-10' : 'size-15'} rounded-full`}
+                  />
+                )}
                 {status === 'loaded' && <Avatar {...args} src={src} delayMs={delayMs} alt={''} fallback={''} />}
                 {status === 'error' && <Avatar {...args} src={src} delayMs={delayMs} alt={''} fallback={''} />}
               </div>
@@ -477,7 +494,7 @@ function MockAvatar({
                   {logs.map((s, i) => {
                     const textColor =
                       s === 'idle'
-                        ? 'text-juiBackground-paper'
+                        ? 'text-juiBackground-input'
                         : s === 'loading'
                           ? 'text-orange-400'
                           : s === 'loaded'

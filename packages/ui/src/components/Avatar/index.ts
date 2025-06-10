@@ -3,6 +3,7 @@ export {
   AvatarRoot,
   AvatarImage,
   AvatarFallback,
+  AvatarContents,
   avatarWrapperVariants,
   avatarImageVariants,
   type AvatarWrapperVariantsType,

@@ -50,10 +50,12 @@ export {
   AvatarRoot,
   AvatarImage,
   AvatarFallback,
+  AvatarContents,
   avatarWrapperVariants,
+  avatarImageVariants,
+  type AvatarProps,
   type AvatarWrapperVariantsType,
   type AvatarImageVariantsType,
   type AvatarLoadingStatus,
-  type AvatarProps,
   type AvatarContentsProps,
 } from './Avatar';
