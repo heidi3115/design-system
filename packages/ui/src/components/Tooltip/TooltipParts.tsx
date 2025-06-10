@@ -26,8 +26,8 @@ function TooltipTrigger({ ...props }: TooltipTriggerProps) {
 
 export type TooltipArrowProps = React.ComponentProps<typeof TooltipPrimitive.Arrow>;
 
-function TooltipArrow({ ...props }: TooltipArrowProps) {
-  return <TooltipPrimitive.Arrow data-slot="tooltip-arrow" {...props} />;
+function TooltipArrow({ className, ...props }: TooltipArrowProps) {
+  return <TooltipPrimitive.Arrow data-slot="tooltip-arrow" {...props} className={className} />;
 }
 
 export type TooltipPortalProps = React.ComponentProps<typeof TooltipPrimitive.Portal>;
@@ -119,6 +119,8 @@ function TooltipContainer({
     className,
   );
   const arrowClass = cn(arrow());
+
+  console.log('isShowArrow :', isShowArrow, 'arrowClass :', arrowClass);
 
   if (!isValidElement(trigger)) {
     console.warn('TooltipContainer: 유효한 trigger 가 필요합니다.');

@@ -10,6 +10,7 @@ export const BasicTooltipVariants = tv({
     'size-fit',
     'text-juiText-primary',
     'bg-juiBackground-paper rounded-md',
+    '',
     // 'animate-in fade-in-0 zoom-in-95',
     // 'data-[state=closed]:opacity-0 data-[state=open]:opacity-100',
   ],
@@ -21,7 +22,7 @@ export const BasicTooltipVariants = tv({
       '',
       // 'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin)'
     ],
-    arrow: [''],
+    arrow: ['bg-current'],
   },
   variants: {
     size: {

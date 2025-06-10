@@ -39,8 +39,8 @@ export default function TooltipPage() {
                 <Tooltip trigger={<Button variant={'primary'}>medium trigger</Button>} size={'medium'}>
                   medium Tooltip contents
                 </Tooltip>
-                <Tooltip trigger={<Button variant={'primary'}>large trigger</Button>} size={'large'}>
-                  large Tooltip contents
+                <Tooltip trigger={<Button variant={'primary'}>large trigger</Button>} size={'large'} fadeOut>
+                  large Tooltip contents - fadeOut
                 </Tooltip>
               </div>
             </div>
