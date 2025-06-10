@@ -148,7 +148,7 @@ export const IsBtn: GradeStory = {
       </span>
       <div className="flex flex-row flex-wrap gap-4 p-5">
         {gradeKeys.map((grade) => (
-          <div className={'flex flex-col gap-1 text-center'} key={'grade'}>
+          <div className={'flex flex-col gap-1 text-center'} key={grade}>
             <span className="text-xs text-juiText-blue">{`grage: ${grade} | isBtn: ${args.isBtn}`}</span>
             <GradeBadge {...args} grade={grade} />
           </div>
