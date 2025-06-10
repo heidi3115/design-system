@@ -44,4 +44,24 @@ export {
 } from './AlertDialog';
 export { Label } from './Label';
 export { Switch } from './Switch';
-export { TooltipRoot, TooltipTrigger, TooltipContent, TooltipProvider } from './Tooltip';
+export {
+  TooltipWrapper,
+  TooltipContainer,
+  TooltipProvider,
+  TooltipRoot,
+  TooltipTrigger,
+  TooltipPortal,
+  TooltipContent,
+  TooltipArrow,
+  Tooltip,
+} from './Tooltip';
+export type {
+  TooltipWrapperProps,
+  TooltipContainerProps,
+  TooltipProviderProps,
+  TooltipRootProps,
+  TooltipTriggerProps,
+  TooltipPortalProps,
+  TooltipContentProps,
+  TooltipArrowProps,
+} from './Tooltip';

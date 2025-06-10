@@ -1,47 +1,136 @@
 'use client';
 
+import type { Ref } from 'react';
 import * as React from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 
 import { cn } from '../../lib/utils';
+import type { VariantProps } from 'tailwind-variants';
+import { BasicTooltipVariants } from '@common/ui/components/Tooltip/BasicTooltip';
 
-function TooltipProvider({ delayDuration = 0, ...props }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
+export type TooltipProviderProps = React.ComponentProps<typeof TooltipPrimitive.Provider>;
+
+function TooltipProvider({ delayDuration = 0, ...props }: TooltipProviderProps) {
   return <TooltipPrimitive.Provider data-slot="tooltip-provider" delayDuration={delayDuration} {...props} />;
 }
 
-function TooltipRoot({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+export type TooltipRootProps = React.ComponentProps<typeof TooltipPrimitive.Root>;
+
+function TooltipRoot({ ...props }: TooltipRootProps) {
+  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
+}
+
+export type TooltipTriggerProps = React.ComponentProps<typeof TooltipPrimitive.Trigger>;
+
+function TooltipTrigger({ ...props }: TooltipTriggerProps) {
+  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
+}
+
+export type TooltipArrowProps = React.ComponentProps<typeof TooltipPrimitive.Arrow>;
+
+function TooltipArrow({ ...props }: TooltipArrowProps) {
+  return <TooltipPrimitive.Arrow data-slot="tooltip-arrow" {...props} />;
+}
+
+export type TooltipPortalProps = React.ComponentProps<typeof TooltipPrimitive.Portal>;
+
+function TooltipPortal({ ...props }: TooltipPortalProps) {
+  return <TooltipPrimitive.Portal data-slot="tooltip-portal" {...props} />;
+}
+
+export type TooltipContentProps = React.ComponentProps<typeof TooltipPrimitive.Content>;
+
+function TooltipContent({ className, sideOffset = 0, ...props }: TooltipContentProps) {
   return (
-    <TooltipProvider>
-      <TooltipPrimitive.Root data-slot="tooltip" {...props} />
+    <TooltipPrimitive.Content
+      data-slot="tooltip-content"
+      sideOffset={sideOffset}
+      className={cn(className)}
+      // 'bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance'
+      {...props}
+    />
+  );
+}
+
+export type TooltipWrapperProps = {
+  providerProps?: Omit<TooltipProviderProps, 'children'>;
+  rootProps?: TooltipRootProps;
+  children?: React.ReactNode;
+  tooltipOpenStatusRef?: Ref<boolean>;
+};
+
+function TooltipWrapper({
+  providerProps = { delayDuration: 0 },
+  rootProps = { defaultOpen: false },
+  children,
+  // tooltipOpenStatusRef,
+}: TooltipWrapperProps) {
+  // const isControlled = open !== undefined;
+  // const [internalOpen, setInternalOpen] = useState(rootProps?.defaultOpen ?? false);
+  // const currentOpen = isControlled ? open : internalOpen;
+
+  // 비제어 선택값
+  // useImperativeHandle(tooltipOpenStatusRef, (): boolean => currentOpen);
+
+  const handleTooltipOpenChange = (nextOpen: boolean) => {
+    // if (!isControlled) setInternalOpen(nextOpen);
+    rootProps?.onOpenChange?.(nextOpen);
+  };
+
+  return (
+    <TooltipProvider {...providerProps}>
+      <TooltipRoot
+        {...rootProps}
+        onOpenChange={handleTooltipOpenChange}
+        // open={currentOpen}
+      >
+        {children}
+      </TooltipRoot>
     </TooltipProvider>
   );
 }
 
-function TooltipTrigger({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
-}
+export type TooltipContainerProps = {
+  triggerProps: TooltipTriggerProps;
+  portalProps: TooltipPortalProps;
+  contentProps: TooltipContentProps & { contentSize: VariantProps<typeof BasicTooltipVariants>['size'] };
+  arrowProps: TooltipArrowProps;
+  contents: React.ReactNode | string;
+  children: React.ReactElement;
+  isShowArrow?: boolean;
+  className?: string;
+};
 
-function TooltipContent({
-  className,
-  sideOffset = 0,
+function TooltipContainer({
+  triggerProps,
+  portalProps,
+  contentProps,
+  arrowProps,
   children,
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+  contents,
+  className,
+  isShowArrow = true,
+}: TooltipContainerProps) {
   return (
-    <TooltipPrimitive.Portal>
-      <TooltipPrimitive.Content
-        data-slot="tooltip-content"
-        sideOffset={sideOffset}
-        className={cn(
-          'bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance',
-          className,
-        )}
-        {...props}>
-        {children}
-        <TooltipPrimitive.Arrow className="bg-primary fill-primary z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
-      </TooltipPrimitive.Content>
-    </TooltipPrimitive.Portal>
+    <>
+      <TooltipTrigger {...triggerProps}>{children}</TooltipTrigger>
+      <TooltipPortal {...portalProps}>
+        <TooltipContent {...contentProps} className={className}>
+          {contents}
+          {isShowArrow && <TooltipArrow {...arrowProps} />}
+        </TooltipContent>
+      </TooltipPortal>
+    </>
   );
 }
 
-export { TooltipRoot, TooltipTrigger, TooltipContent, TooltipProvider };
+export {
+  TooltipWrapper,
+  TooltipContainer,
+  TooltipProvider,
+  TooltipRoot,
+  TooltipTrigger,
+  TooltipPortal,
+  TooltipContent,
+  TooltipArrow,
+};
