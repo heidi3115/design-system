@@ -29,6 +29,7 @@ type dialogProps = {
   buttons?: buttonType[];
   children?: ReactNode;
   footerLocate?: 'start' | 'center' | 'end';
+  contentSize?: 'small' | 'medium' | 'large';
 };
 
 const iconMap = {

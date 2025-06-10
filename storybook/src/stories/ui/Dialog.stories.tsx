@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { type ReactElement } from 'react';
-import { Button, Input } from '@common/ui';
+import { Button } from '@common/ui';
 import BaseDialog from '@common/ui/components/Dialog/BaseDialog.tsx';
 import { EditIcon } from '@common/ui/icons';
 
@@ -9,9 +9,14 @@ type DialogStoryArgs = {
   titleIcon?: ReactElement;
   description: string;
   contentSize?: 'small' | 'medium' | 'large';
-  confirmLabel?: string;
-  cancelLabel?: string;
   footerLocate?: 'start' | 'center' | 'end';
+  buttons: {
+    langKey: string;
+    icon?: 'save' | 'cancel' | 'delete' | 'check';
+    color?: 'primary' | 'secondary' | 'error';
+    handleClick?: () => void;
+    close?: boolean;
+  }[];
 };
 
 const meta: Meta<DialogStoryArgs> = {
@@ -35,17 +40,14 @@ const meta: Meta<DialogStoryArgs> = {
       options: ['small', 'medium', 'large'],
       description: '다이얼로그 컨텐츠 크기',
     },
-    confirmLabel: {
-      control: { type: 'text' },
-      description: '확인 버튼 라벨',
-    },
-    cancelLabel: {
-      control: { type: 'text' },
-      description: '취소 버튼 라벨',
-    },
     footerLocate: {
       control: { type: 'radio' },
+      options: ['start', 'center', 'end'],
       description: '버튼 위치',
+    },
+    buttons: {
+      control: { disable: true },
+      description: '다이얼로그에 표시될 버튼 목록',
     },
   },
   args: {
@@ -53,9 +55,28 @@ const meta: Meta<DialogStoryArgs> = {
     titleIcon: <EditIcon />,
     description: '내용 예시',
     contentSize: 'medium',
-    confirmLabel: '저장',
-    cancelLabel: '취소',
     footerLocate: 'center',
+    buttons: [
+      {
+        langKey: '저장',
+        icon: 'check',
+        color: 'primary',
+        handleClick: () => console.log('저장'),
+      },
+      {
+        langKey: '삭제',
+        icon: 'delete',
+        color: 'error',
+        close: true,
+        handleClick: () => console.log('삭제'),
+      },
+      {
+        langKey: '닫기',
+        icon: 'cancel',
+        color: 'secondary',
+        close: true,
+      },
+    ],
   },
   parameters: {
     docs: {
@@ -70,35 +91,15 @@ export default meta;
 type Story = StoryObj<DialogStoryArgs>;
 
 const Template = (args: DialogStoryArgs) => {
-  // const [open, setOpen] = useState(false);
-
   return (
     <BaseDialog
-      trigger={<Button>{args.title}</Button>}
+      trigger={<Button>Dialog 열기</Button>}
+      title={args.title}
       titleIcon={args.titleIcon}
-      title="Example Title"
-      buttons={[
-        {
-          langKey: '저장',
-          icon: 'check',
-          color: 'primary',
-          handleClick: () => console.log('확인'),
-        },
-        {
-          langKey: '삭제',
-          icon: 'delete',
-          color: 'error',
-          handleClick: () => console.log('삭제'),
-          close: true,
-        },
-        {
-          langKey: '닫기',
-          icon: 'cancel',
-          color: 'secondary',
-          close: true,
-        },
-      ]}>
-      <Input />
+      contentSize={args.contentSize}
+      footerLocate={args.footerLocate}
+      buttons={args.buttons}>
+      {args.description}
     </BaseDialog>
   );
 };
