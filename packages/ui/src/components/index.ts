@@ -12,6 +12,19 @@ export { Checkbox } from './Checkbox';
 export { Textarea, textareaVariaints } from './Textarea';
 export { Input, inputVariants } from './Input';
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator, SplitOtpInput } from './InputOTP';
+export {
+  SelectRoot,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+  Select,
+} from './Select';
 export { RadioGroupRoot, RadioGroupItem, RadioGroup } from './RadioGroup';
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
@@ -31,6 +44,7 @@ export {
 } from './AlertDialog';
 export { Label } from './Label';
 export { Switch } from './Switch';
+export { Skeleton, CardSkeleton } from './Skeleton';
 export {
   Avatar,
   AvatarRoot,

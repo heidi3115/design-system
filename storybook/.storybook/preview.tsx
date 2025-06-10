@@ -21,7 +21,11 @@ const WithTailwindTheme = (Story, context) => {
     }
   }, [bg]);
 
-  return <Story />;
+  return (
+    <div className="storybook-wrapper bg-juiBackground-paper p-5">
+      <Story />
+    </div>
+  );
 };
 
 const preview: Preview = {
