@@ -1,49 +1,63 @@
-import React from 'react';
+import { isValidElement, type ReactElement, type ReactNode } from 'react';
 import {
-  Button,
-  DialogClose,
+  DialogRoot,
+  DialogTrigger,
   DialogContent,
+  DialogHeader,
+  DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogRoot,
-  DialogTitle,
-  DialogTrigger,
-} from '@common/ui';
-import { CheckIcon, SaveIcon, XIcon, TrashIcon } from '@common/ui/icons';
-// import { SendIcon } from 'lucide-react';
+} from './DialogParts';
+import { DialogClose } from '@radix-ui/react-dialog';
+import { Button } from '../Button';
+import { SaveIcon, XIcon, TrashIcon, CheckIcon } from '@common/ui/icons';
 
 type buttonType = {
   langKey: string;
   handleClick?: () => void;
   color?: 'primary' | 'secondary' | 'default' | 'error';
   form?: string;
-  icon?: string;
+  icon?: 'save' | 'cancel' | 'delete' | 'check';
   disabled?: boolean;
   close?: boolean;
 };
 
-type DialogProps = {
-  children?: React.ReactNode;
-  footerLocate?: 'start' | 'center' | 'end';
+type dialogProps = {
+  trigger: ReactNode;
   title: string;
-  titleIcon?: React.ReactElement;
+  titleIcon?: ReactElement;
   buttons?: buttonType[];
-  trigger: React.ReactNode;
+  children?: ReactNode;
+  footerLocate?: 'start' | 'center' | 'end';
 };
 
-const Dialog = ({ children, footerLocate = 'center', title, titleIcon, buttons, trigger }: DialogProps) => {
+const iconMap = {
+  save: <SaveIcon />,
+  cancel: <XIcon />,
+  delete: <TrashIcon />,
+  check: <CheckIcon />,
+};
+
+const GenericDialog = ({ trigger, title, titleIcon, buttons, children, footerLocate = 'center' }: dialogProps) => {
+  const triggerNode = trigger;
+
+  if (!isValidElement(triggerNode)) {
+    console.warn('ConfirmDialog: 유효한 trigger 또는 children 이 필요합니다.');
+
+    return null;
+  }
+
   return (
     <DialogRoot>
-      <DialogTrigger asChild>{trigger ?? <Button>Dialog Open</Button>}</DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex gap-2 items-center">
             {titleIcon}
-            <span>{title}</span>
+            {title}
           </DialogTitle>
         </DialogHeader>
-        <DialogDescription>{children}</DialogDescription>
+        {children && <DialogDescription>{children}</DialogDescription>}
         {buttons && (
           <DialogFooter locate={footerLocate}>
             {buttons.map((btn) => {
@@ -51,22 +65,10 @@ const Dialog = ({ children, footerLocate = 'center', title, titleIcon, buttons, 
                 <Button
                   key={btn.langKey}
                   variant={btn.color}
-                  onClick={btn.handleClick}
-                  size="large"
                   type={btn.form ? 'submit' : 'button'}
-                  disabled={!!btn.disabled}>
-                  {btn.icon === 'save' ? (
-                    <SaveIcon />
-                  ) : btn.icon === 'cancel' ? (
-                    <XIcon />
-                  ) : btn.icon === 'delete' ? (
-                    <TrashIcon />
-                  ) : btn.icon === 'check' ? (
-                    <CheckIcon />
-                  ) : btn.icon === 'send' ? (
-                    <SaveIcon />
-                  ) : null}
-                  {btn.langKey}
+                  onClick={btn.handleClick}
+                  disabled={btn.disabled}>
+                  {btn.icon && iconMap[btn.icon]} {btn.langKey}
                 </Button>
               );
 
@@ -75,7 +77,7 @@ const Dialog = ({ children, footerLocate = 'center', title, titleIcon, buttons, 
                   {buttonContent}
                 </DialogClose>
               ) : (
-                buttonContent
+                <span key={btn.langKey}>{buttonContent}</span>
               );
             })}
           </DialogFooter>
@@ -85,4 +87,4 @@ const Dialog = ({ children, footerLocate = 'center', title, titleIcon, buttons, 
   );
 };
 
-export default Dialog;
+export default GenericDialog;
