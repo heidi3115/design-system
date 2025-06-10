@@ -604,7 +604,7 @@ export const AsChild: Story = {
                   {React.cloneElement(
                     tag,
                     { size: args.size === 'fit' ? 'basic' : args.size },
-                    <AvatarContents {...args} />,
+                    <AvatarContents {...args} key={args.size} />,
                   )}
                 </Avatar>
               </div>
@@ -621,8 +621,8 @@ export const AsChild: Story = {
       <div className={'flex flex-col gap-4'}>
         <span className={'text-sm font-bold text-juiText-primary'}>{`fallback 지정 시`}</span>
         <div className={'flex flex-row gap-4'}>
-          {tagArr.map((tag) => (
-            <div className={'flex flex-col flex-1 gap-2 items-center justify-between'} key={tag + 'error'}>
+          {tagArr.map((tag, idx) => (
+            <div className={'flex flex-col flex-1 gap-2 items-center justify-between'} key={idx + '-' + tag.key}>
               <span className={'text-xs text-juiText-blue'}>
                 {`asChild: true - \`${tag.key}\` | src : ${srcArr[4]}`}
               </span>
@@ -640,8 +640,10 @@ export const AsChild: Story = {
       <div className={'flex flex-col gap-4'}>
         <span className={'text-sm font-bold text-juiText-primary'}>{`fallback 미지정 시`}</span>
         <div className={'flex flex-row gap-4'}>
-          {tagArr.map((tag) => (
-            <div className={'flex flex-col flex-1 gap-2 items-center justify-between'} key={tag + 'error'}>
+          {tagArr.map((tag, idx) => (
+            <div
+              className={'flex flex-col flex-1 gap-2 items-center justify-between'}
+              key={idx + '-' + tag.key + 'error'}>
               <span className={'text-xs text-juiText-blue'}>
                 {`asChild: true - \`${tag.key}\` | src : ${srcArr[4]}`}
               </span>
