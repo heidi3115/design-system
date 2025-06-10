@@ -20,9 +20,9 @@ export type GradeBadgePropsType = Omit<React.ComponentProps<'span'>, 'children'>
      */
     grade: badgeGradeType;
     /**
-     * children: GradeBadge 내부는 아이콘 및 형태, 스타일이 고정되어있으므로 children은 필수값으로서 string 으로만 받도록 고정.
+     * children: GradeBadge 내부는 아이콘 및 형태, 스타일이 고정되어있으므로 children은 필수값.
      */
-    children: string;
+    children: string | React.ReactNode;
   };
 
 export const gradeIconMapper: Record<badgeGradeType, React.ReactNode> = {
@@ -38,7 +38,7 @@ function GradeBadgeContent({
   grade,
   iconColor,
 }: {
-  children: string;
+  children: string | React.ReactNode;
   iconColor?: string;
   grade: badgeGradeType;
 }) {

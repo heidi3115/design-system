@@ -27,9 +27,9 @@ export type ScoringBadgePropsType = Omit<React.ComponentProps<'span'>, 'children
      */
     iconPosition?: 'left' | 'right';
     /**
-     * children: ScoringBadge 내부는 아이콘 및 형태, 스타일이 고정되어 있으므로 children은 필수값으로서 string 으로만 받도록 고정.
+     * children: ScoringBadge 내부는 아이콘 및 형태, 스타일이 고정되어 있으므로 children은 필수값.
      */
-    children: string;
+    children: string | React.ReactNode;
   };
 
 function ScoringBadgeContent({
@@ -40,7 +40,7 @@ function ScoringBadgeContent({
 }: {
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
-  children: string;
+  children: string | React.ReactNode;
   displayScore?: string | number;
 }) {
   return (
