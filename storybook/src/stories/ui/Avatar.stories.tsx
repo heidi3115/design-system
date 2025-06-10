@@ -413,7 +413,7 @@ function MockAvatar({
           <div className={'flex flex-col gap-2 flex-1 items-center'}>
             <span className={`text-xs text-juiText-blue`}>status: loading</span>
             <Skeleton
-              className={`${args.size === 'small' ? 'size-5' : args.size === 'basic' ? 'size-7.5' : args.size === 'medium' ? 'size-10' : 'size-15'} rounded-full`}
+              className={`${args.size === 'small' ? 'size-5' : args.size === 'basic' ? 'size-7.5' : args.size === 'medium' ? 'size-10' : 'size-15'}`}
             />
           </div>
           <div className={'flex flex-col gap-2 flex-1 items-center'}>
@@ -469,7 +469,7 @@ function MockAvatar({
                 {status === 'idle' && ''}
                 {status === 'loading' && (
                   <Skeleton
-                    className={`${args.size === 'small' ? 'size-5' : args.size === 'basic' ? 'size-7.5' : args.size === 'medium' ? 'size-10' : 'size-15'} rounded-full`}
+                    className={`${args.size === 'small' ? 'size-5' : args.size === 'basic' ? 'size-7.5' : args.size === 'medium' ? 'size-10' : 'size-15'}`}
                   />
                 )}
                 {status === 'loaded' && <Avatar {...args} src={src} delayMs={delayMs} alt={''} fallback={''} />}

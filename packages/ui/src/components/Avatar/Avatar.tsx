@@ -24,7 +24,7 @@ export const avatarWrapperVariants = tv({
       basic: 'size-7.5',
       medium: 'size-10',
       large: 'size-15',
-      fit: '',
+      fit: 'size-fit',
     },
     shape: {
       round: 'rounded-full',
@@ -110,7 +110,7 @@ function AvatarFallback({ className, asChild = false, size, alt, delayMs, ...pro
           size,
           className,
         }),
-        'has-[img]:aspect-square', // 이미지 있을 때만
+        'has-[img,svg]:aspect-square', // svg, img 있을 때만
         '[&:not(:has(img,svg))]:p-2',
       )}
       delayMs={delayMs}
@@ -183,7 +183,7 @@ function AvatarContents(props: AvatarContentsProps) {
     <>
       {isSrcLoading && (
         <Skeleton
-          className={`${size === 'small' ? 'size-5' : size === 'basic' ? 'size-7.5' : size === 'medium' ? 'size-10' : size === 'large' ? 'size-15' : 'size-fit'} rounded-full`}
+          className={`${size === 'small' ? 'size-5' : size === 'basic' ? 'size-7.5' : size === 'medium' ? 'size-10' : size === 'large' ? 'size-15' : 'size-fit'}`}
         />
       )}
       <AvatarImage
