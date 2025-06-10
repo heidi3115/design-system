@@ -88,6 +88,50 @@ export const Variant: Story = {
   },
 };
 
+type ControlledComponentProps = {
+  onCheckedChange?: (checked: boolean) => void;
+};
+
+const ControlledComponent = ({ onCheckedChange, ...args }: ControlledComponentProps) => {
+  const [isChecked, setIsChecked] = useState(false);
+  const checkedRef = useRef(null);
+
+  const logControlledChange = action('제어형 onChange 발생');
+  const logUncontrolledConfirm = action('비제어형 확인');
+
+  const controlledhandleChange = (check: boolean) => {
+    setIsChecked(check);
+    logControlledChange(check);
+    onCheckedChange?.(check);
+  };
+
+  const unControlledhandleChange = () => {
+    logUncontrolledConfirm(checkedRef.current);
+  };
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-bold">제어형</span>
+        <div className="w-3xs">
+          <Switch {...args} checked={isChecked} onCheckedChange={controlledhandleChange}>
+            제어
+          </Switch>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-bold">비제어형</span>
+        <div className="w-3xs flex gap-2">
+          <Switch {...args} checkedRef={checkedRef}>
+            비제어
+          </Switch>
+          <Button onClick={unControlledhandleChange}>비제어 확인</Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const Controlled: Story = {
   argTypes: {},
   args: {},
@@ -99,43 +143,5 @@ export const Controlled: Story = {
       disable: true,
     },
   },
-  render: ({ onCheckedChange, ...args }) => {
-    const [isChecked, setIsChecked] = useState(false);
-    const checkedRef = useRef(null);
-
-    const logControlledChange = action('제어형 onChange 발생');
-    const logUncontrolledConfirm = action('비제어형 확인');
-
-    const controlledhandleChange = (check: boolean) => {
-      setIsChecked(check);
-      logControlledChange(check);
-      onCheckedChange?.(check);
-    };
-
-    const unControlledhandleChange = () => {
-      logUncontrolledConfirm(checkedRef.current);
-    };
-
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-bold">제어형</span>
-          <div className="w-3xs">
-            <Switch {...args} checked={isChecked} onCheckedChange={controlledhandleChange}>
-              제어
-            </Switch>
-          </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-bold">비제어형</span>
-          <div className="w-3xs flex gap-2">
-            <Switch {...args} checkedRef={checkedRef}>
-              비제어
-            </Switch>
-            <Button onClick={unControlledhandleChange}>비제어 확인</Button>
-          </div>
-        </div>
-      </div>
-    );
-  },
+  render: (args) => <ControlledComponent {...args} />,
 };
