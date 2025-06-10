@@ -27,6 +27,7 @@
   --juiBackground-default: #182036;
   --juiBackground-paper: rgba(255, 255, 255, 0.05);
   --juiBackground-input: rgba(0, 0, 0, 0.3);
+  --juiBackground-skeleton: #3c4f6b;
   --juiText-primary: #fff;
   --juiText-secondary: rgba(255, 255, 255, 0.4);
   --juiText-disabled: #505050;
@@ -72,6 +73,7 @@
   --juiBackground-default: #182036;
   --juiBackground-paper: rgba(255, 255, 255, 0.05);
   --juiBackground-input: rgba(0, 0, 0, 0.3);
+  --juiBackground-skeleton: #3c4f6b;
   --juiText-primary: #fff;
   --juiText-secondary: rgba(255, 255, 255, 0.4);
   --juiText-disabled: #505050;
@@ -117,6 +119,7 @@
   --color-juiBackground-default: var(--juiBackground-default);
   --color-juiBackground-paper: var(--juiBackground-paper);
   --color-juiBackground-input: var(--juiBackground-input);
+  --color-juiBackground-skeleton: var(--juiBackground-skeleton);
   --color-juiText-primary: var(--juiText-primary);
   --color-juiText-secondary: var(--juiText-secondary);
   --color-juiText-disabled: var(--juiText-disabled);
@@ -137,6 +140,7 @@
   --juiBackground-default: #fff;
   --juiBackground-paper: rgba(0, 0, 0, 0.05);
   --juiBackground-input: #fff;
+  --juiBackground-skeleton: #e0e0e0;
   --juiText-primary: #333333;
   --juiText-secondary: rgba(0, 0, 0, 0.4);
 }
