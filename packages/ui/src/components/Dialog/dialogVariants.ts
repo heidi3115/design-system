@@ -25,17 +25,17 @@ export const dialogVariants = tv({
   },
   variants: {
     contentSize: {
-      sm: {
+      small: {
         content: 'sm:max-w-sm',
       },
-      md: {
+      medium: {
         content: 'sm:max-w-md',
       },
-      lg: {
+      large: {
         content: 'sm:max-w-lg',
       },
     },
-    footerAlign: {
+    footerLocate: {
       start: {
         footer: 'sm:justify-start',
       },
@@ -48,7 +48,7 @@ export const dialogVariants = tv({
     },
   },
   defaultVariants: {
-    contentSize: 'md',
-    footerAlign: 'end',
+    contentSize: 'medium',
+    footerLocate: 'center',
   },
 });

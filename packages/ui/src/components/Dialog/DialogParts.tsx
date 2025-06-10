@@ -20,7 +20,7 @@ export function DialogContent({
   ...props
 }: ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'small' | 'medium' | 'large';
 }) {
   const variant = dialogVariants({ contentSize: size });
 
@@ -46,10 +46,10 @@ export function DialogHeader({ className, ...props }: ComponentProps<'div'>) {
 
 export function DialogFooter({
   className,
-  locate = 'end',
+  footerLocate = 'center',
   ...props
-}: ComponentProps<'div'> & { locate?: 'start' | 'center' | 'end' }) {
-  const variant = dialogVariants({ footerAlign: locate });
+}: ComponentProps<'div'> & { footerLocate?: 'start' | 'center' | 'end' }) {
+  const variant = dialogVariants({ footerLocate });
 
   return <div data-slot="dialog-footer" className={cn(variant.footer(), className)} {...props} />;
 }

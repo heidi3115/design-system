@@ -38,7 +38,7 @@ const iconMap = {
   check: <CheckIcon />,
 };
 
-const GenericDialog = ({ trigger, title, titleIcon, buttons, children, footerLocate = 'center' }: dialogProps) => {
+const BaseDialog = ({ trigger, title, titleIcon, buttons, children, footerLocate = 'center' }: dialogProps) => {
   const triggerNode = trigger;
 
   if (!isValidElement(triggerNode)) {
@@ -59,7 +59,7 @@ const GenericDialog = ({ trigger, title, titleIcon, buttons, children, footerLoc
         </DialogHeader>
         {children && <DialogDescription>{children}</DialogDescription>}
         {buttons && (
-          <DialogFooter locate={footerLocate}>
+          <DialogFooter footerLocate={footerLocate}>
             {buttons.map((btn) => {
               const buttonContent = (
                 <Button
@@ -87,4 +87,4 @@ const GenericDialog = ({ trigger, title, titleIcon, buttons, children, footerLoc
   );
 };
 
-export default GenericDialog;
+export default BaseDialog;

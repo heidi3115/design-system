@@ -1,99 +1,125 @@
 import type { Meta, StoryObj } from '@storybook/react';
-// import { EditIcon } from '@common/ui/icons';
-// import { useEffect, useRef, useState } from 'react';
-import Dialog from '@common/ui/components/Dialog/Dialog.tsx';
+import { type ReactElement } from 'react';
+import { Button, Input } from '@common/ui';
+import BaseDialog from '@common/ui/components/Dialog/BaseDialog.tsx';
+import { EditIcon } from '@common/ui/icons';
 
-type AlertDialogStoryArgs = {
-  title?: 'warning' | 'success';
+type DialogStoryArgs = {
+  title: string;
+  titleIcon?: ReactElement;
   description: string;
-  footerType: 'update' | 'confirm';
   contentSize?: 'small' | 'medium' | 'large';
   confirmLabel?: string;
   cancelLabel?: string;
-  onConfirm?: () => void;
-  onCancel?: () => void;
-  portalContainer?: string;
+  footerLocate?: 'start' | 'center' | 'end';
 };
 
-const meta: Meta<AlertDialogStoryArgs> = {
-  title: 'ui/Dialog',
-  component: Dialog,
+const meta: Meta<DialogStoryArgs> = {
+  title: 'ui/Dialog/BaseDialog',
+  component: BaseDialog,
   argTypes: {
     title: {
-      control: { type: 'radio' },
-      options: ['warning', 'success', 'none'],
-      description: '타이틀 아이콘 선택',
+      control: { type: 'text' },
+      description: '다이얼로그 제목',
+    },
+    titleIcon: {
+      control: { disable: true },
+      description: '타이틀 아이콘',
     },
     description: {
       control: { type: 'text' },
-      description: '내용 입력',
+      description: '다이얼로그 설명',
     },
     contentSize: {
       control: { type: 'radio' },
       options: ['small', 'medium', 'large'],
-      description: '컨텐츠 크기',
+      description: '다이얼로그 컨텐츠 크기',
     },
     confirmLabel: {
       control: { type: 'text' },
-      description: '확인 버튼',
+      description: '확인 버튼 라벨',
     },
     cancelLabel: {
       control: { type: 'text' },
-      description: '확인 버튼',
+      description: '취소 버튼 라벨',
     },
-    onConfirm: {
-      description: '확인 후 처리',
-    },
-    onCancel: {
-      description: '취소',
-    },
-    portalContainer: {
+    footerLocate: {
       control: { type: 'radio' },
-      options: ['body', 'area'],
-      description: '포탈 위치 선택 (body=전역, area=특정 영역)',
+      description: '버튼 위치',
     },
   },
   args: {
-    title: 'warning',
-    description: '저장하시겠습니까?',
-    footerType: 'confirm',
+    title: 'Example Title',
+    titleIcon: <EditIcon />,
+    description: '내용 예시',
     contentSize: 'medium',
-    confirmLabel: '확인',
+    confirmLabel: '저장',
     cancelLabel: '취소',
-    portalContainer: 'body',
+    footerLocate: 'center',
   },
   parameters: {
     docs: {
       description: {
-        component: '저장이나 삭제 확인용 CorfimAlertDialog 컴포넌트 문서',
+        component: '기본 Dialog 컴포넌트 문서입니다.',
       },
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<AlertDialogStoryArgs>;
+type Story = StoryObj<DialogStoryArgs>;
 
-const Template = (args: AlertDialogStoryArgs) => {
-  console.log(args);
-  // const shouldUseArea = args.portalContainer === 'area';
-  // const dialogAreaRef = useRef<HTMLDivElement | null>(null);
-  // const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
-  //
-  // useEffect(() => {
-  //   if (dialogAreaRef.current) {
-  //     setPortalContainer(dialogAreaRef.current);
-  //   }
-  // }, []);
+const Template = (args: DialogStoryArgs) => {
+  // const [open, setOpen] = useState(false);
 
   return (
-    <div>example</div>
-    // <div className="relative" ref={dialogAreaRef}>
-    //   <Dialog title="제목!" trigger={undefined} titleIcon={<EditIcon />}/>
-    // </div>
+    <BaseDialog
+      trigger={<Button>{args.title}</Button>}
+      titleIcon={args.titleIcon}
+      title="Example Title"
+      buttons={[
+        {
+          langKey: '저장',
+          icon: 'check',
+          color: 'primary',
+          handleClick: () => console.log('확인'),
+        },
+        {
+          langKey: '삭제',
+          icon: 'delete',
+          color: 'error',
+          handleClick: () => console.log('삭제'),
+          close: true,
+        },
+        {
+          langKey: '닫기',
+          icon: 'cancel',
+          color: 'secondary',
+          close: true,
+        },
+      ]}>
+      <Input />
+    </BaseDialog>
   );
 };
 
 export const Default: Story = {
   render: Template,
+};
+
+export const ContentSize: Story = {
+  ...Default,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Dialog의 contentSize에 따라 다이얼로그 크기를 확인할 수 있습니다.',
+      },
+    },
+  },
+  argTypes: {
+    contentSize: {
+      control: { type: 'radio' },
+      options: ['small', 'medium', 'large'],
+    },
+  },
 };
