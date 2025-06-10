@@ -46,3 +46,17 @@ export {
 export { Label } from './Label';
 export { Switch } from './Switch';
 export { Skeleton, CardSkeleton } from './Skeleton';
+export {
+  Avatar,
+  AvatarRoot,
+  AvatarImage,
+  AvatarFallback,
+  AvatarContents,
+  avatarWrapperVariants,
+  avatarImageVariants,
+  type AvatarProps,
+  type AvatarWrapperVariantsType,
+  type AvatarImageVariantsType,
+  type AvatarLoadingStatus,
+  type AvatarContentsProps,
+} from './Avatar';
