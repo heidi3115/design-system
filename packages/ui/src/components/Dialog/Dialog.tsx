@@ -38,10 +38,9 @@ const Dialog = ({ children, footerLocate = 'center', title, titleIcon, buttons, 
       <DialogTrigger asChild>{trigger ?? <Button>Dialog Open</Button>}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>
-            <span className="flex gap-2">
-              {titleIcon} {title}
-            </span>
+          <DialogTitle className="flex gap-2 items-center">
+            {titleIcon}
+            <span>{title}</span>
           </DialogTitle>
         </DialogHeader>
         <DialogDescription>{children}</DialogDescription>
