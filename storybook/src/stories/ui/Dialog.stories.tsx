@@ -46,8 +46,9 @@ const meta: Meta<DialogStoryArgs> = {
       description: '버튼 위치',
     },
     buttons: {
-      control: { disable: true },
-      description: '다이얼로그에 표시될 버튼 목록',
+      control: { type: 'object' },
+      description:
+        '다이얼로그에 표시될 버튼 목록. icon은 save, cancel, delete, check 중에서 원하는 아이콘을 string으로 입력하면 된다. ',
     },
   },
   args: {

@@ -5,29 +5,54 @@ import { XIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { dialogVariants } from '@common/ui/components/Dialog/dialogVariants';
 import { type ComponentProps } from 'react';
+import * as React from 'react';
 
 const { overlay, header, title, description, closeButton } = dialogVariants();
+
+function DialogRoot({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
+  return <DialogPrimitive.Root {...props} />;
+}
+
+function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.Close>) {
+  return <DialogPrimitive.Close {...props} />;
+}
 
 export function DialogOverlay({ className, ...props }: ComponentProps<typeof DialogPrimitive.Overlay>) {
   return <DialogPrimitive.Overlay data-slot="dialog-overlay" className={cn(overlay(), className)} {...props} />;
 }
 
-export function DialogContent({
+function DialogPortal({ ...props }: React.ComponentProps<typeof DialogPrimitive.Portal>) {
+  return <DialogPrimitive.Portal {...props} />;
+}
+
+function DialogTrigger({ ...props }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
+  return <DialogPrimitive.Trigger {...props} />;
+}
+
+function DialogContent({
   className,
   children,
   showCloseButton = true,
-  size,
+  size = 'medium',
+  portalContainer,
   ...props
 }: ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
   size?: 'small' | 'medium' | 'large';
+  portalContainer?: HTMLElement | null;
 }) {
-  const variant = dialogVariants({ contentSize: size });
+  const positioning = portalContainer ? 'absolute' : 'fixed';
+
+  const { content } = dialogVariants({
+    contentSize: size,
+    positioning,
+    className,
+  });
 
   return (
-    <DialogPrimitive.Portal data-slot="dialog-portal">
+    <DialogPortal container={portalContainer} data-slot="dialog-portal">
       <DialogOverlay />
-      <DialogPrimitive.Content data-slot="dialog-content" className={cn(variant.content(), className)} {...props}>
+      <DialogPrimitive.Content data-slot="dialog-content" className={content()} {...props}>
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close data-slot="dialog-close" className={closeButton()}>
@@ -36,15 +61,15 @@ export function DialogContent({
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Content>
-    </DialogPrimitive.Portal>
+    </DialogPortal>
   );
 }
 
-export function DialogHeader({ className, ...props }: ComponentProps<'div'>) {
+function DialogHeader({ className, ...props }: ComponentProps<'div'>) {
   return <div data-slot="dialog-header" className={cn(header(), className)} {...props} />;
 }
 
-export function DialogFooter({
+function DialogFooter({
   className,
   footerLocate = 'center',
   ...props
@@ -54,17 +79,24 @@ export function DialogFooter({
   return <div data-slot="dialog-footer" className={cn(variant.footer(), className)} {...props} />;
 }
 
-export function DialogTitle({ className, ...props }: ComponentProps<typeof DialogPrimitive.Title>) {
+function DialogTitle({ className, ...props }: ComponentProps<typeof DialogPrimitive.Title>) {
   return <DialogPrimitive.Title data-slot="dialog-title" className={cn(title(), className)} {...props} />;
 }
 
-export function DialogDescription({ className, ...props }: ComponentProps<typeof DialogPrimitive.Description>) {
+function DialogDescription({ className, ...props }: ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <DialogPrimitive.Description data-slot="dialog-description" className={cn(description(), className)} {...props} />
   );
 }
 
-export const DialogRoot = DialogPrimitive.Root;
-export const DialogTrigger = DialogPrimitive.Trigger;
-export const DialogPortal = DialogPrimitive.Portal;
-export const DialogClose = DialogPrimitive.Close;
+export {
+  DialogRoot,
+  DialogTrigger,
+  DialogPortal,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+};

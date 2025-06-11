@@ -7,8 +7,8 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogClose,
 } from './DialogParts';
-import { DialogClose } from '@radix-ui/react-dialog';
 import { Button } from '../Button';
 import { SaveIcon, XIcon, TrashIcon, CheckIcon } from '@common/ui/icons';
 
@@ -28,6 +28,7 @@ type dialogProps = {
   titleIcon?: ReactElement;
   buttons?: buttonType[];
   children?: ReactNode;
+  portalContainer?: HTMLElement | null;
   footerLocate?: 'start' | 'center' | 'end';
   contentSize?: 'small' | 'medium' | 'large';
 };
@@ -39,7 +40,15 @@ const iconMap = {
   check: <CheckIcon />,
 };
 
-const BaseDialog = ({ trigger, title, titleIcon, buttons, children, footerLocate = 'center' }: dialogProps) => {
+const BaseDialog = ({
+  trigger,
+  title,
+  titleIcon,
+  buttons,
+  children,
+  footerLocate = 'center',
+  portalContainer,
+}: dialogProps) => {
   const triggerNode = trigger;
 
   if (!isValidElement(triggerNode)) {
@@ -51,7 +60,7 @@ const BaseDialog = ({ trigger, title, titleIcon, buttons, children, footerLocate
   return (
     <DialogRoot>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent>
+      <DialogContent portalContainer={portalContainer}>
         <DialogHeader>
           <DialogTitle className="flex gap-2 items-center">
             {titleIcon}

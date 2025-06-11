@@ -35,6 +35,10 @@ export const dialogVariants = tv({
         content: 'w-200',
       },
     },
+    positioning: {
+      fixed: { content: 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' },
+      absolute: { content: 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' },
+    },
     footerLocate: {
       start: {
         footer: 'sm:justify-start',
