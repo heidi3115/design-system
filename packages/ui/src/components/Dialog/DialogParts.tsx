@@ -5,15 +5,14 @@ import { XIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { dialogVariants } from '@common/ui/components/Dialog/dialogVariants';
 import { type ComponentProps } from 'react';
-import * as React from 'react';
 
 const { overlay, header, title, description, closeButton } = dialogVariants();
 
-function DialogRoot({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
+function DialogRoot({ ...props }: ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root {...props} />;
 }
 
-function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.Close>) {
+function DialogClose({ ...props }: ComponentProps<typeof DialogPrimitive.Close>) {
   return <DialogPrimitive.Close {...props} />;
 }
 
@@ -21,11 +20,11 @@ export function DialogOverlay({ className, ...props }: ComponentProps<typeof Dia
   return <DialogPrimitive.Overlay data-slot="dialog-overlay" className={cn(overlay(), className)} {...props} />;
 }
 
-function DialogPortal({ ...props }: React.ComponentProps<typeof DialogPrimitive.Portal>) {
+function DialogPortal({ ...props }: ComponentProps<typeof DialogPrimitive.Portal>) {
   return <DialogPrimitive.Portal {...props} />;
 }
 
-function DialogTrigger({ ...props }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
+function DialogTrigger({ ...props }: ComponentProps<typeof DialogPrimitive.Trigger>) {
   return <DialogPrimitive.Trigger {...props} />;
 }
 

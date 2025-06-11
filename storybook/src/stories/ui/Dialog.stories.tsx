@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { type ReactElement } from 'react';
+import { type ReactElement, useEffect, useRef, useState } from 'react';
 import { Button } from '@common/ui';
 import BaseDialog from '@common/ui/components/Dialog/BaseDialog.tsx';
 import { EditIcon } from '@common/ui/icons';
@@ -17,6 +17,7 @@ type DialogStoryArgs = {
     handleClick?: () => void;
     close?: boolean;
   }[];
+  portalContainer?: string;
 };
 
 const meta: Meta<DialogStoryArgs> = {
@@ -50,6 +51,11 @@ const meta: Meta<DialogStoryArgs> = {
       description:
         '다이얼로그에 표시될 버튼 목록. icon은 save, cancel, delete, check 중에서 원하는 아이콘을 string으로 입력하면 된다. ',
     },
+    portalContainer: {
+      control: { type: 'radio' },
+      options: ['body', 'area'],
+      description: '포탈 위치 선택 (body=전역, area=특정 영역)',
+    },
   },
   args: {
     title: 'Example Title',
@@ -78,6 +84,7 @@ const meta: Meta<DialogStoryArgs> = {
         close: true,
       },
     ],
+    portalContainer: 'body',
   },
   parameters: {
     docs: {
@@ -92,16 +99,29 @@ export default meta;
 type Story = StoryObj<DialogStoryArgs>;
 
 const Template = (args: DialogStoryArgs) => {
+  const shouldUseArea = args.portalContainer === 'area';
+  const dialogAreaRef = useRef<HTMLDivElement | null>(null);
+  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (dialogAreaRef.current) {
+      setPortalContainer(dialogAreaRef.current);
+    }
+  }, []);
+
   return (
-    <BaseDialog
-      trigger={<Button>Dialog 열기</Button>}
-      title={args.title}
-      titleIcon={args.titleIcon}
-      contentSize={args.contentSize}
-      footerLocate={args.footerLocate}
-      buttons={args.buttons}>
-      {args.description}
-    </BaseDialog>
+    <div ref={dialogAreaRef}>
+      <BaseDialog
+        trigger={<Button>Dialog 열기</Button>}
+        title={args.title}
+        titleIcon={args.titleIcon}
+        contentSize={args.contentSize}
+        footerLocate={args.footerLocate}
+        buttons={args.buttons}
+        portalContainer={shouldUseArea ? portalContainer : undefined}>
+        {args.description}
+      </BaseDialog>
+    </div>
   );
 };
 
