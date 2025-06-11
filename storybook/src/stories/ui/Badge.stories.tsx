@@ -90,6 +90,7 @@ export default meta;
 type Story = StoryObj<typeof Badge>;
 
 export const Default: Story = {
+  argTypes: { children: { type: 'string' } },
   parameters: {
     docs: {
       description: {
@@ -124,17 +125,17 @@ export const Default: Story = {
               <div className={'flex flex-col gap-1'} key={variant}>
                 <h4 className={'text-xs text-juiText-blue text-center'}>variant: {variant}</h4>
                 {variant === 'state' ? (
-                  <StateBadge isBtn={isBtn} status={status} children={children} {...restProps} />
+                  <StateBadge isBtn={isBtn} status={status} {...restProps}>
+                    {children}
+                  </StateBadge>
                 ) : variant === 'scoring' ? (
-                  <ScoringBadge
-                    isBtn={isBtn}
-                    score={score}
-                    scoreVal={TEMP_VAL}
-                    children={(children || '').toString()}
-                    {...restProps}
-                  />
+                  <ScoringBadge isBtn={isBtn} score={score} scoreVal={TEMP_VAL} {...restProps}>
+                    {children}
+                  </ScoringBadge>
                 ) : variant === 'grading' ? (
-                  <GradeBadge isBtn={isBtn} grade={grade} children={(children || '').toString()} {...restProps} />
+                  <GradeBadge isBtn={isBtn} grade={grade} {...restProps}>
+                    {children}
+                  </GradeBadge>
                 ) : variant === 'count' ? (
                   <CountBadge isBtn={isBtn} color={grade} scoreVal={TEMP_VAL} maxVal={TEMP_MAX_VAL} {...restProps} />
                 ) : (
