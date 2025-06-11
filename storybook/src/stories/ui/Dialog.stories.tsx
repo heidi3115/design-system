@@ -7,6 +7,7 @@ import { EditIcon } from '@common/ui/icons';
 type DialogStoryArgs = {
   title: string;
   titleIcon?: ReactElement;
+  trigger: ReactNode;
   children?: ReactNode;
   contentSize?: 'small' | 'medium' | 'large';
   footerLocate?: 'start' | 'center' | 'end';
@@ -27,6 +28,10 @@ const meta: Meta<DialogStoryArgs> = {
     title: {
       control: { type: 'text' },
       description: 'Dialog 제목',
+    },
+    trigger: {
+      control: { disable: true },
+      description: 'Dialog를 활성화하는 수단.',
     },
     titleIcon: {
       control: { disable: true },
