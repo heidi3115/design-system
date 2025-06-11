@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { type ReactElement, useEffect, useRef, useState } from 'react';
+import { type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
 import { Button } from '@common/ui';
 import BaseDialog from '@common/ui/components/Dialog/BaseDialog.tsx';
 import { EditIcon } from '@common/ui/icons';
@@ -7,7 +7,7 @@ import { EditIcon } from '@common/ui/icons';
 type DialogStoryArgs = {
   title: string;
   titleIcon?: ReactElement;
-  description: string;
+  children?: ReactNode;
   contentSize?: 'small' | 'medium' | 'large';
   footerLocate?: 'start' | 'center' | 'end';
   buttons: {
@@ -26,20 +26,21 @@ const meta: Meta<DialogStoryArgs> = {
   argTypes: {
     title: {
       control: { type: 'text' },
-      description: '다이얼로그 제목',
+      description: 'Dialog 제목',
     },
     titleIcon: {
       control: { disable: true },
       description: '타이틀 아이콘',
     },
-    description: {
+    children: {
       control: { type: 'text' },
-      description: '다이얼로그 설명',
+      description:
+        'Dialog 안에 표시할 콘텐츠. 문자열, 컴포넌트, 테이블, 아이콘 등 ReactNode로 표현 가능한 모든 요소를 넣을 수 있다.',
     },
     contentSize: {
       control: { type: 'radio' },
       options: ['small', 'medium', 'large'],
-      description: '다이얼로그 컨텐츠 크기',
+      description: 'Dialog 컨텐츠 크기',
     },
     footerLocate: {
       control: { type: 'radio' },
@@ -49,7 +50,7 @@ const meta: Meta<DialogStoryArgs> = {
     buttons: {
       control: { type: 'object' },
       description:
-        '다이얼로그에 표시될 버튼 목록. icon은 save, cancel, delete, check 중에서 원하는 아이콘을 string으로 입력하면 된다. ',
+        'Dialog에 표시될 버튼 목록. icon은 save, cancel, delete, check 중에서 원하는 아이콘을 string으로 입력하면 된다. ',
     },
     portalContainer: {
       control: { type: 'radio' },
@@ -60,7 +61,7 @@ const meta: Meta<DialogStoryArgs> = {
   args: {
     title: 'Example Title',
     titleIcon: <EditIcon />,
-    description: '내용 예시',
+    children: '내용 예시',
     contentSize: 'medium',
     footerLocate: 'center',
     buttons: [
@@ -119,7 +120,7 @@ const Template = (args: DialogStoryArgs) => {
         footerLocate={args.footerLocate}
         buttons={args.buttons}
         portalContainer={shouldUseArea ? portalContainer : undefined}>
-        {args.description}
+        {args.children}
       </BaseDialog>
     </div>
   );
@@ -134,7 +135,7 @@ export const ContentSize: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Dialog의 contentSize에 따라 다이얼로그 크기를 확인할 수 있습니다.',
+        story: 'contentSize에 따라 Dialog 크기를 확인할 수 있습니다.',
       },
     },
   },

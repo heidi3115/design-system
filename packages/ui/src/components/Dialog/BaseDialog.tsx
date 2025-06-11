@@ -5,7 +5,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogFooter,
   DialogClose,
 } from './DialogParts';
@@ -67,7 +66,7 @@ const BaseDialog = ({
             {title}
           </DialogTitle>
         </DialogHeader>
-        {children && <DialogDescription>{children}</DialogDescription>}
+        <div className="p-4 text-muted-foreground text-sm">{children}</div>
         {buttons && (
           <DialogFooter footerLocate={footerLocate}>
             {buttons.map((btn) => {
