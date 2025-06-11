@@ -70,8 +70,10 @@ export {
   TooltipWrapper,
   TooltipContainer,
   Tooltip,
-  BasicTooltipVariants,
+  tooltipVariants,
   DEFAULT_DELAY_DURATION,
+  DEFAULT_SIDE_OFFSET,
+  DEFAULT_ALIGN_OFFSET,
 } from './Tooltip';
 export type {
   TooltipProviderProps,
@@ -83,4 +85,5 @@ export type {
   TooltipWrapperProps,
   TooltipContainerProps,
   TooltipProps,
+  TextAlignType,
 } from './Tooltip';

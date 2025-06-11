@@ -1,10 +1,10 @@
 'use client';
 
-import React, { isValidElement, useImperativeHandle, useState } from 'react';
+import React, { isValidElement, useEffect, useImperativeHandle, useState } from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import type { VariantProps } from 'tailwind-variants';
 import { cn } from '../../lib/utils';
-import { BasicTooltipVariants, DEFAULT_DELAY_DURATION } from '@common/ui/components/Tooltip';
+import { DEFAULT_DELAY_DURATION, type TextAlignType, tooltipVariants } from '@common/ui/components/Tooltip';
 
 export type TooltipProviderProps = React.ComponentProps<typeof TooltipPrimitive.Provider>;
 
@@ -52,14 +52,14 @@ function TooltipContent({ className, sideOffset = 0, ...props }: TooltipContentP
 export type TooltipWrapperProps = {
   providerProps?: Omit<TooltipProviderProps, 'children'>;
   rootProps?: TooltipRootProps;
-  tooltipOpenStatusRef?: React.Ref<boolean>;
+  openStatusRef?: React.Ref<boolean>;
   children?: React.ReactNode;
 };
 
 function TooltipWrapper({
   providerProps = { delayDuration: DEFAULT_DELAY_DURATION },
   rootProps = { defaultOpen: false },
-  tooltipOpenStatusRef = undefined,
+  openStatusRef = undefined,
   children,
 }: TooltipWrapperProps) {
   const { open, defaultOpen, onOpenChange, ...restRootProps } = rootProps || {};
@@ -68,76 +68,123 @@ function TooltipWrapper({
   const currentOpen = isControlled ? open : internalOpen;
 
   // 비제어 선택값
-  useImperativeHandle(tooltipOpenStatusRef, (): boolean => currentOpen);
+  useImperativeHandle(openStatusRef, (): boolean => currentOpen);
 
   const handleTooltipOpenChange = (nextOpen: boolean) => {
     if (!isControlled) setInternalOpen(nextOpen);
+
+    // openStatusRef 동기화
+    if (openStatusRef && typeof openStatusRef !== 'function') {
+      openStatusRef.current = nextOpen;
+    }
+
     onOpenChange?.(nextOpen);
   };
 
   return (
     <TooltipProvider {...providerProps}>
-      <TooltipRoot {...restRootProps} onOpenChange={handleTooltipOpenChange}>
+      <TooltipRoot {...restRootProps} open={currentOpen} onOpenChange={handleTooltipOpenChange}>
         {children}
       </TooltipRoot>
     </TooltipProvider>
   );
 }
 
+type ContainerType = Element | DocumentFragment | null;
+
 export type TooltipContainerProps = {
-  triggerProps?: Omit<TooltipTriggerProps, 'asChild'>;
-  portalProps?: TooltipPortalProps;
-  contentProps: TooltipContentProps & { size?: VariantProps<typeof BasicTooltipVariants>['size'] };
+  triggerProps?: TooltipTriggerProps;
+  portalProps?: Omit<TooltipPortalProps, 'forceMount'> & { fadeOut?: boolean };
+  contentProps: TooltipContentProps & {
+    size?: VariantProps<typeof tooltipVariants>['size'];
+    variant?: VariantProps<typeof tooltipVariants>['variant'];
+    textAlign?: TextAlignType;
+  };
   arrowProps?: TooltipArrowProps;
-  trigger: React.ReactElement;
-  children?: React.ReactNode | string;
-  isShowArrow?: boolean;
+  children: React.ReactElement;
+  contents?: React.ReactNode | string;
   asChild?: boolean;
+  isShowArrow?: boolean;
+  disabled?: boolean;
   className?: string;
 };
 
 function TooltipContainer({
-  asChild = true,
-  portalProps = { forceMount: undefined },
-  contentProps = { size: 'medium', side: 'top', align: 'center' },
+  triggerProps = { asChild: true },
+  portalProps = { fadeOut: undefined },
+  contentProps = {
+    variant: 'default',
+    size: 'medium',
+    side: 'top',
+    align: 'center',
+    textAlign: 'left',
+  },
   arrowProps,
-  trigger,
   children,
+  contents,
   className,
   isShowArrow = true,
-  ...props
+  disabled = false,
 }: TooltipContainerProps) {
-  const { content, arrow, base } = BasicTooltipVariants();
-  const contentClass = cn(
-    base({
-      size: contentProps.size,
-      side: contentProps.side,
-      align: contentProps.align,
-      fadeOut: portalProps.forceMount,
-    }),
-    content(),
-    className,
-  );
-  const arrowClass = cn(arrow());
+  const { fadeOut } = portalProps;
+  const { variant, size, side, align, textAlign, ...restContentProps } = contentProps;
+  const { content, arrow, base } = tooltipVariants({ variant, size, textAlign, fadeOut, disabled });
+  const contentClass = cn(base(), content());
+  const arrowClass = cn(arrow(), arrow({ side, align, disabled }));
 
-  console.log('isShowArrow :', isShowArrow, 'arrowClass :', arrowClass);
+  // hydration mismatch 에러 이슈 -> SSR-safe: 초기값은 null, 클라이언트에서만 container 할당
+  const [currentContainer, setCurrentContainer] = useState<ContainerType>(null);
 
-  if (!isValidElement(trigger)) {
-    console.warn('TooltipContainer: 유효한 trigger 가 필요합니다.');
+  useEffect(() => {
+    let newContainer: ContainerType;
+
+    if (portalProps && portalProps.container instanceof Element) {
+      newContainer = portalProps.container;
+    } else {
+      newContainer = document.body;
+    }
+
+    setCurrentContainer(newContainer);
+  }, [portalProps, portalProps.container]);
+
+  if (!isValidElement(children) || !currentContainer) {
+    if (!isValidElement(children)) console.warn('TooltipContainer: 유효한 trigger 가 필요합니다.');
 
     return null;
   }
 
   return (
     <>
-      <TooltipTrigger {...(props?.triggerProps || {})} asChild={asChild}>
-        {trigger}
-      </TooltipTrigger>
-      <TooltipPortal {...portalProps}>
-        <TooltipContent {...contentProps} className={contentClass}>
-          {children}
-          {isShowArrow && <TooltipArrow {...arrowProps} className={arrowClass} />}
-        </TooltipContent>
+      <TooltipTrigger {...(triggerProps || {})}>{children}</TooltipTrigger>
+      <TooltipPortal
+        {...portalProps}
+        forceMount={fadeOut || undefined}
+        // modal 이라던지 document.body 외부의 경우 처리
+        // 외부 호출 시,
+        /*
+         * const [modalRoot, setModalRoot] = useState<HTMLElement | null>(null);
+         * useEffect(() => {
+         *   setModalRoot(document.getElementById('modal-root'));
+         * }, []);
+         * 처럼 처리 하고
+         * containerProps={{
+         *    portalProps: {
+         *      container: modalRoot, // document.body 대신 원하는 엘리먼트
+         *    },
+         * }}
+         * 처럼 처리해야 함. 아니면
+         * */
+        // 페이지 혹은 다른 컴포넌트에서 import dynamic from 'next/dynamic';으로
+        // const DynamicTooltip = dynamic(() => import('./components/ClientOnlyTooltip'), {
+        //   ssr: false, // 클라이언트에서만 렌더링
+        // }); // 처럼 호출
+        container={currentContainer}>
+        {!disabled && (
+          <TooltipContent {...restContentProps} side={side} align={align} className={cn(contentClass, className)}>
+            {contents}
+            {isShowArrow && <TooltipArrow {...arrowProps} className={cn(arrowClass)} />}
+          </TooltipContent>
+        )}
       </TooltipPortal>
     </>
   );
