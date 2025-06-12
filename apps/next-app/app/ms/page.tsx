@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 
-import { Button, Checkbox, Input, Select, RadioGroup, SplitOtpInput, Textarea, Toggle } from '@common/ui';
+import { Button, Checkbox, Input, Select, RadioGroup, SplitOtpInput, Textarea, Toggle, Popover } from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -22,13 +22,14 @@ import { useController, useForm } from 'react-hook-form';
 import ThemeToggle from '../../components/ThemeToggle';
 import { useUpdateEffect } from '@common/utils';
 import { TvIcon } from 'lucide-react';
+import { ConfirmAlertDialog } from '@common/ui/components/AlertDialog';
 
 export default function Page() {
   const [value, setValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   useUpdateEffect(() => {
-    console.log('제어', value);
+    console.warn('제어', value);
   }, [value]);
 
   const {
@@ -41,7 +42,7 @@ export default function Page() {
   });
 
   const onValid = (data: { email: string; tv: boolean; area: string; fruit: string; timeZone: string }) => {
-    console.log('폼 제출됨', data);
+    console.warn('폼 제출됨', data);
   };
 
   const {
@@ -72,7 +73,7 @@ export default function Page() {
   const pressedRef = useRef(null);
 
   useUpdateEffect(() => {
-    console.log(isPress, '제어 toggle');
+    console.warn(isPress, '제어 toggle');
   }, [isPress]);
 
   const options = [
@@ -87,7 +88,7 @@ export default function Page() {
   const selectRef = useRef(null);
 
   useUpdateEffect(() => {
-    console.log(selectValue);
+    console.warn(selectValue);
   }, [selectValue]);
 
   return (
@@ -102,7 +103,7 @@ export default function Page() {
           <Button
             onClick={() => {
               if (radioRef.current) {
-                console.log('비제어', radioRef.current);
+                console.warn('비제어', radioRef.current);
               }
             }}>
             라디오그룹 비제어
@@ -117,39 +118,40 @@ export default function Page() {
             {...fruitField}
           />
 
+          <Popover trigger={<Button>popover</Button>}>popover</Popover>
+
+          <ConfirmAlertDialog title="warning" trigger={<Button>confirm</Button>} />
+
+          <Button>test</Button>
+          <SplitOtpInput />
+
           <Toggle
             defaultPressed
             pressedRef={pressedRef}
             onIcon={CalendarIcon}
             onText="on"
             offText="off"
-            onPressedChange={(on) => console.log('toggle', on)}>
+            onPressedChange={(on) => console.warn('toggle', on)}>
             비제어
           </Toggle>
 
-          <Button
+          {/* <Button
             onMouseEnter={() => {
-              console.log(pressedRef.current, '비제어 toggle');
+              console.warn(pressedRef.current, '비제어 toggle');
             }}>
             비제어 토글 확인
-          </Button>
+          </Button> */}
 
           <Toggle pressed={isPress} onPressedChange={(on) => setIsPress(on)}>
             제어
           </Toggle>
 
-          <SplitOtpInput maxLength={5} inputType="all" />
-          <SplitOtpInput />
-          <SplitOtpInput size="large" />
-          <SplitOtpInput size="small" />
-          <SplitOtpInput size="small" variant="error" />
-          <p></p>
           <span>비제어</span>
           <SplitOtpInput
             size="small"
             variant="normal"
             ref={inputRef}
-            onBlur={() => console.log('비제어', inputRef.current?.value)}
+            onBlur={() => console.warn('비제어', inputRef.current?.value)}
           />
           <p></p>
           <span>제어</span>
@@ -198,7 +200,7 @@ export default function Page() {
               placeholder="aaa"
               error
               rightButton={
-                <Button variant="primary" onClick={() => console.log('callback')}>
+                <Button variant="primary" onClick={() => console.warn('callback')}>
                   <TagIcon />
                   Query
                 </Button>
@@ -267,7 +269,7 @@ export default function Page() {
             <Button
               onClick={() => {
                 if (selectRef.current) {
-                  console.log('비제어', selectRef.current);
+                  console.warn('비제어', selectRef.current);
                 }
               }}>
               select 비제어
@@ -292,7 +294,7 @@ export default function Page() {
               ref={inputRef}
               defaultValue="비제어"
               placeholder="Uncontrolled input"
-              onBlur={() => console.log('비제어', inputRef.current?.value)}
+              onBlur={() => console.warn('비제어', inputRef.current?.value)}
             />
 
             <Input
