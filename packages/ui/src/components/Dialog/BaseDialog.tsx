@@ -34,6 +34,7 @@ type dialogProps = {
   className?: string;
   maxHeight?: number;
   onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
+  showCloseButton?: boolean;
 };
 
 const iconMap = {
@@ -55,6 +56,7 @@ const BaseDialog = ({
   className,
   maxHeight,
   onSubmit,
+  showCloseButton = true,
 }: dialogProps) => {
   const [open, setOpen] = useState(false);
 
@@ -79,7 +81,11 @@ const BaseDialog = ({
       <DialogTrigger asChild onClick={openDialog}>
         {trigger}
       </DialogTrigger>
-      <DialogContent portalContainer={portalContainer} className={className} size={contentSize}>
+      <DialogContent
+        portalContainer={portalContainer}
+        className={className}
+        size={contentSize}
+        showCloseButton={showCloseButton}>
         <form onSubmit={onSubmit} id="baseDialog">
           <DialogHeader>
             <DialogTitle className="flex gap-2 items-center">

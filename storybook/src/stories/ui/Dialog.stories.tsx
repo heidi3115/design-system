@@ -23,12 +23,17 @@ type DialogStoryArgs = {
   portalContainer?: string;
   maxHeight?: number;
   onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
+  showCloseButton?: boolean;
 };
 
 const meta: Meta<DialogStoryArgs> = {
   title: 'ui/Dialog/BaseDialog',
   component: BaseDialog,
   argTypes: {
+    showCloseButton: {
+      control: { type: 'boolean' },
+      description: '우측 상단의 X버튼 노출 여부를 설정할 수 있다.',
+    },
     title: {
       control: { type: 'text' },
       description: 'Dialog 제목',
@@ -78,6 +83,7 @@ const meta: Meta<DialogStoryArgs> = {
   },
   args: {
     title: 'Example Title',
+    showCloseButton: true,
     titleIcon: <EditIcon />,
     children: 'Example Children',
     maxHeight: 100,
@@ -136,6 +142,7 @@ const Template = (args: DialogStoryArgs) => {
         onSubmit={(e) => {
           e.preventDefault();
         }}
+        showCloseButton={args.showCloseButton}
         trigger={<Button>Dialog 열기</Button>}
         title={args.title}
         className={args.className}
@@ -188,6 +195,7 @@ export const ContentSize: Story = {
             className={args.className}
             titleIcon={args.titleIcon}
             contentSize="small"
+            showCloseButton={args.showCloseButton}
             footerLocate={args.footerLocate}
             buttons={args.buttons}
             maxHeight={args.maxHeight}>
@@ -295,6 +303,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
           title={args.title}
           className={args.className}
           titleIcon={args.titleIcon}
+          showCloseButton={args.showCloseButton}
           contentSize="small"
           footerLocate={args.footerLocate}
           buttons={[]}
@@ -375,6 +384,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
           title={args.title}
           className={args.className}
           titleIcon={args.titleIcon}
+          showCloseButton={args.showCloseButton}
           contentSize={args.contentSize}
           footerLocate={args.footerLocate}
           buttons={buttonExample2}
@@ -454,6 +464,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
           trigger={<Button>Dialog 열기</Button>}
           title={args.title}
           className={args.className}
+          showCloseButton={args.showCloseButton}
           titleIcon={args.titleIcon}
           contentSize={args.contentSize}
           footerLocate={args.footerLocate}
