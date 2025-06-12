@@ -26,13 +26,13 @@ export const dialogVariants = tv({
   variants: {
     contentSize: {
       small: {
-        content: 'h-50',
+        content: 'w-100',
       },
       medium: {
-        content: 'w-96',
+        content: 'w-200',
       },
       large: {
-        content: 'w-200',
+        content: 'w-300',
       },
     },
     positioning: {

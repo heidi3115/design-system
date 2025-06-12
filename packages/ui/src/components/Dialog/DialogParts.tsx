@@ -34,11 +34,13 @@ function DialogContent({
   showCloseButton = true,
   size = 'medium',
   portalContainer,
+  maxHeight,
   ...props
 }: ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
   size?: 'small' | 'medium' | 'large';
   portalContainer?: HTMLElement | null;
+  maxHeight?: string | number;
 }) {
   const positioning = portalContainer ? 'absolute' : 'fixed';
 
@@ -48,10 +50,15 @@ function DialogContent({
     className,
   });
 
+  const maxHeightClass = typeof maxHeight === 'string' || typeof maxHeight === 'number' ? `max-h-[${maxHeight}]` : '';
+
   return (
     <DialogPortal container={portalContainer} data-slot="dialog-portal">
       <DialogOverlay />
-      <DialogPrimitive.Content data-slot="dialog-content" className={content()} {...props}>
+      <DialogPrimitive.Content
+        data-slot="dialog-content"
+        className={cn(content(), maxHeightClass, className)}
+        {...props}>
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close data-slot="dialog-close" className={closeButton()}>

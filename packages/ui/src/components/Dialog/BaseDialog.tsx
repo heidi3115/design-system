@@ -30,6 +30,8 @@ type dialogProps = {
   portalContainer?: HTMLElement | null;
   footerLocate?: 'start' | 'center' | 'end';
   contentSize?: 'small' | 'medium' | 'large';
+  className?: string;
+  maxHeight?: number;
 };
 
 const iconMap = {
@@ -47,6 +49,9 @@ const BaseDialog = ({
   children,
   footerLocate = 'center',
   portalContainer,
+  contentSize = 'small',
+  className,
+  maxHeight,
 }: dialogProps) => {
   const triggerNode = trigger;
 
@@ -59,14 +64,17 @@ const BaseDialog = ({
   return (
     <DialogRoot>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent portalContainer={portalContainer}>
+      <DialogContent portalContainer={portalContainer} className={className} size={contentSize}>
         <DialogHeader>
           <DialogTitle className="flex gap-2 items-center">
             {titleIcon}
             {title}
           </DialogTitle>
         </DialogHeader>
-        <div className="p-4 text-muted-foreground text-sm">{children}</div>
+        <div className={`p-4 text-muted-foreground text-sm overflow-auto max-h-52 max-h-${maxHeight ?? ''}`}>
+          {children}
+        </div>
+
         {buttons && (
           <DialogFooter footerLocate={footerLocate}>
             {buttons.map((btn) => {

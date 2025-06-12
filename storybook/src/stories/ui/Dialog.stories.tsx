@@ -9,6 +9,7 @@ type DialogStoryArgs = {
   titleIcon?: ReactElement;
   trigger: ReactNode;
   children?: ReactNode;
+  className?: string;
   contentSize?: 'small' | 'medium' | 'large';
   footerLocate?: 'start' | 'center' | 'end';
   buttons: {
@@ -19,6 +20,7 @@ type DialogStoryArgs = {
     close?: boolean;
   }[];
   portalContainer?: string;
+  maxHeight?: number;
 };
 
 const meta: Meta<DialogStoryArgs> = {
@@ -42,15 +44,20 @@ const meta: Meta<DialogStoryArgs> = {
       description:
         'Dialog 안에 표시할 콘텐츠. 문자열, 컴포넌트, 테이블, 아이콘 등 ReactNode로 표현 가능한 모든 요소를 넣을 수 있다.',
     },
+    maxHeight: {
+      control: { type: 'number' },
+      description: 'Dialog의 최대 높이를 지정할 수 있다. content의 길이가 maxHeight를 초과하면 스크롤이 생긴다.',
+    },
     contentSize: {
       control: { type: 'radio' },
       options: ['small', 'medium', 'large'],
-      description: 'Dialog 컨텐츠 크기',
+      description:
+        'Dialog 컨텐츠 크기. small, medium, large로 구분되며, 그 외 크기는 className으로 직접 적용할 수 있다.',
     },
     footerLocate: {
       control: { type: 'radio' },
       options: ['start', 'center', 'end'],
-      description: '버튼 위치',
+      description: '하단 버튼 위치. start, center, end로 조정할 수 있다.',
     },
     buttons: {
       control: { type: 'object' },
@@ -66,7 +73,8 @@ const meta: Meta<DialogStoryArgs> = {
   args: {
     title: 'Example Title',
     titleIcon: <EditIcon />,
-    children: '내용 예시',
+    children: 'Example Children',
+    maxHeight: 10,
     contentSize: 'medium',
     footerLocate: 'center',
     buttons: [
@@ -120,10 +128,12 @@ const Template = (args: DialogStoryArgs) => {
       <BaseDialog
         trigger={<Button>Dialog 열기</Button>}
         title={args.title}
+        className={args.className}
         titleIcon={args.titleIcon}
         contentSize={args.contentSize}
         footerLocate={args.footerLocate}
         buttons={args.buttons}
+        maxHeight={args.maxHeight}
         portalContainer={shouldUseArea ? portalContainer : undefined}>
         {args.children}
       </BaseDialog>
