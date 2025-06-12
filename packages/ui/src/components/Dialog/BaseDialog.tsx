@@ -1,4 +1,4 @@
-import { isValidElement, type ReactElement, type ReactNode } from 'react';
+import { isValidElement, type ReactElement, type ReactNode, type FormEvent } from 'react';
 import {
   DialogRoot,
   DialogTrigger,
@@ -10,10 +10,11 @@ import {
 } from './DialogParts';
 import { Button } from '../Button';
 import { SaveIcon, XIcon, TrashIcon, CheckIcon } from '@common/ui/icons';
+import { useState } from 'react';
 
 type buttonType = {
   langKey: string;
-  handleClick?: () => void;
+  handleClick?: (close: () => void) => void;
   color?: 'primary' | 'secondary' | 'default' | 'error';
   form?: string;
   icon?: 'save' | 'cancel' | 'delete' | 'check';
@@ -32,6 +33,7 @@ type dialogProps = {
   contentSize?: 'small' | 'medium' | 'large';
   className?: string;
   maxHeight?: number;
+  onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
 };
 
 const iconMap = {
@@ -52,7 +54,18 @@ const BaseDialog = ({
   contentSize = 'small',
   className,
   maxHeight,
+  onSubmit,
 }: dialogProps) => {
+  const [open, setOpen] = useState(false);
+
+  const closeDialog = () => {
+    setOpen(false);
+  };
+
+  const openDialog = () => {
+    setOpen(true);
+  };
+
   const triggerNode = trigger;
 
   if (!isValidElement(triggerNode)) {
@@ -62,43 +75,52 @@ const BaseDialog = ({
   }
 
   return (
-    <DialogRoot>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+    <DialogRoot open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild onClick={openDialog}>
+        {trigger}
+      </DialogTrigger>
       <DialogContent portalContainer={portalContainer} className={className} size={contentSize}>
-        <DialogHeader>
-          <DialogTitle className="flex gap-2 items-center">
-            {titleIcon}
-            {title}
-          </DialogTitle>
-        </DialogHeader>
-        <div className={`p-4 text-muted-foreground text-sm overflow-auto max-h-52 max-h-${maxHeight ?? ''}`}>
-          {children}
-        </div>
+        <form onSubmit={onSubmit} id="baseDialog">
+          <DialogHeader>
+            <DialogTitle className="flex gap-2 items-center">
+              {titleIcon}
+              {title}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="p-4 text-muted-foreground text-sm overflow-auto" style={{ maxHeight }}>
+            {children}
+          </div>
+          {buttons && (
+            <DialogFooter footerLocate={footerLocate}>
+              {buttons.map((btn) => {
+                const buttonContent = (
+                  <Button
+                    key={btn.langKey}
+                    variant={btn.color}
+                    type={btn.form ? 'submit' : 'button'}
+                    onClick={() => {
+                      if (btn.handleClick) {
+                        btn.handleClick(closeDialog);
+                      } else if (btn.close) {
+                        closeDialog();
+                      }
+                    }}
+                    disabled={btn.disabled}>
+                    {btn.icon && iconMap[btn.icon]} {btn.langKey}
+                  </Button>
+                );
 
-        {buttons && (
-          <DialogFooter footerLocate={footerLocate}>
-            {buttons.map((btn) => {
-              const buttonContent = (
-                <Button
-                  key={btn.langKey}
-                  variant={btn.color}
-                  type={btn.form ? 'submit' : 'button'}
-                  onClick={btn.handleClick}
-                  disabled={btn.disabled}>
-                  {btn.icon && iconMap[btn.icon]} {btn.langKey}
-                </Button>
-              );
-
-              return btn.close ? (
-                <DialogClose asChild key={btn.langKey}>
-                  {buttonContent}
-                </DialogClose>
-              ) : (
-                <span key={btn.langKey}>{buttonContent}</span>
-              );
-            })}
-          </DialogFooter>
-        )}
+                return btn.close ? (
+                  <DialogClose asChild key={btn.langKey}>
+                    {buttonContent}
+                  </DialogClose>
+                ) : (
+                  <span key={btn.langKey}>{buttonContent}</span>
+                );
+              })}
+            </DialogFooter>
+          )}
+        </form>
       </DialogContent>
     </DialogRoot>
   );

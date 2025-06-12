@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
-import { Button } from '@common/ui';
+import { type FormEvent, type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
+import { Button, Input, RadioGroup } from '@common/ui';
 import BaseDialog from '@common/ui/components/Dialog/BaseDialog.tsx';
 import { EditIcon } from '@common/ui/icons';
 
@@ -15,12 +15,14 @@ type DialogStoryArgs = {
   buttons: {
     langKey: string;
     icon?: 'save' | 'cancel' | 'delete' | 'check';
-    color?: 'primary' | 'secondary' | 'error';
-    handleClick?: () => void;
+    color?: 'primary' | 'secondary' | 'error' | 'default';
+    handleClick?: (close: () => void) => void;
     close?: boolean;
+    form?: string;
   }[];
   portalContainer?: string;
   maxHeight?: number;
+  onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
 };
 
 const meta: Meta<DialogStoryArgs> = {
@@ -69,41 +71,46 @@ const meta: Meta<DialogStoryArgs> = {
       options: ['body', 'area'],
       description: '포탈 위치 선택 (body=전역, area=특정 영역)',
     },
+    onSubmit: {
+      control: { disable: true },
+      description: 'form 속성과 연결된 폼이 제출될 때 실행되며, 유효성 검사 후 데이터를 처리하거나 저장할때 사용된다. ',
+    },
   },
   args: {
     title: 'Example Title',
     titleIcon: <EditIcon />,
     children: 'Example Children',
-    maxHeight: 10,
-    contentSize: 'medium',
+    maxHeight: 100,
+    contentSize: 'small',
     footerLocate: 'center',
     buttons: [
       {
         langKey: '저장',
-        icon: 'check',
+        icon: 'save',
         color: 'primary',
-        handleClick: () => console.log('저장'),
+        form: 'baseDialog',
+        handleClick: async (closeDialog) => {
+          alert('저장되었습니다');
+          closeDialog();
+        },
       },
       {
         langKey: '삭제',
         icon: 'delete',
         color: 'error',
-        close: true,
-        handleClick: () => console.log('삭제'),
+        handleClick: async (closeDialog) => {
+          alert('삭제되었습니다');
+          closeDialog();
+        },
       },
-      {
-        langKey: '닫기',
-        icon: 'cancel',
-        color: 'secondary',
-        close: true,
-      },
+      { langKey: '닫기', icon: 'cancel', color: 'default', close: true },
     ],
     portalContainer: 'body',
   },
   parameters: {
     docs: {
       description: {
-        component: '기본 Dialog 컴포넌트 문서입니다.',
+        component: '기본 Dialog 컴포넌트 문서',
       },
     },
   },
@@ -126,6 +133,9 @@ const Template = (args: DialogStoryArgs) => {
   return (
     <div ref={dialogAreaRef}>
       <BaseDialog
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
         trigger={<Button>Dialog 열기</Button>}
         title={args.title}
         className={args.className}
@@ -150,8 +160,12 @@ export const ContentSize: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'contentSize에 따라 Dialog 크기를 확인할 수 있습니다.',
+        story:
+          'contentSize에 따라 Dialog 크기를 확인할 수 있다. height는 내부 children의 길이에 따라 변화하며, maxHeight로 최대 높이 조정이 가능하다.',
       },
+    },
+    controls: {
+      exclude: ['className', 'trigger', 'contentSize', 'portalContainer', 'titleIcon', 'onSubmit'],
     },
   },
   argTypes: {
@@ -160,4 +174,377 @@ export const ContentSize: Story = {
       options: ['small', 'medium', 'large'],
     },
   },
+  render: (args) => {
+    return (
+      <div className="flex gap-10">
+        <div className="flex flex-col gap-2">
+          <div>Small</div>
+          <BaseDialog
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+            trigger={<Button>Dialog 열기</Button>}
+            title={args.title}
+            className={args.className}
+            titleIcon={args.titleIcon}
+            contentSize="small"
+            footerLocate={args.footerLocate}
+            buttons={args.buttons}
+            maxHeight={args.maxHeight}>
+            {args.children}
+          </BaseDialog>
+        </div>
+        <div className="flex flex-col gap-2">
+          <div>Medium</div>
+          <BaseDialog
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+            trigger={<Button>Dialog 열기</Button>}
+            title={args.title}
+            className={args.className}
+            titleIcon={args.titleIcon}
+            contentSize="medium"
+            footerLocate={args.footerLocate}
+            buttons={args.buttons}
+            maxHeight={args.maxHeight}>
+            {args.children}
+          </BaseDialog>
+        </div>
+        <div className="flex flex-col gap-2">
+          <div>Large</div>
+          <BaseDialog
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+            trigger={<Button>Dialog 열기</Button>}
+            title={args.title}
+            className={args.className}
+            titleIcon={args.titleIcon}
+            contentSize="large"
+            footerLocate={args.footerLocate}
+            buttons={args.buttons}
+            maxHeight={args.maxHeight}>
+            {args.children}
+          </BaseDialog>
+        </div>
+      </div>
+    );
+  },
+};
+
+type buttonType = {
+  langKey: string;
+  handleClick?: (close: () => void) => void;
+  color?: 'primary' | 'secondary' | 'default' | 'error';
+  icon?: 'save' | 'cancel' | 'delete' | 'check';
+  close?: boolean;
+};
+
+const ButtonsExample = (args: DialogStoryArgs) => {
+  const buttonExample2: buttonType[] = [
+    {
+      langKey: '저장',
+      icon: 'check',
+      color: 'primary',
+      handleClick: async (closeDialog) => {
+        alert('저장되었습니다');
+        closeDialog();
+      },
+    },
+    {
+      langKey: '닫기',
+      icon: 'cancel',
+      color: 'default',
+      close: true,
+    },
+  ];
+  const buttonExample3: buttonType[] = [
+    {
+      langKey: '저장',
+      icon: 'check',
+      color: 'primary',
+      handleClick: async (closeDialog) => {
+        alert('저장되었습니다');
+        closeDialog();
+      },
+    },
+    {
+      langKey: '삭제',
+      icon: 'delete',
+      color: 'error',
+      handleClick: async (closeDialog) => {
+        alert('삭제되었습니다');
+        closeDialog();
+      },
+    },
+    {
+      langKey: '닫기',
+      icon: 'cancel',
+      color: 'default',
+      close: true,
+    },
+  ];
+
+  return (
+    <div className="flex gap-10">
+      <div className="flex flex-col gap-2">
+        <div>Button 없음</div>
+        <BaseDialog
+          trigger={<Button>Dialog 열기</Button>}
+          title={args.title}
+          className={args.className}
+          titleIcon={args.titleIcon}
+          contentSize="small"
+          footerLocate={args.footerLocate}
+          buttons={[]}
+          maxHeight={args.maxHeight}>
+          <table className="m-auto text-xs">
+            <tbody>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  소속
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <RadioGroup
+                    direction="horizontal"
+                    options={[
+                      { label: '정직원', value: '1' },
+                      { label: '파트너', value: '2' },
+                      { label: '관계사', value: '3' },
+                    ]}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  ID
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <Input name="id" placeholder="아이디를 입력해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  비밀번호
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70">
+                  <Input name="psword" placeholder="비밀번호를 입력해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  비밀번호 확인
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70">
+                  <Input name="pswordCheck" placeholder="비밀번호를 확인해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  접근제어 IP
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <Input name="ip" placeholder="접근제어 IP를 입력해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  이름
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <Input name="name" placeholder="이름을 입력해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  연락처
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <Input name="phone" placeholder="연락처를 입력해주세요" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </BaseDialog>
+      </div>
+      <div className="flex flex-col gap-2">
+        <div>Button 2개</div>
+        <BaseDialog
+          trigger={<Button>Dialog 열기</Button>}
+          title={args.title}
+          className={args.className}
+          titleIcon={args.titleIcon}
+          contentSize={args.contentSize}
+          footerLocate={args.footerLocate}
+          buttons={buttonExample2}
+          maxHeight={args.maxHeight}>
+          <table className="m-auto text-xs">
+            <tbody>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  소속
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <RadioGroup
+                    direction="horizontal"
+                    options={[
+                      { label: '정직원', value: '1' },
+                      { label: '파트너', value: '2' },
+                      { label: '관계사', value: '3' },
+                    ]}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  ID
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <Input name="id" placeholder="아이디를 입력해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  비밀번호
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70">
+                  <Input name="psword" placeholder="비밀번호를 입력해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  비밀번호 확인
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70">
+                  <Input name="pswordCheck" placeholder="비밀번호를 확인해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  접근제어 IP
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <Input name="ip" placeholder="접근제어 IP를 입력해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  이름
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <Input name="name" placeholder="이름을 입력해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  연락처
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <Input name="phone" placeholder="연락처를 입력해주세요" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </BaseDialog>
+      </div>
+      <div className="flex flex-col gap-2">
+        <div>Button 3개 이상</div>
+        <BaseDialog
+          trigger={<Button>Dialog 열기</Button>}
+          title={args.title}
+          className={args.className}
+          titleIcon={args.titleIcon}
+          contentSize={args.contentSize}
+          footerLocate={args.footerLocate}
+          buttons={buttonExample3}
+          maxHeight={args.maxHeight}>
+          <table className="m-auto text-xs">
+            <tbody>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  소속
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <RadioGroup
+                    direction="horizontal"
+                    options={[
+                      { label: '정직원', value: '1' },
+                      { label: '파트너', value: '2' },
+                      { label: '관계사', value: '3' },
+                    ]}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  ID
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <Input name="id" placeholder="아이디를 입력해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  비밀번호
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70">
+                  <Input name="psword" placeholder="비밀번호를 입력해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  비밀번호 확인
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70">
+                  <Input name="pswordCheck" placeholder="비밀번호를 확인해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  접근제어 IP
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <Input name="ip" placeholder="접근제어 IP를 입력해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  이름
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <Input name="name" placeholder="이름을 입력해주세요" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                  연락처
+                </th>
+                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                  <Input name="phone" placeholder="연락처를 입력해주세요" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </BaseDialog>
+      </div>
+    </div>
+  );
+};
+
+export const Buttons: Story = {
+  ...Default,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Button의 text, icon, color 등을 설정하고 추가할 수 있다.',
+      },
+    },
+    controls: {
+      exclude: ['buttons', 'contentSize', 'portalContainer', 'trigger', 'titleIcon'],
+    },
+  },
+  argTypes: {},
+
+  render: ButtonsExample,
 };
