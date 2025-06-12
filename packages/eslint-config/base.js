@@ -53,6 +53,7 @@ export const config = [
         { blankLine: 'always', prev: 'multiline-expression', next: '*' },
         { blankLine: 'always', prev: '*', next: 'return' },
       ],
+      'no-console': ['error', { allow: ['warn'] }],
     },
   },
   {

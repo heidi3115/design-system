@@ -21,7 +21,6 @@ export default [
     },
     rules: {
       'prettier/prettier': 'warn',
-      'no-console': 'warn',
     },
   },
 ];
