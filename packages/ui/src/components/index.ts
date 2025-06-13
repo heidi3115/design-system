@@ -61,4 +61,13 @@ export {
   type AvatarContentsProps,
 } from './Avatar';
 
-export { Popover, PopoverRoot, PopoverTrigger, PopoverContent, PopoverAnchor, PopoverPotal } from './Popover';
+export {
+  Popover,
+  PopoverRoot,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverAnchor,
+  PopoverPotal,
+  PopoverClose,
+  PopoverArrow,
+} from './Popover';

@@ -89,6 +89,7 @@ export default function Page() {
 
   const [selectValue, setSelectValue] = useState('');
   const selectRef = useRef(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useUpdateEffect(() => {
     console.warn(selectValue);
@@ -99,7 +100,7 @@ export default function Page() {
       <div className="sticky top-2 z-10">
         <ThemeToggle />
       </div>
-      <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper">
+      <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper" ref={wrapperRef}>
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
           <RadioGroup direction="horizontal" defaultValue="banana" valueRef={radioRef} options={options} />
@@ -121,16 +122,28 @@ export default function Page() {
             {...fruitField}
           />
 
-          <Popover trigger={FilePlusIcon}>default popover</Popover>
-          <Popover trigger={<Button>popover</Button>}>default popover</Popover>
+          <Popover trigger={FilePlusIcon} closeIcon arrow side="left" align="start">
+            default popover
+          </Popover>
+          <Popover trigger={<Button>popover</Button>} side="top" align="start" portalContainer={wrapperRef.current}>
+            default popover
+          </Popover>
 
           <div ref={anchorRef} className="absolute top-28 right-20">
             this is popover position
           </div>
 
-          <Button onClick={() => setIsOpenPopover(!isOpenPopover)}>다른곳 클릭</Button>
+          <div className="flex gap-1">
+            <Button
+              onClick={() => {
+                setIsOpenPopover(!isOpenPopover);
+                console.log('aa');
+              }}>
+              다른곳 클릭
+            </Button>
+          </div>
 
-          <Popover anchorRef={anchorRef} trigger={<Button>Anchor</Button>}>
+          <Popover anchorRef={anchorRef} trigger={<Button>Anchor</Button>} side="left" align="start">
             AnchorRef로 오픈
           </Popover>
 
@@ -140,7 +153,6 @@ export default function Page() {
 
           <ConfirmAlertDialog title="warning" trigger={<Button>confirm</Button>} />
 
-          <Button>test</Button>
           <SplitOtpInput />
 
           <Toggle
@@ -152,13 +164,6 @@ export default function Page() {
             onPressedChange={(on) => console.warn('toggle', on)}>
             비제어
           </Toggle>
-
-          {/* <Button
-            onMouseEnter={() => {
-              console.warn(pressedRef.current, '비제어 toggle');
-            }}>
-            비제어 토글 확인
-          </Button> */}
 
           <Toggle pressed={isPress} onPressedChange={(on) => setIsPress(on)}>
             제어

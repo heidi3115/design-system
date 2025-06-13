@@ -1,9 +1,12 @@
 'use client';
 
-import { type RefObject, useRef, type ReactNode, type ComponentType, createElement } from 'react';
-import { PopoverAnchor, PopoverRoot } from './PopoverParts';
+import { type RefObject, useRef, type ReactNode, type ComponentType, createElement, type ComponentProps } from 'react';
+import { PopoverAnchor, PopoverArrow, PopoverClose, PopoverRoot } from './PopoverParts';
 
 import { PopoverContent, PopoverTrigger } from './PopoverParts';
+import { XIcon } from '@common/ui/icons';
+import { cn } from '../../lib/utils';
+import useExtractClassName from '../hooks/useExtractClassName';
 
 type PopoverProps = {
   children: ReactNode;
@@ -12,18 +15,36 @@ type PopoverProps = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   anchorRef?: RefObject<HTMLElement | null>;
-};
+  closeIcon?: boolean;
+  arrow?: boolean;
+  portalContainer?: Element | DocumentFragment | null | undefined;
+} & Pick<ComponentProps<typeof PopoverContent>, 'side' | 'align' | 'sideOffset' | 'alignOffset'>;
 
 type Measurable = {
   getBoundingClientRect(): DOMRect;
 };
 
-function Popover({ className, trigger, open, onOpenChange, anchorRef, children }: PopoverProps) {
+function Popover({
+  className,
+  trigger,
+  open,
+  onOpenChange,
+  anchorRef,
+  closeIcon = false,
+  arrow = false,
+  portalContainer,
+  children,
+  ...props
+}: PopoverProps) {
   const virtualRef = useRef<Measurable>(null!);
 
   if (anchorRef?.current) {
     virtualRef.current = anchorRef.current;
   }
+
+  const contentClassName = cn(className);
+
+  const bgColor = useExtractClassName(arrow ? contentClassName : '', 'bg-');
 
   return (
     <PopoverRoot open={open} onOpenChange={onOpenChange}>
@@ -34,7 +55,17 @@ function Popover({ className, trigger, open, onOpenChange, anchorRef, children }
           <PopoverTrigger asChild>{trigger}</PopoverTrigger>
         ))}
       {anchorRef?.current && virtualRef.current && <PopoverAnchor virtualRef={virtualRef} />}
-      <PopoverContent className={className}>{children}</PopoverContent>
+      <PopoverContent className={contentClassName} container={portalContainer} {...props}>
+        {children}
+
+        {closeIcon && (
+          <PopoverClose className="absolute top-1 right-1" asChild>
+            <XIcon className="hover:opacity-50" />
+          </PopoverClose>
+        )}
+
+        {arrow && <PopoverArrow className={cn('w-2.5 h-1.5', `fill-${bgColor ?? 'juiBackground-default'}`)} />}
+      </PopoverContent>
     </PopoverRoot>
   );
 }

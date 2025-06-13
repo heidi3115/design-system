@@ -15,11 +15,15 @@ function PopoverTrigger({ ...props }: React.ComponentProps<typeof PopoverPrimiti
 function PopoverContent({
   className,
   align = 'center',
+  side = 'bottom',
   sideOffset = 4,
+  alignOffset = 0,
+  container,
   ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Content>) {
+}: React.ComponentProps<typeof PopoverPrimitive.Content> &
+  Pick<React.ComponentProps<typeof PopoverPrimitive.Portal>, 'container'>) {
   return (
-    <PopoverPrimitive.Portal>
+    <PopoverPrimitive.Portal container={container}>
       <PopoverPrimitive.Content
         data-slot="popover-content"
         className={cn(
@@ -45,7 +49,6 @@ function PopoverContent({
             'z-50',
 
             // 팝오버 기본 스타일
-            'min-w-72', // 이건 확인해보자
             'rounded-md',
             'shadow-md',
             'p-4',
@@ -54,7 +57,10 @@ function PopoverContent({
           className,
         )}
         align={align}
+        alignOffset={alignOffset}
+        side={side}
         sideOffset={sideOffset}
+        forceMount
         {...props}
       />
     </PopoverPrimitive.Portal>
@@ -69,4 +75,12 @@ function PopoverAnchor({ ...props }: React.ComponentProps<typeof PopoverPrimitiv
   return <PopoverPrimitive.Anchor data-slot="popover-anchor" {...props} />;
 }
 
-export { PopoverRoot, PopoverTrigger, PopoverContent, PopoverAnchor, PopoverPotal };
+function PopoverClose({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Close>) {
+  return <PopoverPrimitive.Close data-slot="popover-anchor" {...props} />;
+}
+
+function PopoverArrow({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Arrow>) {
+  return <PopoverPrimitive.Arrow data-slot="popover-anchor" {...props} />;
+}
+
+export { PopoverRoot, PopoverTrigger, PopoverContent, PopoverAnchor, PopoverPotal, PopoverClose, PopoverArrow };
