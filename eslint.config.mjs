@@ -3,10 +3,7 @@ import tsEslint from 'typescript-eslint';
 import prettierPlugin from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
 
-import { config as baseConfig } from '@common/eslint-config/base';
-
 export default [
-  ...baseConfig,
   js.configs.recommended,
   ...tsEslint.configs.recommended,
   prettierConfig, // Prettier와 충돌 방지

@@ -137,6 +137,7 @@ export default function Page() {
             <Button
               onClick={() => {
                 setIsOpenPopover(!isOpenPopover);
+                console.log('aa');
               }}>
               다른곳 클릭
             </Button>
