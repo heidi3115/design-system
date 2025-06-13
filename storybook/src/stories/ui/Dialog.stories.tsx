@@ -13,7 +13,7 @@ type DialogStoryArgs = {
   contentSize?: 'small' | 'medium' | 'large';
   footerLocate?: 'start' | 'center' | 'end';
   buttons: {
-    langKey: string;
+    name: string;
     icon?: 'save' | 'cancel' | 'delete' | 'check';
     color?: 'primary' | 'secondary' | 'error' | 'default';
     handleClick?: (close: () => void) => void;
@@ -91,7 +91,7 @@ const meta: Meta<DialogStoryArgs> = {
     footerLocate: 'center',
     buttons: [
       {
-        langKey: '저장',
+        name: '저장',
         icon: 'save',
         color: 'primary',
         form: 'baseDialog',
@@ -101,7 +101,7 @@ const meta: Meta<DialogStoryArgs> = {
         },
       },
       {
-        langKey: '삭제',
+        name: '삭제',
         icon: 'delete',
         color: 'error',
         handleClick: async (closeDialog) => {
@@ -109,7 +109,7 @@ const meta: Meta<DialogStoryArgs> = {
           closeDialog();
         },
       },
-      { langKey: '닫기', icon: 'cancel', color: 'default', close: true },
+      { name: '닫기', icon: 'cancel', color: 'default', close: true },
     ],
     portalContainer: 'body',
   },
@@ -242,7 +242,7 @@ export const ContentSize: Story = {
 };
 
 type ButtonType = {
-  langKey: string;
+  name: string;
   handleClick?: (close: () => void) => void;
   color?: 'primary' | 'secondary' | 'default' | 'error';
   icon?: 'save' | 'cancel' | 'delete' | 'check';
@@ -252,7 +252,7 @@ type ButtonType = {
 const ButtonsExample = (args: DialogStoryArgs) => {
   const buttonExample2: ButtonType[] = [
     {
-      langKey: '저장',
+      name: '저장',
       icon: 'check',
       color: 'primary',
       handleClick: async (closeDialog) => {
@@ -261,7 +261,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
       },
     },
     {
-      langKey: '닫기',
+      name: '닫기',
       icon: 'cancel',
       color: 'default',
       close: true,
@@ -269,7 +269,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
   ];
   const buttonExample3: ButtonType[] = [
     {
-      langKey: '저장',
+      name: '저장',
       icon: 'check',
       color: 'primary',
       handleClick: async (closeDialog) => {
@@ -278,7 +278,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
       },
     },
     {
-      langKey: '삭제',
+      name: '삭제',
       icon: 'delete',
       color: 'error',
       handleClick: async (closeDialog) => {
@@ -287,7 +287,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
       },
     },
     {
-      langKey: '닫기',
+      name: '닫기',
       icon: 'cancel',
       color: 'default',
       close: true,

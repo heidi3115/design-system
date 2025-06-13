@@ -13,7 +13,7 @@ import { SaveIcon, XIcon, TrashIcon, CheckIcon } from '@common/ui/icons';
 import { useState } from 'react';
 
 type ButtonType = {
-  langKey: string;
+  name: string;
   handleClick?: (close: () => void) => void;
   color?: 'primary' | 'secondary' | 'default' | 'error';
   form?: string;
@@ -101,7 +101,7 @@ const BaseDialog = ({
               {buttons.map((btn) => {
                 const buttonContent = (
                   <Button
-                    key={btn.langKey}
+                    key={btn.name}
                     variant={btn.color}
                     type={btn.form ? 'submit' : 'button'}
                     onClick={() => {
@@ -112,16 +112,16 @@ const BaseDialog = ({
                       }
                     }}
                     disabled={btn.disabled}>
-                    {btn.icon && iconMap[btn.icon]} {btn.langKey}
+                    {btn.icon && iconMap[btn.icon]} {btn.name}
                   </Button>
                 );
 
                 return btn.close ? (
-                  <DialogClose asChild key={btn.langKey}>
+                  <DialogClose asChild key={btn.name}>
                     {buttonContent}
                   </DialogClose>
                 ) : (
-                  <span key={btn.langKey}>{buttonContent}</span>
+                  <span key={btn.name}>{buttonContent}</span>
                 );
               })}
             </DialogFooter>
