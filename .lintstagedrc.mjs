@@ -1,5 +1,5 @@
 const lintstagedrc = {
-  '*.{ts,tsx,js,jsx,json}': ['eslint --max-warnings=0 --fix', 'prettier --write'],
+  '*.{ts,tsx,js,jsx,json}': ['eslint --fix --quiet', 'prettier --write'],
   '*.{md,css,scss}': ['prettier --write'],
 };
 
