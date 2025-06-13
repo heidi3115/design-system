@@ -1,8 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { type FormEvent, type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
+import { type FormEvent, type MouseEvent, type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
 import { Button, Input, RadioGroup } from '@common/ui';
 import BaseDialog from '@common/ui/components/Dialog/BaseDialog.tsx';
-import { EditIcon } from '@common/ui/icons';
+import { EditIcon, SaveIcon, Trash2Icon } from '@common/ui/icons';
+import type { VariantProps } from 'tailwind-variants';
+
+type DefaultButtonType = 'save' | 'cancel' | 'check';
+
+type ButtonProps = (VariantProps<typeof Button> & { children: ReactNode }) | DefaultButtonType;
 
 type DialogStoryArgs = {
   title: string;
@@ -12,17 +17,11 @@ type DialogStoryArgs = {
   className?: string;
   contentSize?: 'small' | 'medium' | 'large';
   footerLocate?: 'start' | 'center' | 'end';
-  buttons: {
-    name: string;
-    icon?: 'save' | 'cancel' | 'delete' | 'check';
-    color?: 'primary' | 'secondary' | 'error' | 'default';
-    handleClick?: (close: () => void) => void;
-    close?: boolean;
-    form?: string;
-  }[];
+  buttons: ButtonProps[];
   portalContainer?: string;
   maxHeight?: number;
   onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
+  onClick?: () => void;
   showCloseButton?: boolean;
 };
 
@@ -69,7 +68,7 @@ const meta: Meta<DialogStoryArgs> = {
     buttons: {
       control: { type: 'object' },
       description:
-        'Dialog에 표시될 버튼 목록. icon은 save, cancel, delete, check 중에서 원하는 아이콘을 string으로 입력하면 된다. ',
+        'Dialog에 표시될 버튼 목록. icon은 save, cancel, check 중에서 원하는 아이콘을 string으로 입력하면 된다.',
     },
     portalContainer: {
       control: { type: 'radio' },
@@ -78,7 +77,11 @@ const meta: Meta<DialogStoryArgs> = {
     },
     onSubmit: {
       control: { disable: true },
-      description: 'form 속성과 연결된 폼이 제출될 때 실행되며, 유효성 검사 후 데이터를 처리하거나 저장할때 사용된다. ',
+      description: 'form 속성과 연결된 폼이 제출될 때 실행되며, 유효성 검사 후 데이터를 처리하거나 저장할때 사용된다.',
+    },
+    onClick: {
+      control: { disable: true },
+      description: '버튼 클릭 시 호출되는 함수로, 클릭 이벤트에 대응하여 특정 동작을 처리할 때 사용한다.',
     },
   },
   args: {
@@ -90,26 +93,16 @@ const meta: Meta<DialogStoryArgs> = {
     contentSize: 'small',
     footerLocate: 'center',
     buttons: [
+      'save',
       {
-        name: '저장',
-        icon: 'save',
-        color: 'primary',
-        form: 'baseDialog',
-        handleClick: async (closeDialog) => {
-          alert('저장되었습니다');
-          closeDialog();
-        },
+        children: (
+          <>
+            <SaveIcon /> 커스텀 버튼
+          </>
+        ),
+        variant: 'primary',
+        type: 'submit',
       },
-      {
-        name: '삭제',
-        icon: 'delete',
-        color: 'error',
-        handleClick: async (closeDialog) => {
-          alert('삭제되었습니다');
-          closeDialog();
-        },
-      },
-      { name: '닫기', icon: 'cancel', color: 'default', close: true },
     ],
     portalContainer: 'body',
   },
@@ -139,8 +132,10 @@ const Template = (args: DialogStoryArgs) => {
   return (
     <div ref={dialogAreaRef}>
       <BaseDialog
-        onSubmit={(e) => {
+        onSubmit={(e, close) => {
           e.preventDefault();
+          alert('저장되었습니다');
+          close();
         }}
         showCloseButton={args.showCloseButton}
         trigger={<Button>Dialog 열기</Button>}
@@ -241,64 +236,15 @@ export const ContentSize: Story = {
   },
 };
 
-type ButtonType = {
-  name: string;
-  handleClick?: (close: () => void) => void;
-  color?: 'primary' | 'secondary' | 'default' | 'error';
-  icon?: 'save' | 'cancel' | 'delete' | 'check';
-  close?: boolean;
-};
-
 const ButtonsExample = (args: DialogStoryArgs) => {
-  const buttonExample2: ButtonType[] = [
-    {
-      name: '저장',
-      icon: 'check',
-      color: 'primary',
-      handleClick: async (closeDialog) => {
-        alert('저장되었습니다');
-        closeDialog();
-      },
-    },
-    {
-      name: '닫기',
-      icon: 'cancel',
-      color: 'default',
-      close: true,
-    },
-  ];
-  const buttonExample3: ButtonType[] = [
-    {
-      name: '저장',
-      icon: 'check',
-      color: 'primary',
-      handleClick: async (closeDialog) => {
-        alert('저장되었습니다');
-        closeDialog();
-      },
-    },
-    {
-      name: '삭제',
-      icon: 'delete',
-      color: 'error',
-      handleClick: async (closeDialog) => {
-        alert('삭제되었습니다');
-        closeDialog();
-      },
-    },
-    {
-      name: '닫기',
-      icon: 'cancel',
-      color: 'default',
-      close: true,
-    },
-  ];
-
   return (
     <div className="flex gap-10">
       <div className="flex flex-col gap-2">
         <div>Button 없음</div>
         <BaseDialog
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
           trigger={<Button>Dialog 열기</Button>}
           title={args.title}
           className={args.className}
@@ -378,8 +324,12 @@ const ButtonsExample = (args: DialogStoryArgs) => {
         </BaseDialog>
       </div>
       <div className="flex flex-col gap-2">
-        <div>Button 2개</div>
+        <div>등록된 Button</div>
         <BaseDialog
+          onSubmit={(e, close) => {
+            e.preventDefault();
+            close();
+          }}
           trigger={<Button>Dialog 열기</Button>}
           title={args.title}
           className={args.className}
@@ -387,7 +337,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
           showCloseButton={args.showCloseButton}
           contentSize={args.contentSize}
           footerLocate={args.footerLocate}
-          buttons={buttonExample2}
+          buttons={['save', 'check', 'cancel']}
           maxHeight={args.maxHeight}>
           <table className="m-auto text-xs">
             <tbody>
@@ -459,8 +409,13 @@ const ButtonsExample = (args: DialogStoryArgs) => {
         </BaseDialog>
       </div>
       <div className="flex flex-col gap-2">
-        <div>Button 3개 이상</div>
+        <div>Custom Button</div>
         <BaseDialog
+          onSubmit={(e, close) => {
+            e.preventDefault();
+            alert('폼이 저장되었습니다');
+            close();
+          }}
           trigger={<Button>Dialog 열기</Button>}
           title={args.title}
           className={args.className}
@@ -468,7 +423,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
           titleIcon={args.titleIcon}
           contentSize={args.contentSize}
           footerLocate={args.footerLocate}
-          buttons={buttonExample3}
+          buttons={args.buttons}
           maxHeight={args.maxHeight}>
           <table className="m-auto text-xs">
             <tbody>
@@ -548,12 +503,47 @@ export const Buttons: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Button의 text, icon, color 등을 설정하고 추가할 수 있다.',
+        story:
+          'Button의 text, icon, color 등을 설정하고 추가할 수 있다. 기본으로 제공되는 아이콘은 save, cancel, check 세가지가 있다. custom 버튼은 객체 타입으로 children안에 원하는 요소를 넣고 varaint, type 혹은 onClick 콜백 함수를 넣어 원하는 동작을 처리한다.',
       },
     },
     controls: {
       exclude: ['buttons', 'contentSize', 'portalContainer', 'trigger', 'titleIcon'],
     },
+  },
+  args: {
+    title: 'Example Title',
+    showCloseButton: true,
+    titleIcon: <EditIcon />,
+    children: 'Example Children',
+    maxHeight: 500,
+    contentSize: 'small',
+    footerLocate: 'center',
+    buttons: [
+      {
+        children: (
+          <>
+            <SaveIcon />
+            버튼 1 (type: &#39;submit&#39;)
+          </>
+        ),
+        variant: 'primary',
+        type: 'submit',
+      },
+      {
+        children: (
+          <>
+            <Trash2Icon />
+            버튼 2 (onClick 함수)
+          </>
+        ),
+        variant: 'error',
+        onClick: (_e: MouseEvent<HTMLButtonElement>, close?: () => void) => {
+          alert('삭제되었습니다');
+          close?.();
+        },
+      },
+    ],
   },
   argTypes: {},
 

@@ -1,4 +1,3 @@
-import { isValidElement, type ReactElement, type ReactNode, type FormEvent } from 'react';
 import {
   DialogRoot,
   DialogTrigger,
@@ -9,39 +8,46 @@ import {
   DialogClose,
 } from './DialogParts';
 import { Button } from '../Button';
-import { SaveIcon, XIcon, TrashIcon, CheckIcon } from '@common/ui/icons';
-import { useState } from 'react';
+import { SaveIcon, XIcon, CheckIcon } from '@common/ui/icons';
+import {
+  useState,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+  type FormEvent,
+  type MouseEvent,
+  type ButtonHTMLAttributes,
+} from 'react';
+import { type VariantProps } from 'tailwind-variants';
 
-type ButtonType = {
-  name: string;
-  handleClick?: (close: () => void) => void;
-  color?: 'primary' | 'secondary' | 'default' | 'error';
-  form?: string;
-  icon?: 'save' | 'cancel' | 'delete' | 'check';
-  disabled?: boolean;
-  close?: boolean;
-};
+type CustomButtonProps = VariantProps<typeof Button> &
+  ButtonHTMLAttributes<HTMLButtonElement> & {
+    children: ReactNode;
+    onClick?: (e: MouseEvent<HTMLButtonElement>, close?: () => void) => void;
+  };
 
-type dialogProps = {
+type DefaultButtonType = 'save' | 'cancel' | 'check';
+type ButtonProps = CustomButtonProps | DefaultButtonType;
+
+type DialogProps = {
   trigger: ReactNode;
   title: string;
   titleIcon?: ReactElement;
-  buttons?: ButtonType[];
+  buttons?: ButtonProps[];
   children?: ReactNode;
   portalContainer?: HTMLElement | null;
   footerLocate?: 'start' | 'center' | 'end';
   contentSize?: 'small' | 'medium' | 'large';
   className?: string;
   maxHeight?: number;
-  onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
+  onSubmit?: (e: FormEvent<HTMLFormElement>, close: () => void) => void;
   showCloseButton?: boolean;
 };
 
-const iconMap = {
-  save: <SaveIcon />,
-  cancel: <XIcon />,
-  delete: <TrashIcon />,
-  check: <CheckIcon />,
+const defaultButtonMap: Record<DefaultButtonType, { icon?: ReactNode; label: string }> = {
+  save: { icon: <SaveIcon />, label: '저장' },
+  cancel: { icon: <XIcon />, label: '취소' },
+  check: { icon: <CheckIcon />, label: '확인' },
 };
 
 const BaseDialog = ({
@@ -57,28 +63,18 @@ const BaseDialog = ({
   maxHeight,
   onSubmit,
   showCloseButton = true,
-}: dialogProps) => {
+}: DialogProps) => {
   const [open, setOpen] = useState(false);
 
-  const closeDialog = () => {
-    setOpen(false);
-  };
-
-  const openDialog = () => {
-    setOpen(true);
-  };
-
-  const triggerNode = trigger;
-
-  if (!isValidElement(triggerNode)) {
-    console.warn('ConfirmDialog: 유효한 trigger가 필요합니다.');
+  if (!isValidElement(trigger)) {
+    console.warn('BaseDialog: trigger는 유효한 React element여야 합니다.');
 
     return null;
   }
 
   return (
     <DialogRoot open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild onClick={openDialog}>
+      <DialogTrigger asChild onClick={() => setOpen(true)}>
         {trigger}
       </DialogTrigger>
       <DialogContent
@@ -86,7 +82,12 @@ const BaseDialog = ({
         className={className}
         size={contentSize}
         showCloseButton={showCloseButton}>
-        <form onSubmit={onSubmit} id="baseDialog">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit?.(e, () => setOpen(false));
+          }}
+          id="baseDialog">
           <DialogHeader>
             <DialogTitle className="flex gap-2 items-center">
               {titleIcon}
@@ -96,33 +97,42 @@ const BaseDialog = ({
           <div className="p-4 text-juiText-secondary text-sm overflow-auto" style={{ maxHeight }}>
             {children}
           </div>
-          {buttons && (
+          {Array.isArray(buttons) && buttons.length > 0 && (
             <DialogFooter footerLocate={footerLocate}>
-              {buttons.map((btn) => {
-                const buttonContent = (
-                  <Button
-                    key={btn.name}
-                    variant={btn.color}
-                    type={btn.form ? 'submit' : 'button'}
-                    onClick={() => {
-                      if (btn.handleClick) {
-                        btn.handleClick(closeDialog);
-                      } else if (btn.close) {
-                        closeDialog();
-                      }
-                    }}
-                    disabled={btn.disabled}>
-                    {btn.icon && iconMap[btn.icon]} {btn.name}
-                  </Button>
-                );
+              {buttons.map((btn, i) => {
+                if (typeof btn === 'string' && btn in defaultButtonMap) {
+                  const { icon, label } = defaultButtonMap[btn];
 
-                return btn.close ? (
-                  <DialogClose asChild key={btn.name}>
-                    {buttonContent}
-                  </DialogClose>
-                ) : (
-                  <span key={btn.name}>{buttonContent}</span>
-                );
+                  if (btn === 'save') {
+                    return (
+                      <Button key={btn} type="submit" variant="primary">
+                        {icon} {label}
+                      </Button>
+                    );
+                  }
+
+                  return (
+                    <DialogClose asChild key={btn}>
+                      <Button>
+                        {icon} {label}
+                      </Button>
+                    </DialogClose>
+                  );
+                }
+
+                if (typeof btn !== 'string') {
+                  return (
+                    <Button
+                      key={`custom-${i}`}
+                      {...btn}
+                      onClick={(e) => {
+                        btn.onClick?.(e, () => setOpen(false));
+                      }}
+                    />
+                  );
+                }
+
+                return null;
               })}
             </DialogFooter>
           )}
