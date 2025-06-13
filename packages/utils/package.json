@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "test-type": "tsc"
+    "test-type": "tsc",
+    "lint": "eslint --ext=.ts,.tsx,.jsx"
   },
   "dependencies": {
     "react": "^19.1.0",

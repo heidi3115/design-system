@@ -7,6 +7,29 @@ import { PopoverContent, PopoverTrigger } from './PopoverParts';
 import { XIcon } from '@common/ui/icons';
 import { cn } from '../../lib/utils';
 import useExtractClassName from '../hooks/useExtractClassName';
+import { tv, type VariantProps } from 'tailwind-variants';
+
+const popoverVariants = tv({
+  base: 'overflow-auto ',
+  variants: {
+    variant: {
+      primary: 'bg-juiPrimary',
+      secondary: 'bg-juiSecondary',
+      error: 'bg-juiError',
+      default: '',
+    },
+    size: {
+      small: '',
+      basic: 'min-w-4 min-h-4',
+      medium: 'min-w-3xs min-h-28',
+      large: 'min-w-3xl min-h-96',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+    size: 'basic',
+  },
+});
 
 type PopoverProps = {
   children: ReactNode;
@@ -18,7 +41,8 @@ type PopoverProps = {
   closeIcon?: boolean;
   arrow?: boolean;
   portalContainer?: Element | DocumentFragment | null | undefined;
-} & Pick<ComponentProps<typeof PopoverContent>, 'side' | 'align' | 'sideOffset' | 'alignOffset'>;
+} & VariantProps<typeof popoverVariants> &
+  Pick<ComponentProps<typeof PopoverContent>, 'side' | 'align' | 'sideOffset' | 'alignOffset'>;
 
 type Measurable = {
   getBoundingClientRect(): DOMRect;
@@ -34,6 +58,8 @@ function Popover({
   arrow = false,
   portalContainer,
   children,
+  variant,
+  size,
   ...props
 }: PopoverProps) {
   const virtualRef = useRef<Measurable>(null!);
@@ -42,7 +68,7 @@ function Popover({
     virtualRef.current = anchorRef.current;
   }
 
-  const contentClassName = cn(className);
+  const contentClassName = cn(popoverVariants({ variant, size }), className);
 
   const bgColor = useExtractClassName(arrow ? contentClassName : '', 'bg-');
 
@@ -59,12 +85,16 @@ function Popover({
         {children}
 
         {closeIcon && (
-          <PopoverClose className="absolute top-1 right-1" asChild>
-            <XIcon className="hover:opacity-50" />
+          <PopoverClose className="absolute top-[3px] right-[3px]" asChild>
+            <XIcon size="small" className="hover:opacity-50" />
           </PopoverClose>
         )}
 
-        {arrow && <PopoverArrow className={cn('w-2.5 h-1.5', `fill-${bgColor ?? 'juiBackground-default'}`)} />}
+        {arrow && (
+          <PopoverArrow
+            className={cn('w-2.5 h-1.5', `${bgColor ? `fill-${bgColor}` : 'fill-juiBackground-default'}`)}
+          />
+        )}
       </PopoverContent>
     </PopoverRoot>
   );

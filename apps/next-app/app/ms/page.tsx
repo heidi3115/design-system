@@ -122,10 +122,15 @@ export default function Page() {
             {...fruitField}
           />
 
-          <Popover trigger={FilePlusIcon} closeIcon arrow side="left" align="start">
-            default popover
+          <Popover trigger={FilePlusIcon} variant="secondary" size="small" closeIcon arrow sideOffset={10}>
+            dadfdsfadsffsdfadfsfasdfadfasfas
           </Popover>
-          <Popover trigger={<Button>popover</Button>} side="top" align="start" portalContainer={wrapperRef.current}>
+          <Popover
+            trigger={<Button>popover</Button>}
+            arrow
+            side="top"
+            align="start"
+            portalContainer={wrapperRef.current}>
             default popover
           </Popover>
 
@@ -142,7 +147,7 @@ export default function Page() {
             </Button>
           </div>
 
-          <Popover anchorRef={anchorRef} trigger={<Button>Anchor</Button>} side="left" align="start">
+          <Popover anchorRef={anchorRef} trigger={<Button>Anchor</Button>} side="left" align="start" arrow>
             AnchorRef로 오픈
           </Popover>
 
