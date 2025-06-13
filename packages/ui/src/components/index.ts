@@ -60,3 +60,14 @@ export {
   type AvatarLoadingStatus,
   type AvatarContentsProps,
 } from './Avatar';
+
+export {
+  SheetDescription,
+  SheetTitle,
+  SheetRoot,
+  SheetFooter,
+  SheetHeader,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from './Sheet';
