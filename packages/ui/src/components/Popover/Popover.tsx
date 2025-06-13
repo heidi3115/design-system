@@ -7,10 +7,10 @@ import { PopoverContent, PopoverTrigger } from './PopoverParts';
 
 type PopoverProps = {
   children: ReactNode;
+  trigger: ReactNode | ComponentType;
   className?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  trigger?: ReactNode | ComponentType;
   anchorRef?: RefObject<HTMLElement | null>;
 };
 
