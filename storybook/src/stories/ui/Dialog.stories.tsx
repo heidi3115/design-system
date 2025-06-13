@@ -241,7 +241,7 @@ export const ContentSize: Story = {
   },
 };
 
-type buttonType = {
+type ButtonType = {
   langKey: string;
   handleClick?: (close: () => void) => void;
   color?: 'primary' | 'secondary' | 'default' | 'error';
@@ -250,7 +250,7 @@ type buttonType = {
 };
 
 const ButtonsExample = (args: DialogStoryArgs) => {
-  const buttonExample2: buttonType[] = [
+  const buttonExample2: ButtonType[] = [
     {
       langKey: '저장',
       icon: 'check',
@@ -267,7 +267,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
       close: true,
     },
   ];
-  const buttonExample3: buttonType[] = [
+  const buttonExample3: ButtonType[] = [
     {
       langKey: '저장',
       icon: 'check',

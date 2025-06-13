@@ -12,7 +12,7 @@ import { Button } from '../Button';
 import { SaveIcon, XIcon, TrashIcon, CheckIcon } from '@common/ui/icons';
 import { useState } from 'react';
 
-type buttonType = {
+type ButtonType = {
   langKey: string;
   handleClick?: (close: () => void) => void;
   color?: 'primary' | 'secondary' | 'default' | 'error';
@@ -26,7 +26,7 @@ type dialogProps = {
   trigger: ReactNode;
   title: string;
   titleIcon?: ReactElement;
-  buttons?: buttonType[];
+  buttons?: ButtonType[];
   children?: ReactNode;
   portalContainer?: HTMLElement | null;
   footerLocate?: 'start' | 'center' | 'end';
@@ -93,7 +93,7 @@ const BaseDialog = ({
               {title}
             </DialogTitle>
           </DialogHeader>
-          <div className="p-4 text-muted-foreground text-sm overflow-auto" style={{ maxHeight }}>
+          <div className="p-4 text-juiText-secondary text-sm overflow-auto" style={{ maxHeight }}>
             {children}
           </div>
           {buttons && (

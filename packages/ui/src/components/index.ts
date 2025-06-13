@@ -53,6 +53,7 @@ export {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  BaseDialog,
 } from './Dialog';
 export { Switch } from './Switch';
 export { Skeleton, CardSkeleton } from './Skeleton';

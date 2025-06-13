@@ -10,3 +10,5 @@ export {
   DialogTitle,
   DialogPortal,
 } from './DialogParts';
+
+export { default as BaseDialog } from './BaseDialog';
