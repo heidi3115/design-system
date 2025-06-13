@@ -33,6 +33,8 @@ function PopoverContent({
             // 팝오버 닫힐 때 애니메이션 적용
             'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
 
+            'origin-(--radix-popover-content-transform-origin)', // 팝오버 애니메이션 기준점
+
             // 팝오버 방향(side)별 진입 애니메이션
             'data-[side=bottom]:slide-in-from-top-2',
             'data-[side=left]:slide-in-from-right-2',
@@ -43,12 +45,11 @@ function PopoverContent({
             'z-50',
 
             // 팝오버 기본 스타일
-            'w-72', // 고정 너비
-            'origin-(--radix-popover-content-transform-origin)', // 팝오버 애니메이션 기준점
-            'rounded-md', // 테두리 둥글기
-            'p-4', // 패딩
-            'shadow-md', // 그림자
-            'outline-hidden', // outline 비활성화 (포커스 표시 제거)
+            'min-w-72', // 이건 확인해보자
+            'rounded-md',
+            'shadow-md',
+            'p-4',
+            'outline-hidden',
           ],
           className,
         )}

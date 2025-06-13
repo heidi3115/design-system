@@ -1,20 +1,39 @@
 'use client';
 
-import { type ReactElement, type ReactNode } from 'react';
-import { PopoverRoot } from './PopoverParts';
+import { type RefObject, useRef, type ReactNode, type ComponentType, createElement } from 'react';
+import { PopoverAnchor, PopoverRoot } from './PopoverParts';
 
 import { PopoverContent, PopoverTrigger } from './PopoverParts';
 
 type PopoverProps = {
-  trigger: ReactElement;
   children: ReactNode;
   className?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  trigger?: ReactNode | ComponentType;
+  anchorRef?: RefObject<HTMLElement | null>;
 };
 
-function Popover({ className, trigger, children }: PopoverProps) {
+type Measurable = {
+  getBoundingClientRect(): DOMRect;
+};
+
+function Popover({ className, trigger, open, onOpenChange, anchorRef, children }: PopoverProps) {
+  const virtualRef = useRef<Measurable>(null!);
+
+  if (anchorRef?.current) {
+    virtualRef.current = anchorRef.current;
+  }
+
   return (
-    <PopoverRoot>
-      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+    <PopoverRoot open={open} onOpenChange={onOpenChange}>
+      {trigger &&
+        (typeof trigger === 'function' ? (
+          <PopoverTrigger asChild>{createElement(trigger)}</PopoverTrigger>
+        ) : (
+          <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+        ))}
+      {anchorRef?.current && virtualRef.current && <PopoverAnchor virtualRef={virtualRef} />}
       <PopoverContent className={className}>{children}</PopoverContent>
     </PopoverRoot>
   );

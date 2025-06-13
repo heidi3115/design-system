@@ -72,6 +72,9 @@ export default function Page() {
   const [isPress, setIsPress] = useState(false);
   const pressedRef = useRef(null);
 
+  const [isOpenPopover, setIsOpenPopover] = useState(false);
+  const anchorRef = useRef<HTMLDivElement>(null);
+
   useUpdateEffect(() => {
     console.warn(isPress, '제어 toggle');
   }, [isPress]);
@@ -118,7 +121,22 @@ export default function Page() {
             {...fruitField}
           />
 
-          <Popover trigger={<Button>popover</Button>}>popover</Popover>
+          <Popover trigger={FilePlusIcon}>default popover</Popover>
+          <Popover trigger={<Button>popover</Button>}>default popover</Popover>
+
+          <div ref={anchorRef} className="absolute top-28 right-20">
+            this is popover position
+          </div>
+
+          <Button onClick={() => setIsOpenPopover(!isOpenPopover)}>다른곳 클릭</Button>
+
+          <Popover anchorRef={anchorRef} trigger={<Button>Anchor</Button>}>
+            AnchorRef로 오픈
+          </Popover>
+
+          <Popover open={isOpenPopover} trigger={<div className="absolute top-28 left-20">aa</div>}>
+            State로 오픈
+          </Popover>
 
           <ConfirmAlertDialog title="warning" trigger={<Button>confirm</Button>} />
 
