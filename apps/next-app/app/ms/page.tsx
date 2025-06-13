@@ -140,6 +140,7 @@ export default function Page() {
                 console.log('aa');
                 console.log('aa');
                 console.log('aa');
+                console.log('aa');
               }}>
               다른곳 클릭
             </Button>
