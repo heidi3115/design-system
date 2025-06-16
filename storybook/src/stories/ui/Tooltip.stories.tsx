@@ -3,28 +3,31 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { cn } from '@common/ui/lib/utils.ts';
 import {
   Button,
-  DEFAULT_ALIGN_OFFSET,
-  DEFAULT_DELAY_DURATION,
-  DEFAULT_FADEOUT_DURATION,
-  DEFAULT_SIDE_OFFSET,
   Separator,
   Switch,
   type TextAlignType,
   Tooltip,
-  type TooltipAlignType,
+  type TooltipContentProps,
   type TooltipProps,
-  type TooltipSideType,
   tooltipVariants,
 } from '@common/ui';
+import {
+  DEFAULT_ALIGN_OFFSET,
+  DEFAULT_DELAY_DURATION,
+  DEFAULT_FADEOUT_DURATION,
+  DEFAULT_SIDE_OFFSET,
+} from '@common/ui/components/Tooltip';
 import { AlertCircleIcon, AlertTriangleFilledIcon, InfoIcon } from '@common/ui/icons';
 
 const variantOptions = Object.keys(
   tooltipVariants.variants.variant,
 ) as (keyof typeof tooltipVariants.variants.variant)[];
 const sizeOptions = Object.keys(tooltipVariants.variants.size) as (keyof typeof tooltipVariants.variants.size)[];
-const sideOptions: TooltipSideType[] = ['top', 'left', 'bottom', 'right'] as const;
-const alignOptions: TooltipAlignType[] = ['start', 'center', 'end'] as const;
+const sideOptions: TooltipContentProps['side'][] = ['top', 'left', 'bottom', 'right'] as const;
+const alignOptions: TooltipContentProps['align'][] = ['start', 'center', 'end'] as const;
 const textAlignOptions: TextAlignType[] = ['left', 'right', 'center'] as const;
+const fadeOutOptions = [undefined, 300, 500, 700, 1000];
+const delayDurationArr = [200, 300, 500, 700, 1000];
 
 const titleCommonClass = 'text-juiText-primary text-3xl font-semibold';
 const subTitleCommonClass = 'text-juiText-primary text-lg font-semibold';
@@ -33,8 +36,7 @@ const blueTxtClass = 'text-juiText-blue text-base font-normal';
 const commonBoxClass = 'items-center justify-center text-juiText-primary';
 const flexColBoxGap4 = 'flex flex-col gap-4 text-juiText-primary';
 const flexRowBoxGap4 = 'flex flex-row gap-4 text-juiText-primary';
-const fadeOutOptions = [undefined, 300, 500, 700, 1000];
-const delayDurationArr = [200, 300, 500, 700, 1000];
+
 const meta: Meta<typeof Tooltip> = {
   title: 'UI/Tooltip',
   component: Tooltip,
@@ -45,7 +47,7 @@ const meta: Meta<typeof Tooltip> = {
     onOpenChange: undefined,
     openStatusRef: undefined,
     fadeOut: undefined,
-    isShowArrow: true,
+    isArrow: true,
     variant: 'default',
     size: 'small',
     side: 'top',
@@ -83,7 +85,7 @@ const meta: Meta<typeof Tooltip> = {
         defaultValue: { summary: `${fadeOutOptions[0]}` },
       },
     },
-    isShowArrow: {
+    isArrow: {
       control: 'boolean',
     },
     variant: {

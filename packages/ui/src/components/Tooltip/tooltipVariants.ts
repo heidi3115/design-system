@@ -1,13 +1,5 @@
 import { tv } from 'tailwind-variants';
-
-export const DEFAULT_SIDE_OFFSET = 8;
-export const DEFAULT_ALIGN_OFFSET = 0;
-export const DEFAULT_DELAY_DURATION = 700;
-export const DEFAULT_FADEOUT_DURATION = 700;
-
-export type TextAlignType = 'left' | 'center' | 'right';
-export type TooltipAlignType = 'start' | 'center' | 'end';
-export type TooltipSideType = 'top' | 'left' | 'bottom' | 'right';
+import { DEFAULT_FADEOUT_DURATION } from '@common/ui/components/Tooltip/Tooltip';
 
 const TRANSITION_CLASS = [
   'transition-opacity',

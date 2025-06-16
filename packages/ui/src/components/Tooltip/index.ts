@@ -1,6 +1,4 @@
 export {
-  TooltipWrapper,
-  TooltipContainer,
   TooltipProvider,
   TooltipRoot,
   TooltipTrigger,
@@ -16,19 +14,16 @@ export type {
   TooltipPortalProps,
   TooltipContentProps,
   TooltipArrowProps,
-  TooltipWrapperProps,
-  TooltipContainerProps,
 } from './TooltipParts';
 
-export { default as Tooltip } from './Tooltip';
-export type { TooltipProps } from './Tooltip';
 export {
-  default as tooltipVariants,
+  default as Tooltip,
+  TooltipWrapper,
+  TooltipContainer,
   DEFAULT_DELAY_DURATION,
   DEFAULT_FADEOUT_DURATION,
   DEFAULT_SIDE_OFFSET,
   DEFAULT_ALIGN_OFFSET,
-  type TextAlignType,
-  type TooltipAlignType,
-  type TooltipSideType,
-} from './TooltipUtils';
+} from './Tooltip';
+export type { TooltipProps, TooltipWrapperProps, TooltipContainerProps, TextAlignType } from './Tooltip';
+export { default as tooltipVariants } from './tooltipVariants';

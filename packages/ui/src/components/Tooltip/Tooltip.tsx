@@ -1,15 +1,28 @@
-import React from 'react';
-import {
-  DEFAULT_DELAY_DURATION,
-  type TextAlignType,
-  type TooltipAlignType,
-  TooltipContainer,
-  type TooltipSideType,
-  tooltipVariants,
-  TooltipWrapper,
-} from '@common/ui/components/Tooltip';
+import React, { isValidElement, useEffect, useImperativeHandle, useState } from 'react';
 import { type VariantProps } from 'tailwind-variants';
-import { DEFAULT_ALIGN_OFFSET, DEFAULT_SIDE_OFFSET } from '@common/ui/components/Tooltip/TooltipUtils';
+import { cn } from '@common/ui/lib/utils';
+import { tooltipVariants } from './tooltipVariants';
+import {
+  TooltipArrow,
+  type TooltipArrowProps,
+  TooltipContent,
+  type TooltipContentProps,
+  TooltipPortal,
+  type TooltipPortalProps,
+  TooltipProvider,
+  type TooltipProviderProps,
+  TooltipRoot,
+  type TooltipRootProps,
+  TooltipTrigger,
+  type TooltipTriggerProps,
+} from './TooltipParts';
+
+export const DEFAULT_SIDE_OFFSET = 6;
+export const DEFAULT_ALIGN_OFFSET = 0;
+export const DEFAULT_DELAY_DURATION = 700;
+export const DEFAULT_FADEOUT_DURATION = 700;
+
+export type TextAlignType = 'left' | 'center' | 'right';
 
 export type TooltipProps = {
   // Wrapper
@@ -43,9 +56,9 @@ export type TooltipProps = {
    */
   fadeOut?: VariantProps<typeof tooltipVariants>['fadeOut'] | undefined;
   /**
-   * isShowArrow: Tooltip의 화살표(arrow) 표시 여부입니다. true로 설정 시 Tooltip에 화살표가 나타나며, 기본값은 true 입니다.
+   * isArrow: Tooltip의 화살표(arrow) 표시 여부입니다. true로 설정 시 Tooltip에 화살표가 나타나며, 기본값은 true 입니다.
    */
-  isShowArrow?: boolean;
+  isArrow?: boolean;
   /**
    * variant: Tooltip의 색상입니다.
    * 'default', 'primary', 'secondary', 'error', 'transparent', 'custom' 중 하나를 선택할 수 있습니다.
@@ -63,7 +76,7 @@ export type TooltipProps = {
    * 'top', 'bottom', 'left', 'right' 중 하나를 선택할 수 있습니다.
    * 기본값은 'top' 입니다.
    */
-  side?: TooltipSideType;
+  side?: TooltipContentProps['side'];
   /**
    * sideOffset: Tooltip이 트리거로부터 얼마나 떨어져서 표시될지(픽셀 단위) 지정합니다.
    * 기본값은 현재 8 입니다.
@@ -74,7 +87,7 @@ export type TooltipProps = {
    * 'start', 'center', 'end' 중 하나를 선택할 수 있습니다.
    * 기본값은 'center' 입니다.
    */
-  align?: TooltipAlignType;
+  align?: TooltipContentProps['align'];
   /**
    * alignOffset: Tooltip의 정렬 상태 기준에서 추가로 얼마나 이동할지(픽셀 단위) 지정합니다. 기본값은 0 입니다.
    */
@@ -110,6 +123,133 @@ export type TooltipProps = {
   disabled?: boolean;
 };
 
+export type TooltipWrapperProps = {
+  providerProps?: Omit<TooltipProviderProps, 'children'>;
+  rootProps?: TooltipRootProps;
+  openStatusRef?: React.Ref<boolean>;
+  children?: React.ReactNode;
+};
+
+function TooltipWrapper({
+  providerProps = { delayDuration: DEFAULT_DELAY_DURATION },
+  rootProps = { defaultOpen: false },
+  openStatusRef = undefined,
+  children,
+}: TooltipWrapperProps) {
+  const { open, defaultOpen, onOpenChange, ...restRootProps } = rootProps || {};
+  const isControlled = open !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false);
+  const currentOpen = isControlled ? open : internalOpen;
+
+  // 비제어 선택값
+  useImperativeHandle(openStatusRef, (): boolean => currentOpen);
+
+  const handleTooltipOpenChange = (nextOpen: boolean) => {
+    if (!isControlled) setInternalOpen(nextOpen);
+
+    // openStatusRef 동기화
+    if (openStatusRef && typeof openStatusRef !== 'function') {
+      openStatusRef.current = nextOpen;
+    }
+
+    onOpenChange?.(nextOpen);
+  };
+
+  return (
+    <TooltipProvider {...providerProps}>
+      <TooltipRoot {...restRootProps} open={currentOpen} onOpenChange={handleTooltipOpenChange}>
+        {children}
+      </TooltipRoot>
+    </TooltipProvider>
+  );
+}
+
+type ContainerType = Element | DocumentFragment | null;
+
+export type TooltipContainerProps = {
+  triggerProps?: TooltipTriggerProps;
+  portalProps?: TooltipPortalProps & {
+    fadeOut?: VariantProps<typeof tooltipVariants>['fadeOut'] | undefined;
+  };
+  contentProps: TooltipContentProps & {
+    size?: VariantProps<typeof tooltipVariants>['size'];
+    variant?: VariantProps<typeof tooltipVariants>['variant'];
+    textAlign?: TextAlignType;
+  };
+  arrowProps?: TooltipArrowProps;
+  children: React.ReactElement;
+  contents?: React.ReactNode | string;
+  asChild?: boolean;
+  isArrow?: boolean;
+  disabled?: boolean;
+  className?: string;
+};
+
+function TooltipContainer({
+  triggerProps = { asChild: true },
+  portalProps = { fadeOut: undefined },
+  contentProps = {
+    variant: 'default',
+    size: 'medium',
+    side: 'top',
+    align: 'center',
+    textAlign: 'left',
+  },
+  arrowProps,
+  children,
+  contents,
+  className,
+  isArrow = true,
+  disabled = false,
+}: TooltipContainerProps) {
+  const { fadeOut } = portalProps;
+  const { variant, size, side, align, textAlign, ...restContentProps } = contentProps;
+  const { content, arrow, base } = tooltipVariants({
+    variant,
+    size,
+    textAlign,
+    disabled,
+    fadeOut: fadeOut !== undefined,
+  });
+  const contentClass = cn(base(), content());
+  const arrowClass = cn(arrow());
+
+  // hydration mismatch 에러 이슈 -> SSR-safe: 초기값은 null, 클라이언트에서만 container 할당
+  const [currentContainer, setCurrentContainer] = useState<ContainerType>(null);
+
+  useEffect(() => {
+    let newContainer: ContainerType;
+
+    if (portalProps && portalProps.container instanceof Element) {
+      newContainer = portalProps.container;
+    } else {
+      newContainer = document.body;
+    }
+
+    setCurrentContainer(newContainer);
+  }, [portalProps, portalProps.container]);
+
+  if (!isValidElement(children) || !currentContainer) {
+    if (!isValidElement(children)) console.warn('TooltipContainer: 유효한 trigger 가 필요합니다.');
+
+    return null;
+  }
+
+  return (
+    <>
+      <TooltipTrigger {...(triggerProps || {})}>{children}</TooltipTrigger>
+      <TooltipPortal {...portalProps} container={currentContainer}>
+        {!disabled && (
+          <TooltipContent {...restContentProps} side={side} align={align} className={cn(contentClass, className)}>
+            {contents}
+            {isArrow && <TooltipArrow {...arrowProps} className={cn(arrowClass)} />}
+          </TooltipContent>
+        )}
+      </TooltipPortal>
+    </>
+  );
+}
+
 function Tooltip({
   delayDuration = DEFAULT_DELAY_DURATION,
   open,
@@ -117,7 +257,7 @@ function Tooltip({
   onOpenChange,
   openStatusRef,
   fadeOut = false,
-  isShowArrow = true,
+  isArrow = true,
   variant = 'default',
   size = 'medium',
   side = 'top',
@@ -147,7 +287,7 @@ function Tooltip({
           alignOffset,
           textAlign,
         }}
-        isShowArrow={isShowArrow}
+        isArrow={isArrow}
         contents={contents}
         className={className}
         disabled={disabled}
@@ -158,4 +298,5 @@ function Tooltip({
   );
 }
 
+export { TooltipWrapper, TooltipContainer };
 export default Tooltip;
