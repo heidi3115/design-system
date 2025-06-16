@@ -1,3 +1,5 @@
+'use client';
+
 import React, { isValidElement, useEffect, useImperativeHandle, useState } from 'react';
 import { type VariantProps } from 'tailwind-variants';
 import { cn } from '@common/ui/lib/utils';
