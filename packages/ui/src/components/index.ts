@@ -44,6 +44,17 @@ export {
   AlertDialogOverlay,
 } from './AlertDialog';
 export { Label } from './Label';
+export {
+  DialogRoot,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  BaseDialog,
+} from './Dialog';
 export { Switch } from './Switch';
 export { Skeleton, CardSkeleton } from './Skeleton';
 export {
