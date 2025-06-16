@@ -122,7 +122,7 @@ export default function Page() {
             {...fruitField}
           />
 
-          <Popover trigger={FilePlusIcon} variant="secondary" size="small" closeIcon isArrow>
+          <Popover trigger={FilePlusIcon} variant="secondary" size="small" isCloseIcon isArrow>
             dadfdsfadsffsdfadfsfasdfadfasfas
           </Popover>
           <Popover

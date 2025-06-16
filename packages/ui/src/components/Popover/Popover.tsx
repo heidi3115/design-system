@@ -8,6 +8,9 @@ import { XIcon } from '@common/ui/icons';
 import { cn } from '../../lib/utils';
 import useExtractClassName from '../hooks/useExtractClassName';
 
+export const DEFAULT_SIDE_OFFSET = 6;
+export const DEFAULT_ALIGN_OFFSET = 0;
+
 const popoverVariants = tv({
   base: '',
   variants: {
@@ -34,14 +37,13 @@ type PopoverProps = {
   children: ReactNode;
   trigger: ReactNode | ComponentType;
   className?: string;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
   anchorRef?: RefObject<HTMLElement | null>;
-  closeIcon?: boolean;
+  isCloseIcon?: boolean;
   isArrow?: boolean;
   portalContainer?: Element | DocumentFragment | null | undefined;
 } & VariantProps<typeof popoverVariants> &
-  Pick<ComponentProps<typeof PopoverContent>, 'side' | 'align' | 'sideOffset' | 'alignOffset'>;
+  Pick<ComponentProps<typeof PopoverContent>, 'side' | 'align' | 'sideOffset' | 'alignOffset'> &
+  Pick<ComponentProps<typeof PopoverRoot>, 'open' | 'defaultOpen' | 'onOpenChange'>;
 
 type Measurable = {
   getBoundingClientRect(): DOMRect;
@@ -51,14 +53,15 @@ function Popover({
   className,
   trigger,
   open,
+  defaultOpen,
   onOpenChange,
   anchorRef,
-  closeIcon = false,
-  isArrow = false,
   portalContainer,
   children,
   variant,
   size,
+  isCloseIcon = false,
+  isArrow = false,
   ...props
 }: PopoverProps) {
   const virtualRef = useRef<Measurable>(null!);
@@ -72,7 +75,7 @@ function Popover({
   const bgColor = useExtractClassName(isArrow ? contentClassName : '', 'bg-');
 
   return (
-    <PopoverRoot open={open} onOpenChange={onOpenChange}>
+    <PopoverRoot defaultOpen={defaultOpen} open={open} onOpenChange={onOpenChange}>
       {trigger &&
         (typeof trigger === 'function' ? (
           <PopoverTrigger asChild>{createElement(trigger)}</PopoverTrigger>
@@ -83,7 +86,7 @@ function Popover({
       <PopoverContent className={contentClassName} container={portalContainer} {...props}>
         {children}
 
-        {closeIcon && (
+        {isCloseIcon && (
           <PopoverClose className="absolute top-[3px] right-[3px]" asChild>
             <XIcon size="small" className="hover:opacity-50" />
           </PopoverClose>

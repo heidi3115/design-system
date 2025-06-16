@@ -3,6 +3,7 @@
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 
 import { cn } from '../../lib/utils';
+import { DEFAULT_ALIGN_OFFSET, DEFAULT_SIDE_OFFSET } from './Popover';
 
 function PopoverRoot({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
   return <PopoverPrimitive.Root data-slot="popover" {...props} />;
@@ -16,8 +17,8 @@ function PopoverContent({
   className,
   align = 'center',
   side = 'bottom',
-  sideOffset = 6,
-  alignOffset = 0,
+  sideOffset = DEFAULT_SIDE_OFFSET,
+  alignOffset = DEFAULT_ALIGN_OFFSET,
   container,
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Content> &
