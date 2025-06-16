@@ -25,7 +25,10 @@ export type { BasicTooltipProps as TooltipProps } from './BasicTooltip';
 export {
   default as tooltipVariants,
   DEFAULT_DELAY_DURATION,
+  DEFAULT_FADEOUT_DURATION,
   DEFAULT_SIDE_OFFSET,
   DEFAULT_ALIGN_OFFSET,
   type TextAlignType,
+  type TooltipAlignType,
+  type TooltipSideType,
 } from './TooltipUtils';

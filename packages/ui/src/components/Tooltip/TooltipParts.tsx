@@ -94,7 +94,9 @@ type ContainerType = Element | DocumentFragment | null;
 
 export type TooltipContainerProps = {
   triggerProps?: TooltipTriggerProps;
-  portalProps?: Omit<TooltipPortalProps, 'forceMount'> & { fadeOut?: boolean };
+  portalProps?: TooltipPortalProps & {
+    fadeOut?: VariantProps<typeof tooltipVariants>['fadeOut'] | undefined;
+  };
   contentProps: TooltipContentProps & {
     size?: VariantProps<typeof tooltipVariants>['size'];
     variant?: VariantProps<typeof tooltipVariants>['variant'];
@@ -128,9 +130,15 @@ function TooltipContainer({
 }: TooltipContainerProps) {
   const { fadeOut } = portalProps;
   const { variant, size, side, align, textAlign, ...restContentProps } = contentProps;
-  const { content, arrow, base } = tooltipVariants({ variant, size, textAlign, fadeOut, disabled });
+  const { content, arrow, base } = tooltipVariants({
+    variant,
+    size,
+    textAlign,
+    disabled,
+    fadeOut: fadeOut !== undefined,
+  });
   const contentClass = cn(base(), content());
-  const arrowClass = cn(arrow(), arrow({ side, align, disabled }));
+  const arrowClass = cn(arrow());
 
   // hydration mismatch 에러 이슈 -> SSR-safe: 초기값은 null, 클라이언트에서만 container 할당
   const [currentContainer, setCurrentContainer] = useState<ContainerType>(null);
@@ -156,29 +164,7 @@ function TooltipContainer({
   return (
     <>
       <TooltipTrigger {...(triggerProps || {})}>{children}</TooltipTrigger>
-      <TooltipPortal
-        {...portalProps}
-        forceMount={fadeOut || undefined}
-        // modal 이라던지 document.body 외부의 경우 처리
-        // 외부 호출 시,
-        /*
-         * const [modalRoot, setModalRoot] = useState<HTMLElement | null>(null);
-         * useEffect(() => {
-         *   setModalRoot(document.getElementById('modal-root'));
-         * }, []);
-         * 처럼 처리 하고
-         * containerProps={{
-         *    portalProps: {
-         *      container: modalRoot, // document.body 대신 원하는 엘리먼트
-         *    },
-         * }}
-         * 처럼 처리해야 함. 아니면
-         * */
-        // 페이지 혹은 다른 컴포넌트에서 import dynamic from 'next/dynamic';으로
-        // const DynamicTooltip = dynamic(() => import('./components/ClientOnlyTooltip'), {
-        //   ssr: false, // 클라이언트에서만 렌더링
-        // }); // 처럼 호출
-        container={currentContainer}>
+      <TooltipPortal {...portalProps} container={currentContainer}>
         {!disabled && (
           <TooltipContent {...restContentProps} side={side} align={align} className={cn(contentClass, className)}>
             {contents}

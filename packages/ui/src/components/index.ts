@@ -72,6 +72,7 @@ export {
   Tooltip,
   tooltipVariants,
   DEFAULT_DELAY_DURATION,
+  DEFAULT_FADEOUT_DURATION,
   DEFAULT_SIDE_OFFSET,
   DEFAULT_ALIGN_OFFSET,
 } from './Tooltip';
@@ -86,4 +87,8 @@ export type {
   TooltipContainerProps,
   TooltipProps,
   TextAlignType,
+  TooltipAlignType,
+  TooltipSideType,
 } from './Tooltip';
+
+export { Separator, type SeparatorProps, separatorVariants } from './Separator';

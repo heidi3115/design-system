@@ -120,26 +120,32 @@ export default function TooltipPage() {
               <div className={'flex flex-col gap-5 items-center'}>
                 <h2 className={'text-juiText-blue text-2xl font-semibold'}>size comparison</h2>
                 <div className={'flex flex-row gap-6'}>
-                  {sizeKeys.map((size, idx) => (
-                    <div key={size} className="flex flex-col gap-4 items-center justify-center">
-                      <span className={'text-base font-bold text-juiText-blue'}>{size}</span>
-                      <Tooltip
-                        size={size}
-                        delayDuration={idx * 100}
-                        open={sizeTooltipOpenStatus[idx]}
-                        onOpenChange={() =>
-                          setSizeTooltipOpenStatus((prev) => prev.map((open, i) => (i === idx ? !open : open)))
-                        }
-                        contents={`${size} : Tooltip 내용입니다. ${LONG_TXT}`}>
-                        <Button variant={'primary'} size={size === 'custom' ? 'basic' : size} type="button">
-                          {size} toggle duration={idx * 100}
-                        </Button>
-                      </Tooltip>
-                      <span className="text-gray-500 text-sm">
-                        현재 상태: {sizeTooltipOpenStatus[idx] ? '열림' : '닫힘'}
-                      </span>
-                    </div>
-                  ))}
+                  {sizeKeys.map((size, idx) => {
+                    const duration = (idx + 4) * 100;
+
+                    return (
+                      <div key={size} className="flex flex-col gap-4 items-center justify-center">
+                        <span className={'text-base font-bold text-juiText-blue'}>{size}</span>
+                        <Tooltip
+                          size={size}
+                          delayDuration={duration}
+                          fadeOut={true}
+                          open={sizeTooltipOpenStatus[idx]}
+                          onOpenChange={() =>
+                            setSizeTooltipOpenStatus((prev) => prev.map((open, i) => (i === idx ? !open : open)))
+                          }
+                          contents={`${size} : Tooltip 내용입니다. ${LONG_TXT}`}>
+                          <Button variant={'primary'} size={size === 'custom' ? 'basic' : size} type="button">
+                            {size} toggle duration={duration}
+                          </Button>
+                        </Tooltip>
+                        <span className="text-gray-500 text-sm">
+                          현재 상태: {sizeTooltipOpenStatus[idx] ? '열림' : '닫힘'}
+                          duration={duration} | fadeOut={true}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               <span className={'text-3xl font-bold'}>Toggle Test</span>
@@ -185,6 +191,7 @@ export default function TooltipPage() {
                         size={size}
                         variant={'primary'}
                         delayDuration={idx * 100}
+                        fadeOut={true}
                         contents={`${size} : Tooltip 내용입니다. ${LONG_TXT}`}
                         open={sizeLinkTooltipOpenStatus[idx]}
                         onOpenChange={() =>
@@ -195,7 +202,7 @@ export default function TooltipPage() {
                           className={
                             'flex items-center justify-start text-base text-center font-semibold hover:text-juiStatus-complete'
                           }>
-                          <BarChartIcon /> Link : {size} - toggle duration={idx * 100}
+                          <BarChartIcon /> Link : {size} - duration={idx * 100} fadeOut={true}
                         </Link>
                       </Tooltip>
                       <span className="text-gray-500 text-sm">
@@ -216,7 +223,7 @@ export default function TooltipPage() {
                   contents={`TooltipContainer test - fadeOut: true`}
                   portalProps={{ fadeOut: true }}
                   contentProps={{ size: 'medium' }}>
-                  <Button variant={'secondary'}>TooltipWrapper & TooltipContainer</Button>
+                  <Button variant={'secondary'}>TooltipWrapper & TooltipContainer with fadeOut</Button>
                 </TooltipContainer>
               </TooltipWrapper>
               <TooltipWrapper>

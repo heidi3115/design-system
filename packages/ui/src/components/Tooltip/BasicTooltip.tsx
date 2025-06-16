@@ -2,7 +2,9 @@ import React from 'react';
 import {
   DEFAULT_DELAY_DURATION,
   type TextAlignType,
+  type TooltipAlignType,
   TooltipContainer,
+  type TooltipSideType,
   tooltipVariants,
   TooltipWrapper,
 } from '@common/ui/components/Tooltip';
@@ -22,7 +24,7 @@ export type BasicTooltipProps = {
    */
   open?: boolean;
   /**
-   * defaultOpen: Tooltip의 기본 열림 상태를 지정합니다. 내부적으로 상태를 관리할 때 사용합니다(Uncontrolled).
+   * defaultOpen: Tooltip의 초기 열림 상태입니다. 내부적으로 상태를 관리할 때 사용합니다(Uncontrolled).
    * 기본값은 false 입니다.
    */
   defaultOpen?: boolean;
@@ -33,11 +35,13 @@ export type BasicTooltipProps = {
   onOpenChange?: (open: boolean) => void;
   // Container
   /**
-   * fadeOut: Tooltip의 Portal 과 Contents의 API 명으로는 forceMount 로써, Tooltip이 닫힐 때 fade-out 애니메이션을 적용할지 여부입니다.
-   * Tooltip이 닫힐 때 바로 DOM 에서 사라지면 애니메이션 유지가 되지 않으므로 forceMount의 기본값을 true 로 하여 fade-out 애니메이션이 적용되도록 하고,
-   * forceMount 보다 fadeOut 이 직관적이라 이름을 바꾸었습니다.
+   * fadeOut: Tooltip이 닫힐 때 fade-out 애니메이션을 적용할지 여부 및 애니메이션의 적용 시간(밀리초 단위)입니다.
+   * Tooltip이 닫힐 때 해당 시간만큼 자연스럽게 사라지는 애니메이션이 적용됩니다.
+   * fadeOut에 숫자가 들어가게 되면 forceMount가 true가 되고, fade-out 되는 시간이 입력값 만큼 적용됩니다.
+   * 기본값은 undefined 이며, undefined 일 때도 300 이 적용이 됩니다.
+   * Tailwind CSS 에서 지원하는 duration 값만 정상 동작합니다.
    */
-  fadeOut?: true | undefined;
+  fadeOut?: VariantProps<typeof tooltipVariants>['fadeOut'] | undefined;
   /**
    * isShowArrow: Tooltip의 화살표(arrow) 표시 여부입니다. true로 설정 시 Tooltip에 화살표가 나타나며, 기본값은 true 입니다.
    */
@@ -59,7 +63,7 @@ export type BasicTooltipProps = {
    * 'top', 'bottom', 'left', 'right' 중 하나를 선택할 수 있습니다.
    * 기본값은 'top' 입니다.
    */
-  side?: VariantProps<typeof tooltipVariants>['side'];
+  side?: TooltipSideType;
   /**
    * sideOffset: Tooltip이 트리거로부터 얼마나 떨어져서 표시될지(픽셀 단위) 지정합니다.
    * 기본값은 현재 8 입니다.
@@ -70,7 +74,7 @@ export type BasicTooltipProps = {
    * 'start', 'center', 'end' 중 하나를 선택할 수 있습니다.
    * 기본값은 'center' 입니다.
    */
-  align?: VariantProps<typeof tooltipVariants>['align'];
+  align?: TooltipAlignType;
   /**
    * alignOffset: Tooltip의 정렬 상태 기준에서 추가로 얼마나 이동할지(픽셀 단위) 지정합니다. 기본값은 0 입니다.
    */
@@ -84,7 +88,7 @@ export type BasicTooltipProps = {
   /**
    * contents: Tooltip에 표시할 내용입니다. 기본적으로 간단한 문자열을 받는 것을 기준으로 하고 있습니다.
    */
-  contents?: React.ReactNode | string;
+  contents: React.ReactNode | string;
   /**
    * children: Tooltip의 트리거 역할을 할 React 엘리먼트입니다.
    * Tooltip을 표시할 기준이 되는 컴포넌트(예: 버튼, 아이콘 등)를 전달합니다.
@@ -112,7 +116,7 @@ function BasicTooltip({
   defaultOpen = false,
   onOpenChange,
   openStatusRef,
-  fadeOut = undefined,
+  fadeOut = false,
   isShowArrow = true,
   variant = 'default',
   size = 'medium',
@@ -133,7 +137,7 @@ function BasicTooltip({
       rootProps={{ open, defaultOpen, onOpenChange }}
       openStatusRef={openStatusRef}>
       <TooltipContainer
-        portalProps={{ fadeOut: fadeOut }}
+        portalProps={{ fadeOut }}
         contentProps={{
           size,
           variant,
