@@ -193,6 +193,98 @@ export const Default: Story = {
   ),
 };
 
+export const Variants: Story = {
+  args: {
+    sideOffset: 30,
+  },
+  argTypes: {
+    delayDuration: { control: false, table: { disable: true } },
+    open: { control: false, table: { disable: true } },
+    defaultOpen: { control: false, table: { disable: true } },
+    onOpenChange: { control: false, table: { disable: true } },
+    openStatusRef: { control: false, table: { disable: true } },
+    fadeOut: { control: false, table: { disable: true } },
+    variant: { control: false, table: { disable: true } },
+    sideOffset: { control: false, table: { disable: true } },
+    children: { control: false, table: { disable: true } },
+    contents: { control: false, table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: ['Tooltip의 다양한 Variant 별 예시를 확인하실 수 있습니다.'].join('\n'),
+      },
+    },
+  },
+  render: (args: TooltipProps) => (
+    <div className={cn(flexColBoxGap4)}>
+      <span className="block text-base font-bold text-left mb-10">Default Variants</span>
+      <div className={cn(flexRowBoxGap4, 'mb-10')}>
+        {variantOptions.map((variant) => (
+          <div className={cn(commonBoxClass, 'flex flex-col flex-1 gap-2')} key={variant}>
+            <span className="text-xs text-juiText-blue">{variant}</span>
+            <Tooltip
+              {...args}
+              defaultOpen={true}
+              variant={variant}
+              contents={`variant : ${variant === 'custom' ? `custom 인 경우 별도로 className에 bg-red-400 text-zinc-800를 적용했습니다.` : variant} \nsize : ${args.size}`}
+              className={variant === 'custom' ? `bg-red-400 text-zinc-800` : ''}>
+              <Button variant={variant === 'custom' ? 'gradient' : variant}>{variant}</Button>
+            </Tooltip>
+          </div>
+        ))}
+      </div>
+      <hr />
+    </div>
+  ),
+};
+
+export const Sizes: Story = {
+  args: {
+    sideOffset: 30,
+  },
+  argTypes: {
+    delayDuration: { control: false, table: { disable: true } },
+    open: { control: false, table: { disable: true } },
+    defaultOpen: { control: false, table: { disable: true } },
+    onOpenChange: { control: false, table: { disable: true } },
+    openStatusRef: { control: false, table: { disable: true } },
+    fadeOut: { control: false, table: { disable: true } },
+    size: { control: false, table: { disable: true } },
+    sideOffset: { control: false, table: { disable: true } },
+    children: { control: false, table: { disable: true } },
+    contents: { control: false, table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: ['Tooltip의 다양한 Size 별 예시를 확인하실 수 있습니다.'].join('\n'),
+      },
+    },
+  },
+  render: (args: TooltipProps) => (
+    <div className={cn(flexColBoxGap4)}>
+      <span className="block text-base font-bold text-left mb-10">Default Variants</span>
+      <div className={cn(flexRowBoxGap4, 'mb-10')}>
+        {sizeOptions.map((size) => (
+          <div className={cn(commonBoxClass, 'flex flex-col flex-1 gap-2')} key={size}>
+            <span className="text-xs text-juiText-blue">{size}</span>
+            <Tooltip
+              {...args}
+              defaultOpen={true}
+              size={size}
+              contents={`variant : ${args.variant} \nsize : ${size}`}
+              className={args.variant === 'custom' ? `bg-red-400 text-zinc-800` : ''}>
+              <Button>{size}</Button>
+            </Tooltip>
+          </div>
+        ))}
+      </div>
+      <hr />
+    </div>
+  ),
+};
+
 function TooltipDelayDuration({ ...args }: TooltipProps) {
   const [openStat, setOpenStat] = useState(false);
 

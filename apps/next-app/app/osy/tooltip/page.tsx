@@ -159,7 +159,8 @@ export default function TooltipPage() {
                         open={variantTooltipOpenStatus[idx]}
                         size={'medium'}
                         variant={variant}
-                        contents={`${variant} : Tooltip 내용입니다. ${LONG_TXT}`}>
+                        contents={`${variant} : Tooltip 내용입니다. \ncustom일 시, className에 bg-lime-400 text-zinc-800를 적용했습니다.\n${LONG_TXT}`}
+                        className={variant === 'custom' ? `bg-lime-400 text-zinc-800 ` : ''}>
                         <Button
                           variant={'secondary'}
                           size={'large'}

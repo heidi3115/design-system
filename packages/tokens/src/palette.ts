@@ -33,6 +33,8 @@ const palette = {
     paper: { main: 'rgba(255, 255, 255, 0.05)', light: 'rgba(0, 0, 0, 0.05)' },
     input: { main: 'rgba(0, 0, 0, 0.3)', light: '#fff' },
     skeleton: { main: '#3c4f6b', light: '#e0e0e0' },
+    tooltip: { main: '#3B4154', light: '#3B4154' },
+    popover: { main: '#182036', light: '#fff' },
   },
   juiText: {
     primary: { main: '#fff', light: '#333333' },

@@ -18,6 +18,7 @@ import {
   TooltipTrigger,
   type TooltipTriggerProps,
 } from './TooltipParts';
+import useExtractClassName from '@common/ui/hooks/useExtractClassName';
 
 export const DEFAULT_SIDE_OFFSET = 6;
 export const DEFAULT_ALIGN_OFFSET = 0;
@@ -69,6 +70,7 @@ export type TooltipProps = {
    * size: Tooltip의 content의 크기를 지정합니다.
    * 'small', 'medium', 'large', 'custom' 등의 형태가 있습니다.
    * 기본값은 'medium' 이고, 'custom' 은 크기 별도 지정이 필요할 경우입니다.
+   * 별도 지정 시 bg-* 로 시작하는 TailwindCSS 에서 적용되는 내역이 필요하며, className에 꼭 추가해야 합니다.
    */
   size?: VariantProps<typeof tooltipVariants>['size'];
   /**
@@ -101,7 +103,7 @@ export type TooltipProps = {
   /**
    * contents: Tooltip에 표시할 내용입니다. 기본적으로 간단한 문자열을 받는 것을 기준으로 하고 있습니다.
    */
-  contents: React.ReactNode | string;
+  contents: React.ReactNode;
   /**
    * children: Tooltip의 트리거 역할을 할 React 엘리먼트입니다.
    * Tooltip을 표시할 기준이 되는 컴포넌트(예: 버튼, 아이콘 등)를 전달합니다.
@@ -211,7 +213,9 @@ function TooltipContainer({
     disabled,
   });
   const contentClass = cn(base(), content());
-  const arrowClass = cn(arrow());
+  const extractArrowClass = `fill-${useExtractClassName(size === 'custom' ? contentClass : cn(contentClass, className), 'bg-')}`;
+  const customArrowFillClass = size === 'custom' ? 'fill-juiBackground-tooltip' : extractArrowClass;
+  const arrowClass = cn(arrow(), customArrowFillClass);
   const fadeOutClass = fadeOut
     ? `transition-opacity data-[state=closed]:duration-${DEFAULT_FADEOUT_DURATION}`
     : 'transition-opacity data-[state=closed]:duration-0';
@@ -246,7 +250,7 @@ function TooltipContainer({
             {...restContentProps}
             side={side}
             align={align}
-            className={cn(contentClass, fadeOutClass, className)}>
+            className={cn(contentClass, fadeOutClass, extractArrowClass, className)}>
             {contents}
             {isArrow && <TooltipArrow {...arrowProps} className={cn(arrowClass)} />}
           </TooltipContent>
