@@ -16,7 +16,7 @@ function PopoverContent({
   className,
   align = 'center',
   side = 'bottom',
-  sideOffset = 4,
+  sideOffset = 6,
   alignOffset = 0,
   container,
   ...props

@@ -4,7 +4,7 @@ const lintstagedrc = {
   'packages/ui/**/*.{ts,tsx,js,jsx,json}': ['pnpm ui lint'],
   'packages/utils/**/*.{ts,tsx,js,jsx,json}': ['pnpm utils lint'],
   'apps/next-app/**/*.{ts,tsx,js,jsx,json}': ['pnpm next-app eslint'],
-  'apps/reaect-app/**/*.{ts,tsx,js,jsx,json}': ['pnpm react-app lint'],
+  'apps/react-app/**/*.{ts,tsx,js,jsx,json}': ['pnpm react-app lint'],
   'storybook/**/*.{ts,tsx,js,jsx,json}': ['pnpm storybook lint'],
 };
 

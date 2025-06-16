@@ -1,16 +1,15 @@
 'use client';
 
 import { type RefObject, useRef, type ReactNode, type ComponentType, createElement, type ComponentProps } from 'react';
-import { PopoverAnchor, PopoverArrow, PopoverClose, PopoverRoot } from './PopoverParts';
-
-import { PopoverContent, PopoverTrigger } from './PopoverParts';
+import { tv, type VariantProps } from 'tailwind-variants';
+import { PopoverAnchor, PopoverArrow, PopoverClose, PopoverRoot, PopoverContent, PopoverTrigger } from './PopoverParts';
 import { XIcon } from '@common/ui/icons';
+
 import { cn } from '../../lib/utils';
 import useExtractClassName from '../hooks/useExtractClassName';
-import { tv, type VariantProps } from 'tailwind-variants';
 
 const popoverVariants = tv({
-  base: 'overflow-auto ',
+  base: '',
   variants: {
     variant: {
       primary: 'bg-juiPrimary',
@@ -39,7 +38,7 @@ type PopoverProps = {
   onOpenChange?: (open: boolean) => void;
   anchorRef?: RefObject<HTMLElement | null>;
   closeIcon?: boolean;
-  arrow?: boolean;
+  isArrow?: boolean;
   portalContainer?: Element | DocumentFragment | null | undefined;
 } & VariantProps<typeof popoverVariants> &
   Pick<ComponentProps<typeof PopoverContent>, 'side' | 'align' | 'sideOffset' | 'alignOffset'>;
@@ -55,7 +54,7 @@ function Popover({
   onOpenChange,
   anchorRef,
   closeIcon = false,
-  arrow = false,
+  isArrow = false,
   portalContainer,
   children,
   variant,
@@ -70,7 +69,7 @@ function Popover({
 
   const contentClassName = cn(popoverVariants({ variant, size }), className);
 
-  const bgColor = useExtractClassName(arrow ? contentClassName : '', 'bg-');
+  const bgColor = useExtractClassName(isArrow ? contentClassName : '', 'bg-');
 
   return (
     <PopoverRoot open={open} onOpenChange={onOpenChange}>
@@ -90,7 +89,7 @@ function Popover({
           </PopoverClose>
         )}
 
-        {arrow && (
+        {isArrow && (
           <PopoverArrow
             className={cn('w-2.5 h-1.5', `${bgColor ? `fill-${bgColor}` : 'fill-juiBackground-default'}`)}
           />
