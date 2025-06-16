@@ -134,10 +134,6 @@ export default function Page() {
             default popover
           </Popover>
 
-          <div ref={anchorRef} className="absolute top-28 right-20">
-            this is popover position
-          </div>
-
           <div className="flex gap-1">
             <Button
               onClick={() => {
@@ -147,6 +143,9 @@ export default function Page() {
             </Button>
           </div>
 
+          <div ref={anchorRef} className="absolute top-28 right-20">
+            this is popover position
+          </div>
           <Popover anchorRef={anchorRef} trigger={<Button>Anchor</Button>} side="left" align="start" isArrow>
             AnchorRef로 오픈
           </Popover>

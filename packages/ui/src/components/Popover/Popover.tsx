@@ -1,6 +1,14 @@
 'use client';
 
-import { type RefObject, useRef, type ReactNode, type ComponentType, createElement, type ComponentProps } from 'react';
+import {
+  type RefObject,
+  type ReactNode,
+  type ComponentType,
+  createElement,
+  type ComponentProps,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 import { PopoverAnchor, PopoverArrow, PopoverClose, PopoverRoot, PopoverContent, PopoverTrigger } from './PopoverParts';
 import { XIcon } from '@common/ui/icons';
@@ -64,11 +72,13 @@ function Popover({
   isArrow = false,
   ...props
 }: PopoverProps) {
-  const virtualRef = useRef<Measurable>(null!);
+  const [virtualElement, setVirtualElement] = useState<Measurable | null>(null);
 
-  if (anchorRef?.current) {
-    virtualRef.current = anchorRef.current;
-  }
+  useLayoutEffect(() => {
+    if (anchorRef?.current) {
+      setVirtualElement(anchorRef.current);
+    }
+  }, [anchorRef]);
 
   const contentClassName = cn(popoverVariants({ variant, size }), className);
 
@@ -82,7 +92,7 @@ function Popover({
         ) : (
           <PopoverTrigger asChild>{trigger}</PopoverTrigger>
         ))}
-      {anchorRef?.current && virtualRef.current && <PopoverAnchor virtualRef={virtualRef} />}
+      {virtualElement && <PopoverAnchor virtualRef={{ current: virtualElement }} />}
       <PopoverContent className={contentClassName} container={portalContainer} {...props}>
         {children}
 
@@ -94,7 +104,7 @@ function Popover({
 
         {isArrow && (
           <PopoverArrow
-            className={cn('w-2.5 h-1.5', `${bgColor ? `fill-${bgColor}` : 'fill-juiBackground-default'}`)}
+            className={cn('w-2.5 h-1.5', `${bgColor ? `fill-${bgColor}` : 'fill-juiBackground-popover'}`)}
           />
         )}
       </PopoverContent>

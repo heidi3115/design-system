@@ -30,7 +30,7 @@ function PopoverContent({
         className={cn(
           [
             // 기본 배경 및 텍스트 색상
-            'bg-juiBackground-default text-juiText-primary',
+            'bg-juiBackground-popover text-juiText-primary',
 
             // 상태 기반 애니메이션
             // 팝오버 열릴 때 애니메이션 적용
