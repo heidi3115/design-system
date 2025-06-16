@@ -20,8 +20,8 @@ export type {
   TooltipContainerProps,
 } from './TooltipParts';
 
-export { default as Tooltip } from './BasicTooltip';
-export type { BasicTooltipProps as TooltipProps } from './BasicTooltip';
+export { default as Tooltip } from './Tooltip';
+export type { TooltipProps } from './Tooltip';
 export {
   default as tooltipVariants,
   DEFAULT_DELAY_DURATION,

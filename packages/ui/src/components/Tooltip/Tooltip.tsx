@@ -11,7 +11,7 @@ import {
 import { type VariantProps } from 'tailwind-variants';
 import { DEFAULT_ALIGN_OFFSET, DEFAULT_SIDE_OFFSET } from '@common/ui/components/Tooltip/TooltipUtils';
 
-export type BasicTooltipProps = {
+export type TooltipProps = {
   // Wrapper
   /**
    * delayDuration: 모든 Tooltip의 기본 지연 시간(ms, 기본 700)으로써, Tooltip이 보여지기 전 대기 시간(밀리초 단위)입니다.
@@ -82,7 +82,7 @@ export type BasicTooltipProps = {
   /**
    * textAlign: Tooltip 내부 텍스트의 정렬 방식을 지정합니다.
    * 'left', 'center', 'right' 중 하나를 선택할 수 있습니다.
-   * 기본값은 'left'입니다.
+   * 기본값은 'left' 입니다.
    */
   textAlign?: TextAlignType;
   /**
@@ -110,7 +110,7 @@ export type BasicTooltipProps = {
   disabled?: boolean;
 };
 
-function BasicTooltip({
+function Tooltip({
   delayDuration = DEFAULT_DELAY_DURATION,
   open,
   defaultOpen = false,
@@ -130,7 +130,7 @@ function BasicTooltip({
   className,
   disabled = false,
   ...props
-}: BasicTooltipProps) {
+}: TooltipProps) {
   return (
     <TooltipWrapper
       providerProps={{ delayDuration }}
@@ -158,6 +158,4 @@ function BasicTooltip({
   );
 }
 
-export default BasicTooltip;
-
-BasicTooltip.displayName = 'Tooltip';
+export default Tooltip;
