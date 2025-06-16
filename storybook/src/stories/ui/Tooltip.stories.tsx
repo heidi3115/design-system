@@ -26,7 +26,6 @@ const sizeOptions = Object.keys(tooltipVariants.variants.size) as (keyof typeof 
 const sideOptions: TooltipContentProps['side'][] = ['top', 'left', 'bottom', 'right'] as const;
 const alignOptions: TooltipContentProps['align'][] = ['start', 'center', 'end'] as const;
 const textAlignOptions: TextAlignType[] = ['left', 'right', 'center'] as const;
-const fadeOutOptions = [undefined, 300, 500, 700, 1000];
 const delayDurationArr = [200, 300, 500, 700, 1000];
 
 const titleCommonClass = 'text-juiText-primary text-3xl font-semibold';
@@ -46,7 +45,7 @@ const meta: Meta<typeof Tooltip> = {
     defaultOpen: false,
     onOpenChange: undefined,
     openStatusRef: undefined,
-    fadeOut: undefined,
+    fadeOut: false,
     isArrow: true,
     variant: 'default',
     size: 'small',
@@ -78,12 +77,8 @@ const meta: Meta<typeof Tooltip> = {
       control: false,
     },
     fadeOut: {
-      control: 'select',
-      options: fadeOutOptions,
-      table: {
-        type: { summary: `${fadeOutOptions.map((v) => (v === undefined ? 'undefined' : v)).join(', ')}` },
-        defaultValue: { summary: `${fadeOutOptions[0]}` },
-      },
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: `${false}` } },
     },
     isArrow: {
       control: 'boolean',

@@ -1,12 +1,10 @@
 import { tv } from 'tailwind-variants';
-import { DEFAULT_FADEOUT_DURATION } from '@common/ui/components/Tooltip/Tooltip';
 
 const TRANSITION_CLASS = [
   'transition-opacity',
   'data-[state=open]:opacity-100 data-[state=delayed-open]:opacity-100 data-[state=instant-open]:opacity-100',
   'data-[state=closed]:opacity-0 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
 ];
-const FADEOUT_DURATION_CLASS = `transition-opacity data-[state=closed]:duration-${DEFAULT_FADEOUT_DURATION}`;
 
 export const tooltipVariants = tv({
   base: ['size-fit z-10', 'bg-transparent fill-transparent rounded-md shadow-md z-15'],
@@ -15,7 +13,6 @@ export const tooltipVariants = tv({
       'p-2',
       'text-white font-medium break-all whitespace-pre-line',
       TRANSITION_CLASS,
-      FADEOUT_DURATION_CLASS,
       'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
     ],
     arrow: ['-mt-0.5'],
@@ -42,9 +39,6 @@ export const tooltipVariants = tv({
     },
     disabled: {
       true: { content: 'opacity-60', arrow: 'opacity-60' },
-    },
-    fadeOut: {
-      true: { content: FADEOUT_DURATION_CLASS },
     },
   },
   defaultVariants: {

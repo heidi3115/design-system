@@ -50,13 +50,11 @@ export type TooltipProps = {
   onOpenChange?: (open: boolean) => void;
   // Container
   /**
-   * fadeOut: Tooltip이 닫힐 때 fade-out 애니메이션을 적용할지 여부 및 애니메이션의 적용 시간(밀리초 단위)입니다.
+   * fadeOut: Tooltip이 닫힐 때 fade-out 애니메이션을 적용할 지 여부 입니다.
    * Tooltip이 닫힐 때 해당 시간만큼 자연스럽게 사라지는 애니메이션이 적용됩니다.
-   * fadeOut에 숫자가 들어가게 되면 forceMount가 true가 되고, fade-out 되는 시간이 입력값 만큼 적용됩니다.
-   * 기본값은 undefined 이며, undefined 일 때도 300 이 적용이 됩니다.
-   * Tailwind CSS 에서 지원하는 duration 값만 정상 동작합니다.
+   * 기본값은 false 이며, true 시 700(ms/밀리초 단위) 이 적용이 됩니다.
    */
-  fadeOut?: VariantProps<typeof tooltipVariants>['fadeOut'] | undefined;
+  fadeOut?: boolean;
   /**
    * isArrow: Tooltip의 화살표(arrow) 표시 여부입니다. true로 설정 시 Tooltip에 화살표가 나타나며, 기본값은 true 입니다.
    */
@@ -171,7 +169,7 @@ type ContainerType = Element | DocumentFragment | null;
 export type TooltipContainerProps = {
   triggerProps?: TooltipTriggerProps;
   portalProps?: TooltipPortalProps & {
-    fadeOut?: VariantProps<typeof tooltipVariants>['fadeOut'] | undefined;
+    fadeOut?: boolean;
   };
   contentProps: TooltipContentProps & {
     size?: VariantProps<typeof tooltipVariants>['size'];
@@ -189,7 +187,7 @@ export type TooltipContainerProps = {
 
 function TooltipContainer({
   triggerProps = { asChild: true },
-  portalProps = { fadeOut: undefined },
+  portalProps = { fadeOut: false },
   contentProps = {
     variant: 'default',
     size: 'medium',
@@ -211,10 +209,12 @@ function TooltipContainer({
     size,
     textAlign,
     disabled,
-    fadeOut: fadeOut !== undefined,
   });
   const contentClass = cn(base(), content());
   const arrowClass = cn(arrow());
+  const fadeOutClass = fadeOut
+    ? `transition-opacity data-[state=closed]:duration-${DEFAULT_FADEOUT_DURATION}`
+    : 'transition-opacity data-[state=closed]:duration-0';
 
   // hydration mismatch 에러 이슈 -> SSR-safe: 초기값은 null, 클라이언트에서만 container 할당
   const [currentContainer, setCurrentContainer] = useState<ContainerType>(null);
@@ -242,7 +242,11 @@ function TooltipContainer({
       <TooltipTrigger {...(triggerProps || {})}>{children}</TooltipTrigger>
       <TooltipPortal {...portalProps} container={currentContainer}>
         {!disabled && (
-          <TooltipContent {...restContentProps} side={side} align={align} className={cn(contentClass, className)}>
+          <TooltipContent
+            {...restContentProps}
+            side={side}
+            align={align}
+            className={cn(contentClass, fadeOutClass, className)}>
             {contents}
             {isArrow && <TooltipArrow {...arrowProps} className={cn(arrowClass)} />}
           </TooltipContent>
