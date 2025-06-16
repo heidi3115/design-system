@@ -45,11 +45,73 @@ export const Default: Story = {
   args: {
     trigger: <Button>Open Popover</Button>,
     children: <div>This is Popover content</div>,
-    side: 'bottom',
-    align: 'center',
-    variant: 'default',
-    size: 'basic',
   },
+};
+
+export const ArrowComparison: Story = {
+  args: {
+    side: 'top',
+    align: 'center',
+  },
+  render: (args) => (
+    <div style={{ display: 'flex', gap: '40px', justifyContent: 'center', padding: '100px' }}>
+      {/* isArrow: true */}
+      <Popover
+        {...args}
+        isArrow={true}
+        trigger={
+          <Button size="small" variant="gradient">
+            Arrow 있음
+          </Button>
+        }>
+        <div style={{ padding: '8px' }}>Popover with Arrow</div>
+      </Popover>
+
+      {/* isArrow: false */}
+      <Popover
+        {...args}
+        isArrow={false}
+        trigger={
+          <Button size="small" variant="gradient">
+            Arrow 없음
+          </Button>
+        }>
+        <div style={{ padding: '8px' }}>Popover without Arrow</div>
+      </Popover>
+    </div>
+  ),
+};
+
+export const CloseIconComparison: Story = {
+  args: {
+    side: 'top',
+    align: 'center',
+  },
+  render: (args) => (
+    <div style={{ display: 'flex', gap: '40px', justifyContent: 'center', padding: '100px' }}>
+      <Popover
+        {...args}
+        isCloseIcon={true}
+        trigger={
+          <Button size="small" variant="gradient">
+            Close Icon 있음
+          </Button>
+        }>
+        <div style={{ padding: '8px' }}>닫기 아이콘이 있는 팝오버</div>
+      </Popover>
+
+      <Popover
+        {...args}
+        isCloseIcon={false}
+        trigger={
+          <Button size="small" variant="gradient">
+            Close Icon 없음
+          </Button>
+        }>
+        <div style={{ padding: '8px' }}>닫기 아이콘 없는 팝오버</div>
+      </Popover>
+    </div>
+  ),
 };
 
 function PopoverPositionControl({ ...args }: ComponentProps<typeof Popover>) {
