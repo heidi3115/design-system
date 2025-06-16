@@ -50,7 +50,7 @@ const defaultButtonMap: Record<DefaultButtonType, { icon?: ReactNode; label: str
   check: { icon: <CheckIcon />, label: '확인' },
 };
 
-const BaseDialog = ({
+const Dialog = ({
   trigger,
   title,
   titleIcon,
@@ -67,7 +67,7 @@ const BaseDialog = ({
   const [open, setOpen] = useState(false);
 
   if (!isValidElement(trigger)) {
-    console.warn('BaseDialog: trigger는 유효한 React element여야 합니다.');
+    console.warn('Dialog: trigger는 유효한 React element여야 합니다.');
 
     return null;
   }
@@ -142,4 +142,4 @@ const BaseDialog = ({
   );
 };
 
-export default BaseDialog;
+export default Dialog;

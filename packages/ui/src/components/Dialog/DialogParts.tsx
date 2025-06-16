@@ -3,7 +3,7 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { XIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import { dialogVariants } from '@common/ui/components/Dialog/dialogVariants';
+import { dialogVariants } from './dialogVariants';
 import { type ComponentProps } from 'react';
 
 const { overlay, header, title, description, closeButton } = dialogVariants();
