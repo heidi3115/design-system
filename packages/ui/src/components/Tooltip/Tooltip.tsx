@@ -83,7 +83,7 @@ export type TooltipProps = {
    * sideOffset: Tooltip이 트리거로부터 얼마나 떨어져서 표시될지(픽셀 단위) 지정합니다.
    * 기본값은 현재 8 입니다.
    */
-  sideOffset?: number;
+  sideOffset?: TooltipContentProps['sideOffset'];
   /**
    * align: Tooltip의 정렬 기준을 지정합니다.
    * 'start', 'center', 'end' 중 하나를 선택할 수 있습니다.
@@ -93,7 +93,7 @@ export type TooltipProps = {
   /**
    * alignOffset: Tooltip의 정렬 상태 기준에서 추가로 얼마나 이동할지(픽셀 단위) 지정합니다. 기본값은 0 입니다.
    */
-  alignOffset?: number;
+  alignOffset?: TooltipContentProps['alignOffset'];
   /**
    * textAlign: Tooltip 내부 텍스트의 정렬 방식을 지정합니다.
    * 'left', 'center', 'right' 중 하나를 선택할 수 있습니다.
