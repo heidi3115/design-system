@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { type FormEvent, type MouseEvent, type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
 import { Button, Input, RadioGroup } from '@common/ui';
-import BaseDialog from '@common/ui/components/Dialog/BaseDialog.tsx';
+import Dialog from '@common/ui/components/Dialog/Dialog.tsx';
 import { EditIcon, SaveIcon, Trash2Icon } from '@common/ui/icons';
 import type { VariantProps } from 'tailwind-variants';
 
@@ -26,8 +26,8 @@ type DialogStoryArgs = {
 };
 
 const meta: Meta<DialogStoryArgs> = {
-  title: 'ui/Dialog/BaseDialog',
-  component: BaseDialog,
+  title: 'ui/Dialog/Dialog',
+  component: Dialog,
   argTypes: {
     showCloseButton: {
       control: { type: 'boolean' },
@@ -131,7 +131,7 @@ const Template = (args: DialogStoryArgs) => {
 
   return (
     <div ref={dialogAreaRef}>
-      <BaseDialog
+      <Dialog
         onSubmit={(e, close) => {
           e.preventDefault();
           alert('저장되었습니다');
@@ -148,7 +148,7 @@ const Template = (args: DialogStoryArgs) => {
         maxHeight={args.maxHeight}
         portalContainer={shouldUseArea ? portalContainer : undefined}>
         {args.children}
-      </BaseDialog>
+      </Dialog>
     </div>
   );
 };
@@ -181,7 +181,7 @@ export const ContentSize: Story = {
       <div className="flex gap-10">
         <div className="flex flex-col gap-2">
           <div>Small</div>
-          <BaseDialog
+          <Dialog
             onSubmit={(e) => {
               e.preventDefault();
             }}
@@ -195,11 +195,11 @@ export const ContentSize: Story = {
             buttons={args.buttons}
             maxHeight={args.maxHeight}>
             {args.children}
-          </BaseDialog>
+          </Dialog>
         </div>
         <div className="flex flex-col gap-2">
           <div>Medium</div>
-          <BaseDialog
+          <Dialog
             onSubmit={(e) => {
               e.preventDefault();
             }}
@@ -212,11 +212,11 @@ export const ContentSize: Story = {
             buttons={args.buttons}
             maxHeight={args.maxHeight}>
             {args.children}
-          </BaseDialog>
+          </Dialog>
         </div>
         <div className="flex flex-col gap-2">
           <div>Large</div>
-          <BaseDialog
+          <Dialog
             onSubmit={(e) => {
               e.preventDefault();
             }}
@@ -229,7 +229,7 @@ export const ContentSize: Story = {
             buttons={args.buttons}
             maxHeight={args.maxHeight}>
             {args.children}
-          </BaseDialog>
+          </Dialog>
         </div>
       </div>
     );
@@ -241,7 +241,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
     <div className="flex gap-10">
       <div className="flex flex-col gap-2">
         <div>Button 없음</div>
-        <BaseDialog
+        <Dialog
           onSubmit={(e) => {
             e.preventDefault();
           }}
@@ -321,11 +321,11 @@ const ButtonsExample = (args: DialogStoryArgs) => {
               </tr>
             </tbody>
           </table>
-        </BaseDialog>
+        </Dialog>
       </div>
       <div className="flex flex-col gap-2">
         <div>등록된 Button</div>
-        <BaseDialog
+        <Dialog
           onSubmit={(e, close) => {
             e.preventDefault();
             close();
@@ -406,11 +406,11 @@ const ButtonsExample = (args: DialogStoryArgs) => {
               </tr>
             </tbody>
           </table>
-        </BaseDialog>
+        </Dialog>
       </div>
       <div className="flex flex-col gap-2">
         <div>Custom Button</div>
-        <BaseDialog
+        <Dialog
           onSubmit={(e, close) => {
             e.preventDefault();
             alert('폼이 저장되었습니다');
@@ -492,7 +492,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
               </tr>
             </tbody>
           </table>
-        </BaseDialog>
+        </Dialog>
       </div>
     </div>
   );
