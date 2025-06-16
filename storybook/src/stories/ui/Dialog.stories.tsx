@@ -26,7 +26,7 @@ type DialogStoryArgs = {
 };
 
 const meta: Meta<DialogStoryArgs> = {
-  title: 'ui/Dialog/Dialog',
+  title: 'ui/Dialog',
   component: Dialog,
   argTypes: {
     showCloseButton: {
