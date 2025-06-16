@@ -71,3 +71,12 @@ export {
   type AvatarLoadingStatus,
   type AvatarContentsProps,
 } from './Avatar';
+
+export {
+  Accordion,
+  AccordionRoot,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+  accordionVariants,
+} from './Accordion';
