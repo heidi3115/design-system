@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint --ext=.ts,.tsx,.jsx",
+    "eslint": "eslint --ext=.ts,.tsx,.jsx",
     "lint:fix": "next lint --fix",
     "typecheck": "tsc --noEmit"
   },
