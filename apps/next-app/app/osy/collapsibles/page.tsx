@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { cn } from '@common/ui/lib/utils';
-import { Button } from '@common/ui';
+import { AccordionContent, AccordionItem, AccordionRoot, AccordionTrigger, Button } from '@common/ui';
 import { CornerDownLeftIcon } from '@common/ui/icons';
 import ThemeToggle from '../../../components/ThemeToggle';
 
@@ -32,8 +32,23 @@ export default function CollapsiblesPage() {
             <h3 className={cn(mainBlueSubTit)}>Accordion Demo</h3>
             <div className={cn(flexColClass, 'gap-4')}>
               <div className={cn(flexColClass, 'gap-4')}>
-                <h4>1</h4>
-                <div className={cn(flexRowClass)}>1</div>
+                <h4>Accordion Demo from shadcn</h4>
+                <div className={cn(flexRowClass)}>
+                  <AccordionRoot type="single" collapsible>
+                    <AccordionItem value="item-1">
+                      <AccordionTrigger>Is it accessible?</AccordionTrigger>
+                      <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-2">
+                      <AccordionTrigger>Is it accessible? 2</AccordionTrigger>
+                      <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern. 2</AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-3" disabled={true}>
+                      <AccordionTrigger>Is it accessible? 3 : disabled</AccordionTrigger>
+                      <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern. 3 : disabled</AccordionContent>
+                    </AccordionItem>
+                  </AccordionRoot>
+                </div>
               </div>
               <div className={cn(flexColClass, 'gap-4')}>
                 <h4>2</h4>

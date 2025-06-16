@@ -7,6 +7,9 @@ import {
   type AccordionRootProps,
   AccordionTrigger,
 } from './AccordionParts';
+import { ChevronDownIcon } from '@common/ui/icons';
+import type { VariantProps } from 'tailwind-variants';
+import accordionVariants from './accordionVariants';
 
 export type AccordionItemProps = {
   /**
@@ -33,14 +36,19 @@ export type AccordionItemProps = {
 };
 
 export type AccordionItemsProps = {
+  isIcon?: boolean;
+  size?: VariantProps<typeof accordionVariants>['size'];
   items: AccordionItemProps[];
   className?: string;
 };
 
-export function AccordionItems({ items = [], className }: AccordionItemsProps) {
+export function AccordionItems({ isIcon = true, size = 'small', items = [], className }: AccordionItemsProps) {
   return items.map((item: AccordionItemProps) => (
     <AccordionItem value={item.value} key={item.value} disabled={item.disabled} className={className}>
-      <AccordionTrigger>{item.trigger}</AccordionTrigger>
+      <AccordionTrigger>
+        {item.trigger}
+        {isIcon && <ChevronDownIcon size={size === 'custom' ? 'basic' : size} className={cn(className)} />}
+      </AccordionTrigger>
       <AccordionContent>{item.content}</AccordionContent>
     </AccordionItem>
   ));
@@ -76,10 +84,17 @@ export type AccordionProps = {
   className?: string;
 };
 
-function Accordion({ type = 'single', collapsible = false, disabled = false, items = [], ...props }: AccordionProps) {
+function Accordion({
+  type = 'single',
+  collapsible = false,
+  disabled = false,
+  items = [],
+  className,
+  ...props
+}: AccordionProps) {
   return (
-    <AccordionRoot type={type} collapsible={collapsible} disabled={disabled}>
-      {items.length > 0 && <AccordionItems items={items} className={cn(props.className)} />}
+    <AccordionRoot type={type} collapsible={collapsible} disabled={disabled} className={cn(className)} {...props}>
+      {items.length > 0 && <AccordionItems items={items} className={cn(className)} />}
     </AccordionRoot>
   );
 }
