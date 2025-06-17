@@ -12,10 +12,10 @@ import {
 
 type SheetProps = {
   side?: 'top' | 'right' | 'bottom' | 'left';
-  title: 'string';
+  title: string;
   children?: ReactNode;
-  description?: 'string';
-  closeName?: 'string';
+  description?: string;
+  closeName?: string;
   trigger: ReactNode;
   portalContainer?: HTMLElement | null;
 };

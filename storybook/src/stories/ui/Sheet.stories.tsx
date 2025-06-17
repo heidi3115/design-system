@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { Button, Sheet } from '@common/ui';
-import { EditIcon } from '@common/ui/icons';
+// import { EditIcon } from '@common/ui/icons';
 
 type SheetStoryArgs = {
   title: string;
-  titleIcon?: ReactElement;
+  side?: 'top' | 'right' | 'bottom' | 'left';
   trigger: ReactNode;
   children?: ReactNode;
   className?: string;
@@ -29,10 +29,6 @@ const meta: Meta<SheetStoryArgs> = {
       control: { disable: true },
       description: 'Sheet를 활성화하는 수단.',
     },
-    // titleIcon: {
-    //   control: { disable: true },
-    //   description: '타이틀 아이콘',
-    // },
     children: {
       control: { type: 'text' },
       description:
@@ -47,7 +43,7 @@ const meta: Meta<SheetStoryArgs> = {
   args: {
     title: 'Example Title',
     showCloseButton: true,
-    titleIcon: <EditIcon />,
+    // titleIcon: <EditIcon />,
     children: 'Example Children',
     portalContainer: 'body',
   },
@@ -77,10 +73,11 @@ const Template = (args: SheetStoryArgs) => {
   return (
     <div ref={sheetAreaRef}>
       <Sheet
+        side={args.side}
         trigger={<Button>Sheet 열기</Button>}
-        title={'string'}
+        title={args.title}
         portalContainer={shouldUseArea ? portalContainer : undefined}>
-        으악
+        {args.children}
       </Sheet>
     </div>
   );
@@ -88,4 +85,10 @@ const Template = (args: SheetStoryArgs) => {
 
 export const Default: Story = {
   render: Template,
+};
+
+export const Side: Story = {
+  render: () => {
+    return <div>SIDE</div>;
+  },
 };
