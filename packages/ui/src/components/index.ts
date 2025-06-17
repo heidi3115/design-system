@@ -71,3 +71,27 @@ export {
   type AvatarLoadingStatus,
   type AvatarContentsProps,
 } from './Avatar';
+export {
+  TooltipProvider,
+  TooltipRoot,
+  TooltipTrigger,
+  TooltipPortal,
+  TooltipContent,
+  TooltipArrow,
+  TooltipWrapper,
+  TooltipContainer,
+  Tooltip,
+  tooltipVariants,
+  type TooltipProviderProps,
+  type TooltipRootProps,
+  type TooltipTriggerProps,
+  type TooltipPortalProps,
+  type TooltipContentProps,
+  type TooltipArrowProps,
+  type TooltipWrapperProps,
+  type TooltipContainerProps,
+  type TooltipProps,
+  type TextAlignType,
+} from './Tooltip';
+
+export { Separator, type SeparatorProps, separatorVariants } from './Separator';
