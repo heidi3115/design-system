@@ -173,7 +173,7 @@ export default function Page() {
           </Popover>
 
           <div ref={portalRef}>
-            <Popover open={false} defaultOpen portalContainer={portalRef.current} trigger={<Button>open</Button>}>
+            <Popover defaultOpen portalContainer={portalRef.current} trigger={<Button>open</Button>}>
               portal
             </Popover>
           </div>

@@ -52,7 +52,7 @@ function PopoverContent({
             // 팝오버 기본 스타일
             'rounded-md',
             'shadow-md',
-            'p-4',
+            'p-2',
             'outline-hidden',
           ],
           className,
