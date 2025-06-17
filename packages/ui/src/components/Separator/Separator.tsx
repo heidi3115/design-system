@@ -7,7 +7,7 @@ import { tv, type VariantProps } from 'tailwind-variants';
 
 export const separatorVariants = tv({
   base: [
-    'size-full shrink-0 outline-none',
+    'size-full shrink-0 outline-none text-transparent',
     'data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full',
     'first:ml-0 last:mr-0',
   ],

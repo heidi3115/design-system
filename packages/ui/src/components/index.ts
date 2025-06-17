@@ -44,6 +44,17 @@ export {
   AlertDialogOverlay,
 } from './AlertDialog';
 export { Label } from './Label';
+export {
+  DialogRoot,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  BaseDialog,
+} from './Dialog';
 export { Switch } from './Switch';
 export { Skeleton, CardSkeleton } from './Skeleton';
 export {
@@ -60,6 +71,30 @@ export {
   type AvatarLoadingStatus,
   type AvatarContentsProps,
 } from './Avatar';
+export {
+  TooltipProvider,
+  TooltipRoot,
+  TooltipTrigger,
+  TooltipPortal,
+  TooltipContent,
+  TooltipArrow,
+  TooltipWrapper,
+  TooltipContainer,
+  Tooltip,
+  tooltipVariants,
+  type TooltipProviderProps,
+  type TooltipRootProps,
+  type TooltipTriggerProps,
+  type TooltipPortalProps,
+  type TooltipContentProps,
+  type TooltipArrowProps,
+  type TooltipWrapperProps,
+  type TooltipContainerProps,
+  type TooltipProps,
+  type TextAlignType,
+} from './Tooltip';
+
+export { Separator, type SeparatorProps, separatorVariants } from './Separator';
 
 export {
   SheetDescription,

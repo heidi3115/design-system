@@ -124,7 +124,11 @@ const meta: Meta<typeof Avatar> = {
   parameters: {
     docs: {
       description: {
-        component: 'Avatar 컴포넌트의 문서입니다. Avatar란, ',
+        component: [
+          'Avatar 컴포넌트의 문서입니다. Avatar란, 사용자 프로필 이미지를 보여주거나, 이미지가 없을 경우 이니셜 또는 기본 아이콘을 표시하는 UI 요소입니다.',
+          '일반적으로 사용자 목록, 댓글, 프로필 등에서 사용됩니다.',
+          '이미지를 제공하지 않으면 자동으로 설정한 문구(Fallback)이나 기본 아이콘이 표시됩니다.',
+        ].join('<br/>'),
       },
     },
   },
