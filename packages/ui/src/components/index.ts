@@ -105,4 +105,5 @@ export {
   SheetClose,
   SheetContent,
   SheetTrigger,
+  Sheet,
 } from './Sheet';

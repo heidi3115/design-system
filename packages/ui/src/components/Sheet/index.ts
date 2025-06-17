@@ -8,3 +8,5 @@ export {
   SheetDescription,
   SheetTrigger,
 } from './SheetParts';
+
+export { default as Sheet } from './Sheet';
