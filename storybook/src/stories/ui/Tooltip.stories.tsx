@@ -637,7 +637,7 @@ export const TooltipPosition: Story = {
       description: {
         story: [
           'TooltipPosition 은 Tooltip의 위치 정보를 확인하실 수 있는 스토리 입니다.',
-          '마루스 hover 시 각 위치를 확인하실 수 있으며, props에 따라서 sideOffset 과 alignOffset 을 조절하여 거리나 위치감을 확인해보실 수 있습니다.',
+          '마우스 hover 시 각 위치를 확인하실 수 있으며, props에 따라서 sideOffset 과 alignOffset 을 조절하여 거리나 위치감을 확인해보실 수 있습니다.',
         ].join('<br/>'),
       },
     },

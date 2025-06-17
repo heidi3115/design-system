@@ -351,7 +351,7 @@ function OffsetComp(args: ComponentProps<typeof Popover>) {
       </div>
 
       {/* Popover Example */}
-      <Popover open sideOffset={sideOffset} alignOffset={alignOffset} {...args}>
+      <Popover open sideOffset={sideOffset} alignOffset={alignOffset} className="p-6" {...args}>
         <div>Offset 조정 가능한 Popover입니다.</div>
       </Popover>
     </div>
