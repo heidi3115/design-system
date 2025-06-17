@@ -18,7 +18,7 @@ import {
   TooltipTrigger,
   type TooltipTriggerProps,
 } from './TooltipParts';
-import useExtractClassName from '@common/ui/hooks/useExtractClassName';
+import useExtractClassName from '../../hooks/useExtractClassName';
 
 export const DEFAULT_SIDE_OFFSET = 6;
 export const DEFAULT_ALIGN_OFFSET = 0;
@@ -27,7 +27,7 @@ export const DEFAULT_FADEOUT_DURATION = 700;
 
 export type TextAlignType = 'left' | 'center' | 'right';
 
-export type TooltipProps = {
+type TooltipBaseProps = {
   // Wrapper
   /**
    * delayDuration: 모든 Tooltip의 기본 지연 시간(ms, 기본 700)으로써, Tooltip이 보여지기 전 대기 시간(밀리초 단위)입니다.
@@ -105,11 +105,6 @@ export type TooltipProps = {
    */
   contents: React.ReactNode;
   /**
-   * children: Tooltip의 트리거 역할을 할 React 엘리먼트입니다.
-   * Tooltip을 표시할 기준이 되는 컴포넌트(예: 버튼, 아이콘 등)를 전달합니다.
-   */
-  children: React.ReactElement;
-  /**
    * className: Tooltip의 추가적인 CSS 클래스(Tailwind CSS 클래스 가능)를 지정할 수 있습니다.
    */
   className?: string;
@@ -125,6 +120,11 @@ export type TooltipProps = {
   disabled?: boolean;
 };
 
+type ChildrenType = { children: React.ReactElement };
+type TriggerType = { trigger: React.ReactElement };
+
+export type TooltipProps = OnlyOne<ChildrenType, TriggerType> & TooltipBaseProps;
+
 export type TooltipWrapperProps = {
   providerProps?: Omit<TooltipProviderProps, 'children'>;
   rootProps?: TooltipRootProps;
@@ -132,12 +132,7 @@ export type TooltipWrapperProps = {
   children?: React.ReactNode;
 };
 
-function TooltipWrapper({
-  providerProps = { delayDuration: DEFAULT_DELAY_DURATION },
-  rootProps = { defaultOpen: false },
-  openStatusRef = undefined,
-  children,
-}: TooltipWrapperProps) {
+function TooltipWrapper({ providerProps, rootProps, openStatusRef, children }: TooltipWrapperProps) {
   const { open, defaultOpen, onOpenChange, ...restRootProps } = rootProps || {};
   const isControlled = open !== undefined;
   const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false);
@@ -190,19 +185,13 @@ export type TooltipContainerProps = {
 function TooltipContainer({
   triggerProps = { asChild: true },
   portalProps = { fadeOut: false },
-  contentProps = {
-    variant: 'default',
-    size: 'medium',
-    side: 'top',
-    align: 'center',
-    textAlign: 'left',
-  },
+  contentProps,
   arrowProps,
   children,
   contents,
   className,
-  isArrow = true,
-  disabled = false,
+  isArrow,
+  disabled,
 }: TooltipContainerProps) {
   const { fadeOut } = portalProps;
   const { variant, size, side, align, textAlign, ...restContentProps } = contentProps;
@@ -213,9 +202,9 @@ function TooltipContainer({
     disabled,
   });
   const contentClass = cn(base(), content());
-  const extractArrowClass = `fill-${useExtractClassName(size === 'custom' ? contentClass : cn(contentClass, className), 'bg-')}`;
-  const customArrowFillClass = size === 'custom' ? 'fill-juiBackground-tooltip' : extractArrowClass;
-  const arrowClass = cn(arrow(), customArrowFillClass);
+
+  const bgColor = useExtractClassName(size === 'custom' ? contentClass : cn(contentClass, className), 'bg-');
+
   const fadeOutClass = fadeOut
     ? `transition-opacity data-[state=closed]:duration-${DEFAULT_FADEOUT_DURATION}`
     : 'transition-opacity data-[state=closed]:duration-0';
@@ -250,9 +239,15 @@ function TooltipContainer({
             {...restContentProps}
             side={side}
             align={align}
-            className={cn(contentClass, fadeOutClass, extractArrowClass, className)}>
+            className={cn(contentClass, fadeOutClass, className)}>
             {contents}
-            {isArrow && <TooltipArrow {...arrowProps} className={cn(arrowClass)} />}
+            {isArrow && (
+              <TooltipArrow
+                {...arrowProps}
+                className={cn(arrow())}
+                style={{ fill: bgColor ? `var(--${bgColor})` : 'var(--juiBackground-popover)' }}
+              />
+            )}
           </TooltipContent>
         )}
       </TooltipPortal>
@@ -261,26 +256,35 @@ function TooltipContainer({
 }
 
 function Tooltip({
-  delayDuration = DEFAULT_DELAY_DURATION,
   open,
-  defaultOpen = false,
   onOpenChange,
   openStatusRef,
-  fadeOut = false,
-  isArrow = true,
-  variant = 'default',
-  size = 'medium',
+  variant,
+  size,
+  contents,
+  className,
   side = 'top',
   sideOffset = DEFAULT_SIDE_OFFSET,
   align = 'center',
   alignOffset = DEFAULT_ALIGN_OFFSET,
-  textAlign = 'left',
-  contents,
-  children,
-  className,
+  textAlign,
+  fadeOut = false,
+  isArrow = true,
   disabled = false,
+  delayDuration = DEFAULT_DELAY_DURATION,
+  defaultOpen = false,
+  trigger,
+  children,
   ...props
 }: TooltipProps) {
+  const triggerNode = children ?? trigger;
+
+  if (!isValidElement(triggerNode)) {
+    console.warn('ConfirmDialog: 유효한 trigger 또는 children 이 필요합니다.');
+
+    return null;
+  }
+
   return (
     <TooltipWrapper
       providerProps={{ delayDuration }}
@@ -302,7 +306,7 @@ function Tooltip({
         className={className}
         disabled={disabled}
         {...props}>
-        {children}
+        {triggerNode}
       </TooltipContainer>
     </TooltipWrapper>
   );

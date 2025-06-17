@@ -48,7 +48,7 @@ const meta: Meta<typeof Tooltip> = {
     fadeOut: false,
     isArrow: true,
     variant: 'default',
-    size: 'small',
+    size: 'default',
     side: 'top',
     sideOffset: DEFAULT_SIDE_OFFSET,
     align: 'center',
@@ -174,6 +174,9 @@ export default meta;
 type Story = StoryObj<typeof Tooltip>;
 
 export const Default: Story = {
+  args: {
+    trigger: <AlertCircleIcon size={'basic'} />,
+  },
   parameters: {
     docs: {
       description: {
@@ -185,9 +188,7 @@ export const Default: Story = {
     <div className={cn(commonBoxClass, flexColBoxGap4, 'w-full')}>
       <h1 className={cn(titleCommonClass, 'text-base')}>Icon에 마우스를 hover 하면 Tooltip이 바로 나타납니다.</h1>
       <div className={'flex flex-col gap-4'}>
-        <Tooltip {...args}>
-          <AlertCircleIcon size={'basic'} />
-        </Tooltip>
+        <Tooltip {...args} />
       </div>
     </div>
   ),
@@ -216,7 +217,7 @@ export const Variants: Story = {
       },
     },
   },
-  render: (args: TooltipProps) => (
+  render: (args: Omit<TooltipProps, 'trigger'>) => (
     <div className={cn(flexColBoxGap4)}>
       <span className="block text-base font-bold text-left mb-10">Default Variants</span>
       <div className={cn(flexRowBoxGap4, 'mb-10')}>
@@ -262,7 +263,7 @@ export const Sizes: Story = {
       },
     },
   },
-  render: (args: TooltipProps) => (
+  render: (args: Omit<TooltipProps, 'trigger'>) => (
     <div className={cn(flexColBoxGap4)}>
       <span className="block text-base font-bold text-left mb-10">Default Variants</span>
       <div className={cn(flexRowBoxGap4, 'mb-10')}>
@@ -285,7 +286,7 @@ export const Sizes: Story = {
   ),
 };
 
-function TooltipDelayDuration({ ...args }: TooltipProps) {
+function TooltipDelayDuration({ ...args }: Omit<TooltipProps, 'trigger'>) {
   const [openStat, setOpenStat] = useState(false);
 
   return (
@@ -387,7 +388,7 @@ export const Durations: Story = {
   render: (args: TooltipProps) => <TooltipDelayDuration {...args} />,
 };
 
-function TooltipOpenControl({ ...args }: TooltipProps) {
+function TooltipOpenControl({ ...args }: Omit<TooltipProps, 'trigger'>) {
   const openRef1 = useRef(false);
   const openRef2 = useRef(false);
   const [, setIsRefOpen1] = useState<boolean>(false);
@@ -561,7 +562,7 @@ export const OpenControl: Story = {
   render: (args: TooltipProps) => <TooltipOpenControl {...args} />,
 };
 
-function TooltipPositionControl({ ...args }: TooltipProps) {
+function TooltipPositionControl({ ...args }: Omit<TooltipProps, 'trigger'>) {
   return (
     <div className={cn(commonBoxClass, flexColBoxGap4, 'w-full')}>
       <div className={cn(commonBoxClass, flexColBoxGap4, 'w-full')}>

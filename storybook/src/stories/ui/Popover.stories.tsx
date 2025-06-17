@@ -151,7 +151,7 @@ export const Sizes: Story = {
     },
   },
   render: (args) => (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap justify-between">
       {['small', 'basic', 'medium', 'large'].map((size) => (
         <Popover
           key={size}
@@ -159,6 +159,34 @@ export const Sizes: Story = {
           trigger={<Button variant="primary">{`Size: ${size}`}</Button>}
           size={size as 'small' | 'basic' | 'medium' | 'large'}>
           <div>{`This is a ${size} popover.`}</div>
+        </Popover>
+      ))}
+    </div>
+  ),
+};
+
+export const Variants: Story = {
+  argTypes: {
+    variant: {
+      table: { disable: true },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Popover 컨텐츠의 색상',
+      },
+    },
+  },
+  render: (args) => (
+    <div className="flex flex-wrap justify-between">
+      {['default', 'primary', 'secondary', 'error'].map((variant) => (
+        <Popover
+          key={variant}
+          {...args}
+          trigger={<Button variant="primary">{`Color: ${variant}`}</Button>}
+          variant={variant as 'default' | 'primary' | 'secondary' | 'error'}>
+          <div>{`This is a ${variant} popover.`}</div>
         </Popover>
       ))}
     </div>

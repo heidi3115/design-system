@@ -2,7 +2,18 @@
 
 import { useRef, useState } from 'react';
 
-import { Button, Checkbox, Input, Select, RadioGroup, SplitOtpInput, Textarea, Toggle, Popover } from '@common/ui';
+import {
+  Button,
+  Checkbox,
+  Input,
+  Select,
+  RadioGroup,
+  SplitOtpInput,
+  Textarea,
+  Toggle,
+  Popover,
+  Tooltip,
+} from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -124,7 +135,7 @@ export default function Page() {
             {...fruitField}
           />
 
-          <Popover trigger={FilePlusIcon} variant="secondary" size="small" isCloseIcon isArrow>
+          <Popover trigger={FilePlusIcon} className="bg-juiStatus-urgency" size="small" isCloseIcon isArrow>
             dadfdsfadsffsdfadfsfasdfadfasfas
           </Popover>
           <Popover
@@ -135,6 +146,11 @@ export default function Page() {
             portalContainer={wrapperRef.current}>
             default popover
           </Popover>
+
+          <Tooltip contents="aa" defaultOpen className="bg-juiStatus-alert">
+            <Button>aa</Button>
+          </Tooltip>
+          <Tooltip trigger={<Button>aaa</Button>} contents="aaa" className="bg-juiStatus-alert" />
 
           <div className="flex gap-1">
             <Button
@@ -157,7 +173,7 @@ export default function Page() {
           </Popover>
 
           <div ref={portalRef}>
-            <Popover defaultOpen portalContainer={portalRef.current} trigger={<Button>open</Button>}>
+            <Popover open={false} defaultOpen portalContainer={portalRef.current} trigger={<Button>open</Button>}>
               portal
             </Popover>
           </div>
