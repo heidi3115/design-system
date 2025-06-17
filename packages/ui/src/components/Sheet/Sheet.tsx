@@ -34,7 +34,7 @@ const Sheet = ({ side, title, children, description, closeName, trigger, portalC
       <SheetTrigger asChild onClick={() => setOpen(true)}>
         {trigger}
       </SheetTrigger>
-      <SheetContent className="w-[400px] sm:w-[540px]" side={side} portalContainer={portalContainer}>
+      <SheetContent side={side} portalContainer={portalContainer}>
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>

@@ -89,6 +89,25 @@ export const Default: Story = {
 
 export const Side: Story = {
   render: () => {
-    return <div>SIDE</div>;
+    return (
+      <div className="flex gap-10">
+        <div className="flex flex-col gap-2">
+          <span>왼쪽</span>
+          <Sheet title="왼쪽" trigger={<Button>Left</Button>} side="left" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span>오른쪽</span>
+          <Sheet title="오른쪽" trigger={<Button>Right</Button>} side="right" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span>위</span>
+          <Sheet title="위" trigger={<Button>Top</Button>} side="top" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span>아래</span>
+          <Sheet title="아래" trigger={<Button>Bottom</Button>} side="bottom" />
+        </div>
+      </div>
+    );
   },
 };
