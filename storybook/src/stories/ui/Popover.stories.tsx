@@ -74,12 +74,26 @@ export const Default: Story = {
     trigger: <Button>Open Popover</Button>,
     children: <div>This is Popover content</div>,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Popover 기본 컴포넌트',
+      },
+    },
+  },
 };
 
 export const Arrows: Story = {
   argTypes: {
     isArrow: {
       table: { disable: true },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Popover 꼬리표 유무',
+      },
     },
   },
   render: (args) => (
@@ -103,6 +117,13 @@ export const CloseIcon: Story = {
       table: { disable: true },
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Popover 컨텐츠의 닫기버튼 유무',
+      },
+    },
+  },
   render: (args) => (
     <div style={{ display: 'flex', gap: '40px', justifyContent: 'center', padding: '100px' }}>
       <Popover {...args} isCloseIcon={true} trigger={<Button variant="gradient">Close Icon 있음</Button>}>
@@ -120,6 +141,13 @@ export const Sizes: Story = {
   argTypes: {
     size: {
       table: { disable: true },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Popover 컨텐츠의 사이즈',
+      },
     },
   },
   render: (args) => (
@@ -144,6 +172,13 @@ export const PopoverPositon: Story = {
     },
     align: {
       table: { disable: true },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Popover 12가지 방향',
+      },
     },
   },
   render: (args) => (
@@ -204,7 +239,7 @@ export const PopoverPositon: Story = {
   ),
 };
 
-const AnchorRefExample = ({ ...args }) => {
+const AnchorRefComp = ({ ...args }) => {
   const anchorRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -221,9 +256,14 @@ const AnchorRefExample = ({ ...args }) => {
 };
 
 export const AnchorRef: Story = {
-  render: (args) => <AnchorRefExample {...args} />,
+  render: (args) => <AnchorRefComp {...args} />,
   parameters: {
     controls: { disable: true },
+    docs: {
+      description: {
+        story: 'Popover의 트리거로 다른 컴포넌트에 컨텐츠 보여주기',
+      },
+    },
   },
   args: {
     variant: 'secondary',
@@ -254,6 +294,13 @@ function PortalComp() {
 }
 
 export const WithPortalContainer: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Popover 기본 document.body 대신 커스텀 portal 적용',
+      },
+    },
+  },
   render: () => <PortalComp />,
 };
 
@@ -295,6 +342,13 @@ export const OffsetController: Story = {
   args: {
     side: 'right',
     align: 'start',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Popover sideOffset 과 alignOffset 조절',
+      },
+    },
   },
   render: (args) => <OffsetComp {...args} trigger={<Button>Popover</Button>} />,
 };
