@@ -26,7 +26,7 @@ const buttonVariants = tv({
       ],
       transparent: 'text-juiText-primary bg-transparent',
       transparentGrey:
-        'text-juiText-primary dark:border-juiText-primary bg-transparent hover:text-juiBackground-input active:text-juiBackground-input focus:text-juiBackground-input',
+        'text-juiText-primary dark:border-juiText-primary bg-transparent hover:text-juiText-secondary active:text-juiText-secondary focus:text-juiText-secondary',
     },
     size: {
       small: 'px-2 h-5.5 text-xs',
