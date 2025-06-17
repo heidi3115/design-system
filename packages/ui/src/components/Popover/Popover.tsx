@@ -34,6 +34,9 @@ const popoverVariants = tv({
       medium: 'min-w-3xs min-h-28',
       large: 'min-w-3xl min-h-96',
     },
+    isArrow: {
+      true: 'pt-4',
+    },
   },
   defaultVariants: {
     variant: 'default',
@@ -80,7 +83,7 @@ function Popover({
     }
   }, [anchorRef]);
 
-  const contentClassName = cn(popoverVariants({ variant, size }), className);
+  const contentClassName = cn(popoverVariants({ variant, size, isArrow }), className);
 
   const bgColor = useExtractClassName(isArrow ? contentClassName : '', 'bg-');
 
@@ -97,7 +100,7 @@ function Popover({
         {children}
 
         {isCloseIcon && (
-          <PopoverClose className="absolute top-[3px] right-[3px]" asChild>
+          <PopoverClose className="absolute top-0.5 right-0.5" asChild>
             <XIcon size="small" className="hover:opacity-50" />
           </PopoverClose>
         )}
