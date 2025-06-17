@@ -14,7 +14,7 @@ import { PopoverAnchor, PopoverArrow, PopoverClose, PopoverRoot, PopoverContent,
 import { XIcon } from '@common/ui/icons';
 
 import { cn } from '../../lib/utils';
-import useExtractClassName from '../hooks/useExtractClassName';
+import useExtractClassName from '../../hooks/useExtractClassName';
 
 export const DEFAULT_SIDE_OFFSET = 6;
 export const DEFAULT_ALIGN_OFFSET = 0;

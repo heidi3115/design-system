@@ -4,7 +4,7 @@ import { cloneElement, useRef, type ReactElement, type TextareaHTMLAttributes } 
 import { type VariantProps } from 'tailwind-variants';
 import { AlertCircle2Icon } from '@common/ui/icons';
 
-import { useInputValue } from '../hooks/useInputValue';
+import { useInputValue } from '../../hooks/useInputValue';
 import { useAutosizeTextarea } from './hooks/useAutosizeTextarea';
 import textareaVariaints from './textareaVariaints';
 import { type ButtonProps } from '../Button';

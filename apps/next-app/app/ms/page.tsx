@@ -95,6 +95,8 @@ export default function Page() {
     console.warn(selectValue);
   }, [selectValue]);
 
+  const portalRef = useRef<HTMLDivElement | null>(null);
+
   return (
     <form className="p-4" onSubmit={handleSubmit(onValid)}>
       <div className="sticky top-2 z-10">
@@ -153,6 +155,12 @@ export default function Page() {
           <Popover open={isOpenPopover} trigger={<div className="absolute top-28 left-20">aa</div>}>
             State로 오픈
           </Popover>
+
+          <div ref={portalRef}>
+            <Popover defaultOpen portalContainer={portalRef.current} trigger={<Button>open</Button>}>
+              portal
+            </Popover>
+          </div>
 
           <ConfirmAlertDialog title="warning" trigger={<Button>confirm</Button>} />
 
