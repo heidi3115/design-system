@@ -95,3 +95,5 @@ export {
 } from './Tooltip';
 
 export { Separator, type SeparatorProps, separatorVariants } from './Separator';
+
+export { Tabs, TabsRoot, TabsList, TabsTrigger, TabsContent } from './Tabs';
