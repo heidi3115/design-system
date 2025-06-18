@@ -52,7 +52,8 @@ function Tabs<T extends TabItemType>({
     align: shape === 'folder' ? undefined : align,
   });
 
-  const [activeValue, setActiveValue] = useState(defaultValue ?? tabs?.[0]?.value);
+  const firstEnabledTab = tabs?.find((tab) => !tab.disabled)?.value;
+  const [activeValue, setActiveValue] = useState(defaultValue ?? firstEnabledTab);
 
   const { listRef, indicatorStyle, updateIndicator } = useTabIndicator<HTMLDivElement>();
 

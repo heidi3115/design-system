@@ -47,6 +47,15 @@ function ComplexScenario(props: { name: string }) {
   );
 }
 
+const DefaultContent = () => (
+  <div className="bg-juiBackground-paper w-full min-h-[200px] flex flex-col gap-4 p-4">
+    <Skeleton className="h-8 w-1/2" />
+    <Skeleton className="h-4 w-full" />
+    <Skeleton className="h-4 w-4/5" />
+    <Skeleton className="h-4 w-2/3" />
+  </div>
+);
+
 export default meta;
 type Story = StoryObj<typeof Tabs>;
 
@@ -54,38 +63,17 @@ const tabs = [
   {
     value: 'tab1',
     label: 'TAB 1',
-    content: (
-      <div className="bg-juiBackground-paper w-full min-h-[200px] flex flex-col gap-4 p-4">
-        <Skeleton className="h-8 w-1/2" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-3/4" />
-      </div>
-    ),
+    content: <DefaultContent />,
   },
   {
     value: 'tab2',
     label: 'TAB 2',
-    content: (
-      <div className="bg-juiBackground-paper w-full min-h-[200px] flex flex-col gap-4 p-4">
-        <Skeleton className="h-8 w-1/2" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-4/5" />
-        <Skeleton className="h-4 w-2/3" />
-      </div>
-    ),
+    content: <DefaultContent />,
   },
   {
     value: 'tab3',
     label: 'TAB 3',
-    content: (
-      <div className="bg-juiBackground-paper w-full min-h-[200px] flex flex-col gap-4 p-4">
-        <Skeleton className="h-8 w-1/2" />
-        <Skeleton className="h-4 w-3/4" />
-        <Skeleton className="h-4 w-4/5" />
-        <Skeleton className="h-4 w-full" />
-      </div>
-    ),
+    content: <DefaultContent />,
   },
 ];
 
@@ -154,6 +142,29 @@ export const StateManagedTabs: Story = {
     defaultValue: 'exception',
     shape: 'underline',
     variant: 'primary',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    tabs: [
+      {
+        value: 'disabled',
+        label: 'Disabled',
+        disabled: true,
+        content: <DefaultContent />,
+      },
+      {
+        value: 'enabled',
+        label: 'Enabled',
+        content: <DefaultContent />,
+      },
+      {
+        value: 'hidden',
+        label: 'Hidden',
+        hidden: true,
+      },
+    ],
   },
 };
 
