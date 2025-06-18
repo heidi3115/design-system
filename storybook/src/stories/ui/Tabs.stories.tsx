@@ -38,7 +38,7 @@ type Story = StoryObj<typeof Tabs>;
 const tabs = [
   {
     value: 'tab1',
-    label: '탭 1',
+    label: 'TAB 1',
     content: (
       <div className="bg-juiBackground-paper w-full min-h-[200px] flex flex-col gap-4 p-4">
         <Skeleton className="h-8 w-1/2" />
@@ -50,7 +50,7 @@ const tabs = [
   },
   {
     value: 'tab2',
-    label: '탭 2',
+    label: 'TAB 2',
     content: (
       <div className="bg-juiBackground-paper w-full min-h-[200px] flex flex-col gap-4 p-4">
         <Skeleton className="h-8 w-1/2" />
@@ -62,7 +62,7 @@ const tabs = [
   },
   {
     value: 'tab3',
-    label: '탭 3',
+    label: 'TAB 3',
     content: (
       <div className="bg-juiBackground-paper w-full min-h-[200px] flex flex-col gap-4 p-4">
         <Skeleton className="h-8 w-1/2" />
@@ -77,24 +77,48 @@ const tabs = [
 export const Default: Story = {
   args: {
     tabs,
-    defaultValue: 'tab1',
   },
 };
 
-export const FolderShape: Story = {
-  args: {
-    tabs,
-    shape: 'folder',
-    defaultValue: 'tab1',
-  },
-};
-
-export const BadgeVariant: Story = {
+export const Badge: Story = {
   args: {
     tabs,
     shape: 'badge',
-    variant: 'secondary',
-    defaultValue: 'tab2',
+  },
+};
+
+export const Folder: Story = {
+  args: {
+    tabs,
+    shape: 'folder',
+  },
+};
+
+export const Variants: Story = {
+  render: (args) => (
+    <div className="flex flex-col gap-10">
+      <div>
+        <div className="mb-2 text-lg font-semibold">Primary</div>
+        <Tabs {...args} variant="primary" />
+      </div>
+      <div>
+        <div className="mb-2 text-lg font-semibold">Secondary</div>
+        <Tabs {...args} variant="secondary" />
+      </div>
+      <div>
+        <div className="mb-2 text-lg font-semibold">Error</div>
+        <Tabs {...args} variant="error" />
+      </div>
+      <div>
+        <div className="mb-2 text-lg font-semibold">Ghost</div>
+        <Tabs {...args} variant="ghost" />
+      </div>
+    </div>
+  ),
+  args: {
+    tabs,
+    defaultValue: 'tab1',
+    shape: 'underline',
   },
 };
 
@@ -145,33 +169,5 @@ export const Alignments: Story = {
   args: {
     tabs,
     defaultValue: 'tab1',
-  },
-};
-
-export const Variants: Story = {
-  render: (args) => (
-    <div className="flex flex-col gap-10">
-      <div>
-        <div className="mb-2 text-lg font-semibold">Primary</div>
-        <Tabs {...args} variant="primary" />
-      </div>
-      <div>
-        <div className="mb-2 text-lg font-semibold">Secondary</div>
-        <Tabs {...args} variant="secondary" />
-      </div>
-      <div>
-        <div className="mb-2 text-lg font-semibold">Error</div>
-        <Tabs {...args} variant="error" />
-      </div>
-      <div>
-        <div className="mb-2 text-lg font-semibold">Ghost</div>
-        <Tabs {...args} variant="ghost" />
-      </div>
-    </div>
-  ),
-  args: {
-    tabs,
-    defaultValue: 'tab1',
-    shape: 'underline',
   },
 };
