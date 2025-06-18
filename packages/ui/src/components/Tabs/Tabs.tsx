@@ -60,6 +60,7 @@ function Tabs<T extends TabItemType>({
     if (shape !== 'underline') return;
 
     updateIndicator();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeValue, shape, tabs]);
 
   return (
