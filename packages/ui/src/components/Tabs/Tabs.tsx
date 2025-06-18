@@ -42,12 +42,14 @@ function Tabs<T extends TabItemType>({
   variant,
   align,
   shape = 'underline',
+  size = 'default',
   onValueChange,
 }: TabsProps<T>) {
-  const { content, underline, tabsAlign } = tabsTriggerVariants({
+  const { content, underline, tabsAlign, list, firstForderTab } = tabsTriggerVariants({
     variant,
     shape,
-    align,
+    size,
+    align: shape === 'folder' ? undefined : align,
   });
 
   const [activeValue, setActiveValue] = useState(defaultValue ?? tabs?.[0]?.value);
@@ -58,7 +60,6 @@ function Tabs<T extends TabItemType>({
     if (shape !== 'underline') return;
 
     updateIndicator();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeValue, shape, tabs]);
 
   return (
@@ -68,16 +69,21 @@ function Tabs<T extends TabItemType>({
         setActiveValue(value);
         onValueChange?.(value);
       }}>
-      <TabsList
-        ref={listRef}
-        className={cn('relative', tabsAlign(), shape === 'underline' ? 'min-h-12 my-0' : 'min-h-8 py-2')}>
+      <TabsList ref={listRef} className={cn('relative', tabsAlign(), list())}>
         {tabs
           .filter(({ hidden = false }) => !hidden)
-          .map(({ value, label, disabled = false }) => (
-            <TabsTrigger key={value} className={cn(content())} value={value} disabled={disabled}>
-              {label}
-            </TabsTrigger>
-          ))}
+          .map(({ value, label, disabled = false }, index) =>
+            index === 0 && shape === 'folder' ? (
+              <TabsTrigger key={value} className={cn(firstForderTab())} value={value} disabled={disabled}>
+                {label} <div className="w-3"></div>
+              </TabsTrigger>
+            ) : (
+              <TabsTrigger key={value} className={cn(content())} value={value} disabled={disabled}>
+                {shape === 'folder' && <span className="-skew-x-[10rad]">{label}</span>}
+                {shape !== 'folder' && label}
+              </TabsTrigger>
+            ),
+          )}
 
         {shape === 'underline' && (
           <div

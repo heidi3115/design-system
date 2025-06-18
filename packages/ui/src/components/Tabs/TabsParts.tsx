@@ -46,7 +46,7 @@ function TabsTrigger({ className, disabled, ...props }: React.ComponentProps<typ
           'gap-1.5',
 
           // 박스 스타일
-          'px-4 py-2 text-sm',
+          'px-4 py-2',
           'whitespace-nowrap',
           'transition-[color,box-shadow]',
 

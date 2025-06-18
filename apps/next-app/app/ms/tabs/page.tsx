@@ -1,6 +1,6 @@
 'use client';
 
-import { Separator, Skeleton, Tabs, Tooltip, type TabItemType } from '@common/ui';
+import { Separator, Skeleton, Tabs, type TabItemType } from '@common/ui';
 import ThemeToggle from '../../../components/ThemeToggle';
 import { useState } from 'react';
 import { PlayIcon } from '@common/ui/icons';
@@ -48,14 +48,12 @@ export default function TabsPage() {
     },
     {
       value: 'tab5',
-      label: (
-        <Tooltip contents="탭5">
-          <div className="flex gap-1">
-            <PlayIcon />탭 5
-          </div>
-        </Tooltip>
-      ),
       disabled: true,
+      label: (
+        <div className="flex gap-1">
+          <PlayIcon />탭 5
+        </div>
+      ),
       content: <ScenarioList scenarioId={3} />,
     },
   ];
@@ -69,7 +67,10 @@ export default function TabsPage() {
         <Tabs
           defaultValue="tab4"
           // align="center"
+          // size="small"
+          // variant="secondary"
           // shape="badge"
+          // shape="folder"
           tabs={tabsArray}
           onValueChange={(val) => setActiveTab(val)}
         />

@@ -1,11 +1,28 @@
 import { tv } from 'tailwind-variants';
 
+const folderBase = `
+  relative 
+  bg-juiGrey-a700
+  text-juiText-secondary
+  data-[state=active]:text-juiText-primary
+  data-[state=active]:!bg-juiBackground-solidPaper
+  data-[state=active]:font-bold
+  disabled:opacity-50
+  disabled:text-juiText-secondary
+  light:bg-juiGrey-800
+  active:bg-current
+  active:scale-100
+  active:rounded-none
+`;
+
 const tabsTriggerVariants = tv({
   base: '',
   slots: {
     content: '',
     underline: '',
     tabsAlign: '',
+    list: '',
+    firstForderTab: '',
   },
   variants: {
     variant: {
@@ -14,14 +31,32 @@ const tabsTriggerVariants = tv({
       error: { content: '', underline: 'bg-juiError' },
       ghost: { content: '', underline: '' },
     },
+    size: {
+      default: 'text-sm',
+      small: { list: 'min-h-5 text-xs' },
+      medium: { list: 'min-h-12 text-base' },
+      large: { list: 'min-h-14 text-lg' },
+    },
     align: {
       left: { tabsAlign: '' },
       right: { tabsAlign: 'self-end' },
       center: { tabsAlign: 'self-center' },
     },
     shape: {
-      underline: {},
-      badge: { content: 'rounded-full', underline: 'hidden' },
+      underline: { list: 'py-0' },
+      badge: { content: 'rounded-full', list: 'py-2', underline: 'hidden' },
+      folder: {
+        content: `
+          ${folderBase}
+          skew-x-[10rad]
+          right-3
+          border-l-[1px]
+          border-juiBackground-default
+        `,
+        list: 'min-h-8 py-0',
+        underline: 'hidden',
+        firstForderTab: `${folderBase}`,
+      },
     },
   },
   compoundVariants: [
@@ -29,25 +64,30 @@ const tabsTriggerVariants = tv({
       variant: 'primary',
       shape: 'badge',
       class: {
-        content:
-          'data-[state=active]:bg-juiPrimary data-[state=active]:text-white py-0 h-8 data-[state=active]:font-bold',
+        content: 'data-[state=active]:bg-juiPrimary data-[state=active]:text-white py-0 data-[state=active]:font-bold',
       },
     },
     {
       variant: 'secondary',
-      hape: 'badge',
-      class: { content: 'data-[state=active]:bg-juiSecondary data-[state=active]:text-white py-0 h-8 font-bold' },
+      shape: 'badge',
+      class: {
+        content:
+          'data-[state=active]:bg-juiSecondary data-[state=active]:text-white py-0 data-[state=active]:font-bold',
+      },
     },
     {
       variant: 'error',
-      hape: 'badge',
-      class: { content: 'data-[state=active]:bg-juiError data-[state=active]:text-white py-0 h-8 font-bold' },
+      shape: 'badge',
+      class: {
+        content: 'data-[state=active]:bg-juiError data-[state=active]:text-white py-0  data-[state=active]:font-bold',
+      },
     },
   ],
   defaultVariants: {
     variant: 'primary',
     align: 'left',
     shape: 'underline',
+    size: 'default',
   },
 });
 
