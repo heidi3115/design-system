@@ -31,6 +31,7 @@ export const tooltipVariants = tv({
       medium: { content: 'w-64 p-2 text-xs', arrow: 'w-3.5 h-2.5' },
       large: { content: 'w-130 p-3 text-sm', arrow: 'w-5 h-3' },
       custom: { content: 'p-2', arrow: 'w-1/1000 min-w-2.5 min-h-1.5' },
+      default: { content: 'w-fit', arrow: 'w-2.5 h-1.5' },
     },
     textAlign: {
       left: 'text-left',
@@ -43,7 +44,8 @@ export const tooltipVariants = tv({
   },
   defaultVariants: {
     variant: 'default',
-    size: 'small',
+    size: 'default',
+    textAlign: 'left',
   },
 });
 

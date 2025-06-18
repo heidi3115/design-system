@@ -96,4 +96,15 @@ export {
 
 export { Separator, type SeparatorProps, separatorVariants } from './Separator';
 
+export {
+  Popover,
+  PopoverRoot,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverAnchor,
+  PopoverPotal,
+  PopoverClose,
+  PopoverArrow,
+} from './Popover';
+
 export { Tabs, TabsRoot, TabsList, TabsTrigger, TabsContent, type TabItemType } from './Tabs';
