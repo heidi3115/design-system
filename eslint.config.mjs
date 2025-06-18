@@ -21,6 +21,8 @@ export default [
     },
     rules: {
       'prettier/prettier': 'warn',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
     },
   },
 ];

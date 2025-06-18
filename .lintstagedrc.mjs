@@ -5,6 +5,8 @@ const lintstagedrc = {
   'apps/next-app/**/*.{ts,tsx,js,jsx}': ['pnpm next-app eslint'],
   'apps/react-app/**/*.{ts,tsx,js,jsx}': ['pnpm react-app lint'],
   'storybook/**/*.{ts,tsx,js,jsx}': ['pnpm storybook lint'],
+
+  '**/*.{ts,tsx,js,jsx,json}': ['eslint --fix', 'prettier --write'],
 };
 
 export default lintstagedrc;
