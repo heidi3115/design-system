@@ -107,8 +107,8 @@ function Popover({
 
         {isArrow && (
           <PopoverArrow
-            className={cn('w-2.5 h-1.5')}
-            style={{ fill: bgColor ? `var(--${bgColor})` : 'var(--juiBackground-popover)' }}
+            className={cn('w-2.5 h-1.5', `fill-${bgColor}`)}
+            style={{ fill: bgColor ? `var(--color-${bgColor}, var(--${bgColor}))` : 'var(--juiBackground-popover)' }}
           />
         )}
       </PopoverContent>

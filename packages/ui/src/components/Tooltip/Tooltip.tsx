@@ -245,7 +245,9 @@ function TooltipContainer({
               <TooltipArrow
                 {...arrowProps}
                 className={cn(arrow())}
-                style={{ fill: bgColor ? `var(--${bgColor})` : 'var(--juiBackground-tooltip)' }}
+                style={{
+                  fill: bgColor ? `var(--color-${bgColor}, var(--${bgColor}))` : 'var(--juiBackground-tooltip)',
+                }}
               />
             )}
           </TooltipContent>
