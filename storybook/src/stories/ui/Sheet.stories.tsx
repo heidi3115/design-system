@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { Button, Sheet } from '@common/ui';
-// import { EditIcon } from '@common/ui/icons';
 
 type SheetStoryArgs = {
   title: string;
