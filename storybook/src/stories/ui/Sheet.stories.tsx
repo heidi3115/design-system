@@ -131,6 +131,12 @@ export const Side: Story = {
     children: {
       control: { type: 'text' },
     },
+    headerClassName: {
+      control: { type: 'text' },
+    },
+    bodyClassName: {
+      control: { type: 'text' },
+    },
   },
   parameters: {
     docs: {
@@ -148,7 +154,13 @@ export const Side: Story = {
       <div className="flex gap-10">
         <div className="flex flex-col gap-2">
           <span>왼쪽</span>
-          <Sheet showTopCloseButton={args.showTopCloseButton} title="왼쪽" trigger={<Button>Left</Button>} side="left">
+          <Sheet
+            headerClassName={args.headerClassName}
+            bodyClassName={args.bodyClassName}
+            showTopCloseButton={args.showTopCloseButton}
+            title="왼쪽"
+            trigger={<Button>Left</Button>}
+            side="left">
             {args.children}
           </Sheet>
         </div>
@@ -156,6 +168,8 @@ export const Side: Story = {
           <span>오른쪽</span>
           <Sheet
             showTopCloseButton={args.showTopCloseButton}
+            headerClassName={args.headerClassName}
+            bodyClassName={args.bodyClassName}
             title="오른쪽"
             trigger={<Button>Right</Button>}
             side="right">
@@ -164,13 +178,21 @@ export const Side: Story = {
         </div>
         <div className="flex flex-col gap-2">
           <span>위</span>
-          <Sheet showTopCloseButton={args.showTopCloseButton} title="위" trigger={<Button>Top</Button>} side="top">
+          <Sheet
+            headerClassName={args.headerClassName}
+            bodyClassName={args.bodyClassName}
+            showTopCloseButton={args.showTopCloseButton}
+            title="위"
+            trigger={<Button>Top</Button>}
+            side="top">
             {args.children}
           </Sheet>
         </div>
         <div className="flex flex-col gap-2">
           <span>아래</span>
           <Sheet
+            headerClassName={args.headerClassName}
+            bodyClassName={args.bodyClassName}
             showTopCloseButton={args.showTopCloseButton}
             title="아래"
             trigger={<Button>Bottom</Button>}
