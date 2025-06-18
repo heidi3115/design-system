@@ -69,7 +69,7 @@ export default function TabsPage() {
         <Tabs
           defaultValue="tab4"
           // align="center"
-          shape="badge"
+          // shape="badge"
           tabs={tabsArray}
           onValueChange={(val) => setActiveTab(val)}
         />
