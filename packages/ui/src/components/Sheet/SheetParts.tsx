@@ -39,10 +39,12 @@ function SheetContent({
   children,
   side = 'right',
   portalContainer,
+  showTopCloseButton,
   ...props
 }: ComponentProps<typeof SheetPrimitive.Content> & {
   side?: 'top' | 'right' | 'bottom' | 'left';
   portalContainer?: HTMLElement | null;
+  showTopCloseButton?: boolean;
 }) {
   const { content, close } = sheetVariants({ side });
 
@@ -51,10 +53,12 @@ function SheetContent({
       <SheetOverlay side={side} />
       <SheetPrimitive.Content data-slot="sheet-content" className={cn(content(), className)} {...props}>
         {children}
-        <SheetPrimitive.Close className={close()}>
-          <XIcon className="size-4" />
-          <span className="sr-only">Close</span>
-        </SheetPrimitive.Close>
+        {showTopCloseButton && (
+          <SheetPrimitive.Close className={close()}>
+            <XIcon className="size-4" />
+            <span className="sr-only">Close</span>
+          </SheetPrimitive.Close>
+        )}
       </SheetPrimitive.Content>
     </SheetPortal>
   );

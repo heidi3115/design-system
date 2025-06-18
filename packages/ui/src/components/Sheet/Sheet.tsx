@@ -1,26 +1,30 @@
 import { isValidElement, type ReactNode, useState } from 'react';
-import {
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetRoot,
-  SheetTitle,
-  SheetTrigger,
-} from '@common/ui';
+import { SheetContent, SheetDescription, SheetHeader, SheetRoot, SheetTitle, SheetTrigger } from '@common/ui';
+import { cn } from '@common/ui/lib/utils';
 
 type SheetProps = {
   side?: 'top' | 'right' | 'bottom' | 'left';
   title: string;
   children?: ReactNode;
   description?: string;
-  closeName?: string;
   trigger: ReactNode;
   portalContainer?: HTMLElement | null;
+  showTopCloseButton?: boolean;
+  headerClassName?: string;
+  bodyClassName?: string;
 };
 
-const Sheet = ({ side, title, children, description, closeName, trigger, portalContainer }: SheetProps) => {
+const Sheet = ({
+  side,
+  title,
+  children,
+  description,
+  trigger,
+  portalContainer,
+  headerClassName,
+  bodyClassName,
+  showTopCloseButton = true,
+}: SheetProps) => {
   const [open, setOpen] = useState(false);
 
   if (!isValidElement(trigger)) {
@@ -34,15 +38,12 @@ const Sheet = ({ side, title, children, description, closeName, trigger, portalC
       <SheetTrigger asChild onClick={() => setOpen(true)}>
         {trigger}
       </SheetTrigger>
-      <SheetContent side={side} portalContainer={portalContainer}>
-        <SheetHeader>
+      <SheetContent side={side} portalContainer={portalContainer} showTopCloseButton={showTopCloseButton}>
+        <SheetHeader className={headerClassName}>
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>
         </SheetHeader>
-        <div className="p-4 text-sm overflow-auto">{children}</div>
-        <SheetFooter>
-          <SheetClose>{closeName}</SheetClose>
-        </SheetFooter>
+        <div className={cn(['pl-4 text-sm overflow-auto'], bodyClassName)}>{children}</div>
       </SheetContent>
     </SheetRoot>
   );

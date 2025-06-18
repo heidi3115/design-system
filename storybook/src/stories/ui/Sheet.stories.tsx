@@ -8,22 +8,32 @@ type SheetStoryArgs = {
   side?: 'top' | 'right' | 'bottom' | 'left';
   trigger: ReactNode;
   children?: ReactNode;
-  className?: string;
   portalContainer?: string;
-  showCloseButton?: boolean;
+  showTopCloseButton?: boolean;
+  headerClassName?: string;
+  bodyClassName?: string;
+  description?: string;
 };
 
 const meta: Meta<SheetStoryArgs> = {
   title: 'ui/Sheet',
   component: Sheet,
   argTypes: {
-    // showCloseButton: {
-    //   control: { type: 'boolean' },
-    //   description: '우측 상단의 X버튼 노출 여부를 설정할 수 있다.',
-    // },
+    showTopCloseButton: {
+      control: { type: 'boolean' },
+      description: '우측 상단의 X버튼 노출 여부를 설정할 수 있다.',
+    },
     title: {
       control: { type: 'text' },
       description: 'Sheet 제목',
+    },
+    description: {
+      control: { type: 'text' },
+      description: 'Sheet 부제목',
+    },
+    side: {
+      control: { type: 'radio' },
+      description: 'Sheet 활성 방향 조절',
     },
     trigger: {
       control: { disable: true },
@@ -39,13 +49,23 @@ const meta: Meta<SheetStoryArgs> = {
       options: ['body', 'area'],
       description: '포탈 위치 선택 (body=전역, area=특정 영역)',
     },
+    headerClassName: {
+      control: { type: 'text' },
+      description: 'Sheet의 header 외부 className',
+    },
+    bodyClassName: {
+      control: { type: 'text' },
+      description: 'Sheet의 body(content) 외부 className',
+    },
   },
   args: {
     title: 'Example Title',
-    showCloseButton: true,
-    // titleIcon: <EditIcon />,
+    showTopCloseButton: true,
     children: 'Example Children',
     portalContainer: 'body',
+    headerClassName: 'text-lg bg-juiPrimary',
+    bodyClassName: 'text-sm text-red-50',
+    side: 'right',
   },
   parameters: {
     docs: {
@@ -73,6 +93,10 @@ const Template = (args: SheetStoryArgs) => {
   return (
     <div ref={sheetAreaRef}>
       <Sheet
+        headerClassName={args.headerClassName}
+        bodyClassName={args.bodyClassName}
+        description={args.description}
+        showTopCloseButton={args.showTopCloseButton}
         side={args.side}
         trigger={<Button>Sheet 열기</Button>}
         title={args.title}
@@ -84,28 +108,75 @@ const Template = (args: SheetStoryArgs) => {
 };
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '기본 Sheet 컴포넌트 예시',
+      },
+    },
+  },
   render: Template,
 };
 
 export const Side: Story = {
-  render: () => {
+  argTypes: {
+    showTopCloseButton: {
+      control: 'boolean',
+    },
+    portalContainer: {
+      control: {
+        disable: true,
+      },
+    },
+    children: {
+      control: { type: 'text' },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Sheet의 방향을 left, right, top, bottom 네 가지 중 선택할 수 있다. 따로 설정하지 않았을 때 기본 값은 right이다.',
+      },
+    },
+    controls: {
+      exclude: ['portalContainer', 'side', 'description', 'title'],
+    },
+  },
+  render: (args) => {
     return (
       <div className="flex gap-10">
         <div className="flex flex-col gap-2">
           <span>왼쪽</span>
-          <Sheet title="왼쪽" trigger={<Button>Left</Button>} side="left" />
+          <Sheet showTopCloseButton={args.showTopCloseButton} title="왼쪽" trigger={<Button>Left</Button>} side="left">
+            {args.children}
+          </Sheet>
         </div>
         <div className="flex flex-col gap-2">
           <span>오른쪽</span>
-          <Sheet title="오른쪽" trigger={<Button>Right</Button>} side="right" />
+          <Sheet
+            showTopCloseButton={args.showTopCloseButton}
+            title="오른쪽"
+            trigger={<Button>Right</Button>}
+            side="right">
+            {args.children}
+          </Sheet>
         </div>
         <div className="flex flex-col gap-2">
           <span>위</span>
-          <Sheet title="위" trigger={<Button>Top</Button>} side="top" />
+          <Sheet showTopCloseButton={args.showTopCloseButton} title="위" trigger={<Button>Top</Button>} side="top">
+            {args.children}
+          </Sheet>
         </div>
         <div className="flex flex-col gap-2">
           <span>아래</span>
-          <Sheet title="아래" trigger={<Button>Bottom</Button>} side="bottom" />
+          <Sheet
+            showTopCloseButton={args.showTopCloseButton}
+            title="아래"
+            trigger={<Button>Bottom</Button>}
+            side="bottom">
+            {args.children}
+          </Sheet>
         </div>
       </div>
     );
