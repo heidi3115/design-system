@@ -1,31 +1,31 @@
 'use client';
 
-import { Tabs } from '@common/ui';
+import { Separator, Skeleton, Tabs, Tooltip, type TabItemType } from '@common/ui';
 import ThemeToggle from '../../../components/ThemeToggle';
+import { useState } from 'react';
+import { PlayIcon } from '@common/ui/icons';
 
 export default function TabsPage() {
-  type ScenarioProps = {
-    scenarioId: number;
-  };
-
-  function ScenarioList(props: ScenarioProps) {
+  function ScenarioList(props: { scenarioId: number }) {
     return <div className="bg-juiBackground-paper w-full min-h-lvh p-4">Scenario {props.scenarioId}</div>;
   }
 
-  function ComplexScenario(props: { name: string }) {
+  type ComplexScenarioProps = {
+    name: string;
+  };
+
+  function ComplexScenario(props: ComplexScenarioProps) {
     return <div className="bg-juiBackground-paper w-full min-h-lvh p-4">Complex {props.name}</div>;
   }
 
-  function ExceptionManagement(props: { code: string }) {
-    return <div className="bg-juiBackground-paper w-full min-h-lvh p-4">Exception {props.code}</div>;
-  }
+  const [acitveTab, setActiveTab] = useState('');
 
-  const tabsArray = [
+  const tabsArray: TabItemType<typeof ScenarioList | typeof ComplexScenario> = [
     {
       value: 'scenario',
       label: 'Scenario',
       component: ScenarioList,
-      props: { scenarioId: 'aa', a: 'aaaa' },
+      props: { scenarioId: 1 },
     },
     {
       value: 'complex',
@@ -33,27 +33,59 @@ export default function TabsPage() {
       component: ComplexScenario,
       props: { name: 'Test' },
     },
-
     {
       value: 'exception',
       label: 'Exception',
-      component: ExceptionManagement,
-      props: { code: 'ERR' },
+    },
+    {
+      value: 'target',
+      label: 'Target',
     },
     {
       value: 'tab4',
       label: '탭 4',
-      content: <div className="bg-juiBackground-paper w-full min-h-lvh p-4">탭 4 컨텐츠</div>,
+      content: <div className="bg-juiBackground-paper w-full p-4">탭 4 컨텐츠</div>,
+    },
+    {
+      value: 'tab5',
+      label: (
+        <Tooltip contents="탭5">
+          <div className="flex gap-1">
+            <PlayIcon />탭 5
+          </div>
+        </Tooltip>
+      ),
+      disabled: true,
+      content: <ScenarioList scenarioId={3} />,
     },
   ];
 
   return (
-    <div>
-      <div className="sticky top-2 flex flex-row-reverse z-10">
+    <div className="p-5">
+      <div className="absolute top-2 right-1 flex flex-row-reverse z-10">
         <ThemeToggle />
       </div>
-      <div className="min-h-svh">
-        <Tabs tabs={tabsArray} />
+      <div className="min-h-full">
+        <Tabs
+          defaultValue="tab4"
+          // align="center"
+          shape="badge"
+          tabs={tabsArray}
+          onValueChange={(val) => setActiveTab(val)}
+        />
+        {acitveTab === 'exception' && <div className="bg-juiBackground-paper w-full min-h-lvh p-4">Exception</div>}
+        {acitveTab === 'target' && (
+          <div className="bg-juiBackground-paper w-full p-4">
+            Target
+            <Separator orientation="horizontal" />
+            <div className="flex flex-col gap-2">
+              <Skeleton className="w-20 h-3" />
+              <Skeleton className="w-16 h-3" />
+              <Skeleton className="w-full h-3" />
+              <Skeleton className="w-full h-72" />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

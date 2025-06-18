@@ -13,26 +13,30 @@ function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimi
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
-      className={cn('text-juiText-secondary font-semibold inline-flex min-h-12 w-fit', className)}
+      className={cn('text-juiText-secondary font-medium inline-flex min-h-12 w-fit', className)}
       {...props}
     />
   );
 }
 
-function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+function TabsTrigger({ className, disabled, ...props }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       className={cn(
         [
           'data-[state=active]:text-juiText-primary',
+          'data-[state=active]:font-bold',
 
           // 액티브 시 스타일
-          'active:bg-juiGrey-300 active:scale-80 active:opacity-50 duration-800  ease-in-out rounded-full',
+          !disabled && 'active:bg-juiGrey-300 active:scale-80 duration-500 ease-in-out active:rounded-full',
 
           // 비활성화 상태
-          'disabled:pointer-events-none',
-          'disabled:opacity-50',
+          'disabled:cursor-not-allowed',
+          'disabled:text-juiText-disabled',
+
+          'focus-visible:border-0 focus-visible:ring-[0px] focus-visible:outline-0',
+          'focus-visible:bg-juiGrey-300 duration-500 ease-in-out ',
 
           // 레이아웃 및 크기
           'inline-flex',
@@ -53,6 +57,7 @@ function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPr
         ],
         className,
       )}
+      disabled={disabled}
       {...props}
     />
   );

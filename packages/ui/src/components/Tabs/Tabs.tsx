@@ -1,105 +1,155 @@
 'use client';
 
+import { type ComponentProps, type ComponentType, type ReactNode, useEffect, useState } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 import { TabsRoot, TabsList, TabsTrigger, TabsContent } from './TabsParts';
+import { useTabIndicator } from './hooks/useTabIndicator';
 import { cn } from '../../lib/utils';
-import { type ComponentProps, type ComponentType, type ReactNode, useEffect, useRef, useState } from 'react';
 
-export const tabsTriggerVariants = tv({
+const tabsTriggerVariants = tv({
   base: '',
   slots: {
     content: '',
     underline: '',
+    tabsAlign: '',
   },
   variants: {
     variant: {
       primary: { content: '', underline: 'bg-juiPrimary' },
       secondary: { content: '', underline: 'bg-juiSecondary' },
       error: { content: '', underline: 'bg-juiError' },
+      ghost: { content: '', underline: '' },
+    },
+    align: {
+      left: { tabsAlign: '' },
+      right: { tabsAlign: 'self-end' },
+      center: { tabsAlign: 'self-center' },
+    },
+    shape: {
+      underline: {},
+      badge: { content: 'rounded-full', underline: 'hidden' },
     },
   },
+  compoundVariants: [
+    {
+      variant: 'primary',
+      shape: 'badge',
+      class: {
+        content:
+          'data-[state=active]:bg-juiPrimary data-[state=active]:text-white py-0 h-8 data-[state=active]:font-bold',
+      },
+    },
+    {
+      variant: 'secondary',
+      hape: 'badge',
+      class: { content: 'data-[state=active]:bg-juiSecondary data-[state=active]:text-white py-0 h-8 font-bold' },
+    },
+    {
+      variant: 'error',
+      hape: 'badge',
+      class: { content: 'data-[state=active]:bg-juiError data-[state=active]:text-white py-0 h-8 font-bold' },
+    },
+  ],
   defaultVariants: {
     variant: 'primary',
+    align: 'left',
+    shape: 'underline',
   },
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type PropsOf<T extends ComponentType<any>> = ComponentProps<T>;
-
-// component + props 한 세트로 T에 따라 연동되게
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type TabItemWithComponent<C extends ComponentType<any>> = {
-  component: C;
-  props: PropsOf<C> & { [K in keyof PropsOf<C>]?: PropsOf<C>[K] };
+type TabItemBaseType = {
   value: string;
   label: ReactNode;
-};
-
-// content-only 타입
-type TabItemWithContent = {
-  content: ReactNode;
-  value: string;
-  label: ReactNode;
+  disabled?: boolean;
+  hidden?: boolean;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type TabItem<C extends ComponentType<any> = ComponentType<any>> = OnlyOne<TabItemWithContent, TabItemWithComponent<C>>;
+type TabItemWithComponent<C extends ComponentType<any>> = TabItemBaseType & {
+  component?: C;
+  props?: ComponentProps<C>;
+};
 
-type TabsProps<T extends TabItem[]> = {
+type TabItemWithContent = TabItemBaseType & {
+  content?: ReactNode;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type TabItemType<C extends ComponentType<any> = ComponentType<any>> = OnlyOne<
+  TabItemWithComponent<C>,
+  TabItemWithContent
+>[];
+
+type TabsProps<T extends TabItemType> = {
   tabs: T;
-  defaultValue?: string;
 } & ComponentProps<typeof TabsRoot> &
   VariantProps<typeof tabsTriggerVariants>;
 
-function Tabs<T extends TabItem[]>({ defaultValue, tabs, variant }: TabsProps<T>) {
-  const { content, underline } = tabsTriggerVariants({
+function Tabs<T extends TabItemType>({
+  defaultValue,
+  tabs,
+  variant,
+  align,
+  shape = 'underline',
+  onValueChange,
+}: TabsProps<T>) {
+  const { content, underline, tabsAlign } = tabsTriggerVariants({
     variant,
+    shape,
+    align,
   });
 
   const [activeValue, setActiveValue] = useState(defaultValue ?? tabs?.[0]?.value);
-  const listRef = useRef<HTMLDivElement>(null);
-  const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, left: 0 });
 
-  const updateIndicator = () => {
-    if (!listRef.current) return;
-
-    const buttons = Array.from(listRef.current.querySelectorAll('[role=tab]')) as HTMLElement[];
-    const activeButton = buttons.find((btn) => btn.getAttribute('data-state') === 'active');
-
-    if (activeButton) {
-      setIndicatorStyle({
-        width: activeButton.offsetWidth,
-        left: activeButton.offsetLeft,
-      });
-    }
-  };
+  const { listRef, indicatorStyle, updateIndicator } = useTabIndicator<HTMLDivElement>();
 
   useEffect(() => {
+    if (shape !== 'underline') return;
+
     updateIndicator();
-  }, [activeValue, tabs]);
+  }, [activeValue, shape, tabs]);
 
   return (
-    <TabsRoot defaultValue={activeValue} onValueChange={(val) => setActiveValue(val)}>
-      <TabsList ref={listRef} className="relative flex">
-        {tabs.map(({ value, label }) => (
-          <TabsTrigger key={value} className={cn(content())} value={value}>
-            {label}
-          </TabsTrigger>
-        ))}
-        <div
-          className={cn(underline(), 'absolute bottom-0.5 h-[3px] transition-all duration-300')}
-          style={{
-            width: `${indicatorStyle.width}px`,
-            transform: `translateX(${indicatorStyle.left}px)`,
-          }}
-        />
+    <TabsRoot
+      defaultValue={activeValue}
+      onValueChange={(value) => {
+        setActiveValue(value);
+        onValueChange?.(value);
+      }}>
+      <TabsList
+        ref={listRef}
+        className={cn('relative', tabsAlign(), shape === 'underline' ? 'min-h-12 my-0' : 'min-h-8 py-2')}>
+        {tabs
+          .filter(({ hidden = false }) => !hidden)
+          .map(({ value, label, disabled = false }) => (
+            <TabsTrigger key={value} className={cn(content())} value={value} disabled={disabled}>
+              {label}
+            </TabsTrigger>
+          ))}
+
+        {shape === 'underline' && (
+          <div
+            className={cn(underline(), 'absolute bottom-0.5 h-[3px] transition-all duration-300')}
+            style={{
+              width: `${indicatorStyle.width}px`,
+              transform: `translateX(${indicatorStyle.left}px)`,
+            }}
+          />
+        )}
       </TabsList>
-      {tabs.map(({ value, component: Component, props, content: tabContent }) => (
-        <TabsContent key={value} value={value}>
-          {Component ? <Component {...props} /> : (tabContent ?? null)}
-        </TabsContent>
-      ))}
+
+      {tabs
+        .filter(({ hidden = false }) => !hidden)
+        .map(({ value, component: Component, props, content: tabContent }) => {
+          if (!Component && !tabContent) return null;
+
+          return (
+            <TabsContent key={value} value={value}>
+              {Component ? <Component {...props} /> : (tabContent ?? null)}
+            </TabsContent>
+          );
+        })}
     </TabsRoot>
   );
 }

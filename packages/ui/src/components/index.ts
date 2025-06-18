@@ -96,4 +96,4 @@ export {
 
 export { Separator, type SeparatorProps, separatorVariants } from './Separator';
 
-export { Tabs, TabsRoot, TabsList, TabsTrigger, TabsContent } from './Tabs';
+export { Tabs, TabsRoot, TabsList, TabsTrigger, TabsContent, type TabItemType } from './Tabs';
