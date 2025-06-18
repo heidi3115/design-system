@@ -135,7 +135,7 @@ export default function Page() {
             {...fruitField}
           />
 
-          <Popover trigger={FilePlusIcon} className="bg-juiStatus-urgency" size="small" isCloseIcon isArrow>
+          <Popover trigger={FilePlusIcon} className="bg-juiStatus-urgency" size="small" isCloseIcon>
             dadfdsfadsffsdfadfsfasdfadfasfas
           </Popover>
           <Popover

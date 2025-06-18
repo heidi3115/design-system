@@ -23,9 +23,9 @@ const popoverVariants = tv({
   base: '',
   variants: {
     variant: {
-      primary: 'bg-juiPrimary',
-      secondary: 'bg-juiSecondary',
-      error: 'bg-juiError',
+      primary: 'bg-juiPrimary text-white',
+      secondary: 'bg-juiSecondary text-white',
+      error: 'bg-juiError text-white',
       default: '',
     },
     size: {
@@ -34,7 +34,7 @@ const popoverVariants = tv({
       medium: 'min-w-3xs min-h-28',
       large: 'min-w-3xl min-h-96',
     },
-    isArrow: {
+    isCloseIcon: {
       true: 'pt-4',
     },
   },
@@ -83,7 +83,7 @@ function Popover({
     }
   }, [anchorRef]);
 
-  const contentClassName = cn(popoverVariants({ variant, size, isArrow }), className);
+  const contentClassName = cn(popoverVariants({ variant, size, isCloseIcon }), className);
 
   const bgColor = useExtractClassName(isArrow ? contentClassName : '', 'bg-');
 
