@@ -97,6 +97,17 @@ export {
 export { Separator, type SeparatorProps, separatorVariants } from './Separator';
 
 export {
+  Popover,
+  PopoverRoot,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverAnchor,
+  PopoverPotal,
+  PopoverClose,
+  PopoverArrow,
+} from './Popover';
+
+export {
   Accordion,
   AccordionItems,
   type AccordionItemProps,

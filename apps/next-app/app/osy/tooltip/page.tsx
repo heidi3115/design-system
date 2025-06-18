@@ -121,6 +121,8 @@ export default function TooltipPage() {
                 <h2 className={'text-juiText-blue text-2xl font-semibold'}>size comparison</h2>
                 <div className={'flex flex-row gap-6'}>
                   {sizeKeys.map((size, idx) => {
+                    if (size === 'default') return null;
+
                     const duration = (idx + 4) * 100;
 
                     return (
