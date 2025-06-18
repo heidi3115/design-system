@@ -3,7 +3,8 @@
   "name": "@common/types",
   "main": "index.d.ts",
   "scripts": {
-    "test-type": "tsc"
+    "test-type": "tsc",
+    "lint": "eslint --ext=.ts,.tsx,.jsx"
   },
   "devDependencies": {
     "typescript": "^5.8.3"

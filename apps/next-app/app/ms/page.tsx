@@ -2,7 +2,18 @@
 
 import { useRef, useState } from 'react';
 
-import { Button, Checkbox, Input, Select, RadioGroup, SplitOtpInput, Textarea, Toggle } from '@common/ui';
+import {
+  Button,
+  Checkbox,
+  Input,
+  Select,
+  RadioGroup,
+  SplitOtpInput,
+  Textarea,
+  Toggle,
+  Popover,
+  Tooltip,
+} from '@common/ui';
 import {
   ArrowLeftIcon,
   CalendarIcon,
@@ -22,13 +33,14 @@ import { useController, useForm } from 'react-hook-form';
 import ThemeToggle from '../../components/ThemeToggle';
 import { useUpdateEffect } from '@common/utils';
 import { TvIcon } from 'lucide-react';
+import { ConfirmAlertDialog } from '@common/ui/components/AlertDialog';
 
 export default function Page() {
   const [value, setValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   useUpdateEffect(() => {
-    console.log('제어', value);
+    console.warn('제어', value);
   }, [value]);
 
   const {
@@ -41,7 +53,7 @@ export default function Page() {
   });
 
   const onValid = (data: { email: string; tv: boolean; area: string; fruit: string; timeZone: string }) => {
-    console.log('폼 제출됨', data);
+    console.warn('폼 제출됨', data);
   };
 
   const {
@@ -71,8 +83,11 @@ export default function Page() {
   const [isPress, setIsPress] = useState(false);
   const pressedRef = useRef(null);
 
+  const [isOpenPopover, setIsOpenPopover] = useState(false);
+  const anchorRef = useRef<HTMLDivElement>(null);
+
   useUpdateEffect(() => {
-    console.log(isPress, '제어 toggle');
+    console.warn(isPress, '제어 toggle');
   }, [isPress]);
 
   const options = [
@@ -85,24 +100,27 @@ export default function Page() {
 
   const [selectValue, setSelectValue] = useState('');
   const selectRef = useRef(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useUpdateEffect(() => {
-    console.log(selectValue);
+    console.warn(selectValue);
   }, [selectValue]);
+
+  const portalRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <form className="p-4" onSubmit={handleSubmit(onValid)}>
       <div className="sticky top-2 z-10">
         <ThemeToggle />
       </div>
-      <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper">
+      <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper" ref={wrapperRef}>
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
           <RadioGroup direction="horizontal" defaultValue="banana" valueRef={radioRef} options={options} />
           <Button
             onClick={() => {
               if (radioRef.current) {
-                console.log('비제어', radioRef.current);
+                console.warn('비제어', radioRef.current);
               }
             }}>
             라디오그룹 비제어
@@ -117,39 +135,73 @@ export default function Page() {
             {...fruitField}
           />
 
+          <Popover trigger={FilePlusIcon} className="bg-juiStatus-alert" size="small" isArrow>
+            dadfdsfadsffsdfadfsfasdfadfasfas
+          </Popover>
+          <Popover
+            trigger={<Button>popover</Button>}
+            isArrow
+            side="top"
+            align="start"
+            portalContainer={wrapperRef.current}>
+            default popover
+          </Popover>
+
+          <Tooltip contents="aa" defaultOpen className="bg-juiStatus-alert">
+            <Button>aa</Button>
+          </Tooltip>
+          <Tooltip trigger={<Button>aaa</Button>} contents="aaa" className="bg-juiStatus-alert" />
+
+          <div className="flex gap-1">
+            <Button
+              onClick={() => {
+                setIsOpenPopover(!isOpenPopover);
+              }}>
+              다른곳 클릭
+            </Button>
+          </div>
+
+          <div ref={anchorRef} className="absolute top-28 right-20">
+            this is popover position
+          </div>
+          <Popover anchorRef={anchorRef} trigger={<Button>Anchor</Button>} side="left" align="start" isArrow>
+            AnchorRef로 오픈
+          </Popover>
+
+          <Popover open={isOpenPopover} trigger={<div className="absolute top-28 left-20">aa</div>}>
+            State로 오픈
+          </Popover>
+
+          <div ref={portalRef}>
+            <Popover defaultOpen portalContainer={portalRef.current} trigger={<Button>open</Button>}>
+              portal
+            </Popover>
+          </div>
+
+          <ConfirmAlertDialog title="warning" trigger={<Button>confirm</Button>} />
+
+          <SplitOtpInput />
+
           <Toggle
             defaultPressed
             pressedRef={pressedRef}
             onIcon={CalendarIcon}
             onText="on"
             offText="off"
-            onPressedChange={(on) => console.log('toggle', on)}>
+            onPressedChange={(on) => console.warn('toggle', on)}>
             비제어
           </Toggle>
-
-          <Button
-            onMouseEnter={() => {
-              console.log(pressedRef.current, '비제어 toggle');
-            }}>
-            비제어 토글 확인
-          </Button>
 
           <Toggle pressed={isPress} onPressedChange={(on) => setIsPress(on)}>
             제어
           </Toggle>
 
-          <SplitOtpInput maxLength={5} inputType="all" />
-          <SplitOtpInput />
-          <SplitOtpInput size="large" />
-          <SplitOtpInput size="small" />
-          <SplitOtpInput size="small" variant="error" />
-          <p></p>
           <span>비제어</span>
           <SplitOtpInput
             size="small"
             variant="normal"
             ref={inputRef}
-            onBlur={() => console.log('비제어', inputRef.current?.value)}
+            onBlur={() => console.warn('비제어', inputRef.current?.value)}
           />
           <p></p>
           <span>제어</span>
@@ -198,7 +250,7 @@ export default function Page() {
               placeholder="aaa"
               error
               rightButton={
-                <Button variant="primary" onClick={() => console.log('callback')}>
+                <Button variant="primary" onClick={() => console.warn('callback')}>
                   <TagIcon />
                   Query
                 </Button>
@@ -267,7 +319,7 @@ export default function Page() {
             <Button
               onClick={() => {
                 if (selectRef.current) {
-                  console.log('비제어', selectRef.current);
+                  console.warn('비제어', selectRef.current);
                 }
               }}>
               select 비제어
@@ -292,7 +344,7 @@ export default function Page() {
               ref={inputRef}
               defaultValue="비제어"
               placeholder="Uncontrolled input"
-              onBlur={() => console.log('비제어', inputRef.current?.value)}
+              onBlur={() => console.warn('비제어', inputRef.current?.value)}
             />
 
             <Input
