@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Skeleton, Tabs } from '@common/ui';
+import { useState, type ComponentProps } from 'react';
 
 const meta: Meta<typeof Tabs> = {
   title: 'UI/Tabs',
@@ -31,6 +32,20 @@ const meta: Meta<typeof Tabs> = {
     },
   },
 };
+
+function ScenarioList(props: { scenarioId: number }) {
+  return (
+    <div className="bg-juiBackground-paper w-full min-h-[200px] flex flex-col gap-4 p-4">
+      Scenario {props.scenarioId}
+    </div>
+  );
+}
+
+function ComplexScenario(props: { name: string }) {
+  return (
+    <div className="bg-juiBackground-paper w-full min-h-[200px] flex flex-col gap-4 p-4">Complex {props.name}</div>
+  );
+}
 
 export default meta;
 type Story = StoryObj<typeof Tabs>;
@@ -74,9 +89,71 @@ const tabs = [
   },
 ];
 
+const componentTabs = [
+  {
+    value: 'scenario',
+    label: 'Scenario',
+    component: ScenarioList,
+    props: { scenarioId: 1 },
+  },
+  {
+    value: 'complex',
+    label: 'Complex',
+    component: ComplexScenario,
+    props: { name: 'Test' },
+  },
+];
+
+const stateTabs = [
+  {
+    value: 'exception',
+    label: 'Exception',
+  },
+  {
+    value: 'target',
+    label: 'Target',
+  },
+];
+
 export const Default: Story = {
   args: {
     tabs,
+  },
+};
+
+export const ComponentDefault: Story = {
+  args: {
+    tabs: componentTabs,
+  },
+};
+
+const StateManagedTabsComp = (args: ComponentProps<typeof Tabs>) => {
+  const [activeTab, setActiveTab] = useState(args.defaultValue || 'exception');
+
+  return (
+    <div className="flex flex-col">
+      <Tabs {...args} tabs={stateTabs} defaultValue={activeTab} onValueChange={(val) => setActiveTab(val)} />
+      {activeTab === 'exception' && (
+        <div className="bg-juiBackground-paper w-full min-h-[200px] flex flex-col gap-4 p-4">
+          {'activeTab === "exception"'}
+        </div>
+      )}
+      {activeTab === 'target' && (
+        <div className="bg-juiBackground-paper w-full min-h-[200px] flex flex-col gap-4 p-4">
+          {'activeTab === "target"'}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const StateManagedTabs: Story = {
+  render: (args) => <StateManagedTabsComp {...args} />,
+  args: {
+    tabs: stateTabs,
+    defaultValue: 'exception',
+    shape: 'underline',
+    variant: 'primary',
   },
 };
 

@@ -32,7 +32,7 @@ const tabsTriggerVariants = tv({
       ghost: { content: '', underline: '' },
     },
     size: {
-      default: 'text-sm',
+      default: { list: 'min-h-11  text-sm' },
       small: { list: 'min-h-5 text-xs' },
       medium: { list: 'min-h-12 text-base' },
       large: { list: 'min-h-14 text-lg' },
