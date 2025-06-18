@@ -108,8 +108,8 @@ const Template = (args: AlertDialogStoryArgs) => {
         contentSize={args.contentSize}
         confirmLabel={args.confirmLabel}
         cancelLabel={args.cancelLabel}
-        onConfirm={() => console.log('확인버튼 클릭')}
-        onCancel={() => console.log('취소버튼 클릭')}
+        onConfirm={() => console.warn('확인버튼 클릭')}
+        onCancel={() => console.warn('취소버튼 클릭')}
         portalContainer={shouldUseArea ? portalContainer : undefined}
       />
     </div>

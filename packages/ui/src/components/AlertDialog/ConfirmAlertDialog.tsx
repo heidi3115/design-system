@@ -33,7 +33,7 @@ type ConfirmDialogProps = OnlyOne<ChildrenType, TriggerType> & BaseProps;
 function ConfirmAlertDialog({
   trigger,
   children,
-  title,
+  title = 'warning',
   description,
   confirmLabel = '확인',
   cancelLabel = '취소',
