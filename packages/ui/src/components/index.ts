@@ -98,6 +98,9 @@ export { Separator, type SeparatorProps, separatorVariants } from './Separator';
 
 export {
   Accordion,
+  AccordionItems,
+  type AccordionItemProps,
+  type AccordionProps,
   AccordionRoot,
   AccordionItem,
   AccordionTrigger,
