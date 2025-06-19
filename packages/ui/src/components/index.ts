@@ -106,3 +106,5 @@ export {
   PopoverClose,
   PopoverArrow,
 } from './Popover';
+
+export { Collapsible, collapsibleVariants, type CollapsibleProps } from './Collapsible';
