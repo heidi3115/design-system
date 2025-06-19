@@ -5,6 +5,7 @@ import { XIcon } from '@common/ui/icons';
 import { cn } from '../../lib/utils';
 import { type ComponentProps } from 'react';
 import { sheetVariants } from './sheetVariants';
+import { type VariantProps } from 'tailwind-variants';
 
 function SheetRoot({ ...props }: ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />;
@@ -26,9 +27,7 @@ function SheetOverlay({
   className,
   side = 'right',
   ...props
-}: ComponentProps<typeof SheetPrimitive.Overlay> & {
-  side?: 'top' | 'right' | 'bottom' | 'left';
-}) {
+}: ComponentProps<typeof SheetPrimitive.Overlay> & VariantProps<typeof sheetVariants>) {
   const { overlay } = sheetVariants({ side });
 
   return <SheetPrimitive.Overlay data-slot="sheet-overlay" className={cn(overlay(), className)} {...props} />;
@@ -41,16 +40,16 @@ function SheetContent({
   portalContainer,
   showTopCloseButton,
   ...props
-}: ComponentProps<typeof SheetPrimitive.Content> & {
-  side?: 'top' | 'right' | 'bottom' | 'left';
-  portalContainer?: HTMLElement | null;
-  showTopCloseButton?: boolean;
-}) {
+}: ComponentProps<typeof SheetPrimitive.Content> &
+  VariantProps<typeof sheetVariants> & {
+    portalContainer?: HTMLElement | null;
+    showTopCloseButton?: boolean;
+  }) {
   const { content, close } = sheetVariants({ side });
 
   return (
     <SheetPortal container={portalContainer}>
-      <SheetOverlay side={side} />
+      <SheetOverlay />
       <SheetPrimitive.Content data-slot="sheet-content" className={cn(content(), className)} {...props}>
         {children}
         {showTopCloseButton && (

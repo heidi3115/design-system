@@ -32,6 +32,7 @@ const meta: Meta<SheetStoryArgs> = {
     },
     side: {
       control: { type: 'radio' },
+      options: ['left', 'right', 'top', 'bottom'],
       description: 'Sheet 활성 방향 조절',
     },
     trigger: {
@@ -64,7 +65,7 @@ const meta: Meta<SheetStoryArgs> = {
     portalContainer: 'body',
     headerClassName: 'text-lg bg-juiPrimary',
     bodyClassName: 'text-sm text-red-50',
-    side: 'right',
+    side: 'left',
   },
   parameters: {
     docs: {
@@ -141,7 +142,7 @@ export const Side: Story = {
     docs: {
       description: {
         story:
-          'Sheet의 방향을 left, right, top, bottom 네 가지 중 선택할 수 있다. 따로 설정하지 않았을 때 기본 값은 right이다.',
+          'Sheet의 방향을 left, right, top, bottom 네 가지 중 선택할 수 있다. 따로 설정하지 않았을 때 기본 값은 left이다.',
       },
     },
     controls: {

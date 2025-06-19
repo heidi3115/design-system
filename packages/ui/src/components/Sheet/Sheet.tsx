@@ -1,9 +1,10 @@
 import { isValidElement, type ReactNode, useState } from 'react';
 import { SheetContent, SheetDescription, SheetHeader, SheetRoot, SheetTitle, SheetTrigger } from '@common/ui';
 import { cn } from '@common/ui/lib/utils';
+import { type VariantProps } from 'tailwind-variants';
+import { sheetVariants } from './sheetVariants';
 
 type SheetProps = {
-  side?: 'top' | 'right' | 'bottom' | 'left';
   title: string;
   children?: ReactNode;
   description?: string;
@@ -12,7 +13,7 @@ type SheetProps = {
   showTopCloseButton?: boolean;
   headerClassName?: string;
   bodyClassName?: string;
-};
+} & VariantProps<typeof sheetVariants>;
 
 const Sheet = ({
   side,
