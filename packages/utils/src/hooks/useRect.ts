@@ -4,6 +4,21 @@ import { useLayoutEffect, useState } from 'react';
 import { useDebounce } from './useDebounce';
 
 function getRect<T extends HTMLElement>(element?: T): DOMRect {
+  if (typeof window === 'undefined' || typeof DOMRect === 'undefined') {
+    // SSR 또는 DOMRect 미지원 환경에서는 기본값 반환
+    return {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      toJSON: () => ({}),
+    } as DOMRect;
+  }
+
   let rect: DOMRect = new DOMRect(0, 0, 0, 0);
   if (element) rect = element.getBoundingClientRect();
 
@@ -33,6 +48,7 @@ export function useRect<T extends HTMLElement>(ref: React.RefObject<T | null>, d
 
       return () => {
         if (!resizeObserver) return;
+
         resizeObserver.disconnect();
         resizeObserver = null;
       };
