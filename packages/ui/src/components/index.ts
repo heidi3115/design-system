@@ -107,4 +107,16 @@ export {
   PopoverArrow,
 } from './Popover';
 
+export {
+  SheetDescription,
+  SheetTitle,
+  SheetRoot,
+  SheetFooter,
+  SheetHeader,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+  Sheet,
+} from './Sheet';
+
 export { Collapsible, collapsibleVariants, type CollapsibleProps } from './Collapsible';
