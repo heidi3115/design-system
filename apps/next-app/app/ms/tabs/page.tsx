@@ -71,6 +71,8 @@ export default function TabsPage() {
           // variant="secondary"
           // shape="badge"
           // shape="folder"
+          shape="text"
+          variant="ghost"
           tabs={tabsArray}
           onValueChange={(val) => setActiveTab(val)}
         />

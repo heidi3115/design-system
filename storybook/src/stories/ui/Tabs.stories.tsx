@@ -21,8 +21,8 @@ const meta: Meta<typeof Tabs> = {
     },
     shape: {
       control: 'select',
-      options: ['underline', 'badge', 'folder'],
-      description: 'Tabs의 모양을 지정합니다. (underline | badge | folder)',
+      options: ['underline', 'badge', 'folder', 'text'],
+      description: 'Tabs의 모양을 지정합니다. (underline | badge | folder | text)',
     },
     align: {
       control: 'select',
@@ -175,7 +175,7 @@ export const Disabled: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Tabs Disabled 된 탭',
+        story: 'Tabs Disabled 된 탭 (hidden 옵션을 넣으면 탭 자체가 나타나지 않음)',
       },
     },
   },
@@ -236,6 +236,25 @@ export const Folder: Story = {
   args: {
     tabs,
     shape: 'folder',
+  },
+};
+
+export const Text: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tabs Text 모양 탭',
+      },
+    },
+  },
+  argTypes: {
+    shape: {
+      table: { disable: true },
+    },
+  },
+  args: {
+    tabs,
+    shape: 'text',
   },
 };
 

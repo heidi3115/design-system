@@ -57,6 +57,7 @@ const tabsTriggerVariants = tv({
         underline: 'hidden',
         firstForderTab: `${folderBase}`,
       },
+      text: { content: 'py-0 data-[state=active]:font-bold', underline: 'hidden' },
     },
   },
   compoundVariants: [
@@ -80,6 +81,35 @@ const tabsTriggerVariants = tv({
       shape: 'badge',
       class: {
         content: 'data-[state=active]:bg-juiError data-[state=active]:text-white py-0  data-[state=active]:font-bold',
+      },
+    },
+
+    {
+      variant: 'primary',
+      shape: 'text',
+      class: {
+        content: 'data-[state=active]:text-juiPrimary',
+      },
+    },
+    {
+      variant: 'secondary',
+      shape: 'text',
+      class: {
+        content: 'data-[state=active]:text-juiSecondary',
+      },
+    },
+    {
+      variant: 'error',
+      shape: 'text',
+      class: {
+        content: 'data-[state=active]:text-juiError',
+      },
+    },
+    {
+      variant: 'ghost',
+      shape: 'text',
+      class: {
+        content: 'data-[state=active]:text-juiText-primary',
       },
     },
   ],
