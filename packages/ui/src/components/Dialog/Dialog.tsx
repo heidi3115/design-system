@@ -94,7 +94,9 @@ const Dialog = ({
               {title}
             </DialogTitle>
           </DialogHeader>
-          <div className="p-4 text-juiText-secondary text-sm overflow-auto" style={{ maxHeight }}>
+          <div
+            className="p-4 text-juiText-secondary text-sm overflow-auto max-h-[calc(100lvh-150px)]"
+            style={{ maxHeight }}>
             {children}
           </div>
           {Array.isArray(buttons) && buttons.length > 0 && (
