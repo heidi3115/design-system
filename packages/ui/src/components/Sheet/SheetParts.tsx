@@ -25,7 +25,7 @@ function SheetPortal({ ...props }: ComponentProps<typeof SheetPrimitive.Portal>)
 
 function SheetOverlay({
   className,
-  side = 'right',
+  side = 'left',
   ...props
 }: ComponentProps<typeof SheetPrimitive.Overlay> & VariantProps<typeof sheetVariants>) {
   const { overlay } = sheetVariants({ side });
@@ -36,7 +36,7 @@ function SheetOverlay({
 function SheetContent({
   className,
   children,
-  side = 'right',
+  side = 'left',
   portalContainer,
   showTopCloseButton,
   ...props
