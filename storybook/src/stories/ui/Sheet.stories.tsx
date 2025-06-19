@@ -10,6 +10,7 @@ type SheetStoryArgs = {
   portalContainer?: string;
   showTopCloseButton?: boolean;
   headerClassName?: string;
+  showHeader?: boolean;
   bodyClassName?: string;
   description?: string;
 };
@@ -21,6 +22,10 @@ const meta: Meta<SheetStoryArgs> = {
     showTopCloseButton: {
       control: { type: 'boolean' },
       description: '우측 상단의 X버튼 노출 여부를 설정할 수 있다.',
+    },
+    showHeader: {
+      control: { type: 'boolean' },
+      description: 'Header을 숨기거나 활성화한다.',
     },
     title: {
       control: { type: 'text' },
@@ -65,6 +70,7 @@ const meta: Meta<SheetStoryArgs> = {
     portalContainer: 'body',
     headerClassName: 'text-lg bg-juiPrimary',
     bodyClassName: 'text-sm text-red-50',
+    showHeader: true,
     side: 'left',
   },
   parameters: {
@@ -93,6 +99,7 @@ const Template = (args: SheetStoryArgs) => {
   return (
     <div ref={sheetAreaRef}>
       <Sheet
+        showHeader={args.showHeader}
         headerClassName={args.headerClassName}
         bodyClassName={args.bodyClassName}
         description={args.description}
@@ -137,6 +144,9 @@ export const Side: Story = {
     bodyClassName: {
       control: { type: 'text' },
     },
+    showHeader: {
+      control: { type: 'boolean' },
+    },
   },
   parameters: {
     docs: {
@@ -155,6 +165,7 @@ export const Side: Story = {
         <div className="flex flex-col gap-2">
           <span>왼쪽</span>
           <Sheet
+            showHeader={args.showHeader}
             headerClassName={args.headerClassName}
             bodyClassName={args.bodyClassName}
             showTopCloseButton={args.showTopCloseButton}
@@ -167,6 +178,7 @@ export const Side: Story = {
         <div className="flex flex-col gap-2">
           <span>오른쪽</span>
           <Sheet
+            showHeader={args.showHeader}
             showTopCloseButton={args.showTopCloseButton}
             headerClassName={args.headerClassName}
             bodyClassName={args.bodyClassName}
@@ -179,6 +191,7 @@ export const Side: Story = {
         <div className="flex flex-col gap-2">
           <span>위</span>
           <Sheet
+            showHeader={args.showHeader}
             headerClassName={args.headerClassName}
             bodyClassName={args.bodyClassName}
             showTopCloseButton={args.showTopCloseButton}
@@ -191,6 +204,7 @@ export const Side: Story = {
         <div className="flex flex-col gap-2">
           <span>아래</span>
           <Sheet
+            showHeader={args.showHeader}
             headerClassName={args.headerClassName}
             bodyClassName={args.bodyClassName}
             showTopCloseButton={args.showTopCloseButton}

@@ -13,10 +13,12 @@ type SheetProps = {
   showTopCloseButton?: boolean;
   headerClassName?: string;
   bodyClassName?: string;
+  showHeader?: boolean;
 } & VariantProps<typeof sheetVariants>;
 
 const Sheet = ({
   side,
+  showHeader = true,
   title,
   children,
   description,
@@ -40,11 +42,13 @@ const Sheet = ({
         {trigger}
       </SheetTrigger>
       <SheetContent side={side} portalContainer={portalContainer} showTopCloseButton={showTopCloseButton}>
-        <SheetHeader className={headerClassName}>
-          <SheetTitle>{title}</SheetTitle>
-          <SheetDescription>{description}</SheetDescription>
-        </SheetHeader>
-        <div className={cn(['px-4 text-sm overflow-auto'], bodyClassName)}>{children}</div>
+        {showHeader && (
+          <SheetHeader className={headerClassName}>
+            <SheetTitle>{title}</SheetTitle>
+            <SheetDescription>{description}</SheetDescription>
+          </SheetHeader>
+        )}
+        <div className={cn(['p-4 text-sm overflow-auto'], bodyClassName)}>{children}</div>
       </SheetContent>
     </SheetRoot>
   );
