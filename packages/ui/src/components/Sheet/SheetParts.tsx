@@ -35,7 +35,7 @@ function SheetOverlay({
 function SheetContent({
   className,
   children,
-  side = 'left',
+  side,
   portalContainer,
   showTopCloseButton,
   ...props
