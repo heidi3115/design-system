@@ -44,7 +44,7 @@ const Sheet = ({
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>
         </SheetHeader>
-        <div className={cn(['pl-4 text-sm overflow-auto'], bodyClassName)}>{children}</div>
+        <div className={cn(['px-4 text-sm overflow-auto'], bodyClassName)}>{children}</div>
       </SheetContent>
     </SheetRoot>
   );
