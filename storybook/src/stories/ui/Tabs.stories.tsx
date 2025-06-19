@@ -12,23 +12,28 @@ const meta: Meta<typeof Tabs> = {
       </div>
     ),
   ],
-  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: 'select',
       options: ['primary', 'secondary', 'error', 'ghost'],
+      table: { defaultValue: { summary: 'primary' } },
+      description: 'Tabs의 색상을 지정합니다. (primary | secondary | error | ghost)',
     },
     shape: {
       control: 'select',
       options: ['underline', 'badge', 'folder'],
+      description: 'Tabs의 모양을 지정합니다. (underline | badge | folder)',
     },
     align: {
       control: 'select',
       options: ['left', 'center', 'right'],
+      table: { defaultValue: { summary: 'left' } },
+      description: 'Tabs의 정렬을 지정합니다. (left | center | right)',
     },
     size: {
       control: 'select',
       options: ['default', 'small', 'medium', 'large'],
+      description: 'Tabs의 높이 및 폰트 크기를 지정합니다. (default | small | medium | large)',
     },
   },
 };
@@ -104,12 +109,26 @@ const stateTabs = [
 ];
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tabs 기본 content로 탭컨텐츠 구성',
+      },
+    },
+  },
   args: {
     tabs,
   },
 };
 
 export const ComponentDefault: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tabs 기본 component로 탭컨텐츠 구성',
+      },
+    },
+  },
   args: {
     tabs: componentTabs,
   },
@@ -137,6 +156,13 @@ const StateManagedTabsComp = (args: ComponentProps<typeof Tabs>) => {
 
 export const StateManagedTabs: Story = {
   render: (args) => <StateManagedTabsComp {...args} />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tabs 기본 onValueChange로 활성탭 state로 조건부 렌더링으로 탭컨텐츠 구성',
+      },
+    },
+  },
   args: {
     tabs: stateTabs,
     defaultValue: 'exception',
@@ -146,6 +172,13 @@ export const StateManagedTabs: Story = {
 };
 
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tabs Disabled 된 탭',
+      },
+    },
+  },
   args: {
     tabs: [
       {
@@ -169,6 +202,18 @@ export const Disabled: Story = {
 };
 
 export const Badge: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tabs Badge 모양 탭',
+      },
+    },
+  },
+  argTypes: {
+    shape: {
+      table: { disable: true },
+    },
+  },
   args: {
     tabs,
     shape: 'badge',
@@ -176,6 +221,18 @@ export const Badge: Story = {
 };
 
 export const Folder: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tabs Folder 모양 탭',
+      },
+    },
+  },
+  argTypes: {
+    shape: {
+      table: { disable: true },
+    },
+  },
   args: {
     tabs,
     shape: 'folder',
@@ -183,6 +240,18 @@ export const Folder: Story = {
 };
 
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tabs Variants 색상변경',
+      },
+    },
+  },
+  argTypes: {
+    variant: {
+      table: { disable: true },
+    },
+  },
   render: (args) => (
     <div className="flex flex-col gap-10">
       <div>
@@ -211,6 +280,18 @@ export const Variants: Story = {
 };
 
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tabs Sizes 높이 및 폰트크기 변경',
+      },
+    },
+  },
+  argTypes: {
+    size: {
+      table: { disable: true },
+    },
+  },
   render: (args) => (
     <div className="flex flex-col gap-10">
       <div>
@@ -238,6 +319,18 @@ export const Sizes: Story = {
 };
 
 export const Alignments: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tabs align 으로 정렬 변경(folder 형태는 정렬 무시)',
+      },
+    },
+  },
+  argTypes: {
+    align: {
+      table: { disable: true },
+    },
+  },
   render: (args) => (
     <div className="flex flex-col gap-10">
       <div>
