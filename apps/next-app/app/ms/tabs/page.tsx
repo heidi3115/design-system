@@ -39,7 +39,7 @@ export default function TabsPage() {
     },
     {
       value: 'target',
-      label: 'Target',
+      label: 'Targetㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ',
     },
     {
       value: 'tab4',
@@ -63,17 +63,17 @@ export default function TabsPage() {
       <div className="absolute top-2 right-1 flex flex-row-reverse z-10">
         <ThemeToggle />
       </div>
+
       <div className="min-h-full">
         <Tabs
-          defaultValue="tab4"
+          defaultValue="target"
           // align="center"
           // size="small"
           // variant="secondary"
-          // shape="badge"
+          // shape="text"
           // shape="folder"
-          shape="text"
-          variant="ghost"
           tabs={tabsArray}
+          // maxWidth={100}
           onValueChange={(val) => setActiveTab(val)}
         />
         {acitveTab === 'exception' && <div className="bg-juiBackground-paper w-full min-h-lvh p-4">Exception</div>}

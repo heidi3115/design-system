@@ -39,8 +39,7 @@ function TabsTrigger({ className, disabled, ...props }: React.ComponentProps<typ
           'focus-visible:bg-juiGrey-300 duration-500 ease-in-out ',
 
           // 레이아웃 및 크기
-          'inline-flex',
-          'flex-1',
+          'inline-block',
           'items-center',
           'justify-center',
           'gap-1.5',

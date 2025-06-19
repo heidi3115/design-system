@@ -35,6 +35,11 @@ const meta: Meta<typeof Tabs> = {
       options: ['default', 'small', 'medium', 'large'],
       description: 'Tabs의 높이 및 폰트 크기를 지정합니다. (default | small | medium | large)',
     },
+    maxWidth: {
+      control: 'number',
+      table: { defaultValue: { summary: '360' } },
+      description: '각각의 탭의 최대 넓이를 적용합니다.',
+    },
   },
 };
 
@@ -286,7 +291,7 @@ export const Variants: Story = {
         <Tabs {...args} variant="error" />
       </div>
       <div>
-        <div className="mb-2 text-lg font-semibold">Ghost</div>
+        <div className="mb-2 text-lg font-semibold">Ghost(variant 및 shape의 설정을 무시하고 흰색으로 강조)</div>
         <Tabs {...args} variant="ghost" />
       </div>
     </div>

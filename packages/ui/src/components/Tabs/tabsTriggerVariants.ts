@@ -18,7 +18,7 @@ const folderBase = `
 const tabsTriggerVariants = tv({
   base: '',
   slots: {
-    content: '',
+    content: 'max-w-[360px] truncate',
     underline: '',
     tabsAlign: '',
     list: '',

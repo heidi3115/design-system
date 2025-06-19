@@ -33,6 +33,7 @@ export type TabItemType<C extends ComponentType<any> = ComponentType<any>> = Onl
 
 type TabsProps<T extends TabItemType> = {
   tabs: T;
+  maxWidth?: number;
 } & ComponentProps<typeof TabsRoot> &
   VariantProps<typeof tabsTriggerVariants>;
 
@@ -41,6 +42,7 @@ function Tabs<T extends TabItemType>({
   tabs,
   variant,
   align,
+  maxWidth,
   shape = 'underline',
   size = 'default',
   onValueChange,
@@ -60,9 +62,18 @@ function Tabs<T extends TabItemType>({
   useEffect(() => {
     if (shape !== 'underline') return;
 
-    updateIndicator();
+    requestAnimationFrame(() => {
+      updateIndicator();
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeValue, shape, tabs]);
+
+  useEffect(() => {
+    if (activeValue != null) {
+      onValueChange?.(activeValue);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <TabsRoot
@@ -76,12 +87,24 @@ function Tabs<T extends TabItemType>({
           .filter(({ hidden = false }) => !hidden)
           .map(({ value, label, disabled = false }, index) =>
             index === 0 && shape === 'folder' ? (
-              <TabsTrigger key={value} className={cn(firstForderTab())} value={value} disabled={disabled}>
-                {label} <div className="w-3"></div>
+              <TabsTrigger
+                key={value}
+                className={cn(firstForderTab())}
+                style={{ maxWidth: `${maxWidth}px` }}
+                value={value}
+                disabled={disabled}>
+                <span className="inline-flex">
+                  {label} <div className="w-3"></div>
+                </span>
               </TabsTrigger>
             ) : (
-              <TabsTrigger key={value} className={cn(content())} value={value} disabled={disabled}>
-                {shape === 'folder' && <span className="-skew-x-[10rad]">{label}</span>}
+              <TabsTrigger
+                key={value}
+                className={cn(content())}
+                style={{ maxWidth: `${maxWidth}px` }}
+                value={value}
+                disabled={disabled}>
+                {shape === 'folder' && <span className="inline-flex -skew-x-[10rad]">{label}</span>}
                 {shape !== 'folder' && label}
               </TabsTrigger>
             ),
