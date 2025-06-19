@@ -36,21 +36,40 @@ export type CollapsibleProps = {
    * onOpenChange:
    */
   onOpenChange?: (open: boolean) => void;
+  /**
+   * showPreview:
+   */
+  showPreview?: boolean;
+  /**
+   * preview:
+   */
+  preview?: React.ReactNode;
 };
 
 function Collapsible({
+  disabled = false,
+  showPreview = true,
   defaultOpen = false,
   open,
-  disabled = false,
   onOpenChange,
   trigger,
+  preview,
   children,
   className,
-  // ...props
 }: CollapsibleProps) {
   return (
-    <CollapsibleRoot defaultOpen={defaultOpen} open={open} onOpenChange={onOpenChange} disabled={disabled}>
-      <CollapsibleTrigger asChild>{trigger}</CollapsibleTrigger>
+    <CollapsibleRoot
+      defaultOpen={defaultOpen}
+      open={open}
+      onOpenChange={onOpenChange}
+      disabled={disabled}
+      className={cn('flex flex-col gap-4 rounded-md shadow-md')}>
+      <div className={'flex flex-row items-center justify-between gap-2 w-full'}>
+        {showPreview && <div className={cn('flex items-center justify-between')}>{preview}</div>}
+        <CollapsibleTrigger asChild className={cn('flex items-center justify-center')}>
+          {trigger}
+        </CollapsibleTrigger>
+      </div>
       <CollapsibleContent className={cn(className)}>{children}</CollapsibleContent>
     </CollapsibleRoot>
   );
