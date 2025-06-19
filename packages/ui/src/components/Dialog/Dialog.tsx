@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogClose,
 } from './DialogParts';
-import { Button } from '../Button';
+import { Separator, Button } from '@common/ui';
 import { SaveIcon, XIcon, CheckIcon } from '@common/ui/icons';
 import {
   useState,
@@ -19,6 +19,7 @@ import {
   type ButtonHTMLAttributes,
 } from 'react';
 import { type VariantProps } from 'tailwind-variants';
+import { cn } from '../../lib/utils';
 
 type CustomButtonProps = VariantProps<typeof Button> &
   ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -89,52 +90,60 @@ const Dialog = ({
           }}
           id="baseDialog">
           <DialogHeader>
-            <DialogTitle className="flex gap-2 items-center">
+            <DialogTitle className="flex gap-2 items-center mx-0 my-auto text-white">
               {titleIcon}
               {title}
             </DialogTitle>
           </DialogHeader>
-          <div className="p-4 text-juiText-secondary text-sm overflow-auto" style={{ maxHeight }}>
+          <div
+            className={cn(
+              'p-4 text-juiText-secondary text-sm overflow-auto',
+              Array.isArray(buttons) && buttons.length > 0 ? 'max-h-[calc(100lvh-150px)]' : 'max-h-[calc(100lvh-90px)]',
+            )}
+            style={{ maxHeight }}>
             {children}
           </div>
           {Array.isArray(buttons) && buttons.length > 0 && (
-            <DialogFooter footerLocate={footerLocate}>
-              {buttons.map((btn, i) => {
-                if (typeof btn === 'string' && btn in defaultButtonMap) {
-                  const { icon, label } = defaultButtonMap[btn];
+            <div className="p-1.5">
+              <Separator orientation="horizontal" className="h-px bg-juiGrey-300 light:bg-juiBorder-primary m-0" />
+              <DialogFooter footerLocate={footerLocate}>
+                {buttons.map((btn, i) => {
+                  if (typeof btn === 'string' && btn in defaultButtonMap) {
+                    const { icon, label } = defaultButtonMap[btn];
 
-                  if (btn === 'save') {
+                    if (btn === 'save') {
+                      return (
+                        <Button key={btn} type="submit" variant="primary">
+                          {icon} {label}
+                        </Button>
+                      );
+                    }
+
                     return (
-                      <Button key={btn} type="submit" variant="primary">
-                        {icon} {label}
-                      </Button>
+                      <DialogClose asChild key={btn}>
+                        <Button>
+                          {icon} {label}
+                        </Button>
+                      </DialogClose>
                     );
                   }
 
-                  return (
-                    <DialogClose asChild key={btn}>
-                      <Button>
-                        {icon} {label}
-                      </Button>
-                    </DialogClose>
-                  );
-                }
+                  if (typeof btn !== 'string') {
+                    return (
+                      <Button
+                        key={`custom-${i}`}
+                        {...btn}
+                        onClick={(e) => {
+                          btn.onClick?.(e, () => setOpen(false));
+                        }}
+                      />
+                    );
+                  }
 
-                if (typeof btn !== 'string') {
-                  return (
-                    <Button
-                      key={`custom-${i}`}
-                      {...btn}
-                      onClick={(e) => {
-                        btn.onClick?.(e, () => setOpen(false));
-                      }}
-                    />
-                  );
-                }
-
-                return null;
-              })}
-            </DialogFooter>
+                  return null;
+                })}
+              </DialogFooter>
+            </div>
           )}
         </form>
       </DialogContent>
