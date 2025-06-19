@@ -108,6 +108,18 @@ export {
 } from './Popover';
 
 export {
+  SheetDescription,
+  SheetTitle,
+  SheetRoot,
+  SheetFooter,
+  SheetHeader,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+  Sheet,
+} from './Sheet';
+
+export {
   Accordion,
   AccordionItems,
   type AccordionItemProps,
