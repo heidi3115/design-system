@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import {
   Button,
@@ -13,6 +14,7 @@ import {
   Toggle,
   Popover,
   Tooltip,
+  Switch,
 } from '@common/ui';
 import {
   ArrowLeftIcon,
@@ -116,6 +118,23 @@ export default function Page() {
       <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper" ref={wrapperRef}>
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
+          <Button
+            onClick={() =>
+              toast('Event has been created', {
+                icon: <TagIcon />,
+                description: 'Sunday, December 03, 2023 at 9:00 AM',
+                action: (
+                  <Button variant="gradient" size="small">
+                    JUI
+                  </Button>
+                ),
+              })
+            }>
+            Show Toast
+          </Button>
+
+          <Button onClick={() => toast(<Switch />)}>Custom</Button>
+
           <RadioGroup direction="horizontal" defaultValue="banana" valueRef={radioRef} options={options} />
           <Button
             onClick={() => {

@@ -118,3 +118,5 @@ export {
   SheetTrigger,
   Sheet,
 } from './Sheet';
+
+export { Toaster } from './Toaster';
