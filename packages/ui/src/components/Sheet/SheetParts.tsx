@@ -25,10 +25,9 @@ function SheetPortal({ ...props }: ComponentProps<typeof SheetPrimitive.Portal>)
 
 function SheetOverlay({
   className,
-  side = 'left',
   ...props
 }: ComponentProps<typeof SheetPrimitive.Overlay> & VariantProps<typeof sheetVariants>) {
-  const { overlay } = sheetVariants({ side });
+  const { overlay } = sheetVariants();
 
   return <SheetPrimitive.Overlay data-slot="sheet-overlay" className={cn(overlay(), className)} {...props} />;
 }
