@@ -15,9 +15,9 @@ export const sheetVariants = tv({
 
     footer: 'mt-auto flex flex-col gap-2 p-4',
 
-    title: 'text-foreground font-semibold',
+    title: 'font-semibold',
 
-    description: 'text-muted-foreground text-sm',
+    description: 'text-sm',
   },
   variants: {
     side: {
