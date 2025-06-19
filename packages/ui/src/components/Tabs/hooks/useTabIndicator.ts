@@ -1,7 +1,7 @@
 'use client';
 
-import { useRect } from '@common/utils';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRect } from '@common/utils';
 
 export function useTabIndicator<T extends HTMLElement>() {
   const listRef = useRef<T>(null);
