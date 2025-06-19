@@ -26,9 +26,9 @@ const meta: Meta<typeof Tabs> = {
     },
     align: {
       control: 'select',
-      options: ['left', 'center', 'right'],
+      options: ['left', 'center', 'right', 'full'],
       table: { defaultValue: { summary: 'left' } },
-      description: 'Tabs의 정렬을 지정합니다. (left | center | right)',
+      description: 'Tabs의 정렬을 지정합니다. (left | center | right | full)',
     },
     size: {
       control: 'select',
@@ -368,6 +368,10 @@ export const Alignments: Story = {
       <div>
         <div className="mb-2 text-lg font-semibold">Right</div>
         <Tabs {...args} align="right" />
+      </div>
+      <div>
+        <div className="mb-2 text-lg font-semibold">Full</div>
+        <Tabs {...args} align="full" />
       </div>
     </div>
   ),

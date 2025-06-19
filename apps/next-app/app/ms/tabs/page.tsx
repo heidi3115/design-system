@@ -74,6 +74,7 @@ export default function TabsPage() {
           // shape="folder"
           tabs={tabsArray}
           // maxWidth={100}
+          // align="full"
           onValueChange={(val) => setActiveTab(val)}
         />
         {acitveTab === 'exception' && <div className="bg-juiBackground-paper w-full min-h-lvh p-4">Exception</div>}

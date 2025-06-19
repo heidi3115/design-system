@@ -41,6 +41,7 @@ const tabsTriggerVariants = tv({
       left: { tabsAlign: '' },
       right: { tabsAlign: 'self-end' },
       center: { tabsAlign: 'self-center' },
+      full: { content: 'flex flex-1  max-w-none', list: 'w-auto' },
     },
     shape: {
       underline: { list: 'py-0' },
