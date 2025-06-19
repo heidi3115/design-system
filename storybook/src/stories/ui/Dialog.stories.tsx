@@ -89,7 +89,7 @@ const meta: Meta<DialogStoryArgs> = {
     showCloseButton: true,
     titleIcon: <EditIcon />,
     children: 'Example Children',
-    maxHeight: 100,
+    // maxHeight: 100,
     contentSize: 'small',
     footerLocate: 'center',
     buttons: [
