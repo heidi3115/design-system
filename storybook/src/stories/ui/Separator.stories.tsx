@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Separator, separatorVariants } from '@common/ui/components/Separator';
+import { cn } from '@common/ui/lib/utils.ts';
+import { Separator, type SeparatorProps, separatorVariants } from '@common/ui';
 
 const colorArray = Object.keys(
   separatorVariants.variants.variant,
@@ -7,17 +8,23 @@ const colorArray = Object.keys(
 
 const sizeArray = Object.keys(separatorVariants.variants.size) as (keyof typeof separatorVariants.variants.size)[];
 
-const meta: Meta<typeof Separator> = {
+type SeparatorStorybookType = SeparatorProps;
+
+const meta: Meta<SeparatorStorybookType> = {
   title: 'UI/Separator',
   component: Separator,
   args: {
+    position: 'static',
+    orientation: 'vertical',
     variant: 'primary',
     size: 'basic',
-    orientation: 'vertical',
     decorative: true,
     className: '',
   },
   argTypes: {
+    // parentPosition: {
+    //   table: { disable: true },
+    // },
     variant: {
       control: 'select',
       options: colorArray,
@@ -44,6 +51,9 @@ const meta: Meta<typeof Separator> = {
       table: { type: { summary: "'vertical' | 'horizontal'" }, defaultValue: { summary: 'vertical' } },
       description: 'Separator 의 방향(가로, 세로)선 입니다. 기본값 : vertical',
     },
+    position: {
+      table: { type: { summary: "'static' | 'relative' | 'absolute' | 'fixed' | 'sticky'" } },
+    },
     decorative: {
       control: 'boolean',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
@@ -68,9 +78,14 @@ const meta: Meta<typeof Separator> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Separator>;
+type Story = StoryObj<SeparatorStorybookType>;
 
 export const Default: Story = {
+  argTypes: {
+    position: {
+      table: { disable: true },
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -118,6 +133,9 @@ export const Variant: Story = {
       control: false,
       table: { disable: true },
     },
+    position: {
+      table: { disable: true },
+    },
   },
   parameters: {
     docs: {
@@ -159,6 +177,9 @@ export const Variant: Story = {
 // size 별 버튼 렌더링 스토리
 export const Size: Story = {
   argTypes: {
+    position: {
+      table: { disable: true },
+    },
     size: {
       control: false,
       table: { disable: true },
@@ -220,6 +241,9 @@ export const Size: Story = {
 // orientation 별 버튼 렌더링 스토리
 export const Orientation: Story = {
   argTypes: {
+    position: {
+      table: { disable: true },
+    },
     orientation: {
       control: false,
       table: { disable: true },
@@ -275,6 +299,102 @@ export const Orientation: Story = {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+// const positionArr: SeparatorStorybookType['position'][] = ['static', 'relative', 'absolute', 'fixed', 'sticky'];
+const normalPositions = ['fixed', 'sticky', 'absolute', 'static', 'relative'] as const;
+const bgMap = {
+  static: 'bg-green-200',
+  relative: 'bg-orange-300',
+  absolute: 'bg-pink-200',
+  fixed: 'bg-blue-200',
+  sticky: 'bg-yellow-200',
+};
+
+// position 별 버튼 렌더링 스토리
+export const Position: Story = {
+  args: {
+    variant: 'purple',
+    size: 'medium',
+  },
+  argTypes: {
+    orientation: { table: { disable: true } },
+    decorative: {
+      control: false,
+      table: { disable: true },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'Separator 의 position 종류별 예시를 확인하실 수 있습니다.',
+          '부모의 예시와 함께 control 에서 orientation 의 변화에 따른 예시도 확인하실 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
+  render: (args) => (
+    <div className={'static size-full bg-juiBackground-paper'}>
+      <div className={'flex flex-col items-center justify-center gap-2 size-full'}>
+        <h1 className={'p-4 text-juiText-primary text-left font-bold text-3xl'}>
+          Position 별 예시
+          <p className={'text-sm font-normal pt-2'}>
+            부모 컨테이너의 배경색 및 부모 컨테이너의 position 정보와 함께 확인하실 수 있습니다. 부모 컨테이너의 크기는
+            지정하지 않고 일부러 flex 등으로 처리하였습니다.
+            <br />
+            부모 컨테이너의 z-index는 지정하지 않았습니다.
+          </p>
+        </h1>
+        <h2 className={'flex flex-col items-start gap-3 text-juiText-blue text-center text-2xl font-bold min-h-30'}>
+          <p>현재 Separator 의 position : {args.position}</p>
+          {(args.position === 'absolute' || args.position === 'fixed') && (
+            <p
+              className={
+                'flex flex-col gap-0.5 items-start justify-center text-sm text-juiText-primary font-semibold py-2'
+              }>
+              <span>orientation 이 horizontal 인 경우 : bottom-0 left-0 m-0</span>
+              <span>orientation 이 vertical 인 경우 : top-0 right-0 m-0</span>
+              <span>으로 잡혀 있습니다.</span>
+            </p>
+          )}
+        </h2>
+        <div className={'static overflow-hidden w-full h-full float-none clear-both'}>
+          {normalPositions.map((pos) => (
+            <div className={'relative w-1/2 min-h-40 float-left px-10'} key={`parent-${pos}`}>
+              <div className={cn('mt-10', pos, bgMap[pos])}>
+                <h2 className={'text-black text-center font-bold text-lg'}>
+                  부모 컨데이터: {pos}
+                  <p className={'text-sm'}>부모의 배경색: {bgMap[pos]}</p>
+                  <div className={'flex flex-col items-center justify-center gap-4'}>
+                    <div className="flex flex-col items-center justify-center w-full mt-2 bg-juiGrey-300">
+                      <span>세로 구분선(vertical)</span>
+                      <div className="flex flex-row items-center justify-center w-full h-12 gap-4">
+                        <span>Left</span>
+                        <Separator {...args} position={args.position} orientation="vertical" />
+                        <span>Center</span>
+                        <Separator {...args} position={args.position} orientation="vertical" />
+                        <span>Right</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-center justify-center w-full mt-2 bg-juiGrey-300">
+                      <span>가로 구분선(horizontal)</span>
+                      <span>Child 1</span>
+                      <Separator {...args} position={args.position} orientation="horizontal" />
+                      <span>Child 2</span>
+                      <Separator {...args} position={args.position} orientation="horizontal" />
+                      <span>Child 3</span>
+                      <Separator {...args} position={args.position} orientation="horizontal" />
+                    </div>
+                  </div>
+                </h2>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

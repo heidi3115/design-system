@@ -53,28 +53,25 @@ export const AccordionItems = React.memo(function AccordionItems({
 }: AccordionItemsProps) {
   const { item, trigger, triggerIcon, content } = accordionVariants({ size, isHorizontal });
 
-  return (
-    items?.length > 0 &&
-    items.map((accordion: AccordionSingleItemProps) => (
-      <AccordionItem
-        value={accordion.value}
-        key={accordion.value}
-        disabled={accordion.disabled}
-        className={cn(item(), className)}>
-        <AccordionTrigger className={cn(trigger())}>
-          {accordion.trigger}
-          {isIcon && (
-            <ChevronDownIcon
-              data-slot="trigger-icon"
-              size={size === 'custom' ? 'basic' : size}
-              className={cn(triggerIcon())}
-            />
-          )}
-        </AccordionTrigger>
-        <AccordionContent className={cn(content())}>{accordion.content}</AccordionContent>
-      </AccordionItem>
-    ))
-  );
+  return items.map((accordion: AccordionSingleItemProps) => (
+    <AccordionItem
+      value={accordion.value}
+      key={accordion.value}
+      disabled={accordion.disabled}
+      className={cn(item(), className)}>
+      <AccordionTrigger className={cn(trigger())}>
+        {accordion.trigger}
+        {isIcon && (
+          <ChevronDownIcon
+            data-slot="trigger-icon"
+            size={size === 'custom' ? 'basic' : size}
+            className={cn(triggerIcon())}
+          />
+        )}
+      </AccordionTrigger>
+      <AccordionContent className={cn(content())}>{accordion.content}</AccordionContent>
+    </AccordionItem>
+  ));
 });
 
 export type SingleAccordionProps = {
@@ -209,13 +206,13 @@ function Accordion(props: AccordionProps) {
   const currentSingleValue = isSingleControlled ? singleValue : internalSingleValue;
   const singleRef: React.Ref<string | undefined> | undefined = (restProps as SingleAccordionProps)?.valueStatusRef;
 
-  //type === 'multiple'
-  const multipleValue = (restProps as MultipleAccordionProps)?.value || undefined;
+  // type === 'multiple'
+  const multipleValue = (restProps as MultipleAccordionProps)?.value ?? undefined;
   const multipleDefaultValue =
-    (restProps as MultipleAccordionProps)?.defaultValue ||
+    (restProps as MultipleAccordionProps)?.defaultValue ??
     (memoizedItems[0]?.value ? [memoizedItems[0].value] : undefined);
   const isMultiControlled = multipleValue !== undefined;
-  const [internalMultipleValue, setInternalMultipleValue] = useState(multipleDefaultValue || []);
+  const [internalMultipleValue, setInternalMultipleValue] = useState(multipleDefaultValue ?? []);
   const currentMultipleValue = isMultiControlled ? multipleValue : internalMultipleValue;
   const multipleRef: React.Ref<string[]> | undefined = (restProps as MultipleAccordionProps)?.valueStatusRef;
 
