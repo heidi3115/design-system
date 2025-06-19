@@ -26,6 +26,7 @@ import {
   FilePlusIcon,
   FileTextIcon,
   LockIcon,
+  PlusCircleIcon,
   StarIcon,
   TagIcon,
   UserIcon,
@@ -132,6 +133,8 @@ export default function Page() {
             }>
             Show Toast
           </Button>
+
+          <PlusCircleIcon />
 
           <Button onClick={() => toast(<Switch />)}>Custom</Button>
 

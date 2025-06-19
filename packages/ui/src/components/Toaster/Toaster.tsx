@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircleIcon } from '@common/ui/icons';
+import { CheckIcon } from '@common/ui/icons';
 import { useTheme } from 'next-themes';
 import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
@@ -19,7 +19,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         },
       }}
       icons={{
-        success: <CheckCircleIcon />,
+        success: <CheckIcon />,
         // info?: React.ReactNode;
         // warning?: React.ReactNode;
         // error?: React.ReactNode;
