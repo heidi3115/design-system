@@ -82,10 +82,10 @@ export type SeparatorProps = React.ComponentProps<typeof SeparatorPrimitive.Root
 function Separator({
   className,
   position = 'static',
-  orientation = 'vertical',
+  orientation = 'horizontal',
   decorative = true,
   variant = 'primary',
-  size = 'basic',
+  size = 'small',
   ...props
 }: SeparatorProps) {
   return (
