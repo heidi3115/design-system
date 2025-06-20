@@ -22,9 +22,6 @@ const meta: Meta<SeparatorStorybookType> = {
     className: '',
   },
   argTypes: {
-    // parentPosition: {
-    //   table: { disable: true },
-    // },
     variant: {
       control: 'select',
       options: colorArray,
@@ -305,7 +302,6 @@ export const Orientation: Story = {
   ),
 };
 
-// const positionArr: SeparatorStorybookType['position'][] = ['static', 'relative', 'absolute', 'fixed', 'sticky'];
 const normalPositions = ['fixed', 'sticky', 'absolute', 'static', 'relative'] as const;
 const bgMap = {
   static: 'bg-green-200',
