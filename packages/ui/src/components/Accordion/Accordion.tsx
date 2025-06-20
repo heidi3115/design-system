@@ -37,29 +37,41 @@ export type AccordionSingleItemProps = {
 
 export type AccordionItemsProps = {
   size?: VariantProps<typeof accordionVariants>['size'];
-  isIcon?: boolean;
   isHorizontal?: boolean;
+  isIcon?: boolean;
+  isBorder?: boolean;
   items: AccordionSingleItemProps[];
-  className?: string;
+  triggerClassName?: string;
 };
 
 // 불필요한 리렌더링 방지
 export const AccordionItems = React.memo(function AccordionItems({
-  isIcon = true,
-  size = 'small',
-  isHorizontal = false,
-  items = [],
-  className,
+  size,
+  isIcon,
+  isHorizontal,
+  isBorder,
+  items,
+  triggerClassName,
 }: AccordionItemsProps) {
-  const { item, trigger, triggerIcon, content } = accordionVariants({ size, isHorizontal });
+  const { base, item, trigger, triggerIcon, content } = accordionVariants({ size, isHorizontal, isBorder });
+  const defaultTriggerClass = [
+    'hover:underline hover:underline-offset-4',
+    'active:underline active:underline-offset-4',
+    'focus:underline focus:underline-offset-4',
+    'focus-within:underline focus-within:underline-offset-4',
+    'focus-visible:underline focus-visible:underline-offset-4',
+    '[&[data-state=open]]:underline [&[data-state=open]]:underline-offset-4',
+  ];
+
+  const triggerClasses = triggerClassName ? triggerClassName : defaultTriggerClass;
 
   return items.map((accordion: AccordionSingleItemProps) => (
     <AccordionItem
-      value={accordion.value}
       key={accordion.value}
+      value={accordion.value}
       disabled={accordion.disabled}
-      className={cn(item(), className)}>
-      <AccordionTrigger className={cn(trigger())}>
+      className={cn(base(), item())}>
+      <AccordionTrigger className={cn(base(), trigger(), triggerClasses)}>
         {accordion.trigger}
         {isIcon && (
           <ChevronDownIcon
@@ -69,12 +81,60 @@ export const AccordionItems = React.memo(function AccordionItems({
           />
         )}
       </AccordionTrigger>
-      <AccordionContent className={cn(content())}>{accordion.content}</AccordionContent>
+      <AccordionContent className={cn(base(), content())}>{accordion.content}</AccordionContent>
     </AccordionItem>
   ));
 });
 
+export type AccordionBaseProps = {
+  /**
+   * size: Accordion 별 사이즈 입니다. Accordion 의 폭 및 글씨 크기 padding 의 차등이 있습니다.
+   */
+  size?: VariantProps<typeof accordionVariants>['size'];
+  /**
+   * orientation:  radix-ui 의 Accordion 의 Root의 API 로서, 접근성 용으로써 처리되나, UI 부분 처리를 위해 Accordion 의 방향을 vertical 인 경우 세로형이며, horizontal 인 경우 Item 들이 가로형으로 전환되도록 처리했습니다.
+   * 기본값은 vertical 로 잡았습니다.
+   */
+  orientation?: AccordionRootProps['orientation'];
+  /**
+   * isIcon: Accordion 의 각 Items 의 끝의 아이콘을 보여줄 지 여부입니다.
+   */
+  isIcon?: boolean;
+  /**
+   * isBorder: Accordion 아이템들 사이에 border를 표시할지 여부입니다.
+   * true로 설정 시: isHorizontal 값에 따라 적절한 border가 추가됩니다.
+   * 기본값은 true 입니다.
+   */
+  isBorder?: boolean;
+  /**
+   * disabled: radix-ui 의 Accordion 의 Root의 API 로서 true 로 설정 시, 전체 Accordion 이 비활성화됩니다.
+   * 기본값은 false 로 잡았습니다.
+   */
+  disabled?: boolean;
+  /**
+   * items: 각 Accordion 에 넣을 Items 들입니다. Items 의 내용은 AccordionSingleItemProps 을 참조하면 됩니다.
+   * AccordionSingleItemProps 의 각 아이템은 { value, trigger, content, disabled } 형태의 객체입니다.
+   * AccordionSingleItemProps 는 key 역할인 value, Accordion 을 열 수 있는 trigger, Accordion 의 내용인 content, 개별 Accordion 의 활성화 여부인 disabled로 이루어져 있습니다.
+   */
+  items: AccordionSingleItemProps[];
+  /**
+   * className: 추가적으로 적용할 Tailwind CSS 클래스입니다.
+   */
+  className?: string;
+  /**
+   * triggerClassName: 추가적으로 Accordion의 아이템 별 trigger 컴포넌트에 별도로 적용할 Tailwind CSS 클래스입니다.
+   * trigger 의 상태별 처리 역시 tailwindCSS 에서 인식 가능한 클래스를 별도로 사용하셔야 합니다.
+   */
+  triggerClassName?: string;
+};
+
 export type SingleAccordionProps = {
+  /**
+   * Accordion의 동작 방식을 결정하는 필수 prop 입니다.
+   * "single": 한 번에 하나의 Item 만 열 수 있습니다. AccordionSingleProps 로써 (defaultValue, value는 string)
+   * defaultValue가 지정되어있지 않으면, Accordion 은 닫힌 상태가 됩니다.
+   */
+  type: 'single';
   /**
    * collapsible: radix-ui 의 Accordion 의 Root의 API 로, Accordion 의 type="single" 일 때만 의미가 있습니다.
    * 참조 : https://www.radix-ui.com/primitives/docs/components/accordion#root
@@ -102,16 +162,22 @@ export type SingleAccordionProps = {
    * onValueChange: 제어(Controlled) 컴포넌트로 사용할 때, 열려 있는 아이템의 value 가 변경될 때 호출되는 콜백 함수입니다.
    * 상태 변경을 반영하려면 반드시 이 콜백에서 상태를 업데이트 하거나, 부모 컴포넌트에서 value 와 함께 처리 해야 합니다.
    */
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value: string | undefined) => void | undefined;
   /**
-   * valueStatusRef: ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템의 value 값을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.
+   * singleValueRef: ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템의 value 값을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.
    * 비제어(Uncontrolled)/제어(Controlled) 모드 모두에서 동작합니다.
    * value가 없는 경우 undefined가 될 수 있습니다.
    */
-  valueStatusRef?: React.Ref<string | undefined>;
-};
+  singleValueRef?: React.Ref<string | undefined>;
+} & AccordionBaseProps;
 
 export type MultipleAccordionProps = {
+  /**
+   * Accordion의 동작 방식을 결정하는 필수 prop 입니다.
+   * "multiple": 여러 개의 Item 을 동시에 열 수 있습니다. AccordionMultipleProps 로써 (defaultValue, value는 string[])
+   * defaultValue가 지정되어있지 않으면, Accordion 은 닫힌 상태가 됩니다.
+   */
+  type: 'multiple';
   /**
    * defaultValue: 비제어(Uncontrolled) 컴포넌트로 사용할 때, 처음에 열려 있을 아이템들의 value 값 배열 입니다.
    * items 배열의 value 중 일부 또는 전체를 배열로 지정할 수 있습니다.
@@ -128,57 +194,15 @@ export type MultipleAccordionProps = {
    * onValueChange: 제어(Controlled) 컴포넌트로 사용할 때, 열려 있는 item 들의 value 들이 변경될 때 호출되는 콜백 함수입니다.
    * 상태 변경을 반영하려면 반드시 이 콜백에서 상태를 업데이트 하거나, 부모 컴포넌트에서 value 와 함께 처리 해야 합니다.
    */
-  onValueChange?: (value: string[]) => void;
+  onValueChange?: (value: string[] | undefined) => void | undefined;
   /**
-   * valueStatusRef: ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템들의 value 배열을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.
+   * multipleValuesRef: ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템들의 value 배열을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.
    * 비제어(Uncontrolled)/제어(Controlled) 모드 모두에서 동작합니다.
    */
-  valueStatusRef?: React.Ref<string[]>;
-};
+  multipleValuesRef?: React.Ref<string[] | undefined>;
+} & AccordionBaseProps;
 
-export type AccordionBaseProps = {
-  /**
-   * type: radix-ui 의 Accordion 의 Root의 API 로서 "single", "multiple" 의 두 종류가 있습니다.
-   * Accordion의 동작 방식을 결정하는 필수 prop 입니다.
-   * "single": 한 번에 하나의 Item 만 열 수 있습니다. AccordionSingleProps 로써 (defaultValue, value는 string)
-   * "multiple": 여러 개의 Item 을 동시에 열 수 있습니다. AccordionMultipleProps 로써 (defaultValue, value는 string[])
-   * defaultValue가 지정되어있지 않으면, Accordion 은 닫힌 상태가 됩니다.
-   * 현재 기본값은 single 로 처리하고 있습니다.
-   */
-  type: AccordionRootProps['type'];
-  /**
-   * size: Accordion 별 사이즈 입니다. Accordion 의 폭 및 글씨 크기 padding 의 차등이 있습니다.
-   */
-  size?: VariantProps<typeof accordionVariants>['size'];
-  /**
-   * orientation:  radix-ui 의 Accordion 의 Root의 API 로서, 접근성 용으로써 처리되나, UI 부분 처리를 위해 Accordion 의 방향을 vertical 인 경우 세로형이며, horizontal 인 경우 Item 들이 가로형으로 전환되도록 처리했습니다.
-   * 기본값은 vertical 로 잡았습니다.
-   */
-  orientation?: AccordionRootProps['orientation'];
-  /**
-   * isIcon: Accordion 의 각 Items 의 끝의 아이콘을 보여줄 지 여부입니다.
-   */
-  isIcon?: boolean;
-  /**
-   * disabled: radix-ui 의 Accordion 의 Root의 API 로서 true 로 설정 시, 전체 Accordion 이 비활성화됩니다.
-   * 기본값은 false 로 잡았습니다.
-   */
-  disabled?: boolean;
-  /**
-   * items: 각 Accordion 에 넣을 Items 들입니다. Items 의 내용은 AccordionSingleItemProps 을 참조하면 됩니다.
-   * AccordionSingleItemProps 의 각 아이템은 { value, trigger, content, disabled } 형태의 객체입니다.
-   * AccordionSingleItemProps 는 key 역할인 value, Accordion 을 열 수 있는 trigger, Accordion 의 내용인 content, 개별 Accordion 의 활성화 여부인 disabled로 이루어져 있습니다.
-   */
-  items: AccordionSingleItemProps[];
-  /**
-   * className: 추가적으로 적용할 Tailwind CSS 클래스입니다.
-   */
-  className?: string;
-};
-
-export type AccordionProps =
-  | (AccordionBaseProps & SingleAccordionProps) // type: 'single'
-  | (AccordionBaseProps & MultipleAccordionProps); // type: 'multiple'
+export type AccordionProps = OnlyOne<SingleAccordionProps, MultipleAccordionProps>;
 
 function Accordion(props: AccordionProps) {
   const {
@@ -186,118 +210,98 @@ function Accordion(props: AccordionProps) {
     size = 'small',
     orientation = 'vertical',
     isIcon = true,
+    isBorder = true,
     disabled = false,
     items = [],
     className,
+    triggerClassName,
     ...restProps
   } = props;
+
   const memoizedItems: AccordionSingleItemProps[] = useMemo(() => items.filter((item) => !!item.value), [items]);
 
   const isHorizontal = orientation === 'horizontal';
-  const { base, root } = accordionVariants({ size: size, isHorizontal });
+  const { base, root } = accordionVariants({ size, isHorizontal });
   const baseClass = base();
   const rootClass = root();
 
   // type === 'single'
-  const singleValue = (restProps as SingleAccordionProps)?.value || undefined;
-  const singleDefaultValue = (restProps as SingleAccordionProps)?.defaultValue || memoizedItems[0]?.value || undefined;
+  const { collapsible = true, singleValueRef = undefined, ...restSingleProps } = restProps as SingleAccordionProps;
+  const singleValue = restSingleProps?.value || undefined;
+  const singleDefaultValue = restSingleProps?.defaultValue || undefined;
   const isSingleControlled = singleValue !== undefined;
   const [internalSingleValue, setInternalSingleValue] = useState(singleDefaultValue || undefined);
   const currentSingleValue = isSingleControlled ? singleValue : internalSingleValue;
-  const singleRef: React.Ref<string | undefined> | undefined = (restProps as SingleAccordionProps)?.valueStatusRef;
-
-  // type === 'multiple'
-  const multipleValue = (restProps as MultipleAccordionProps)?.value ?? undefined;
-  const multipleDefaultValue =
-    (restProps as MultipleAccordionProps)?.defaultValue ??
-    (memoizedItems[0]?.value ? [memoizedItems[0].value] : undefined);
-  const isMultiControlled = multipleValue !== undefined;
-  const [internalMultipleValue, setInternalMultipleValue] = useState(multipleDefaultValue ?? []);
-  const currentMultipleValue = isMultiControlled ? multipleValue : internalMultipleValue;
-  const multipleRef: React.Ref<string[]> | undefined = (restProps as MultipleAccordionProps)?.valueStatusRef;
 
   // 비제어 선택값
-  useImperativeHandle(singleRef, () => currentSingleValue, [currentSingleValue]);
+  useImperativeHandle(singleValueRef, (): string | undefined => currentSingleValue, [currentSingleValue]);
 
-  useImperativeHandle(multipleRef, () => currentMultipleValue, [currentMultipleValue]);
+  const handleSelectedSingleValueChange = (nextValue: string | undefined) => {
+    if (!isSingleControlled) setInternalSingleValue(nextValue);
 
-  if (type === 'single') {
-    const {
-      collapsible = true,
-      onValueChange,
-      valueStatusRef = undefined,
-      ...restSingleProps
-    } = restProps as SingleAccordionProps;
+    // openStatusRef 동기화
+    if (singleValueRef && typeof singleValueRef !== 'function') {
+      singleValueRef.current = nextValue;
+    }
 
-    const handleSelectedSingleValueChange = (nextValue: string) => {
-      if (!isSingleControlled) setInternalSingleValue(nextValue);
+    restSingleProps?.onValueChange?.(nextValue);
+  };
 
-      // openStatusRef 동기화
-      if (valueStatusRef && typeof valueStatusRef !== 'function') {
-        valueStatusRef.current = nextValue;
-      }
+  // type === 'multiple'
+  const { multipleValuesRef = undefined, ...restMultipleProps } = restProps as MultipleAccordionProps;
+  const multipleValues = restMultipleProps?.value ?? undefined;
+  const multipleDefaultValues = restMultipleProps?.defaultValue ?? undefined;
+  const isMultiControlled = multipleValues !== undefined;
+  const [internalMultipleValues, setInternalMultipleValues] = useState(multipleDefaultValues);
+  const currentMultipleValue: string[] | undefined = isMultiControlled ? multipleValues : internalMultipleValues;
 
-      onValueChange?.(nextValue);
-    };
+  // 비제어 선택값
+  useImperativeHandle(multipleValuesRef, (): string[] | undefined => currentMultipleValue, [currentMultipleValue]);
 
-    return (
-      <AccordionRoot
-        type="single"
-        orientation={orientation}
-        collapsible={collapsible}
-        defaultValue={collapsible ? undefined : singleDefaultValue}
-        value={currentSingleValue}
-        onValueChange={handleSelectedSingleValueChange}
-        disabled={disabled}
-        className={cn(baseClass, rootClass, className)}
-        {...restSingleProps}>
-        {memoizedItems.length > 0 && (
-          <AccordionItems
-            size={size}
-            isIcon={isIcon}
-            items={memoizedItems}
-            isHorizontal={isHorizontal}
-            className={cn(baseClass, className)}
-          />
-        )}
-      </AccordionRoot>
-    );
-  } else {
-    const { onValueChange, valueStatusRef = undefined, ...restMultipleProps } = restProps as MultipleAccordionProps;
+  const handleSelectedMultipleValuesChange = (nextValueArr: string[]) => {
+    if (!isMultiControlled) setInternalMultipleValues(nextValueArr);
 
-    const handleSelectedMultipleValuesChange = (nextValueArr: string[]) => {
-      if (!isMultiControlled) setInternalMultipleValue(nextValueArr);
+    // openStatusRef 동기화
+    if (multipleValuesRef && typeof multipleValuesRef !== 'function') {
+      multipleValuesRef.current = nextValueArr;
+    }
 
-      // openStatusRef 동기화
-      if (valueStatusRef && typeof valueStatusRef !== 'function') {
-        valueStatusRef.current = nextValueArr;
-      }
+    restMultipleProps?.onValueChange?.(nextValueArr);
+  };
 
-      onValueChange?.(nextValueArr);
-    };
-
-    return (
-      <AccordionRoot
-        type="multiple"
-        orientation={orientation}
-        defaultValue={Array.isArray(internalMultipleValue) ? internalMultipleValue : undefined}
-        value={currentMultipleValue}
-        onValueChange={handleSelectedMultipleValuesChange}
-        disabled={disabled}
-        className={cn(baseClass, rootClass, className)}
-        {...restMultipleProps}>
-        {memoizedItems.length > 0 && (
-          <AccordionItems
-            size={size}
-            isIcon={isIcon}
-            items={memoizedItems}
-            isHorizontal={isHorizontal}
-            className={cn(baseClass, className)}
-          />
-        )}
-      </AccordionRoot>
-    );
-  }
+  return (
+    <AccordionRoot
+      {...(type === 'single'
+        ? {
+            ...restSingleProps,
+            type: 'single',
+            collapsible,
+            defaultValue: collapsible ? undefined : singleDefaultValue,
+            value: currentSingleValue,
+            onValueChange: handleSelectedSingleValueChange,
+          }
+        : {
+            ...restMultipleProps,
+            type: 'multiple',
+            defaultValue: Array.isArray(internalMultipleValues) ? internalMultipleValues : undefined,
+            value: currentMultipleValue,
+            onValueChange: handleSelectedMultipleValuesChange,
+          })}
+      orientation={orientation}
+      disabled={disabled}
+      className={cn(baseClass, rootClass, className)}>
+      {memoizedItems.length > 0 && (
+        <AccordionItems
+          size={size}
+          isIcon={isIcon}
+          items={memoizedItems}
+          isHorizontal={isHorizontal}
+          isBorder={isBorder}
+          triggerClassName={cn(triggerClassName)}
+        />
+      )}
+    </AccordionRoot>
+  );
 }
 
 export default Accordion;

@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef } from 'react';
 import Link from 'next/link';
 import { cn } from '@common/ui/lib/utils';
 import {
@@ -11,9 +12,9 @@ import {
   Button,
   Separator,
 } from '@common/ui';
+import { AccordionSingleItemProps } from '@common/ui/components/Accordion';
 import { CornerDownLeftIcon } from '@common/ui/icons';
 import ThemeToggle from '../../../components/ThemeToggle';
-import { AccordionSingleItemProps } from '@common/ui/components/Accordion';
 
 export default function CollapsiblesPage() {
   const alignCenterClass = 'items-center justify-center';
@@ -59,7 +60,22 @@ export default function CollapsiblesPage() {
       content: `content-6: tempClasses ${flexRowClass} ${alignCenterClass} ${mainBlueSubTit}`,
       disabled: false,
     },
+    {
+      value: 'item-7',
+      trigger: 'trigger-7',
+      content: `content-7: tempClasses ${flexRowClass} ${alignCenterClass} ${mainBlueSubTit}`,
+      disabled: false,
+    },
+    {
+      value: 'item-8',
+      trigger: 'trigger-8',
+      content: `content-8: tempClasses ${flexRowClass} ${alignCenterClass} ${mainBlueSubTit}`,
+      disabled: false,
+    },
   ];
+
+  const largeRef = useRef(null);
+  const mediumRef = useRef(null);
 
   return (
     <main className={'relative w-full'}>
@@ -118,17 +134,20 @@ export default function CollapsiblesPage() {
                     <Accordion
                       type={'single'}
                       size={'basic'}
+                      collapsible={false}
                       items={accordionItems1.map((d) => ({ ...d, trigger: `basic-${d.trigger}` }))}
                     />
                   </div>
                   <Separator orientation={'vertical'} />
                   <div className={cn(flexColClass, alignCenterClass, 'flex-1 gap-4')}>
-                    <h4>Accordion - medium</h4>
+                    <h4>Accordion - medium(multiple)</h4>
                     <Accordion
-                      type={'single'}
+                      type={'multiple'}
                       size={'medium'}
-                      defaultValue={accordionItems1[2]?.value}
-                      collapsible={false}
+                      defaultValue={accordionItems1
+                        .filter((d) => !d?.disabled)
+                        .map((d) => d.value)
+                        .slice(2, 5)}
                       items={accordionItems1.map((d) => ({ ...d, trigger: `medium-${d.trigger}` }))}
                     />
                   </div>
@@ -140,10 +159,18 @@ export default function CollapsiblesPage() {
                       size={'large'}
                       defaultValue={accordionItems1[2]?.value}
                       collapsible={true}
-                      items={accordionItems1.map((d) => ({ ...d, trigger: `large-${d.trigger}` }))}
+                      items={accordionItems1.map((d) => ({ ...d, trigger: `large-${d.trigger}-triggerClass 추가` }))}
+                      triggerClassName={'hover:text-red-700 focus:text-green-300'}
+                      singleValueRef={largeRef}
                     />
                   </div>
                 </div>
+                <Accordion
+                  type={'multiple'}
+                  defaultValue={['item-3', 'item-5']}
+                  items={accordionItems1}
+                  multipleValuesRef={mediumRef}
+                />
               </div>
             </div>
           </div>

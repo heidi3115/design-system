@@ -1,17 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { cn } from '@common/ui/lib/utils.ts';
 import { Accordion, type AccordionProps, accordionVariants, Button, Separator } from '@common/ui';
-import type {
-  AccordionSingleItemProps,
-  MultipleAccordionProps,
-  SingleAccordionProps,
+import {
+  type AccordionSingleItemProps,
+  type MultipleAccordionProps,
+  type SingleAccordionProps,
 } from '@common/ui/components/Accordion';
 import { ChevronDownIcon } from '@common/ui/icons';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 const titleCommonClass = 'text-juiText-primary font-bold';
 const subTitleCommonClass = 'text-juiText-primary font-semibold';
-// const greyTxt = 'text-gray-600';
 const blueTxtClass = 'text-juiText-blue font-normal';
 const commonBoxClass = 'items-center justify-center text-juiText-primary';
 const flexColBoxGap4 = 'relative flex flex-col size-full gap-4 text-juiText-primary';
@@ -32,19 +31,15 @@ const AccordionSizeArr = Object.keys(accordionVariants.variants.size) as Array<
 const AccordionOrientationArr: AccordionProps['orientation'][] = ['vertical', 'horizontal'] as const;
 
 // Storybook용 가상 props 들을 위함.
-type AccordionStorybookType = Omit<
-  AccordionProps,
-  'collapsible' | 'defaultValue' | 'value' | 'onValueChange' | 'valueStatusRef'
-> & {
-  collapsible?: boolean;
-  value?: string;
-  multipleValues?: string[];
+type AccordionStorybookType = Omit<AccordionProps, 'value' | 'defaultValue' | 'onValueChange' | 'singleValueRef'> & {
+  value?: SingleAccordionProps['value'];
   defaultValue?: SingleAccordionProps['defaultValue'];
+  onValueChange?: SingleAccordionProps['onValueChange'];
+  singleValueRef?: SingleAccordionProps['singleValueRef'];
+  multipleValues?: MultipleAccordionProps['value'];
   defaultValueMultiple?: MultipleAccordionProps['defaultValue'];
-  onValueChange?: (value: string) => void;
-  onMultipleValuesChange?: (multipleValues: string[]) => void;
-  valueStatusRef?: React.Ref<string>;
-  multipleValueStatusRef?: React.Ref<string[]>;
+  onMultipleValuesChange?: MultipleAccordionProps['onValueChange'];
+  multipleValuesRef?: MultipleAccordionProps['multipleValuesRef'];
 };
 
 const meta: Meta<AccordionStorybookType> = {
@@ -56,17 +51,19 @@ const meta: Meta<AccordionStorybookType> = {
     orientation: 'vertical',
     collapsible: true,
     isIcon: true,
+    isBorder: true,
     disabled: false,
     value: undefined,
     defaultValue: sampleArr[0].value,
     onValueChange: undefined,
-    valueStatusRef: undefined,
+    singleValueRef: undefined,
     multipleValues: undefined, // Storybook용 가상 prop
     defaultValueMultiple: [sampleArr[0].value], // Storybook용 가상 prop
     onMultipleValuesChange: undefined, // Storybook용 가상 prop
-    multipleValueStatusRef: undefined, // Storybook용 가상 prop
+    multipleValuesRef: undefined, // Storybook용 가상 prop
     items: sampleArr,
     className: '',
+    triggerClassName: '',
   },
   argTypes: {
     type: {
@@ -128,6 +125,11 @@ const meta: Meta<AccordionStorybookType> = {
       },
       description: ['isIcon: Accordion 의 각 Items 의 끝의 아이콘을 보여줄 지 여부입니다.'].join('<br/>'),
     },
+    isBorder: {
+      table: {
+        defaultValue: { summary: `${true}` },
+      },
+    },
     disabled: {
       table: {
         defaultValue: { summary: `${false}` },
@@ -183,8 +185,8 @@ const meta: Meta<AccordionStorybookType> = {
         '스토리에서는 제어하실 수 없습니다.',
       ].join('<br/>'),
     },
-    valueStatusRef: {
-      name: 'valueStatusRef',
+    singleValueRef: {
+      name: 'singleValueRef',
       if: { arg: 'type', eq: 'single' },
       control: false,
       table: {
@@ -192,7 +194,7 @@ const meta: Meta<AccordionStorybookType> = {
         defaultValue: { summary: `${undefined}` },
       },
       description: [
-        'valueStatusRef: ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템의 value 값을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
+        'singleValueRef: ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템의 value 값을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
         '비제어(Uncontrolled)/제어(Controlled) 모드 모두에서 동작합니다.',
         'value가 없는 경우 undefined가 될 수 있습니다.',
         '스토리에서는 제어하실 수 없습니다.',
@@ -247,8 +249,8 @@ const meta: Meta<AccordionStorybookType> = {
       ].join('<br/>'),
     },
     // multiple 모드에서만 value (string[]) 컨트롤 노출
-    multipleValueStatusRef: {
-      name: 'valueStatusRef',
+    multipleValuesRef: {
+      name: 'singleValueRef',
       if: { arg: 'type', eq: 'single' },
       control: false,
       table: {
@@ -256,7 +258,7 @@ const meta: Meta<AccordionStorybookType> = {
         defaultValue: { summary: `${undefined}` },
       },
       description: [
-        'valueStatusRef: ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템들의 value 배열을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
+        'singleValueRef: ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템들의 value 배열을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
         '비제어(Uncontrolled)/제어(Controlled) 모드 모두에서 동작합니다.',
         '스토리에서는 제어하실 수 없습니다.',
       ].join('<br/>'),
@@ -284,6 +286,9 @@ const meta: Meta<AccordionStorybookType> = {
     className: {
       table: { defaultValue: { summary: '' } },
       description: ['추가적으로 적용할 Tailwind CSS 클래스입니다.'].join('<br/>'),
+    },
+    triggerClassName: {
+      table: { defaultValue: { summary: '' } },
     },
   },
   parameters: {
@@ -315,34 +320,49 @@ function AccordionRender(args: AccordionStorybookType) {
     multipleValues,
     defaultValueMultiple,
     onMultipleValuesChange,
-    valueStatusRef,
-    multipleValueStatusRef,
-    ...restArgs
+    singleValueRef,
+    multipleValuesRef,
+    className,
+    isBorder,
+    size,
+    orientation,
+    isIcon,
+    disabled,
+    triggerClassName,
   } = args;
-  const key = useMemo(() => JSON.stringify(args), [args]);
 
   return type === 'single' ? (
     <Accordion
-      key={key}
-      {...restArgs}
       type={type}
       items={items}
       collapsible={collapsible}
       value={value}
       defaultValue={defaultValue}
       onValueChange={onValueChange}
-      valueStatusRef={valueStatusRef}
+      singleValueRef={singleValueRef}
+      isBorder={isBorder}
+      size={size}
+      orientation={orientation}
+      isIcon={isIcon}
+      disabled={disabled}
+      className={className}
+      triggerClassName={triggerClassName}
     />
   ) : (
     <Accordion
-      key={key}
-      {...restArgs}
       type={type}
       items={items}
       value={multipleValues}
       defaultValue={defaultValueMultiple}
       onValueChange={onMultipleValuesChange}
-      valueStatusRef={multipleValueStatusRef}
+      multipleValuesRef={multipleValuesRef}
+      isBorder={isBorder}
+      size={size}
+      orientation={orientation}
+      isIcon={isIcon}
+      disabled={disabled}
+      className={className}
+      triggerClassName={triggerClassName}
     />
   );
 }
@@ -371,13 +391,13 @@ export const Default: Story = {
       if: { arg: 'type', eq: 'multiple' },
       table: { disable: true },
     },
-    valueStatusRef: {
-      name: 'valueStatusRef',
+    singleValueRef: {
+      name: 'singleValueRef',
       if: { arg: 'type', eq: 'multiple' },
       table: { disable: true },
     },
-    multipleValueStatusRef: {
-      name: 'valueStatusRef',
+    multipleValuesRef: {
+      name: 'singleValueRef',
       if: { arg: 'type', eq: 'multiple' },
       table: { disable: true },
     },
@@ -395,7 +415,7 @@ export const Default: Story = {
       <div className={cn(commonBoxClass, flexRowBoxGap4, 'items-start gap-20 w-9/10')}>
         <div className={cn('flex flex-col gap-4')}>
           <h2 className={cn(blueTxtClass, 'text-sm')}>기본 items 의 내용이 있을 때</h2>
-          <AccordionRender {...args} key={`${args?.type}-${args?.collapsible}-${args.orientation}-withItems`} />
+          <AccordionRender {...args} />
         </div>
         <div className={cn('flex flex-col gap-4')}>
           <h2 className={cn(blueTxtClass, 'text-sm')}>기본 items 의 내용이 없을 때</h2>
@@ -432,13 +452,13 @@ export const Sizes: Story = {
       if: { arg: 'type', eq: 'multiple' },
       table: { disable: true },
     },
-    valueStatusRef: {
-      name: 'valueStatusRef',
+    singleValueRef: {
+      name: 'singleValueRef',
       if: { arg: 'type', eq: 'single' },
       table: { disable: true },
     },
-    multipleValueStatusRef: {
-      name: 'valueStatusRef',
+    multipleValuesRef: {
+      name: 'singleValueRef',
       if: { arg: 'type', eq: 'multiple' },
       table: { disable: true },
     },
@@ -474,7 +494,7 @@ export const Sizes: Story = {
 };
 
 export const OrientationsWithIcon: Story = {
-  name: 'Orientations/Icon',
+  name: 'Orientations/Icon/Border',
   argTypes: {
     orientation: { control: false, table: { disable: true } },
     isIcon: { control: false, table: { disable: true } },
@@ -501,13 +521,13 @@ export const OrientationsWithIcon: Story = {
       if: { arg: 'type', eq: 'multiple' },
       table: { disable: true },
     },
-    valueStatusRef: {
-      name: 'valueStatusRef',
+    singleValueRef: {
+      name: 'singleValueRef',
       if: { arg: 'type', eq: 'single' },
       table: { disable: true },
     },
-    multipleValueStatusRef: {
-      name: 'valueStatusRef',
+    multipleValuesRef: {
+      name: 'multipleValuesRef',
       if: { arg: 'type', eq: 'multiple' },
       table: { disable: true },
     },
@@ -565,32 +585,27 @@ export const OrientationsWithIcon: Story = {
   ),
 };
 
-function SingleControlledDemo(args: AccordionStorybookType & { controlled?: boolean }) {
-  const { controlled = false, ...restArgs } = args;
-  const selectedDefaultVal = args.items.findIndex((d) => d.value === args.defaultValue) + 1;
-  const valueRef = useRef(null);
-  const [value, setValue] = useState<string | undefined>(args.value);
-  const [defaultValue, setDefaultValue] = useState<string | undefined>(args.defaultValue);
+type SingleDemoProps = Omit<
+  AccordionStorybookType,
+  'multipleValues' | 'defaultValueMultiple' | 'onMultipleValuesChange' | 'multipleValuesRef'
+> & { controlled?: boolean };
 
-  useEffect(() => {
-    setValue(args?.value);
-  }, [args.value]);
-
-  useEffect(() => {
-    setDefaultValue(args.defaultValue);
-  }, [args.defaultValue]);
-
-  const key = useMemo(() => JSON.stringify({ controlled, ...args }), [controlled, args]);
+function SingleDemo(args: SingleDemoProps) {
+  const { type = 'single', controlled = false, ...restArgs } = args;
+  const singleRef = useRef(null);
+  const [refVal, setRefVal] = useState<string | undefined>(undefined);
+  const [value, setValue] = useState(args?.value || undefined);
+  const [defaultValue, setDefaultValue] = useState(args?.defaultValue || undefined);
 
   return (
-    <div className="flex flex-col gap-2" key={key}>
+    <div className="flex flex-col gap-2">
       <h2 className={cn(subTitleCommonClass, 'flex flex-col gap-2')}>
-        <p className={'text-xl text-center'}>Type : single</p>
+        <p className={'text-xl text-center'}>Type : {type}</p>
         <p className={'text-base font-semibold'}>
           {`현재 => defaultValue : `}
-          <span className={cn(blueTxtClass, 'font-bold')}>{String(defaultValue)}</span>
+          <span className={cn(blueTxtClass, 'font-bold')}>{`${defaultValue}}`}</span>
           {` | 현재 => value : `}
-          <span className={cn(blueTxtClass, 'font-bold')}>{String(value)}</span>
+          <span className={cn(blueTxtClass, 'font-bold')}>{controlled ? `${value}` : `${refVal}`}</span>
           <span className={'block'}>
             {`collapsible : `}
             <span className={cn(blueTxtClass, 'font-bold')}>{`${args.collapsible}`}</span>
@@ -608,23 +623,19 @@ function SingleControlledDemo(args: AccordionStorybookType & { controlled?: bool
       </h2>
       {controlled && (
         <p className={'*:block'}>
-          <span>{`default 버튼의 경우 control 에서 선택된 defaultValue 값을 기준으로 합니다.`}</span>
-          <span>{`defaultValue 값이 미지정되면 버튼을 클릭할 수 없습니다. control 에서 defaultValue 값이 바뀌면 Button 안의 숫자도 바뀝니다.`}</span>
           <span>모두 닫기를 하실 경우 value와 defaultValue를 모두 undefined로 바꿉니다.</span>
         </p>
       )}
       <div className="flex gap-2">
         {controlled && (
           <>
-            <Button disabled={args.disabled || !args?.defaultValue} onClick={() => setDefaultValue(args.defaultValue)}>
-              {selectedDefaultVal || ''}번째만 열기
-            </Button>
             <Button
               variant={'gradient'}
               disabled={args.disabled}
               onClick={() => {
                 setValue(undefined);
                 setDefaultValue(undefined);
+                singleRef.current = null;
               }}>
               모두 닫기
             </Button>
@@ -632,49 +643,57 @@ function SingleControlledDemo(args: AccordionStorybookType & { controlled?: bool
         )}
       </div>
       <AccordionRender
-        key={key}
-        {...restArgs}
+        {...(controlled
+          ? {
+              ...restArgs,
+              value: value,
+              onValueChange: (val) => setValue(val),
+            }
+          : {
+              ...restArgs,
+              value: undefined,
+              onValueChange: (val) => setRefVal(val),
+            })}
+        type={type}
         defaultValue={defaultValue}
-        value={value}
-        onValueChange={setValue}
-        valueStatusRef={valueRef}
+        singleValueRef={singleRef}
       />
       <div className="text-lg font-bold text-juiText-blue">
-        {valueRef?.current
+        {controlled
           ? value
-            ? `현재 열린 value: ${value}`
-            : `defaultValue: ${defaultValue}`
-          : `현재 ${valueRef?.current ? '열린' : ''} ${valueRef?.current ? 'valueRef?.current' : 'defaultValue'}값 : ${valueRef?.current || defaultValue}`}
+            ? `현재 열린 values: ${value}`
+            : '현재 열린 values 없음'
+          : refVal
+            ? `현재 열린 values: ${refVal}`
+            : '현재 열린 values 없음'}
       </div>
     </div>
   );
 }
 
-function MultipleControlledDemo(args: AccordionStorybookType & { controlled?: boolean }) {
-  const { controlled = false, multipleValues, defaultValueMultiple, ...restArgs } = args;
-  const valueRef = useRef(null);
-  const [values, setValues] = useState(multipleValues ?? undefined);
-  const [defaultValues, setDefaultValues] = useState(defaultValueMultiple ?? undefined);
+type MultipleDemoProps = Omit<
+  AccordionStorybookType,
+  'value' | 'defaultValue' | 'onValueChange' | 'singleValueRef' | 'collapsible'
+> & { controlled?: boolean };
 
-  useEffect(() => {
-    setValues(multipleValues);
-  }, [multipleValues]);
-
-  useEffect(() => {
-    setDefaultValues(defaultValueMultiple);
-  }, [defaultValueMultiple]);
-
-  const key = useMemo(() => JSON.stringify({ controlled, ...args }), [controlled, args]);
+function MultipleDemo(args: MultipleDemoProps) {
+  const { type = 'multiple', controlled = false, multipleValues, defaultValueMultiple, ...restArgs } = args;
+  const multipleRef = useRef(null);
+  const [multipleRefVal, setMultipleRefVal] = useState<string[] | undefined>(undefined);
+  const [multipleVal, setMultipleVal] = useState(multipleValues ?? undefined);
+  const [defaultMultipleVal, setDefaultMultipleVal] = useState(defaultValueMultiple ?? undefined);
 
   return (
-    <div className="flex flex-col gap-2" key={key}>
+    <div className="flex flex-col gap-2">
       <h2 className="text-juiText-primary font-semibold flex flex-col gap-2">
-        <span className="text-xl text-center">Type : multiple</span>
+        <span className="text-xl text-center">Type : {type}</span>
         <span className="text-base font-semibold">
           {`현재 => defaultValue : `}
-          <span className="text-juiText-blue font-bold">{JSON.stringify(defaultValues)}</span>
+          <span className="text-juiText-blue font-bold">{JSON.stringify(defaultMultipleVal)}</span>
           {` | 현재 => values : `}
-          <span className="text-juiText-blue font-bold">{JSON.stringify(values)}</span>
+          <span className="text-juiText-blue font-bold">
+            {controlled ? JSON.stringify(multipleVal) : JSON.stringify(multipleRefVal)}
+          </span>
         </span>
         {!controlled && (
           <span className="text-juiText-blue text-xs">
@@ -692,32 +711,52 @@ function MultipleControlledDemo(args: AccordionStorybookType & { controlled?: bo
       <div className="flex gap-2">
         {controlled && (
           <>
-            <Button disabled={args.disabled} onClick={() => setValues(args.items.map((item) => item.value))}>
+            <Button disabled={args.disabled} onClick={() => setMultipleVal(args.items.map((item) => item.value))}>
               모두 열기
             </Button>
-            <Button variant="gradient" disabled={args.disabled} onClick={() => setValues([])}>
+            <Button
+              variant="gradient"
+              disabled={args.disabled}
+              onClick={() => {
+                setMultipleVal(undefined);
+                setDefaultMultipleVal(undefined);
+                multipleRef.current = null;
+              }}>
               모두 닫기
             </Button>
             <Button
               disabled={args.disabled}
-              onClick={() => setValues(args.items.filter((_, idx) => idx % 2 === 0).map((item) => item.value))}>
+              onClick={() => setMultipleVal(args.items.filter((_, idx) => idx % 2 === 0).map((item) => item.value))}>
               홀수번째만 열기
             </Button>
           </>
         )}
       </div>
       <AccordionRender
-        key={key}
-        {...restArgs}
-        type="multiple"
-        defaultValueMultiple={defaultValues}
-        multipleValues={values}
-        onMultipleValuesChange={setValues}
-        multipleValueStatusRef={valueRef}
+        {...(controlled
+          ? {
+              ...restArgs,
+              multipleValues: multipleVal,
+              onMultipleValuesChange: setMultipleVal,
+            }
+          : {
+              ...restArgs,
+              multipleValues: undefined,
+              onMultipleValuesChange: setMultipleRefVal,
+            })}
+        type={type}
+        defaultValueMultiple={defaultMultipleVal}
+        multipleValuesRef={multipleRef}
       />
+
       <div className="text-lg font-bold text-juiText-blue">
-        현재 열린 values: {Array.isArray(values) ? `[${values?.join(', ')}]` : '없음(모두 닫힘)'}
-        <p>valueRef: {valueRef.current}</p>
+        {controlled
+          ? multipleVal && multipleVal?.length > 0
+            ? `현재 열린 values: ${multipleVal}`
+            : '현재 열린 values 없음'
+          : multipleRefVal && multipleRefVal?.length > 0
+            ? `현재 열린 values: ${multipleRefVal}`
+            : '현재 열린 values 없음'}
       </div>
     </div>
   );
@@ -772,13 +811,13 @@ export const UncontrolledTypeWithCollapsibleAndDefaultValue: Story = {
       if: { arg: 'type', eq: 'multiple' },
       table: { disable: true },
     },
-    valueStatusRef: {
-      name: 'valueStatusRef',
+    singleValueRef: {
+      name: 'singleValueRef',
       if: { arg: 'type', eq: 'single' },
       table: { disable: true },
     },
-    multipleValueStatusRef: {
-      name: 'valueStatusRef',
+    multipleValuesRef: {
+      name: 'multipleValuesRef',
       if: { arg: 'type', eq: 'multiple' },
       table: { disable: true },
     },
@@ -797,34 +836,86 @@ export const UncontrolledTypeWithCollapsibleAndDefaultValue: Story = {
       },
     },
   },
-  render: (args: AccordionStorybookType) => (
-    <div className={cn(flexColBoxGap4, 'gap-10 items-center justify-between size-full')}>
-      <h1 className={cn(titleCommonClass, 'text-2xl text-center')}>
-        현재 control 에서 선택하신 type : <strong className={cn('text-juiText-blue')}>{`${args.type}`}</strong>
-      </h1>
-      <div className={cn(flexRowBoxGap4, 'gap-10 items-start justify-between size-full')}>
-        {AccordionTypeArr.map((type, idx) => (
-          <div className={cn(commonBoxClass, flexRowBoxGap4, 'size-full')} key={type}>
-            <div className={cn(commonBoxClass, flexColBoxGap4, 'size-full')}>
-              <div className={cn(commonBoxClass, flexRowBoxGap4, 'w-full')}>
-                {type === 'single' ? (
-                  <SingleControlledDemo {...args} type={type} controlled={false} key={args.type} />
-                ) : (
-                  <MultipleControlledDemo
-                    {...args}
-                    type={type}
-                    controlled={false}
-                    key={`${args.type}-${JSON.stringify(args.defaultValueMultiple)}-${JSON.stringify(args.multipleValues)}`}
-                  />
-                )}
+  render: (args: AccordionStorybookType) => {
+    const {
+      type,
+      items,
+      collapsible,
+      value,
+      defaultValue,
+      onValueChange,
+      multipleValues,
+      defaultValueMultiple,
+      onMultipleValuesChange,
+      singleValueRef,
+      multipleValuesRef,
+      className,
+      isBorder,
+      size,
+      orientation,
+      isIcon,
+      disabled,
+      triggerClassName,
+    } = args;
+
+    return (
+      <div className={cn(flexColBoxGap4, 'gap-10 items-center justify-between size-full')}>
+        <h1 className={cn(titleCommonClass, 'text-2xl text-center')}>
+          [Uncontrolled]현재 control 에서 선택하신 type :
+          <strong className={cn('text-juiText-blue')}>{` ${type}`}</strong>
+        </h1>
+        <div className={cn(flexRowBoxGap4, 'gap-10 items-start justify-between size-full')}>
+          {AccordionTypeArr.map((demoType, idx) => (
+            <div className={cn(commonBoxClass, flexRowBoxGap4, 'size-full')} key={demoType}>
+              <div className={cn(commonBoxClass, flexColBoxGap4, 'size-full')}>
+                <div className={cn(commonBoxClass, flexRowBoxGap4, 'w-full')}>
+                  {demoType === 'single' ? (
+                    <SingleDemo
+                      key={demoType}
+                      controlled={false}
+                      type={demoType}
+                      items={items}
+                      collapsible={collapsible}
+                      value={value}
+                      defaultValue={defaultValue}
+                      onValueChange={onValueChange}
+                      singleValueRef={singleValueRef}
+                      isBorder={isBorder}
+                      size={size}
+                      orientation={orientation}
+                      isIcon={isIcon}
+                      disabled={disabled}
+                      className={className}
+                      triggerClassName={triggerClassName}
+                    />
+                  ) : (
+                    <MultipleDemo
+                      key={demoType}
+                      controlled={false}
+                      type={demoType}
+                      items={items}
+                      multipleValues={multipleValues}
+                      defaultValueMultiple={defaultValueMultiple}
+                      onMultipleValuesChange={onMultipleValuesChange}
+                      multipleValuesRef={multipleValuesRef}
+                      isBorder={isBorder}
+                      size={size}
+                      orientation={orientation}
+                      isIcon={isIcon}
+                      disabled={disabled}
+                      className={className}
+                      triggerClassName={triggerClassName}
+                    />
+                  )}
+                </div>
               </div>
+              {idx === 0 && <Separator size={'small'} orientation={'vertical'} position={'absolute'} />}
             </div>
-            {idx === 0 && <Separator size={'small'} orientation={'vertical'} position={'absolute'} />}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  ),
+    );
+  },
 };
 
 export const ControlledTypeWithCollapsibleAndDefaultValue: Story = {
@@ -851,12 +942,12 @@ export const ControlledTypeWithCollapsibleAndDefaultValue: Story = {
     defaultValue: {
       name: 'defaultValue',
       if: { arg: 'type', eq: 'single' },
-      table: { disable: true },
+      table: { disable: false },
     },
     defaultValueMultiple: {
       name: 'defaultValue',
       if: { arg: 'type', eq: 'multiple' },
-      table: { disable: true },
+      table: { disable: false },
     },
     onValueChange: {
       name: 'onValueChange',
@@ -868,13 +959,13 @@ export const ControlledTypeWithCollapsibleAndDefaultValue: Story = {
       if: { arg: 'type', eq: 'multiple' },
       table: { disable: true },
     },
-    valueStatusRef: {
-      name: 'valueStatusRef',
+    singleValueRef: {
+      name: 'singleValueRef',
       if: { arg: 'type', eq: 'single' },
       table: { disable: true },
     },
-    multipleValueStatusRef: {
-      name: 'valueStatusRef',
+    multipleValuesRef: {
+      name: 'singleValueRef',
       if: { arg: 'type', eq: 'multiple' },
       table: { disable: true },
     },
@@ -890,32 +981,83 @@ export const ControlledTypeWithCollapsibleAndDefaultValue: Story = {
       },
     },
   },
-  render: (args: AccordionStorybookType) => (
-    <div className={cn(flexColBoxGap4, 'gap-10 items-center justify-between size-full')}>
-      <h1 className={cn(titleCommonClass, 'text-2xl text-center')}>
-        현재 control 에서 선택하신 type : <strong className={cn('text-juiText-blue')}>{`${args.type}`}</strong>
-      </h1>
-      <div className={cn(flexRowBoxGap4, 'gap-10 items-start justify-between size-full')}>
-        {AccordionTypeArr.map((type, idx) => (
-          <div className={cn(commonBoxClass, flexRowBoxGap4, 'size-full')} key={type}>
-            <div className={cn(commonBoxClass, flexColBoxGap4, 'size-full')}>
-              <div className={cn(commonBoxClass, flexRowBoxGap4, 'size-full py-4')}>
-                {type === 'single' ? (
-                  <SingleControlledDemo {...args} type={type} controlled={true} key={args.type} />
-                ) : (
-                  <MultipleControlledDemo
-                    {...args}
-                    type={type}
-                    controlled={true}
-                    key={`${args.type}-${JSON.stringify(args.defaultValueMultiple)}-${JSON.stringify(args.multipleValues)}`}
-                  />
-                )}
+  render: (args: AccordionStorybookType) => {
+    const {
+      type,
+      items,
+      collapsible,
+      value,
+      defaultValue,
+      onValueChange,
+      multipleValues,
+      defaultValueMultiple,
+      onMultipleValuesChange,
+      singleValueRef,
+      multipleValuesRef,
+      className,
+      isBorder,
+      size,
+      orientation,
+      isIcon,
+      disabled,
+      triggerClassName,
+    } = args;
+
+    return (
+      <div className={cn(flexColBoxGap4, 'gap-10 items-center justify-between size-full')}>
+        <h1 className={cn(titleCommonClass, 'text-2xl text-center')}>
+          [Controlled]현재 control 에서 선택하신 type : <strong className={cn('text-juiText-blue')}>{`${type}`}</strong>
+        </h1>
+        <div className={cn(flexRowBoxGap4, 'gap-10 items-start justify-between size-full')}>
+          {AccordionTypeArr.map((demoType, idx) => (
+            <div className={cn(commonBoxClass, flexRowBoxGap4, 'size-full')} key={demoType}>
+              <div className={cn(commonBoxClass, flexColBoxGap4, 'size-full')}>
+                <div className={cn(commonBoxClass, flexRowBoxGap4, 'size-full py-4')}>
+                  {demoType === 'single' ? (
+                    <SingleDemo
+                      key={`${demoType}-controlled`}
+                      controlled={true}
+                      type={demoType}
+                      items={items}
+                      collapsible={collapsible}
+                      value={value}
+                      defaultValue={defaultValue}
+                      onValueChange={onValueChange}
+                      singleValueRef={singleValueRef}
+                      isBorder={isBorder}
+                      size={size}
+                      orientation={orientation}
+                      isIcon={isIcon}
+                      disabled={disabled}
+                      className={className}
+                      triggerClassName={triggerClassName}
+                    />
+                  ) : (
+                    <MultipleDemo
+                      key={`${demoType}-controlled`}
+                      controlled={true}
+                      type={demoType}
+                      items={items}
+                      multipleValues={multipleValues}
+                      defaultValueMultiple={defaultValueMultiple}
+                      onMultipleValuesChange={onMultipleValuesChange}
+                      multipleValuesRef={multipleValuesRef}
+                      isBorder={isBorder}
+                      size={size}
+                      orientation={orientation}
+                      isIcon={isIcon}
+                      disabled={disabled}
+                      className={className}
+                      triggerClassName={triggerClassName}
+                    />
+                  )}
+                </div>
               </div>
+              {idx === 0 && <Separator size={'small'} orientation={'vertical'} position={'absolute'} />}
             </div>
-            {idx === 0 && <Separator size={'small'} orientation={'vertical'} position={'absolute'} />}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  ),
+    );
+  },
 };
