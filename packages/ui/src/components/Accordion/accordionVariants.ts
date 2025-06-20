@@ -5,18 +5,18 @@ export const accordionVariants = tv({
   slots: {
     root: 'flex rounded-md shadow-md',
     item: [
-      'flex flex-col flex-1 gap-3 border-transparent',
+      'flex flex-col gap-3 border-transparent',
       'focus-within:rounded-md focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]',
     ],
     trigger: [
-      'flex flex-row flex-1 gap-1 items-center justify-between',
+      'flex flex-row gap-1 items-center justify-between',
       'rounded-md font-bold transition-all',
       'disabled:pointer-events-none disabled:opacity-60',
       '[&[data-state=open]>svg[data-slot=trigger-icon]]:rotate-180',
     ],
     triggerIcon: ['shrink-0 translate-y-0.5 transition-transform duration-200 ease-in-out pointer-events-none'],
     content: [
-      'overflow-hidden flex flex-1',
+      'overflow-hidden flex',
       'data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down',
     ],
   },
