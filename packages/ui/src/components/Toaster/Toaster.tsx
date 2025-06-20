@@ -1,8 +1,8 @@
 'use client';
 
-import { CheckIcon } from '@common/ui/icons';
 import { useTheme } from 'next-themes';
 import { Toaster as Sonner, type ToasterProps } from 'sonner';
+import { AlertCircleIcon, AlertTriangleFilledIcon, CheckIcon, InfoIcon, RotateIcon } from '@common/ui/icons';
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = 'system' } = useTheme();
@@ -16,15 +16,21 @@ const Toaster = ({ ...props }: ToasterProps) => {
           background: ' var(--juiBackground-default)',
           color: 'var(--juiText-primary)',
           border: 'var(--juiBorder-primary)',
+          gap: '10px',
         },
+        classNames: {
+          icon: 'my-auto !mr-0 !ml-0',
+          description: '!text-juiText-secondary',
+          actionButton: 'ml-auto',
+        },
+        className: 'flex items-center',
       }}
       icons={{
         success: <CheckIcon />,
-        // info?: React.ReactNode;
-        // warning?: React.ReactNode;
-        // error?: React.ReactNode;
-        // loading?: React.ReactNode;
-        // close?: React.ReactNode;
+        info: <InfoIcon />,
+        warning: <AlertTriangleFilledIcon />,
+        error: <AlertCircleIcon />,
+        loading: <RotateIcon />,
       }}
       {...props}
     />

@@ -15,6 +15,8 @@ import {
   Popover,
   Tooltip,
   Switch,
+  Skeleton,
+  CardSkeleton,
 } from '@common/ui';
 import {
   ArrowLeftIcon,
@@ -119,24 +121,15 @@ export default function Page() {
       <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper" ref={wrapperRef}>
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
-          <Button
-            onClick={() =>
-              toast('Event has been created', {
-                icon: <TagIcon />,
-                description: 'Sunday, December 03, 2023 at 9:00 AM',
-                action: (
-                  <Button variant="gradient" size="small">
-                    JUI
-                  </Button>
-                ),
-              })
-            }>
-            Show Toast
-          </Button>
+          <Button onClick={() => toast('Event has been created')}>Show Toast</Button>
 
           <PlusCircleIcon />
 
           <Button onClick={() => toast(<Switch />)}>Custom</Button>
+          <Button onClick={() => toast.success(<Switch />)}>Custom success</Button>
+          <Button onClick={() => toast.info(<Switch />)}>Custom info</Button>
+          <Button onClick={() => toast.warning(<Switch />)}>Custom warring</Button>
+          <Button onClick={() => toast.loading(<Switch />)}>Custom loading</Button>
 
           <RadioGroup direction="horizontal" defaultValue="banana" valueRef={radioRef} options={options} />
           <Button
@@ -157,8 +150,29 @@ export default function Page() {
             {...fruitField}
           />
 
-          <Popover trigger={FilePlusIcon} className="bg-juiStatus-alert" size="small" isArrow>
-            dadfdsfadsffsdfadfsfasdfadfasfas
+          <Popover trigger={FilePlusIcon} size="small">
+            <div className="flex flex-col gap-2">
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <CardSkeleton />
+              <Select
+                isContentfitTriggerWidth
+                options={[
+                  { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
+                  { label: 'Pacific Standard Time (PST)', value: 'pst1' },
+                  { type: 'separator' },
+                  {
+                    type: 'group',
+                    label: 'North America',
+                    items: [
+                      { label: 'Eastern Standard Time (EST)', value: 'est' },
+                      { label: 'Pacific Standard Time (PST)', value: 'pst' },
+                    ],
+                  },
+                ]}
+              />
+            </div>
           </Popover>
           <Popover
             trigger={<Button>popover</Button>}
