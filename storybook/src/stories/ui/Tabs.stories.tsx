@@ -229,12 +229,18 @@ export const Folder: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Tabs Folder 모양 탭',
+        story: 'Tabs Folder 모양 탭 (align 과 variant 조절 불가능, 액티브 컬러는 classname으로 직접 설정)',
       },
     },
   },
   argTypes: {
     shape: {
+      table: { disable: true },
+    },
+    variant: {
+      table: { disable: true },
+    },
+    align: {
       table: { disable: true },
     },
   },

@@ -43,6 +43,7 @@ function Tabs<T extends TabItemType>({
   variant,
   align,
   maxWidth,
+  className,
   shape = 'underline',
   size = 'default',
   onValueChange,
@@ -89,7 +90,7 @@ function Tabs<T extends TabItemType>({
             index === 0 && shape === 'folder' ? (
               <TabsTrigger
                 key={value}
-                className={cn(firstForderTab())}
+                className={cn(firstForderTab(), className)}
                 style={{ maxWidth: `${maxWidth}px` }}
                 value={value}
                 disabled={disabled}>
@@ -100,7 +101,7 @@ function Tabs<T extends TabItemType>({
             ) : (
               <TabsTrigger
                 key={value}
-                className={cn(content())}
+                className={cn(content(), className)}
                 style={{ maxWidth: `${maxWidth}px` }}
                 value={value}
                 disabled={disabled}>

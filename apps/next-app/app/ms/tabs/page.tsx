@@ -71,7 +71,7 @@ export default function TabsPage() {
           // size="small"
           // variant="secondary"
           // shape="text"
-          // shape="folder"
+          shape="folder"
           tabs={tabsArray}
           // maxWidth={100}
           // align="full"
