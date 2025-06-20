@@ -482,7 +482,7 @@ export const Sizes: Story = {
             <h2 className={cn(subTitleCommonClass, 'text-sm')}>
               사이즈 별 정보
               <span className={cn(blueTxtClass, 'block mt-2 text-xs')}>
-                {size}: {size !== 'custom' && accordionVariants.variants.size[size]}
+                {size}: {size !== 'custom' && accordionVariants.variants.size[size].root}
               </span>
             </h2>
             <AccordionRender {...args} size={size} />
