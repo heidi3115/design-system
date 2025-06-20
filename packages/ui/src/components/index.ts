@@ -121,4 +121,16 @@ export {
 
 export { Tabs, TabsRoot, TabsList, TabsTrigger, TabsContent, type TabItemType } from './Tabs';
 
+export {
+  Accordion,
+  AccordionItems,
+  type AccordionItemProps,
+  type AccordionProps,
+  AccordionRoot,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+  accordionVariants,
+} from './Accordion';
+
 export { Toaster } from './Toaster';
