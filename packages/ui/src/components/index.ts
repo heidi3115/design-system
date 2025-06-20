@@ -119,6 +119,8 @@ export {
   Sheet,
 } from './Sheet';
 
+export { Tabs, TabsRoot, TabsList, TabsTrigger, TabsContent, type TabItemType } from './Tabs';
+
 export {
   Accordion,
   AccordionItems,
