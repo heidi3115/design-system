@@ -10,7 +10,7 @@ export const collapsibleVariants = tv({});
 export type CollapsibleProps = {
   /**
    * defaultOpen: Collapsible  초기 열림 상태입니다. 내부적으로 상태를 관리할 때 사용합니다(Uncontrolled).
-   * 기본값은 false 입니다.
+   * 기본값은 처음부터 닫힘 상태로 시작(false)합니다.
    */
   defaultOpen?: boolean;
   /**

@@ -1,5 +1,4 @@
 const lintstagedrc = {
-  '*.{ts,tsx,js,jsx,json}': ['eslint --fix --quiet', 'prettier --write'],
   '*.{md,css,scss}': ['prettier --write'],
   'packages/ui/**/*.{ts,tsx,js,jsx}': ['pnpm ui lint'],
   'packages/utils/**/*.{ts,tsx,js,jsx}': ['pnpm utils lint'],
