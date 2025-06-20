@@ -21,7 +21,7 @@ const triggerMap = {
   ),
   linkIcon1: (
     <a href={'./'}>
-      Link로서 Info 처리하실 수 있고 앞 위로 아이콘도 가능합니다. <InfoIcon />
+      Link로서 Info 처리하실 수 있고 아이콘도 가능합니다. <InfoIcon />
     </a>
   ),
   iconOnly1: (
@@ -32,6 +32,10 @@ const triggerMap = {
   ),
   txtMore: '더보기 ...',
 };
+
+// const previewMap = {
+//   txtMore: '더보기 ...',
+// };
 
 const meta: Meta<typeof Collapsible> = {
   title: 'UI/Collapsible',
