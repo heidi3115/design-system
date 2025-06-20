@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Avatar, Button, Collapsible, CountBadge, GradeBadge } from '@common/ui';
+import { Avatar, Button, Collapsible, CountBadge, StateBadge } from '@common/ui';
 import { ChevronLeftRightIcon, ChevronUpDownIcon, ExpansionContentIcon, InfoIcon } from '@common/ui/icons';
 import { cn } from '@common/ui/lib/utils.ts';
 import React from 'react';
@@ -12,6 +12,15 @@ const commonBoxClass = 'items-center justify-center text-juiText-primary';
 const flexColBoxGap4 = 'relative flex flex-col size-full gap-4 text-juiText-primary';
 const flexRowBoxGap4 = 'relative flex flex-row size-full gap-4 text-juiText-primary';
 
+const imgUrlArr = [
+  'https://plus.unsplash.com/premium_photo-1683865776032-07bf70b0add1?&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1642455501250-d2351ecac13a?&auto=format&fit=crop',
+  'https://plus.unsplash.com/premium_photo-1681506669115-cb6b2d30dbc7?&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1644108443916-41a285b5a50a?&auto=format&fit=crop',
+  'https://plus.unsplash.com/premium_photo-1685086785054-d047cdc0e525?&auto=format&fit=crop',
+  'https://plus.unsplash.com/premium_photo-1683865776031-d253015b2b8e?&auto=format&fit=crop',
+];
+
 const triggerMap = {
   btnMore: (
     <Button size="small" variant={'gradient'}>
@@ -19,13 +28,13 @@ const triggerMap = {
     </Button>
   ),
   btnUpDownIcon: (
-    <Button asChild>
-      <ChevronUpDownIcon size={'medium'} />
+    <Button asChild variant={'transparent'} size={'small'} className={'rounded-md shadow-md aspect-square p-0'}>
+      <ChevronUpDownIcon size={'small'} />
     </Button>
   ),
   btnLeftRightIcon: (
-    <Button asChild>
-      <ChevronLeftRightIcon size={'medium'} />
+    <Button asChild variant={'transparent'} size={'small'} className={'aspect-square p-0'}>
+      <ChevronLeftRightIcon size={'small'} />
     </Button>
   ),
   linkIcon1: (
@@ -41,21 +50,35 @@ const triggerMap = {
   ),
   countBadge: <CountBadge color={'scoreAlert'} scoreVal={20} maxVal={10} isBtn />,
   previewMore: (
-    <GradeBadge grade={'alert'} isBtn>
+    <StateBadge status={'complete'} isBtn>
       프리뷰 더보기
-    </GradeBadge>
+    </StateBadge>
   ),
 };
 
 const previewNChildMap = {
   defaultTest: {
-    preview: <p>더보기 ...</p>,
-    children: <div className={cn('')}>더보기 내용</div>,
+    preview: <p>더보기 ... 프리뷰 내용.</p>,
+    children: (
+      <div className={cn()}>
+        더보기 내용의 예시
+        <br />
+        Collapsible 컴포넌트의 문서입니다. Collapsible 란, 단일 콘텐츠 블록의 펼침/접힘 상태를 토글하는 UI 요소 입니다.
+        <br />
+        주로 &#34;더보기&#34;, 상세 설명, 옵션 숨기기/보이기 등 단일 영역의 노출/숨김에 사용됩니다.
+        <br />
+        하나의 영역만 열고 닫는 단일 상태만 관리하며, 단순한 토글이나 간단한 정보 숨기기/보이기에 적합합니다.
+        <br />
+        트리거(trigger) 요소를 자유롭게 커스터마이즈할 수 있으며, 프리뷰(preview) 영역을 통해 콘텐츠의 요약이나
+        미리보기를 제공할 수 있습니다.
+        <br />
+      </div>
+    ),
   },
   alarm: {
-    preview: <p>알람 더보기</p>,
+    preview: <p className={'w-100'}>알람 더보기</p>,
     children: (
-      <ul className={'bg-sky-300 text-juiGrey-a700'}>
+      <ul className={'w-100 *:py-2 bg-sky-300 text-juiGrey-a700'}>
         <li>시나리오 알람 1</li>
         <li>이벤트 알람 1</li>
         <li>시나리오 알람 2</li>
@@ -125,18 +148,9 @@ const previewNChildMap = {
     preview: <p>Gallery</p>,
     children: (
       <div className={'grid grid-cols-3 gap-4 items-center justify-center'}>
-        <img src={'https://plus.unsplash.com/premium_photo-1683865776032-07bf70b0add1?w=80&h=80'} alt={'img1'} />
-        <img src={'https://images.unsplash.com/photo-1642455501250-d2351ecac13a?w=160&h=160'} alt={'img2'} />
-        <img src={'https://plus.unsplash.com/premium_photo-1681506669115-cb6b2d30dbc7?w=80&h=80'} alt={'img3'} />
-        <img
-          src={'https://images.unsplash.com/photo-1644108443916-41a285b5a50a?w=120h=90&auto=format&fit=crop'}
-          alt={'img4'}
-        />
-        <img src={'https://plus.unsplash.com/premium_photo-1685086785054-d047cdc0e525?w=90&h=180'} alt={'img5'} />
-        <img
-          src={'https://plus.unsplash.com/premium_photo-1683865776031-d253015b2b8e?auto=format&fit=crop?w=80&h=80'}
-          alt={'img6'}
-        />
+        {imgUrlArr.map((src) => (
+          <Avatar src={src} size={'fit'} shape={'square'} className={'w-40 h-40'} key={src} />
+        ))}
       </div>
     ),
   },
@@ -155,7 +169,7 @@ type CollapsibleRenderProps = {
   onOpenChange?: (open: boolean) => void;
   trigger: TriggerKey;
   preview?: PreviewNChildKey;
-  children: React.ReactNode;
+  childrenKey: PreviewNChildKey;
   className?: string;
   openStatusRef?: React.Ref<boolean>;
 };
@@ -164,16 +178,16 @@ function CollapsibleRender({
   trigger,
   showPreview,
   preview = 'defaultTest',
-  children,
+  childrenKey,
   ...args
 }: CollapsibleRenderProps) {
   return (
     <Collapsible
-      {...args}
       showPreview={showPreview}
       trigger={triggerMap[trigger]}
-      preview={showPreview ? previewNChildMap[preview].preview : null}>
-      {children}
+      preview={showPreview ? previewNChildMap[preview].preview : null}
+      {...args}>
+      {previewNChildMap[childrenKey].children}
     </Collapsible>
   );
 }
@@ -186,12 +200,12 @@ const meta: Meta<CollapsibleRenderProps> = {
     showPreview: true,
     defaultOpen: false,
     open: undefined,
-    onOpenChange: undefined,
-    trigger: 'btnMore',
+    trigger: 'btnUpDownIcon',
     preview: 'defaultTest',
-    children: 'defaultTest',
-    className: '',
+    childrenKey: 'defaultTest',
+    onOpenChange: undefined,
     openStatusRef: undefined,
+    className: '',
   },
   argTypes: {
     open: {
@@ -234,7 +248,8 @@ const meta: Meta<CollapsibleRenderProps> = {
         '스토리에서는 임의로 선택하실 수 있도록 요소를 생성 하였습니다.',
       ].join('<br/>'),
     },
-    children: {
+    childrenKey: {
+      name: 'children',
       control: 'select',
       options: previewNChildOptions,
       trigger: {
@@ -249,6 +264,11 @@ const meta: Meta<CollapsibleRenderProps> = {
     },
     openStatusRef: {
       control: false,
+      description: [
+        'Collapsible 의 열림 상태를 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
+        '참조 타입은 boolean 으로 합니다.',
+        '스토리에서는 제어하실 수 없습니다.',
+      ].join('<br/>'),
     },
   },
   parameters: {
@@ -290,12 +310,12 @@ export const Preview: Story = {
   args: {
     trigger: 'previewMore',
     preview: 'gallery',
-    children: 'gallery',
+    childrenKey: 'gallery',
   },
   argTypes: {
     trigger: { control: false },
     preview: { control: false },
-    children: { control: false },
+    childrenKey: { control: false },
   },
   parameters: {
     docs: {
@@ -305,19 +325,22 @@ export const Preview: Story = {
     },
   },
   render: (args) => (
-    <div className={cn(flexColBoxGap4, commonBoxClass)}>
-      <h1>이미지 갤러리 예시(프리뷰 없음)</h1>
+    <div className={cn(flexColBoxGap4)}>
+      <h1 className={cn(titleCommonClass, 'text-sm')}>이미지 갤러리 예시(프리뷰 없음)</h1>
       <div className={cn(flexRowBoxGap4)}>
-        <CollapsibleRender {...args} trigger={'previewMore'} preview={'gallery'} showPreview={false}>
-          {previewNChildMap['gallery'].children}
-        </CollapsibleRender>
+        <CollapsibleRender
+          {...args}
+          trigger={'previewMore'}
+          preview={'gallery'}
+          childrenKey={'gallery'}
+          showPreview={false}
+        />
+        <CollapsibleRender childrenKey={'alarm'} trigger={'countBadge'} showPreview={false} />
       </div>
       <hr />
-      <h1>프로피 예시(프리뷰 있음)</h1>
+      <h1 className={cn(titleCommonClass, 'text-sm')}>프로필 예시(프리뷰 있음)</h1>
       <div className={cn(flexRowBoxGap4)}>
-        <CollapsibleRender {...args} trigger={'btnUpDownIcon'} preview={'profile'}>
-          {previewNChildMap['profile'].children}
-        </CollapsibleRender>
+        <CollapsibleRender {...args} trigger={'btnUpDownIcon'} preview={'profile'} childrenKey={'profile'} />
       </div>
     </div>
   ),

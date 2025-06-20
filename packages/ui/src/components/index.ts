@@ -133,4 +133,11 @@ export {
   accordionVariants,
 } from './Accordion';
 
-export { Collapsible, collapsibleVariants, type CollapsibleProps } from './Collapsible';
+export {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleRoot,
+  CollapsibleTrigger,
+  collapsibleVariants,
+  type CollapsibleProps,
+} from './Collapsible';
