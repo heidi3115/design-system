@@ -45,7 +45,7 @@ const Sheet = ({
         {showHeader && (
           <SheetHeader className={headerClassName}>
             <SheetTitle>{title}</SheetTitle>
-            <SheetDescription>{description}</SheetDescription>
+            {description && <SheetDescription>{description}</SheetDescription>}
           </SheetHeader>
         )}
         <div className={cn(['p-4 text-sm overflow-auto'], bodyClassName)}>{children}</div>
