@@ -136,7 +136,7 @@ export default function Page() {
           </Button>
           <Button
             onClick={() =>
-              toast.error('Event has been created', {
+              toast('Event has been created', {
                 description: 'test',
                 action: (
                   <div className="ml-auto">
