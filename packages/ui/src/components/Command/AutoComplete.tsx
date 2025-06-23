@@ -91,6 +91,11 @@ const AutoComplete = ({
     [onValueChange],
   );
 
+  const handleOpen = () => {
+    setOpen(true);
+    setCanFilter(false);
+  };
+
   return (
     <CommandPrimitive
       onKeyDown={handleKeyDown}
@@ -108,12 +113,19 @@ const AutoComplete = ({
               onValueChange={setInputValue}
               onBlur={handleBlur}
               onClick={() => {
-                setOpen(true);
-                setCanFilter(false);
+                if (isOpen) {
+                  setOpen(false);
+                  inputRef.current?.blur();
+
+                  return;
+                }
+
+                handleOpen();
               }}
               onFocus={() => {
-                setOpen(true);
-                setCanFilter(false);
+                if (!isOpen) {
+                  handleOpen();
+                }
               }}
               placeholder={placeholder}
               disabled={disabled}
