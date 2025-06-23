@@ -1,8 +1,17 @@
+import { useRef, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Avatar, Button, Collapsible, CountBadge, StateBadge } from '@common/ui';
-import { ChevronLeftRightIcon, ChevronUpDownIcon, ExpansionContentIcon, InfoIcon } from '@common/ui/icons';
+import {
+  Avatar,
+  Button,
+  Collapsible,
+  type CollapsibleProps,
+  collapsibleVariants,
+  CountBadge,
+  Separator,
+  StateBadge,
+} from '@common/ui';
+import { ChevronLeftRightIcon, ChevronUpDownIcon, ExpansionContentIcon, InfoIcon, PlusIcon } from '@common/ui/icons';
 import { cn } from '@common/ui/lib/utils.ts';
-import React from 'react';
 
 const titleCommonClass = 'text-juiText-primary font-bold';
 const subTitleCommonClass = 'text-juiText-primary font-semibold';
@@ -27,6 +36,11 @@ const triggerMap = {
       더보기 버튼
     </Button>
   ),
+  btnTxtMore: (
+    <Button variant={'transparentGrey'}>
+      더보기 <PlusIcon size={'small'} />
+    </Button>
+  ),
   btnUpDownIcon: (
     <Button asChild variant={'transparent'} size={'small'} className={'rounded-md shadow-md aspect-square p-0'}>
       <ChevronUpDownIcon size={'small'} />
@@ -37,12 +51,12 @@ const triggerMap = {
       <ChevronLeftRightIcon size={'small'} />
     </Button>
   ),
-  linkIcon1: (
+  linkIcon: (
     <a href={'./'}>
-      Link 로서 Info 처리하실 수 있고 아이콘도 가능합니다. <InfoIcon />
+      a 태그 <InfoIcon />
     </a>
   ),
-  iconOnly1: (
+  ExpansionContentIcon: (
     <ExpansionContentIcon
       size={'large'}
       className={'hover:fill-juiText-purple active:fill-juiText-purple focus:fill-juiText-purple'}
@@ -78,7 +92,7 @@ const previewNChildMap = {
   alarm: {
     preview: <p className={'w-100'}>알람 더보기</p>,
     children: (
-      <ul className={'w-100 *:py-2 bg-sky-300 text-juiGrey-a700'}>
+      <ul className={'w-100 [&_li]:my-2 [&_li]:p-2 [&_li]:bg-sky-300 text-juiGrey-a700'}>
         <li>시나리오 알람 1</li>
         <li>이벤트 알람 1</li>
         <li>시나리오 알람 2</li>
@@ -89,7 +103,7 @@ const previewNChildMap = {
     ),
   },
   faq: {
-    preview: <h1 className={cn(titleCommonClass, 'text-2xl')}>FAQ (자주 묻는 질문)</h1>,
+    preview: <h1 className={cn(titleCommonClass, 'text-lg')}>FAQ (자주 묻는 질문)</h1>,
     children: (
       <ol className={cn('p-4')}>
         <li>Q. 회원가입은 어떻게 하나요?</li>
@@ -107,7 +121,7 @@ const previewNChildMap = {
   },
   deliver: {
     preview: (
-      <h3 className={cn(subTitleCommonClass, 'text-juiStatus-alert')}>
+      <h3 className={cn(subTitleCommonClass, 'flex flex-row gap-2 text-juiStatus-alert font-semibold')}>
         <InfoIcon size={'small'} />
         배송 기간 안내
       </h3>
@@ -158,36 +172,31 @@ const previewNChildMap = {
 
 type TriggerKey = keyof typeof triggerMap;
 type PreviewNChildKey = keyof typeof previewNChildMap;
+type sizeType = keyof typeof collapsibleVariants.variants.size;
 const triggerOptions = Object.keys(triggerMap) as TriggerKey[];
-const previewNChildOptions = Object.keys(previewNChildMap) as PreviewNChildKey[];
+const previewNChildKeyOptions = Object.keys(previewNChildMap) as PreviewNChildKey[];
+const sizeOptions = Object.keys(collapsibleVariants.variants.size) as sizeType[];
 
-type CollapsibleRenderProps = {
-  disabled?: boolean;
-  showPreview?: boolean;
-  defaultOpen?: boolean;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  trigger: TriggerKey;
+type CollapsibleRenderProps = Omit<CollapsibleProps, 'children' | 'trigger' | 'preview'> & {
+  trigger?: TriggerKey;
   preview?: PreviewNChildKey;
-  childrenKey: PreviewNChildKey;
-  className?: string;
-  openStatusRef?: React.Ref<boolean>;
+  children: PreviewNChildKey;
 };
 
 function CollapsibleRender({
   trigger,
   showPreview,
   preview = 'defaultTest',
-  childrenKey,
+  children = 'defaultTest',
   ...args
 }: CollapsibleRenderProps) {
   return (
     <Collapsible
+      {...args}
       showPreview={showPreview}
-      trigger={triggerMap[trigger]}
-      preview={showPreview ? previewNChildMap[preview].preview : null}
-      {...args}>
-      {previewNChildMap[childrenKey].children}
+      trigger={trigger ? triggerMap[trigger] : undefined}
+      preview={showPreview ? previewNChildMap[preview].preview : null}>
+      {previewNChildMap[children].children}
     </Collapsible>
   );
 }
@@ -200,17 +209,26 @@ const meta: Meta<CollapsibleRenderProps> = {
     showPreview: true,
     defaultOpen: false,
     open: undefined,
+    size: 'basic',
     trigger: 'btnUpDownIcon',
     preview: 'defaultTest',
-    childrenKey: 'defaultTest',
+    children: 'defaultTest',
     onOpenChange: undefined,
     openStatusRef: undefined,
     className: '',
   },
   argTypes: {
+    disabled: { control: 'boolean' },
+    showPreview: { control: 'boolean' },
+    defaultOpen: { control: 'boolean' },
     open: {
       control: 'boolean',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: `${false}` } },
+    },
+    size: {
+      control: 'select',
+      options: sizeOptions,
+      table: { type: { summary: `${sizeOptions.join('| ')}` }, defaultValue: { summary: `${sizeOptions[0]}` } },
     },
     onOpenChange: {
       control: false,
@@ -237,7 +255,7 @@ const meta: Meta<CollapsibleRenderProps> = {
     },
     preview: {
       control: 'select',
-      options: previewNChildOptions,
+      options: previewNChildKeyOptions,
       trigger: {
         type: { summary: 'ReactReactElement' },
       },
@@ -248,10 +266,9 @@ const meta: Meta<CollapsibleRenderProps> = {
         '스토리에서는 임의로 선택하실 수 있도록 요소를 생성 하였습니다.',
       ].join('<br/>'),
     },
-    childrenKey: {
-      name: 'children',
+    children: {
       control: 'select',
-      options: previewNChildOptions,
+      options: previewNChildKeyOptions,
       trigger: {
         type: { summary: 'ReactReactElement' },
       },
@@ -290,8 +307,6 @@ export default meta;
 type Story = StoryObj<CollapsibleRenderProps>;
 
 export const Default: Story = {
-  args: {},
-  argTypes: {},
   parameters: {
     docs: {
       description: {
@@ -301,7 +316,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <div className={cn(flexColBoxGap4, commonBoxClass)}>
-      <CollapsibleRender {...(args as CollapsibleRenderProps)} />
+      <CollapsibleRender {...args} />
     </div>
   ),
 };
@@ -310,12 +325,16 @@ export const Preview: Story = {
   args: {
     trigger: 'previewMore',
     preview: 'gallery',
-    childrenKey: 'gallery',
+    children: 'gallery',
   },
   argTypes: {
-    trigger: { control: false },
-    preview: { control: false },
-    childrenKey: { control: false },
+    showPreview: { control: false, table: { disable: true } },
+    trigger: { control: false, table: { disable: true } },
+    preview: { control: false, table: { disable: true } },
+    children: { control: false, table: { disable: true } },
+    open: { control: false, table: { disable: true } },
+    onOpenChange: { control: false, table: { disable: true } },
+    openStatusRef: { control: false, table: { disable: true } },
   },
   parameters: {
     docs: {
@@ -326,22 +345,261 @@ export const Preview: Story = {
   },
   render: (args) => (
     <div className={cn(flexColBoxGap4)}>
-      <h1 className={cn(titleCommonClass, 'text-sm')}>이미지 갤러리 예시(프리뷰 없음)</h1>
+      <h1 className={cn(titleCommonClass, 'text-sm')}>프리뷰 없는 예시</h1>
       <div className={cn(flexRowBoxGap4)}>
-        <CollapsibleRender
-          {...args}
-          trigger={'previewMore'}
-          preview={'gallery'}
-          childrenKey={'gallery'}
-          showPreview={false}
-        />
-        <CollapsibleRender childrenKey={'alarm'} trigger={'countBadge'} showPreview={false} />
+        <CollapsibleRender {...args} trigger={'previewMore'} preview={'gallery'} showPreview={false}>
+          {'gallery' as const}
+        </CollapsibleRender>
+        <CollapsibleRender trigger={'countBadge'} showPreview={false}>
+          {'alarm' as const}
+        </CollapsibleRender>
       </div>
       <hr />
-      <h1 className={cn(titleCommonClass, 'text-sm')}>프로필 예시(프리뷰 있음)</h1>
+      <h1 className={cn(titleCommonClass, 'text-sm')}>프리뷰 있는 예시</h1>
       <div className={cn(flexRowBoxGap4)}>
-        <CollapsibleRender {...args} trigger={'btnUpDownIcon'} preview={'profile'} childrenKey={'profile'} />
+        <CollapsibleRender {...args} trigger={'btnUpDownIcon'} preview={'profile'}>
+          {'profile' as const}
+        </CollapsibleRender>
+        <CollapsibleRender {...args} trigger={'ExpansionContentIcon'} preview={'deliver'}>
+          {'deliver' as const}
+        </CollapsibleRender>
       </div>
     </div>
   ),
+};
+
+export const Sizes: Story = {
+  args: {
+    trigger: 'btnLeftRightIcon',
+    preview: 'deliver',
+    children: 'deliver',
+    showPreview: true,
+  },
+  argTypes: {
+    size: { control: false, table: { disable: true } },
+    trigger: { control: false, table: { disable: true } },
+    preview: { control: false, table: { disable: true } },
+    children: { control: false, table: { disable: true } },
+    defaultOpen: { control: false, table: { disable: true } },
+    open: { control: false, table: { disable: true } },
+    onOpenChange: { control: false, table: { disable: true } },
+    openStatusRef: { control: false, table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'Collapsible 컴포넌트의 size prop에 따라 내부의 padding이 다르게 적용되는 예시입니다.',
+          'size 옵션은 small, basic, medium, large, custom 이 있으며, 각 사이즈에 따라 내부 여백(padding)이 달라집니다.',
+          'custom 의 경우 원하는 내용으로 처리 가능하되, className 으로 조절하실 수 있습니다..',
+        ].join('\n'),
+      },
+    },
+  },
+  render: (args: CollapsibleRenderProps) => (
+    <div className={cn(flexColBoxGap4, 'gap-10')}>
+      <h3 className={cn(titleCommonClass, 'text-base')}>Size Variants</h3>
+      <div className={cn('flex flex-wrap')}>
+        {(['small', 'basic', 'medium', 'large', 'custom'] as sizeType[]).map((size) => (
+          <div className={cn(flexColBoxGap4, 'basis-1/2 items-start pb-10')} key={size}>
+            <h2 className={cn(blueTxtClass, 'mb-2 text-sm')}>
+              {size} size: {collapsibleVariants.variants.size[size].contentVariant}
+            </h2>
+            <CollapsibleRender {...args} size={size} />
+          </div>
+        ))}
+      </div>
+    </div>
+  ),
+};
+const returnOpenStatus = (stat: boolean | undefined | null) => (stat ? '열림' : '닫힘');
+const returnOpenTextColor = (stat: boolean | undefined | null) =>
+  stat ? 'text-juiStatus-complete' : 'text-juiScore-alert';
+
+function UncontrolledDemo({ open, defaultOpen, ...args }: CollapsibleRenderProps) {
+  const openRef = useRef(defaultOpen ?? null);
+  const [openState, setOpenState] = useState(openRef.current);
+
+  return (
+    <div className={cn(flexColBoxGap4)}>
+      <h2 className={cn(titleCommonClass, 'text-xl')}>비제어(Uncontrolled) Collapsible 예시</h2>
+      <div className={cn(flexColBoxGap4)}>
+        <div className={cn(flexColBoxGap4, 'w-auto')}>
+          <CollapsibleRender
+            {...args}
+            defaultOpen={defaultOpen}
+            open={undefined}
+            trigger={'btnTxtMore'}
+            preview={'faq'}
+            onOpenChange={(openStat) => {
+              openRef.current = openStat;
+              setOpenState(openStat);
+            }}
+            openStatusRef={openRef}>
+            {'faq' as const}
+          </CollapsibleRender>
+          <div className={cn(flexColBoxGap4, 'text-sm')}>
+            <b className={cn('flex flex-row gap-2')}>
+              <span>defaultOpen :</span>
+              <span className={`font-semibold ${returnOpenTextColor(defaultOpen)}`}>
+                {returnOpenStatus(defaultOpen)}
+              </span>
+            </b>
+            <b className={cn('flex flex-row gap-2')}>
+              <span>open :</span>
+              <span
+                className={`font-semibold ${returnOpenTextColor(open)}`}>{`${open === undefined ? 'undefined' : returnOpenStatus(open)}`}</span>
+            </b>
+            <b className={cn('flex flex-row gap-2')}>
+              <span>현재 열린 상태(openStatusRef) :</span>
+              <strong className={`font-semibold ${returnOpenTextColor(openState)}`}>
+                {returnOpenStatus(openState)}
+              </strong>
+            </b>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ControlledDemo({ defaultOpen, ...args }: CollapsibleRenderProps) {
+  const controlOpenRef = useRef<boolean | null>(null);
+  const [controlOpenState, setControlOpenState] = useState(false);
+
+  return (
+    <div className={cn(flexColBoxGap4, 'pl-10')}>
+      <h2 className={cn(titleCommonClass, 'text-xl')}>제어(Controlled) Collapsible 예시</h2>
+      <div className={cn(flexColBoxGap4)}>
+        <div className={cn(flexColBoxGap4)}>
+          <p>버튼으로 open 상태 제어하기</p>
+          <Button
+            variant={'primary'}
+            onClick={() => {
+              controlOpenRef.current = !controlOpenState;
+              setControlOpenState((prev) => !prev);
+            }}>
+            Collapsible {controlOpenState ? '닫기' : '열기'}
+          </Button>
+        </div>
+        <div className={cn(flexColBoxGap4, 'w-auto')}>
+          <CollapsibleRender
+            {...args}
+            trigger={'btnTxtMore'}
+            preview={'faq'}
+            defaultOpen={defaultOpen}
+            open={controlOpenState}
+            onOpenChange={(open) => {
+              controlOpenRef.current = open;
+              setControlOpenState(open);
+            }}
+            openStatusRef={controlOpenRef}>
+            {'faq' as const}
+          </CollapsibleRender>
+          <div className={cn(flexColBoxGap4, 'text-sm')}>
+            <b className={cn('flex flex-row gap-2')}>
+              <span>defaultOpen :</span>
+              <span className={`font-semibold ${returnOpenTextColor(defaultOpen)}`}>
+                {returnOpenStatus(defaultOpen)}
+              </span>
+            </b>
+            <b className={cn('flex flex-row gap-2')}>
+              <span>open :</span>
+              <span
+                className={`font-semibold ${returnOpenTextColor(controlOpenState)}`}>{`${controlOpenState === undefined ? 'undefined' : returnOpenStatus(controlOpenState)}`}</span>
+            </b>
+            <b className={cn('flex flex-row gap-2')}>
+              <span>현재 열린 상태(openStatusRef) :</span>
+              <strong className={`font-semibold ${returnOpenTextColor(controlOpenState)}`}>
+                {returnOpenStatus(controlOpenState)}
+              </strong>
+            </b>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const UncontrolledControlled: Story = {
+  name: 'Uncontrolled/Controlled',
+  args: {
+    defaultOpen: true,
+    trigger: 'btnLeftRightIcon',
+    preview: 'faq',
+    children: 'faq',
+    showPreview: true,
+  },
+  argTypes: {
+    trigger: { control: false, table: { disable: true } },
+    preview: { control: false, table: { disable: true } },
+    children: { control: false, table: { disable: true } },
+    open: { control: false, table: { disable: true } },
+    onOpenChange: { control: false, table: { disable: true } },
+    openStatusRef: { control: false, table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          '비제어(Uncontrolled)/제어(Controlled) 방식의 Collapsible 스토리 예시입니다.',
+          '비제어(Uncontrolled)는 defaultOpen prop 으로 최초 열림/닫힘 상태만 지정하며, 이후 상태는 컴포넌트 내부에서 관리합니다.',
+          '외부에서 상태를 직접 제어하지 않으며, 일반적인 "더보기" UI, FAQ 등에서 많이 사용됩니다.',
+          '',
+          '비제어(Uncontrolled)는 open prop과 onOpenChange 콜백을 통해 열림/닫힘 상태를 외부에서 직접 관리합니다.',
+          '이 방식은 여러 Collapsible 중 하나만 열리게 하는 아코디언, 외부 버튼 등과 연동할 때 유용합니다.',
+          '아래 예시는 FAQ(자주 묻는 질문) 형태입니다.',
+        ].join('\n'),
+      },
+    },
+  },
+  render: (args: CollapsibleRenderProps) => {
+    const {
+      size,
+      showPreview,
+      disabled,
+      open,
+      defaultOpen,
+      onOpenChange,
+      openStatusRef,
+      preview,
+      trigger,
+      children,
+      className,
+    } = args;
+
+    return (
+      <div className={cn(flexColBoxGap4, commonBoxClass, 'w-9/10')}>
+        <div className={cn(flexRowBoxGap4)}>
+          <UncontrolledDemo
+            size={size}
+            open={open}
+            defaultOpen={defaultOpen}
+            onOpenChange={onOpenChange}
+            openStatusRef={openStatusRef}
+            disabled={disabled}
+            showPreview={showPreview}
+            preview={preview}
+            trigger={trigger}
+            className={className}>
+            {children}
+          </UncontrolledDemo>
+          <Separator orientation={'vertical'} position={'absolute'} className={'left-1/2'} />
+          <ControlledDemo
+            size={size}
+            open={open}
+            defaultOpen={defaultOpen}
+            onOpenChange={onOpenChange}
+            openStatusRef={openStatusRef}
+            disabled={disabled}
+            showPreview={showPreview}
+            preview={preview}
+            trigger={trigger}
+            className={cn(className)}>
+            {children}
+          </ControlledDemo>
+        </div>
+      </div>
+    );
+  },
 };

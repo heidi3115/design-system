@@ -2,10 +2,27 @@
 
 import React, { useImperativeHandle, useState } from 'react';
 import { CollapsibleContent, CollapsibleRoot, CollapsibleTrigger } from './CollapsibleParts';
-import { tv } from 'tailwind-variants';
+import { tv, type VariantProps } from 'tailwind-variants';
 import { cn } from '@common/ui/lib/utils';
 
-export const collapsibleVariants = tv({});
+export const collapsibleVariants = tv({
+  base: '',
+  variants: {
+    size: {
+      small: { contentVariant: 'px-1 py-2' },
+      basic: { contentVariant: 'px-1.5 py-2.5' },
+      medium: { contentVariant: 'px-2 py-3' },
+      large: { contentVariant: 'px-2.5 py-3.5' },
+      custom: { contentVariant: '' },
+    },
+  },
+  slots: {
+    rootVariant: 'flex flex-col gap-4',
+    previewVariant: 'flex flex-row items-center justify-between gap-2 w-full',
+    triggerVariant: 'flex items-center justify-between',
+    contentVariant: 'rounded-md, shadow-md',
+  },
+});
 
 export type CollapsibleProps = {
   /**
@@ -29,6 +46,10 @@ export type CollapsibleProps = {
    */
   showPreview?: boolean;
   /**
+   * size: Collapsible 의 root, preview, content 에 padding 의 차등입니다.
+   */
+  size?: VariantProps<typeof collapsibleVariants>['size'];
+  /**
    * preview: Collapsible 가 닫혀 있을 때, 트리거 옆에 표시되는 미리보기(요약) 영역의 콘텐츠입니다.
    * ReactNode 타입으로, 텍스트, 아이콘, 요약 정보 등 원하는 내용을 자유롭게 넣을 수 있습니다.
    * showPreview가 false면 보여지지 않습니다.
@@ -37,7 +58,7 @@ export type CollapsibleProps = {
   /**
    * trigger: Collapsible 의 열고/닫을(toggle) 트리거 요소(ReactElement)로서, ReactElement 로 표현 가능한 모든 요소를 넣을 수 있습니다.
    */
-  trigger: React.ReactElement;
+  trigger?: React.ReactElement;
   /**
    * children: 숨겨진 콘텐츠 내용으로서, Collapsible 가 열렸을 때 표시되는 실제 콘텐츠입니다.
    * Collapsible 가 닫혀 있을 때는 렌더링되지 않거나, 접근성 목적의 aria 속성만 유지됩니다.
@@ -64,6 +85,7 @@ function Collapsible({
   disabled = false,
   showPreview = true,
   defaultOpen = false,
+  size = 'small',
   open,
   onOpenChange,
   trigger,
@@ -72,6 +94,8 @@ function Collapsible({
   className,
   openStatusRef,
 }: CollapsibleProps) {
+  const { base, rootVariant, triggerVariant, previewVariant, contentVariant } = collapsibleVariants({ size });
+
   const isControlled = open !== undefined;
   const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false);
   const currentOpen = isControlled ? open : internalOpen;
@@ -83,9 +107,8 @@ function Collapsible({
     if (!isControlled) setInternalOpen(nextOpen);
     onOpenChange?.(nextOpen);
 
-    // openStatusRef 동기화
     if (openStatusRef && typeof openStatusRef !== 'function') {
-      openStatusRef.current = nextOpen;
+      openStatusRef.current = currentOpen;
     }
   };
 
@@ -95,14 +118,16 @@ function Collapsible({
       open={currentOpen}
       onOpenChange={handleCollapsibleOpenChange}
       disabled={disabled}
-      className={cn('flex flex-col gap-4 rounded-md shadow-md')}>
-      <div className={'flex flex-row items-center justify-between gap-2 w-full'}>
-        {showPreview && <div className={cn('flex items-center justify-between')}>{preview}</div>}
-        <CollapsibleTrigger asChild className={cn('flex items-center justify-center')}>
-          {trigger}
-        </CollapsibleTrigger>
+      className={cn(base(), rootVariant())}>
+      <div className={cn(base(), previewVariant())}>
+        {showPreview && preview}
+        {trigger && (
+          <CollapsibleTrigger asChild className={cn(triggerVariant())}>
+            {trigger}
+          </CollapsibleTrigger>
+        )}
       </div>
-      <CollapsibleContent className={cn(className)}>{children}</CollapsibleContent>
+      <CollapsibleContent className={cn(base(), contentVariant(), className)}>{children}</CollapsibleContent>
     </CollapsibleRoot>
   );
 }
