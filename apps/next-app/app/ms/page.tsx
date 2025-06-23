@@ -121,7 +121,33 @@ export default function Page() {
       <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper" ref={wrapperRef}>
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
-          <Button onClick={() => toast('Event has been created')}>Show Toast</Button>
+          <Button
+            onClick={() =>
+              toast.error('Event has been created', {
+                description: 'test',
+                action: {
+                  label: 'test',
+                  onClick: () => {},
+                },
+                richColors: true,
+              })
+            }>
+            Show Toast
+          </Button>
+          <Button
+            onClick={() =>
+              toast.error('Event has been created', {
+                description: 'test',
+                action: (
+                  <div className="ml-auto">
+                    <Button variant="gradient">test</Button>
+                  </div>
+                ),
+                richColors: true,
+              })
+            }>
+            Show Toast
+          </Button>
 
           <PlusCircleIcon />
 

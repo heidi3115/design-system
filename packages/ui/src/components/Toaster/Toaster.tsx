@@ -11,17 +11,18 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps['theme']}
       className="toaster group"
+      style={
+        {
+          '--normal-bg': 'var(--juiBackground-default)',
+          '--normal-text': 'var(--juiText-primary)',
+        } as React.CSSProperties
+      }
       toastOptions={{
-        style: {
-          background: ' var(--juiBackground-default)',
-          color: 'var(--juiText-primary)',
-          border: 'var(--juiBorder-primary)',
-          gap: '10px',
-        },
         classNames: {
+          default: '!gap-4',
           icon: 'my-auto !mr-0 !ml-0',
           description: '!text-juiText-secondary',
-          actionButton: 'ml-auto',
+          actionButton: '!ml-auto',
         },
         className: 'flex items-center',
       }}
