@@ -10,7 +10,7 @@ import { cn } from '../../lib/utils';
 
 export type Option = Record<'value' | 'label', string> & Record<string, string>;
 
-type InputSelectProps = {
+type AutoCompleteProps = {
   options: Option[];
   value?: Option;
   onValueChange?: (value: Option) => void;
@@ -29,7 +29,7 @@ const AutoComplete = ({
   placeholder,
   emptyText = 'No Options',
   isSelectIndicator = false,
-}: InputSelectProps) => {
+}: AutoCompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [inputWidth, setInputWidth] = useState<number | null>(null);
