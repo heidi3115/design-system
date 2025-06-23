@@ -116,7 +116,7 @@ function SelectContent({
           // 위치 관련
           'relative z-50',
 
-          // 크기 관련(외부에서 wrapptr 만들면 검토)
+          // 크기 관련(외부에서 wrapper 만들면 검토)
           'max-h-96 min-w-32',
 
           // 트랜스폼 원점
@@ -180,7 +180,7 @@ function SelectItem({
       data-size={size}
       className={cn(
         // 상태 및 상호작용 관련
-        'focus:bg-current/5 focus:text-juiText-primary',
+        'focus:bg-current/10 focus:text-juiText-primary',
         'data-[state=checked]:bg-juiPrimary/15',
         'data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
 

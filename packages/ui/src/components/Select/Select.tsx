@@ -63,7 +63,7 @@ function Select({
   options,
   size,
   width,
-  placeholder = '-',
+  placeholder,
   isSelectIndicator = false,
   isContentfitTriggerWidth = false,
   value: controlledValue,

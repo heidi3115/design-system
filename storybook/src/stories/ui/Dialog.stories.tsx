@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { type FormEvent, type MouseEvent, type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
-import { Button, Input, RadioGroup } from '@common/ui';
-import Dialog from '@common/ui/components/Dialog/Dialog.tsx';
+import { Button, Dialog, Input, RadioGroup } from '@common/ui';
 import { EditIcon, SaveIcon, Trash2Icon } from '@common/ui/icons';
 import type { VariantProps } from 'tailwind-variants';
 

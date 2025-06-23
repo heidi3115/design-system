@@ -13,6 +13,16 @@ import {
   Toggle,
   Popover,
   Tooltip,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandSeparator,
+  CommandShortcut,
+  CommandDialog,
+  Dialog,
+  AutoComplete,
 } from '@common/ui';
 import {
   ArrowLeftIcon,
@@ -32,7 +42,7 @@ import {
 import { useController, useForm } from 'react-hook-form';
 import ThemeToggle from '../../components/ThemeToggle';
 import { useUpdateEffect } from '@common/utils';
-import { TvIcon } from 'lucide-react';
+import { CalculatorIcon, SmileIcon, TvIcon } from 'lucide-react';
 import { ConfirmAlertDialog } from '@common/ui/components/AlertDialog';
 
 export default function Page() {
@@ -126,6 +136,50 @@ export default function Page() {
             라디오그룹 비제어
           </Button>
 
+          <Dialog title="aaaa" trigger={<Button>aa</Button>}>
+            aaaa
+          </Dialog>
+          <CommandDialog trigger={<Button>aa</Button>}>
+            {/* <CommandRoot> */}
+            <CommandInput placeholder="Type a command or search..." />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup heading="Suggestions">
+                <CommandItem>
+                  <CalendarIcon />
+                  <span>Calendar</span>
+                </CommandItem>
+                <CommandItem>
+                  <SmileIcon />
+                  <span>Search Emoji</span>
+                </CommandItem>
+                <CommandItem disabled>
+                  <CalculatorIcon />
+                  <span>Calculator</span>
+                </CommandItem>
+              </CommandGroup>
+              <CommandSeparator />
+              <CommandGroup heading="Settings">
+                <CommandItem>
+                  <CalculatorIcon />
+                  <span>Profile</span>
+                  <CommandShortcut>⌘P</CommandShortcut>
+                </CommandItem>
+                <CommandItem>
+                  <CalculatorIcon />
+                  <span>Billing</span>
+                  <CommandShortcut>⌘B</CommandShortcut>
+                </CommandItem>
+                <CommandItem>
+                  <CalculatorIcon />
+                  <span>Settings</span>
+                  <CommandShortcut>⌘S</CommandShortcut>
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+            {/* </CommandRoot> */}
+          </CommandDialog>
+
           <RadioGroup
             direction="vertical"
             ref={fruitRef}
@@ -180,6 +234,22 @@ export default function Page() {
 
           <ConfirmAlertDialog title="warning" trigger={<Button>confirm</Button>} />
 
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
           <SplitOtpInput />
 
           <Toggle
@@ -301,7 +371,7 @@ export default function Page() {
               selectRef={selectRef}
               defaultValue="pst"
               size="small"
-              width={200}
+              // width={200}
               isContentfitTriggerWidth
               options={[
                 { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
@@ -324,6 +394,19 @@ export default function Page() {
               }}>
               select 비제어
             </Button>
+
+            <AutoComplete
+              placeholder="오토컴플리트"
+              options={[
+                { label: 'Eastern Time (EST)', value: 'est' },
+                { label: 'Pacific Time (PST)', value: 'pst' },
+                { label: 'Pacific Time (aaa)', value: 'aaa' },
+                { label: 'Pacific Time (bbb)', value: 'bbb' },
+                { label: 'Pacific Time (ccc)', value: 'ccc' },
+                { label: 'Pacific Time (ddd)', value: 'ddd' },
+                { label: 'Pacific Time (eee)', value: 'eee' },
+              ]}
+            />
 
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}

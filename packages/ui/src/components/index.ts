@@ -53,7 +53,7 @@ export {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  BaseDialog,
+  Dialog,
 } from './Dialog';
 export { Switch } from './Switch';
 export { Skeleton, CardSkeleton } from './Skeleton';
@@ -132,3 +132,16 @@ export {
   AccordionContent,
   accordionVariants,
 } from './Accordion';
+
+export {
+  CommandRoot,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandShortcut,
+  CommandSeparator,
+  AutoComplete,
+} from './Command';
