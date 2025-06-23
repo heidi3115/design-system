@@ -137,12 +137,22 @@ const positions = ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom
 
 export const PositionExample: Story = {
   render: () => (
-    <div className="p-4 flex flex-col items-start gap-4">
-      {positions.map((position) => (
-        <Button key={position} onClick={() => toast(`토스트 위치: ${position}`, { position })}>
-          {position} 토스트 띄우기
-        </Button>
-      ))}
+    <div className="p-4 grid grid-cols-3 gap-16 items-start">
+      {positions.map((position, i) => {
+        let justifyClass = 'justify-self-start'; // 기본 왼쪽 정렬
+        if (i % 3 === 1)
+          justifyClass = 'justify-self-center'; // 2번째 컬럼
+        else if (i % 3 === 2) justifyClass = 'justify-self-end'; // 3번째 컬럼
+
+        return (
+          <Button
+            key={position}
+            className={justifyClass}
+            onClick={() => toast(`토스트 위치: ${position}`, { position, duration: 500 })}>
+            {position} 토스트 띄우기
+          </Button>
+        );
+      })}
     </div>
   ),
 };
