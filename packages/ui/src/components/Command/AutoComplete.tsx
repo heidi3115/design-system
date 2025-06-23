@@ -34,7 +34,7 @@ const AutoComplete = ({
 
   const [inputWidth, setInputWidth] = useState<number | null>(null);
 
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<Option>(value as Option);
   const [inputValue, setInputValue] = useState(value?.label || '');
   const [canFilter, setCanFilter] = useState(false);
@@ -50,7 +50,7 @@ const AutoComplete = ({
       const input = inputRef.current;
       if (!input) return;
 
-      if (!isOpen) setOpen(true);
+      if (!isOpen) setIsOpen(true);
 
       if (e.key !== 'Escape' && e.key !== 'ArrowUp' && e.key !== 'ArrowDown') {
         setCanFilter(true);
@@ -72,9 +72,14 @@ const AutoComplete = ({
     [isOpen, options, onValueChange],
   );
 
+  const handleOpen = () => {
+    setIsOpen(true);
+    setCanFilter(false);
+  };
+
   const handleBlur = useCallback(() => {
-    setOpen(false);
     setInputValue(selected?.label || '');
+    setIsOpen(false);
     setCanFilter(true);
   }, [selected]);
 
@@ -90,11 +95,6 @@ const AutoComplete = ({
     },
     [onValueChange],
   );
-
-  const handleOpen = () => {
-    setOpen(true);
-    setCanFilter(false);
-  };
 
   return (
     <CommandPrimitive
@@ -114,7 +114,7 @@ const AutoComplete = ({
               onBlur={handleBlur}
               onClick={() => {
                 if (isOpen) {
-                  setOpen(false);
+                  setIsOpen(false);
                   inputRef.current?.blur();
 
                   return;
@@ -165,6 +165,7 @@ const AutoComplete = ({
               'shadow-md',
             )}>
             {inputValue && canFilter && <CommandEmpty>{emptyText}</CommandEmpty>}
+
             <CommandGroup {...(canFilter ? { forceMount: false } : { forceMount: true })}>
               {options.map((option) => {
                 const isSelected = selected?.value === option.value;
@@ -192,6 +193,7 @@ const AutoComplete = ({
             </CommandGroup>
           </CommandList>
         </Popover>
+
         <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
           <ChevronDownIcon className="size-4 transition-transform duration-200" />
         </span>
