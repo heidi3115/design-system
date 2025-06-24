@@ -8,27 +8,17 @@ import {
   useImperativeHandle,
   type KeyboardEvent,
   type Ref,
+  type RefCallback,
+  type ReactNode,
 } from 'react';
 import { Command as CommandPrimitive } from 'cmdk';
-import { tv, type VariantProps } from 'tailwind-variants';
+import { type VariantProps } from 'tailwind-variants';
 import { CheckIcon, ChevronDownIcon } from '@common/ui/icons';
 import { Popover } from '@common/ui';
 
 import { CommandGroup, CommandItem, CommandList, CommandEmpty, CommandSeparator } from './CommandParts';
+import autoCompleteVariants from './autoCompleteVariants';
 import { cn } from '../../lib/utils';
-
-const autoCompleteVariants = tv({
-  base: '',
-  variants: {
-    width: {
-      full: 'w-full',
-      fit: 'w-fit',
-    },
-  },
-  defaultVariants: {
-    width: 'full',
-  },
-});
 
 export type OptionItem = {
   type?: 'item';
@@ -60,27 +50,66 @@ export type AutoCompleteProps = Omit<VariantProps<typeof autoCompleteVariants>, 
   placeholder?: string;
   emptyText?: string;
   isSelectIndicator?: boolean;
+  isContentfitTriggerWidth?: boolean;
+  ref?: RefCallback<HTMLElement>;
+  error?: boolean;
+  helperText?: ReactNode;
+  className?: string;
+  itemClassName?: string;
 };
 
 const AutoComplete = ({
+  ref,
+  error,
+  helperText,
   options,
   value: controlledValue,
   defaultValue,
   onValueChange,
   selectRef,
   width,
+  size,
   disabled,
   placeholder,
   emptyText = 'No Options',
   isSelectIndicator = false,
+  isContentfitTriggerWidth = false,
+  className,
+  itemClassName,
 }: AutoCompleteProps) => {
   const isNumberWidth = typeof width === 'number';
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const {
+    width: triggerWidth,
+    height,
+    popoverBase,
+    triggerBase,
+    itemBase,
+    groupLabelBase,
+    checkIconBase,
+    chevronIconBase,
+    error: errorBorder,
+  } = autoCompleteVariants({ width: isNumberWidth ? undefined : width, size, error });
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const [inputWidth, setInputWidth] = useState<number | null>(null);
+  const [inputHeight, setInputHeight] = useState<number | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
+
+  useLayoutEffect(() => {
+    if (!isContentfitTriggerWidth) return;
+
+    if (inputRef.current) {
+      setInputWidth(inputRef.current.getBoundingClientRect().width);
+    }
+  }, [inputRef, isOpen, width, isContentfitTriggerWidth]);
+
+  useLayoutEffect(() => {
+    if (inputRef.current) {
+      setInputHeight(inputRef.current.getBoundingClientRect().height);
+    }
+  }, [inputRef]);
 
   const [selected, setSelected] = useState<OptionItem | undefined>(undefined);
 
@@ -93,12 +122,6 @@ const AutoComplete = ({
   useImperativeHandle(selectRef, () => currentValue);
 
   const [canFilter, setCanFilter] = useState(false);
-
-  useLayoutEffect(() => {
-    if (inputRef.current) {
-      setInputWidth(inputRef.current.getBoundingClientRect().width);
-    }
-  }, [inputRef, isOpen]);
 
   useLayoutEffect(() => {
     if (!currentValue) {
@@ -189,6 +212,36 @@ const AutoComplete = ({
     [isControlled, onValueChange],
   );
 
+  const RenderInputTrigger = (triggerRef: Ref<HTMLInputElement>) => {
+    return (
+      <CommandPrimitive.Input
+        data-slot="command-input"
+        ref={triggerRef}
+        value={isOpen ? inputValue : selected?.label || ''}
+        onValueChange={setInputValue}
+        onBlur={handleBlur}
+        onClick={() => {
+          if (isOpen) {
+            setIsOpen(false);
+            inputRef.current?.blur();
+
+            return;
+          }
+
+          handleOpen();
+        }}
+        onFocus={() => {
+          if (!isOpen) {
+            handleOpen();
+          }
+        }}
+        placeholder={placeholder}
+        disabled={disabled}
+        className={cn(triggerBase(), errorBorder(), height(), className)}
+      />
+    );
+  };
+
   const renderCommandItem = (item: OptionItem) => {
     const isSelected = selected?.value === item.value;
 
@@ -203,86 +256,51 @@ const AutoComplete = ({
         }}
         onSelect={() => handleSelectOption(item)}
         className={cn(
-          'cursor-pointer flex w-full items-center gap-2 rounded-none py-1.5',
+          itemBase(),
+          height(),
           isSelected && 'bg-juiPrimary/15',
-          isSelected && isSelectIndicator && 'pl-1.5',
+          isSelected && isSelectIndicator && 'pr-8',
+          itemClassName,
         )}>
         {isSelected && isSelectIndicator && (
-          <span className="absolute right-2 flex size-3.5 items-center justify-center">
+          <span className={checkIconBase()}>
             <CheckIcon key={item.value} className="size-4" />
           </span>
         )}
-        <div className="block overflow-hidden text-ellipsis">{item.label}</div>
+        <div className="itemLabel">{item.label}</div>
       </CommandItem>
     );
   };
 
   return (
-    <CommandPrimitive onKeyDown={handleKeyDown} className={cn('text-juiText-primary cursor-pointer')}>
-      <div
-        className={cn(`relative ${isOpen && '[&_svg]:rotate-180'}`, !isNumberWidth && autoCompleteVariants({ width }))}
-        style={isNumberWidth ? { width: `${width}px` } : undefined}>
+    <CommandPrimitive
+      ref={ref}
+      onKeyDown={handleKeyDown}
+      className={cn(`flex ${isOpen && '[&_svg]:rotate-180'}`, !isNumberWidth && triggerWidth())}
+      style={isNumberWidth ? { width: `${width}px` } : undefined}>
+      <div className={cn('relative flex flex-col flex-1')}>
         <Popover
           open={isOpen}
+          align="start"
           sideOffset={4}
-          className={cn('bg-juiBackground-default animate-in fade-in-0 zoom-in-95 z-10 outline-none w-full h-fit p-0')}
-          trigger={
-            <CommandPrimitive.Input
-              data-slot="command-input"
-              ref={inputRef}
-              value={isOpen ? inputValue : selected?.label || ''}
-              onValueChange={setInputValue}
-              onBlur={handleBlur}
-              onClick={() => {
-                if (isOpen) {
-                  setIsOpen(false);
-                  inputRef.current?.blur();
-
-                  return;
-                }
-
-                handleOpen();
-              }}
-              onFocus={() => {
-                if (!isOpen) {
-                  handleOpen();
-                }
-              }}
-              placeholder={placeholder}
-              disabled={disabled}
-              className={cn(
-                'flex w-full items-center justify-between gap-2 truncate',
-                'px-3 py-2 pr-8 light:border light:border-juiBorder-primary shadow-xs',
-                'disabled:cursor-not-allowed disabled:opacity-50',
-                'bg-juiBackground-input',
-                'aria-invalid:border-juiError aria-invalid:ring-juiError/20 dark:aria-invalid:ring-juiError/40',
-                'placeholder:text-juiText-secondary',
-                'data-[state=open]:border data-[state=open]:border-juiBorder-primary light:data-[state=open]:border-juiText-secondary',
-                'outline-none focus-visible:ring-0',
-                'transition-[color,box-shadow]',
-              )}
-            />
-          }>
+          trigger={RenderInputTrigger(inputRef)}
+          className={popoverBase()}>
           <CommandList
-            style={{ width: `${inputWidth}px` }}
-            className={cn(
-              'bg-juiBackground-default',
-              'relative z-50',
-              'max-h-96 min-w-32',
-              'overflow-x-hidden overflow-y-auto',
-              'shadow-md',
-            )}>
+            style={{
+              width: `${inputWidth}px`,
+              ...(isNumberWidth && { minWidth: `${width}px` }),
+            }}>
             {inputValue && canFilter && <CommandEmpty>{emptyText}</CommandEmpty>}
 
             <CommandGroup forceMount={!canFilter}>
               {options.map((opt, idx) => {
                 if ('type' in opt && opt.type === 'group') {
                   return (
-                    <div key={`group-${idx}`} className="p-1">
-                      <div className="px-3 py-1 text-xs text-juiText-secondary">{opt.label}</div>
+                    <div key={`group-${idx}`} className="mt-1.5">
+                      <span className={cn(groupLabelBase())}>{opt.label}</span>
                       {opt.items.map((item, i) => {
                         if ('type' in item && item.type === 'separator') {
-                          return <div key={`separator-${i}`} className="h-px bg-juiBorder-primary my-1" />;
+                          return <CommandSeparator key={`separatorGroup-${i}`} />;
                         }
 
                         return renderCommandItem(item);
@@ -292,7 +310,7 @@ const AutoComplete = ({
                 }
 
                 if ('type' in opt && opt.type === 'separator') {
-                  return <CommandSeparator key={`separator-${idx}`} className="bg-juiText-secondary" />;
+                  return <CommandSeparator key={`separator-${idx}`} />;
                 }
 
                 const item = opt as OptionItem;
@@ -303,12 +321,15 @@ const AutoComplete = ({
           </CommandList>
         </Popover>
 
+        {helperText && (
+          <p className={cn('text-xs mx-1 mt-1', error && 'text-juiError', disabled && 'opacity-50 cursor-not-allowed')}>
+            {helperText}
+          </p>
+        )}
         <span
-          className={cn(
-            'absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none',
-            disabled && 'cursor-not-allowed opacity-50',
-          )}>
-          <ChevronDownIcon className={cn('size-4 transition-transform duration-200')} />
+          className={cn(chevronIconBase(), disabled && 'cursor-not-allowed opacity-50')}
+          style={inputHeight ? { top: `${inputHeight / 2}px` } : undefined}>
+          <ChevronDownIcon />
         </span>
       </div>
     </CommandPrimitive>

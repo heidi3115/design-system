@@ -186,7 +186,7 @@ function SelectItem({
 
         // 레이아웃 및 정렬
         'relative flex w-full items-center gap-2 pr-2 pl-2 py-1.5',
-        isSelectIndicator && 'pr-8',
+        isSelectIndicator && 'data-[state=checked]:pr-8',
 
         // 타이포그래피 및 사용자 선택
         'text-sm select-none',
@@ -216,7 +216,7 @@ function SelectItem({
           </SelectPrimitive.ItemIndicator>
         </span>
       )}
-      <div className="block overflow-hidden text-ellipsis">
+      <div className="block truncate">
         <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
       </div>
     </SelectPrimitive.Item>

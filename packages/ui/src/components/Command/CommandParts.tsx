@@ -71,7 +71,7 @@ function CommandList({ className, ...props }: React.ComponentProps<typeof Comman
   return (
     <CommandPrimitive.List
       data-slot="command-list"
-      className={cn('max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto', className)}
+      className={cn('max-h-96 min-w-32 scroll-py-1 overflow-x-hidden overflow-y-auto', className)}
       {...props}
     />
   );
@@ -100,7 +100,7 @@ function CommandSeparator({ className, ...props }: React.ComponentProps<typeof C
   return (
     <CommandPrimitive.Separator
       data-slot="command-separator"
-      className={cn('bg-juiText-secondary pointer-events-none mx-1 my-1 h-px', className)}
+      className={cn('bg-juiText-secondary pointer-events-none my-1 h-px', className)}
       {...props}
     />
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { type Ref, useImperativeHandle, useState, type ComponentProps } from 'react';
+import { type Ref, useImperativeHandle, useState, type ComponentProps, type ReactNode, type RefCallback } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 import {
@@ -22,9 +22,14 @@ const selectVariaints = tv({
       full: 'w-full',
       fit: 'w-fit',
     },
+    error: {
+      true: 'border border-juiError light:border-juiError',
+      false: 'focus:border-juiText-primary light:focus:border-juiText-secondary', // 에러 아닐 때만 기본 파란색 포커스
+    },
   },
   defaultVariants: {
     width: 'full',
+    error: false,
   },
 });
 
@@ -51,15 +56,19 @@ type SelectOptions = OptionType[];
 type SelectProps = ComponentProps<typeof SelectRoot> &
   Omit<VariantProps<typeof selectVariaints>, 'width'> & {
     options: SelectOptions;
+    ref?: RefCallback<HTMLElement>;
     placeholder?: string;
     size?: 'small' | 'default' | 'large';
     width?: VariantProps<typeof selectVariaints>['width'] | number;
     isSelectIndicator?: boolean;
     isContentfitTriggerWidth?: boolean;
     selectRef?: Ref<string>;
+    error?: boolean;
+    helperText?: ReactNode;
   };
 
 function Select({
+  ref,
   options,
   size,
   width,
@@ -69,6 +78,8 @@ function Select({
   value: controlledValue,
   onValueChange,
   selectRef,
+  error,
+  helperText,
   ...props
 }: SelectProps) {
   const isNumberWidth = typeof width === 'number';
@@ -88,59 +99,72 @@ function Select({
         onValueChange?.(value);
       }}
       {...props}>
-      <SelectTrigger
-        size={size}
-        className={cn(!isNumberWidth && selectVariaints({ width }))}
-        style={isNumberWidth ? { width: `${width}px` } : undefined}>
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
-      <SelectContent isContentfitTriggerWidth={isContentfitTriggerWidth}>
-        {options.map((opt, idx) => {
-          // 그룹일 경우
-          if ('type' in opt && opt.type === 'group') {
+      <div className="flex flex-col flex-1">
+        <SelectTrigger
+          ref={ref}
+          size={size}
+          className={cn(!isNumberWidth && selectVariaints({ width, error }))}
+          style={isNumberWidth ? { width: `${width}px` } : undefined}>
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent isContentfitTriggerWidth={isContentfitTriggerWidth}>
+          {options.map((opt, idx) => {
+            // 그룹일 경우
+            if ('type' in opt && opt.type === 'group') {
+              return (
+                <SelectGroup key={`group-${idx}`}>
+                  <SelectLabel>{opt.label}</SelectLabel>
+                  {opt.items.map((item, i) => {
+                    if ('type' in item && item.type === 'separator') {
+                      return <SelectSeparator key={`separator-${i}`} />;
+                    }
+
+                    return (
+                      <SelectItem
+                        key={item.value}
+                        value={item.value}
+                        disabled={item.disabled}
+                        size={size}
+                        isSelectIndicator={isSelectIndicator}>
+                        {item.label}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectGroup>
+              );
+            }
+
+            // separator (group 밖에서 쓰이는 경우)
+            if ('type' in opt && opt.type === 'separator') {
+              return <SelectSeparator key={`separator-${idx}`} />;
+            }
+
+            // item (type이 없거나 item인 경우)
+            const item = opt as OptionItem;
+
             return (
-              <SelectGroup key={`group-${idx}`}>
-                <SelectLabel>{opt.label}</SelectLabel>
-                {opt.items.map((item, i) => {
-                  if ('type' in item && item.type === 'separator') {
-                    return <SelectSeparator key={`separator-${i}`} />;
-                  }
-
-                  return (
-                    <SelectItem
-                      key={item.value}
-                      value={item.value}
-                      disabled={item.disabled}
-                      size={size}
-                      isSelectIndicator={isSelectIndicator}>
-                      {item.label}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
+              <SelectItem
+                key={item.value}
+                value={item.value}
+                disabled={item.disabled}
+                size={size}
+                isSelectIndicator={isSelectIndicator}>
+                {item.label}
+              </SelectItem>
             );
-          }
-
-          // separator (group 밖에서 쓰이는 경우)
-          if ('type' in opt && opt.type === 'separator') {
-            return <SelectSeparator key={`separator-${idx}`} />;
-          }
-
-          // item (type이 없거나 item인 경우)
-          const item = opt as OptionItem;
-
-          return (
-            <SelectItem
-              key={item.value}
-              value={item.value}
-              disabled={item.disabled}
-              size={size}
-              isSelectIndicator={isSelectIndicator}>
-              {item.label}
-            </SelectItem>
-          );
-        })}
-      </SelectContent>
+          })}
+        </SelectContent>
+        {helperText && (
+          <p
+            className={cn(
+              'text-xs mx-1 mt-1',
+              error && 'text-juiError',
+              props.disabled && 'opacity-50 cursor-not-allowed',
+            )}>
+            {helperText}
+          </p>
+        )}
+      </div>
     </SelectRoot>
   );
 }
