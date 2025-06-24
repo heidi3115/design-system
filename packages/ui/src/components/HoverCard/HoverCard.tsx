@@ -13,7 +13,6 @@ const DEFAULT_CLOSE_DELAY_MS = 300;
 export const hoverCardVariants = tv({
   base: '',
   slots: {
-    // cardTrigger: '',
     cardContents: [
       'flex items-center justify-center z-50',
       'rounded-md border shadow-md outline-hidden text-juiText-primary',
@@ -106,11 +105,12 @@ function HoverCard({
 
   const handleHoverCardOpenChange = (nextOpen: boolean) => {
     if (!isControlled) setInternalOpen(nextOpen);
-    onOpenChange?.(nextOpen);
 
     if (openStatusRef && typeof openStatusRef !== 'function') {
       openStatusRef.current = nextOpen;
     }
+
+    onOpenChange?.(nextOpen);
   };
 
   return (

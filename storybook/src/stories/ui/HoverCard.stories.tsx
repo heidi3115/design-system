@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { type ComponentProps, useEffect, useRef, useState } from 'react';
 import { cn } from '@common/ui/lib/utils.ts';
 import {
   Avatar,
@@ -11,10 +12,10 @@ import {
   CardTitle,
   CountBadge,
   HoverCard,
+  type HoverCardProps,
   hoverCardVariants,
 } from '@common/ui';
 import { AlertCircleIcon, AlertTriangleFilledIcon, InfoIcon } from '@common/ui/icons';
-import type { ComponentProps } from 'react';
 
 const titleCommonClass = 'text-juiText-primary font-bold';
 const subTitleCommonClass = 'text-juiText-primary font-semibold';
@@ -37,10 +38,11 @@ const triggerMap = {
     </Button>
   ),
   AlertCircleIcon: <AlertCircleIcon size={'small'} />,
-  btnIcon: (
-    <Button variant={'secondary'}>
-      Info <InfoIcon />
-    </Button>
+  InfoIconTxt: (
+    <p className={'flex flex-row gap-2 items-center hover:text-juiPrimary focus:text-juiPrimary'}>
+      <span>Info</span>
+      <InfoIcon />
+    </p>
   ),
   countBadge: <CountBadge color={'scoreAlert'} scoreVal={20} maxVal={10} isBtn />,
   linkTrigger: (
@@ -102,7 +104,7 @@ const meta: Meta<typeof HoverCard> = {
     defaultOpen: false,
     open: undefined,
     onOpenChange: undefined,
-    trigger: triggerMap['btnIcon'],
+    trigger: triggerMap['InfoIconTxt'],
     triggerClass: '',
     children: childrenMap['cardContent'],
     contentClass: '',
@@ -235,6 +237,10 @@ const meta: Meta<typeof HoverCard> = {
       table: {
         type: { summary: `ReactNode | ComponentType` },
       },
+      description: [
+        'HoverCard를 열기 위해 사용되는 트리거 요소입니다. ReactNode 또는 ComponentType 을 받을 수 있습니다.',
+        '스토리에서는 제어하실 수 없습니다.',
+      ].join('<br/>'),
     },
     triggerClass: {
       control: 'text',
@@ -258,6 +264,10 @@ const meta: Meta<typeof HoverCard> = {
     },
     openStatusRef: {
       control: false,
+      description: [
+        'HoverCard 의 열림 상태를 외부에서 참조할 수 있도록 하는 Ref 객체입니다. 참조 타입은 boolean 으로 합니다.',
+        '스토리에서는 제어하실 수 없습니다.',
+      ].join('<br/>'),
     },
   },
   parameters: {
@@ -287,7 +297,7 @@ export const Default: Story = {
     },
   },
   render: (args) => (
-    <div className={cn(flexColBoxGap4, commonBoxClass, 'py-60')}>
+    <div className={cn(flexColBoxGap4, commonBoxClass, 'py-60')} key={JSON.stringify(args)}>
       <HoverCard {...args} />
     </div>
   ),
@@ -302,6 +312,11 @@ export const Variants: Story = {
     variant: {
       table: { disable: true },
     },
+    trigger: { table: { disable: true } },
+    children: { table: { disable: true } },
+    open: { table: { disable: true } },
+    onOpenChange: { table: { disable: true } },
+    openStatusRef: { table: { disable: true } },
   },
   parameters: {
     docs: {
@@ -314,7 +329,7 @@ export const Variants: Story = {
     },
   },
   render: (args) => (
-    <div className={cn(flexColBoxGap4)}>
+    <div className={cn(flexColBoxGap4)} key={JSON.stringify(args)}>
       {variantOptions.map((variant) => (
         <div className={cn(flexRowBoxGap4, 'items-center', 'py-4')} key={variant}>
           <span className={cn(subTitleCommonClass, 'text-sm')}>
@@ -336,6 +351,11 @@ export const Sizes: Story = {
     size: {
       table: { disable: true },
     },
+    trigger: { table: { disable: true } },
+    children: { table: { disable: true } },
+    open: { table: { disable: true } },
+    onOpenChange: { table: { disable: true } },
+    openStatusRef: { table: { disable: true } },
   },
   parameters: {
     docs: {
@@ -348,7 +368,7 @@ export const Sizes: Story = {
     },
   },
   render: (args) => (
-    <div className="flex flex-wrap items-center justify-between">
+    <div className="flex flex-wrap items-center justify-between" key={JSON.stringify(args)}>
       {sizeOptions.map((size) => (
         <div className={cn(flexColBoxGap4, 'py-40')} key={size}>
           <span className={cn(subTitleCommonClass, 'text-sm')}>
@@ -367,7 +387,13 @@ export const Sizes: Story = {
 export const Delays: Story = {
   name: 'OpenDelay/CloseDelay',
   args: {},
-  argTypes: {},
+  argTypes: {
+    trigger: { table: { disable: true } },
+    children: { table: { disable: true } },
+    open: { table: { disable: true } },
+    onOpenChange: { table: { disable: true } },
+    openStatusRef: { table: { disable: true } },
+  },
   parameters: {
     docs: {
       description: {
@@ -380,7 +406,7 @@ export const Delays: Story = {
     },
   },
   render: (args) => (
-    <div className={cn(flexColBoxGap4)}>
+    <div className={cn(flexColBoxGap4)} key={JSON.stringify(args)}>
       <h1 className={cn(titleCommonClass, 'text-base')}>control 되지 않는 예시</h1>
       <div className="flex flex-wrap items-center gap-10 [&>div]:flex-1 [&>div]:py-20">
         <div className={cn(flexColBoxGap4, commonBoxClass)}>
@@ -392,7 +418,7 @@ export const Delays: Story = {
             closeDelay: 0 ms
           </span>
           <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']} openDelay={0} closeDelay={0}>
-            {childrenMap['profile']}
+            {childrenMap['cardContent']}
           </HoverCard>
         </div>
         <div className={cn(flexColBoxGap4, commonBoxClass)}>
@@ -404,7 +430,7 @@ export const Delays: Story = {
             closeDelay: 1000 ms
           </span>
           <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']} openDelay={500} closeDelay={1000}>
-            {childrenMap['profile']}
+            {childrenMap['cardContent']}
           </HoverCard>
         </div>
         <div className={cn(flexColBoxGap4, commonBoxClass)}>
@@ -416,7 +442,7 @@ export const Delays: Story = {
             closeDelay: 300 ms
           </span>
           <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']} openDelay={700} closeDelay={300}>
-            {childrenMap['profile']}
+            {childrenMap['cardContent']}
           </HoverCard>
         </div>
         <div className={cn(flexColBoxGap4, commonBoxClass)}>
@@ -428,7 +454,7 @@ export const Delays: Story = {
             closeDelay: 2000 ms
           </span>
           <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']} openDelay={1000} closeDelay={2000}>
-            {childrenMap['profile']}
+            {childrenMap['cardContent']}
           </HoverCard>
         </div>
       </div>
@@ -439,7 +465,7 @@ export const Delays: Story = {
       </p>
       <div className={'flex items-center justify-center py-10'}>
         <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']}>
-          {childrenMap['profile']}
+          {childrenMap['cardContent']}
         </HoverCard>
       </div>
     </div>
@@ -447,10 +473,11 @@ export const Delays: Story = {
 };
 
 export const Position: Story = {
-  args: {},
   argTypes: {
     side: { table: { disable: true } },
     align: { table: { disable: true } },
+    trigger: { table: { disable: true } },
+    children: { table: { disable: true } },
   },
   parameters: {
     docs: {
@@ -463,7 +490,7 @@ export const Position: Story = {
     },
   },
   render: (args) => (
-    <div className={cn(commonBoxClass, flexColBoxGap4, 'w-full')}>
+    <div className={cn(commonBoxClass, flexColBoxGap4, 'w-full')} key={JSON.stringify(args)}>
       <div className={cn(commonBoxClass, flexColBoxGap4, 'w-full')}>
         <h3 className={cn(titleCommonClass)}>side와 align의 다양한 위치의 예시</h3>
         <div className={cn(flexColBoxGap4, commonBoxClass, 'relative w-full')}>
@@ -524,6 +551,271 @@ export const Position: Story = {
           </div>
         </div>
       </div>
+    </div>
+  ),
+};
+
+function returnOpenStatus({ openStat }: { openStat: boolean | undefined | null }) {
+  return (
+    <strong
+      className={cn(
+        titleCommonClass,
+        `${openStat === undefined ? 'text-orange-400' : openStat ? 'text-green-500' : 'text-red-600'}`,
+      )}>
+      {openStat === undefined ? `undefined` : openStat ? '열림' : '닫힘'}
+    </strong>
+  );
+}
+
+function UncontrolDemos({ ...args }: HoverCardProps) {
+  const {
+    variant,
+    size,
+    defaultOpen,
+    openDelay,
+    closeDelay,
+    side,
+    sideOffset,
+    align,
+    alignOffset,
+    trigger = triggerMap['InfoIconTxt'],
+    triggerClass,
+    contentClass,
+    children = childrenMap['profile'],
+  } = args;
+
+  const unControlledRef = useRef<boolean | null>(null);
+  const [isUncontrolledOpen, setIsUncontrolledOpen] = useState(defaultOpen);
+
+  useEffect(() => {
+    setIsUncontrolledOpen(defaultOpen);
+  }, [defaultOpen]);
+
+  const unControlledKey = JSON.stringify({
+    variant,
+    size,
+    side,
+    sideOffset,
+    align,
+    alignOffset,
+    openDelay,
+    closeDelay,
+    defaultOpen,
+    triggerClass,
+    contentClass,
+  });
+
+  return (
+    <div className={cn(commonBoxClass, flexColBoxGap4, 'w-full')}>
+      <h1 className={cn(titleCommonClass, 'text-base')}>비제어(Uncontrolled)의 예시</h1>
+      <div className={cn(flexRowBoxGap4, commonBoxClass, 'gap-10 w-9/10')}>
+        <div className={cn(flexColBoxGap4, commonBoxClass, 'flex-1')}>
+          <h2 className={cn(titleCommonClass, 'text-base')}>비제어(Uncontrolled)</h2>
+          <div className={cn(flexColBoxGap4, 'py-40')} key={unControlledKey}>
+            <HoverCard
+              variant={variant}
+              size={size}
+              side={side}
+              sideOffset={sideOffset}
+              align={align}
+              alignOffset={alignOffset}
+              openDelay={openDelay}
+              closeDelay={closeDelay}
+              defaultOpen={isUncontrolledOpen}
+              open={undefined}
+              onOpenChange={(unControlledOpen) => {
+                setIsUncontrolledOpen(unControlledOpen);
+                unControlledRef.current = unControlledOpen;
+              }}
+              openStatusRef={unControlledRef}
+              trigger={trigger}
+              triggerClass={triggerClass}
+              contentClass={contentClass}>
+              <div key={'uncontrolled-children'}>{children}</div>
+            </HoverCard>
+          </div>
+          <div className={cn(flexColBoxGap4, 'gap-2')}>
+            <p className={cn(flexRowBoxGap4, 'gap-2 text-sm')}>
+              <span className={cn(titleCommonClass)}>defaultOpen :</span>
+              {returnOpenStatus({ openStat: isUncontrolledOpen })}
+            </p>
+            <p className={cn(flexRowBoxGap4, 'gap-2 text-sm')}>
+              <span className={cn(titleCommonClass)}>open :</span>
+              {returnOpenStatus({ openStat: undefined })}
+            </p>
+            <p className={cn(flexRowBoxGap4, 'gap-2 text-sm')}>
+              <span className={cn(titleCommonClass)}>현재 열림/닫힘 상태(openStatusRef) :</span>
+              {returnOpenStatus({ openStat: unControlledRef.current })}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const Uncontrolled: Story = {
+  args: {
+    openDelay: 0,
+  },
+  argTypes: {
+    open: { table: { disable: true } },
+    onOpenChange: { table: { disable: true } },
+    openStatusRef: { table: { disable: true } },
+    trigger: { table: { disable: true } },
+    children: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'HoverCard 의 defaultOpen, open, onOpenChange 를 이용한 비제어(Uncontrolled) 예시를 확인하실 수 있는 예시입니다.',
+          '비제어형은 내부 상태로 열림/닫힘을 관리하고 제어할 수 있습니다.',
+          '아래 예시에서는 각각의 동작 방식을 확인할 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
+  render: (args: HoverCardProps) => (
+    <div>
+      <p className={'invisible'}>
+        UncontrolDemos 의 경우, 제어와 비제어의 hook 등이 스토리에서 처리되지 않아 별도로 처리한 내역입니다.
+      </p>
+      <UncontrolDemos {...args} />
+    </div>
+  ),
+};
+
+function ControlDemos({ ...args }: HoverCardProps) {
+  const {
+    variant,
+    size,
+    defaultOpen,
+    open,
+    openDelay,
+    closeDelay,
+    side,
+    sideOffset,
+    align,
+    alignOffset,
+    trigger = triggerMap['InfoIconTxt'],
+    triggerClass,
+    contentClass,
+    children = childrenMap['profile'],
+  } = args;
+
+  const controlledRef = useRef<boolean | null>(null);
+  const [isUncontrolledOpen, setIsUncontrolledOpen] = useState(defaultOpen);
+  const [isControlledOpen, setIsControlledOpen] = useState(open || false);
+
+  useEffect(() => {
+    setIsUncontrolledOpen(defaultOpen);
+  }, [defaultOpen]);
+
+  const controlledKey = JSON.stringify({
+    variant,
+    size,
+    side,
+    sideOffset,
+    align,
+    alignOffset,
+    openDelay,
+    closeDelay,
+    triggerClass,
+    contentClass,
+    isControlledOpen,
+  });
+
+  return (
+    <div className={cn(commonBoxClass, flexColBoxGap4, 'w-full')}>
+      <h1 className={cn(titleCommonClass, 'text-base')}>비제어(Uncontrolled)와 제어(Controlled)의 예시</h1>
+      <div className={cn(flexRowBoxGap4, commonBoxClass, 'gap-10 w-9/10')}>
+        <div className={cn(flexColBoxGap4, commonBoxClass, 'flex-1')}>
+          <h2 className={cn(titleCommonClass, 'text-base')}>제어(Controlled)</h2>
+          <div className={cn(flexColBoxGap4, 'py-40')} key={controlledKey}>
+            <HoverCard
+              variant={variant}
+              size={size}
+              side={side}
+              sideOffset={sideOffset}
+              align={align}
+              alignOffset={alignOffset}
+              defaultOpen={isUncontrolledOpen}
+              openDelay={openDelay}
+              closeDelay={closeDelay}
+              open={isControlledOpen}
+              onOpenChange={(contOpen) => {
+                setIsControlledOpen(contOpen);
+                controlledRef.current = contOpen;
+              }}
+              openStatusRef={controlledRef}
+              trigger={trigger}
+              triggerClass={triggerClass}
+              contentClass={contentClass}>
+              <div key={'controlled-children'}>{children}</div>
+            </HoverCard>
+          </div>
+          <div className={cn(flexColBoxGap4, 'gap-2')}>
+            <p className={cn(flexRowBoxGap4, commonBoxClass, 'gap-2 text-sm')}>
+              <strong>외부 제어로 열기</strong>
+              <Button
+                variant={'gradient'}
+                onMouseEnter={() => {
+                  setIsControlledOpen(true);
+                  controlledRef.current = true;
+                }}
+                onMouseLeave={() => {
+                  setIsControlledOpen(false);
+                  controlledRef.current = false;
+                }}>{`버튼의 마우스 오버로 ${isControlledOpen ? '닫기' : '열기'}`}</Button>
+            </p>
+            <p className={cn(flexRowBoxGap4, 'gap-2 text-sm')}>
+              <span className={cn(titleCommonClass)}>defaultOpen :</span>
+              {returnOpenStatus({ openStat: defaultOpen })}
+            </p>
+            <p className={cn(flexRowBoxGap4, 'gap-2 text-sm')}>
+              <span className={cn(titleCommonClass)}>open :</span>
+              {returnOpenStatus({ openStat: isControlledOpen })}
+            </p>
+            <p className={cn(flexRowBoxGap4, 'gap-2 text-sm')}>
+              <span className={cn(titleCommonClass)}>현재 열림/닫힘 상태(openStatusRef) :</span>
+              {returnOpenStatus({ openStat: controlledRef.current })}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const Controlled: Story = {
+  args: {
+    openDelay: 0,
+  },
+  argTypes: {
+    open: { table: { disable: true } },
+    onOpenChange: { table: { disable: true } },
+    openStatusRef: { table: { disable: true } },
+    trigger: { table: { disable: true } },
+    children: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'HoverCard 의 defaultOpen, open, onOpenChange 를 이용한 제어(Controlled) 예시를 확인하실 수 있는 예시입니다.',
+          '제어형은 외부 상태로 완전히 제어할 수 있습니다.',
+          '아래 예시에서는 각각의 동작 방식을 확인할 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
+  render: (args: HoverCardProps) => (
+    <div>
+      <p className={'invisible'}>
+        ControlDemos 의 경우, 제어와 비제어의 hook 등이 스토리에서 처리되지 않아 별도로 처리한 내역입니다.
+      </p>
+      <ControlDemos {...args} />
     </div>
   ),
 };
