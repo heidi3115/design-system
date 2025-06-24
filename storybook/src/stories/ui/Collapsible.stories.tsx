@@ -215,8 +215,6 @@ const meta: Meta<typeof Collapsible> = {
       ].join('<br/>'),
     },
     trigger: {
-      // control: 'select',
-      // options: triggerOptions,
       control: false,
       trigger: {
         type: { summary: 'ReactReactElement' },
