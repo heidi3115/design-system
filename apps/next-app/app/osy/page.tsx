@@ -2,15 +2,25 @@
 
 import Link from 'next/link';
 import ThemeToggle from '../../components/ThemeToggle';
-import { Button } from '@common/ui/components/Button';
-import { CornerDownLeftIcon, RotateIcon } from '@common/ui/icons';
-import { Separator, separatorVariants } from '@common/ui/components/Separator';
-import { Avatar } from '@common/ui/components/Avatar';
-import { AvatarContents } from '@common/ui/components/Avatar/Avatar';
+import {
+  Avatar,
+  AvatarContents,
+  Button,
+  HoverCardContent,
+  HoverCardRoot,
+  HoverCardTrigger,
+  Separator,
+  separatorVariants,
+} from '@common/ui';
+import { CornerDownLeftIcon, InfoIcon, RotateIcon } from '@common/ui/icons';
+import { useRef } from 'react';
+import HoverCard from '@common/ui/src/components/HoverCard/HoverCard';
 
-const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '80%', height: '2px' }} />;
+const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '100%', height: '2px' }} />;
 
 export default function CommonOsyPage() {
+  const wrapperRef = useRef(null);
+
   return (
     <main className={'relative w-full'}>
       <div>
@@ -21,9 +31,56 @@ export default function CommonOsyPage() {
         </Button>
         <ThemeToggle />
       </div>
-      <section className={'flex flex-col items-center justify-center w-full'}>
+      <section className={'flex flex-col items-center justify-center w-full'} ref={wrapperRef}>
         <div className={'flex flex-col gap-4 items-center justify-center w-4/5'}>
           <div className={'flex flex-col gap-4 w-3/5'}>
+            <div className={'flex flex-col gap-4'}>
+              <h2 className={'text-juiText-blue text-3xl font-bold'}>Hover Card</h2>
+              <div className={'flex flex-col gap-4'}>
+                <h3 className={'my-3 text-base'}>HoverCard Tests</h3>
+                <div className={'flex flex-row gap-4'}>
+                  <div className={'flex flex-col gap-2'}>
+                    <span className={'text-juiText-blue text-base font-bold'}>HoverCard Parts</span>
+                    <div className={'flex flex-row gap-3'}>
+                      <HoverCardRoot>
+                        <HoverCardTrigger>Hover</HoverCardTrigger>
+                        <HoverCardContent>The React Framework – created and maintained by @vercel.</HoverCardContent>
+                      </HoverCardRoot>
+                    </div>
+                  </div>
+                  <div className={'flex flex-col gap-2'}>
+                    <span className={'text-juiText-blue text-base font-bold'}>HoverCard custom</span>
+                    <div className={'flex flex-row gap-3'}>
+                      <HoverCard
+                        size={'small'}
+                        variant={'primary'}
+                        side={'bottom'}
+                        // cardSrc={'wrong.png'}
+                        trigger={<Button variant="transparentGrey">@nextJs without cardSrc</Button>}>
+                        <h4 className="text-sm font-semibold">@nextJs</h4>
+                        <p className="text-sm">The React Framework – created and maintained by @vercel.</p>
+                        <div className="text-muted-foreground text-xs">Joined December 2021</div>
+                      </HoverCard>
+                      <HoverCard
+                        size={'large'}
+                        variant={'transparent'}
+                        open={true}
+                        trigger={<InfoIcon size={'large'} />}>
+                        <div className={'flex flex-row items-center gap-3'}>
+                          <Avatar src={'https://github.com/vercel.png'} shape={'square'} />
+                          <div className={'flex-col items-center justify-between'}>
+                            <h4 className="text-sm font-semibold">@nextJs</h4>
+                            <p className="text-sm">The React Framework – created and maintained by @vercel.</p>
+                            <div className="text-muted-foreground text-xs">Joined December 2021</div>
+                          </div>
+                        </div>
+                      </HoverCard>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Line />
             <h2 className={'text-juiText-blue text-3xl font-bold text-center'}>Avatar</h2>
             <div className={'flex flex-row gap-10 [&>div]:flex-1'}>
               <div className={'flex flex-col gap-4'}>
