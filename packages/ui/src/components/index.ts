@@ -132,3 +132,18 @@ export {
   AccordionContent,
   accordionVariants,
 } from './Accordion';
+
+export {
+  Slider,
+  type SliderProps,
+  sliderVariants,
+  SliderDefault,
+  SliderRoot,
+  SliderTrack,
+  SliderRange,
+  SliderThumb,
+  type SliderRootProps,
+  type SliderTrackProps,
+  type SliderRangeProps,
+  type SliderThumbProps,
+} from './Slider';
