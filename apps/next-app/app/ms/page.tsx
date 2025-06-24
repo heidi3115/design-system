@@ -136,10 +136,10 @@ export default function Page() {
             라디오그룹 비제어
           </Button>
 
-          <Dialog title="aaaa" trigger={<Button>aa</Button>}>
+          <Dialog title="dialog" trigger={<Button>aa</Button>}>
             aaaa
           </Dialog>
-          <CommandDialog trigger={<Button>aa</Button>}>
+          <CommandDialog trigger={<Button>command</Button>}>
             {/* <CommandRoot> */}
             <CommandInput placeholder="Type a command or search..." />
             <CommandList>
@@ -397,6 +397,7 @@ export default function Page() {
 
             <AutoComplete
               placeholder="오토컴플리트"
+              isSelectIndicator
               options={[
                 { label: 'Eastern Time (EST)', value: 'est' },
                 { label: 'Pacific Time (PST)', value: 'pst' },
@@ -405,6 +406,16 @@ export default function Page() {
                 { label: 'Pacific Time (ccc)', value: 'ccc' },
                 { label: 'Pacific Time (ddd)', value: 'ddd' },
                 { label: 'Pacific Time (eee)', value: 'eee' },
+                { type: 'separator' },
+                { label: '보안담당', value: 'qqq' },
+                {
+                  type: 'group',
+                  label: 'North America',
+                  items: [
+                    { label: 'Eastern Standard Time (EST)', value: 'e22st' },
+                    { label: 'Pacific Standard Time (PST)', value: 'ps22t' },
+                  ],
+                },
               ]}
             />
 

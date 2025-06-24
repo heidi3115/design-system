@@ -3,17 +3,33 @@
 import { useState, useRef, useCallback, type KeyboardEvent, useLayoutEffect } from 'react';
 import { Command as CommandPrimitive } from 'cmdk';
 import { CheckIcon, ChevronDownIcon } from '@common/ui/icons';
-import { Popover } from '@common/ui';
+import { Popover, Separator } from '@common/ui';
 
 import { CommandGroup, CommandItem, CommandList, CommandEmpty } from './CommandParts';
 import { cn } from '../../lib/utils';
 
-export type Option = Record<'value' | 'label', string> & Record<string, string>;
+export type OptionItem = {
+  type?: 'item';
+  label: string;
+  value: string;
+};
 
-type AutoCompleteProps = {
-  options: Option[];
-  value?: Option;
-  onValueChange?: (value: Option) => void;
+export type OptionSeparator = {
+  type: 'separator';
+};
+
+export type OptionGroup = {
+  type: 'group';
+  label: string;
+  items: (OptionItem | OptionSeparator)[];
+};
+
+export type OptionType = OptionItem | OptionSeparator | OptionGroup;
+
+export type AutoCompleteProps = {
+  options: OptionType[];
+  value?: OptionItem;
+  onValueChange?: (value: OptionItem) => void;
   isLoading?: boolean;
   disabled?: boolean;
   placeholder?: string;
@@ -35,7 +51,7 @@ const AutoComplete = ({
   const [inputWidth, setInputWidth] = useState<number | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<Option>(value as Option);
+  const [selected, setSelected] = useState<OptionItem>(value as OptionItem);
   const [inputValue, setInputValue] = useState(value?.label || '');
   const [canFilter, setCanFilter] = useState(false);
 
@@ -57,7 +73,15 @@ const AutoComplete = ({
       }
 
       if (e.key === 'Enter' && input.value !== '') {
-        const optionToSelect = options.find((option) => option.label === input.value);
+        const optionToSelect = options
+          .flatMap((opt) => {
+            if ('type' in opt && opt.type === 'group')
+              return opt.items.filter((item): item is OptionItem => 'value' in item);
+            if ('type' in opt && opt.type === 'separator') return [];
+
+            return [opt];
+          })
+          .find((option) => option.label === input.value);
 
         if (optionToSelect) {
           setSelected(optionToSelect);
@@ -84,7 +108,7 @@ const AutoComplete = ({
   }, [selected]);
 
   const handleSelectOption = useCallback(
-    (selectedOption: Option) => {
+    (selectedOption: OptionItem) => {
       setInputValue(selectedOption.label);
       setSelected(selectedOption);
       onValueChange?.(selectedOption);
@@ -103,6 +127,7 @@ const AutoComplete = ({
       <div className={`relative ${isOpen && '[&_svg]:rotate-180'}`}>
         <Popover
           open={isOpen}
+          // open={true}
           sideOffset={4}
           className={cn('bg-juiBackground-default animate-in fade-in-0 zoom-in-95 z-10 outline-none w-full h-fit p-0')}
           trigger={
@@ -130,22 +155,13 @@ const AutoComplete = ({
               placeholder={placeholder}
               disabled={disabled}
               className={cn(
-                // 레이아웃 및 플렉스 관련
                 'flex w-full items-center justify-between gap-2 whitespace-nowrap',
-
-                // 박스 모델 (패딩, 보더, 라운드, 쉐도우)
                 'px-3 py-2 pr-8 light:border light:border-juiBorder-primary shadow-xs',
-
-                // 색상 및 배경색
                 'bg-juiBackground-input',
                 'aria-invalid:border-juiError aria-invalid:ring-juiError/20 dark:aria-invalid:ring-juiError/40',
                 'placeholder:text-juiText-secondary',
                 'data-[state=open]:border data-[state=open]:border-juiBorder-primary light:data-[state=open]:border-juiText-secondary',
-
-                // 포커스 및 outline
                 'outline-none focus-visible:ring-0',
-
-                // 트랜지션
                 'transition-[color,box-shadow]',
               )}
             />
@@ -153,40 +169,85 @@ const AutoComplete = ({
           <CommandList
             style={{ width: `${inputWidth}px` }}
             className={cn(
-              // 배경색, 글자색
               'bg-juiBackground-default',
-              // 위치 관련
               'relative z-50',
-              // 크기 관련(외부에서 wrapper 만들면 검토)
               'max-h-96 min-w-32',
-              // 스크롤 관련
               'overflow-x-hidden overflow-y-auto',
-              // 박스 스타일
               'shadow-md',
             )}>
             {inputValue && canFilter && <CommandEmpty>{emptyText}</CommandEmpty>}
 
-            <CommandGroup {...(canFilter ? { forceMount: false } : { forceMount: true })}>
-              {options.map((option) => {
-                const isSelected = selected?.value === option.value;
+            <CommandGroup forceMount={!canFilter}>
+              {options.map((opt, idx) => {
+                if ('type' in opt && opt.type === 'group') {
+                  return (
+                    <div key={`group-${idx}`} className="p-1">
+                      <div className="px-3 py-1 text-xs text-juiText-secondary">{opt.label}</div>
+                      {opt.items.map((item, i) => {
+                        if ('type' in item && item.type === 'separator') {
+                          return <div key={`separator-${i}`} className="h-px bg-juiBorder-primary my-1" />;
+                        }
+
+                        const isSelected = selected?.value === item.value;
+
+                        return (
+                          <CommandItem
+                            key={item.value}
+                            value={item.label}
+                            onMouseDown={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                            }}
+                            onSelect={() => handleSelectOption(item)}
+                            className={cn(
+                              'cursor-pointer flex w-full items-center gap-2 rounded-none py-1.5',
+                              isSelected && 'bg-juiPrimary/15',
+                              isSelected && isSelectIndicator && 'pl-1.5',
+                            )}>
+                            {isSelected && isSelectIndicator && (
+                              <span className="absolute right-2 flex size-3.5 items-center justify-center">
+                                <CheckIcon key={item.value} className="size-4" />
+                              </span>
+                            )}
+                            <div className="block overflow-hidden text-ellipsis">{item.label}</div>
+                          </CommandItem>
+                        );
+                      })}
+                    </div>
+                  );
+                }
+
+                if ('type' in opt && opt.type === 'separator') {
+                  return (
+                    <CommandItem key={`separator-${idx}`} value="">
+                      <Separator orientation="horizontal" />
+                    </CommandItem>
+                  );
+                }
+
+                const item = opt as OptionItem;
+                const isSelected = selected?.value === item.value;
 
                 return (
                   <CommandItem
-                    key={option.value}
-                    value={option.label}
+                    key={item.value}
+                    value={item.label}
                     onMouseDown={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                     }}
-                    onSelect={() => handleSelectOption(option)}
+                    onSelect={() => handleSelectOption(item)}
                     className={cn(
-                      'cursor-pointer',
-                      'flex w-full items-center gap-2 rounded-none py-1.5',
+                      'cursor-pointer flex w-full items-center gap-2 rounded-none py-1.5',
                       isSelected && 'bg-juiPrimary/15',
                       isSelected && isSelectIndicator && 'pl-1.5',
                     )}>
-                    {isSelected && isSelectIndicator ? <CheckIcon key={option.value} className="size-4" /> : null}
-                    {option.label}
+                    {isSelected && isSelectIndicator && (
+                      <span className="absolute right-2 flex size-3.5 items-center justify-center">
+                        <CheckIcon key={item.value} className="size-4" />
+                      </span>
+                    )}
+                    <div className="block overflow-hidden text-ellipsis">{item.label}</div>
                   </CommandItem>
                 );
               })}
