@@ -367,14 +367,7 @@ export const Sizes: Story = {
 export const Delays: Story = {
   name: 'OpenDelay/CloseDelay',
   args: {},
-  argTypes: {
-    openDelay: {
-      table: { disable: true },
-    },
-    closeDelay: {
-      table: { disable: true },
-    },
-  },
+  argTypes: {},
   parameters: {
     docs: {
       description: {
@@ -387,54 +380,149 @@ export const Delays: Story = {
     },
   },
   render: (args) => (
-    <div className="flex flex-wrap items-center gap-10">
-      <div className={cn(flexColBoxGap4, commonBoxClass, 'py-40')}>
-        <span className={cn(subTitleCommonClass, 'text-sm')}>
-          즉시 열리고 닫힘
-          <br />
-          openDelay: 0 ms
-          <br />
-          closeDelay: 0 ms
-        </span>
-        <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']} openDelay={0} closeDelay={0}>
+    <div className={cn(flexColBoxGap4)}>
+      <h1 className={cn(titleCommonClass, 'text-base')}>control 되지 않는 예시</h1>
+      <div className="flex flex-wrap items-center gap-10 [&>div]:flex-1 [&>div]:py-20">
+        <div className={cn(flexColBoxGap4, commonBoxClass)}>
+          <span className={cn(subTitleCommonClass, 'text-sm')}>
+            즉시 열리고 닫힘
+            <br />
+            openDelay: 0 ms
+            <br />
+            closeDelay: 0 ms
+          </span>
+          <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']} openDelay={0} closeDelay={0}>
+            {childrenMap['profile']}
+          </HoverCard>
+        </div>
+        <div className={cn(flexColBoxGap4, commonBoxClass)}>
+          <span className={cn(subTitleCommonClass, 'text-sm')}>
+            5초뒤 열리고 10초 뒤 닫힘
+            <br />
+            openDelay: 500 ms
+            <br />
+            closeDelay: 1000 ms
+          </span>
+          <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']} openDelay={500} closeDelay={1000}>
+            {childrenMap['profile']}
+          </HoverCard>
+        </div>
+        <div className={cn(flexColBoxGap4, commonBoxClass)}>
+          <span className={cn(subTitleCommonClass, 'text-sm')}>
+            7초뒤 열리고 3초 뒤 닫힘
+            <br />
+            openDelay: 700 ms
+            <br />
+            closeDelay: 300 ms
+          </span>
+          <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']} openDelay={700} closeDelay={300}>
+            {childrenMap['profile']}
+          </HoverCard>
+        </div>
+        <div className={cn(flexColBoxGap4, commonBoxClass)}>
+          <span className={cn(subTitleCommonClass, 'text-sm')}>
+            10초뒤 열리고 20초 뒤 닫힘
+            <br />
+            openDelay: 1000 ms
+            <br />
+            closeDelay: 2000 ms
+          </span>
+          <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']} openDelay={1000} closeDelay={2000}>
+            {childrenMap['profile']}
+          </HoverCard>
+        </div>
+      </div>
+      <hr />
+      <h1 className={cn(titleCommonClass, 'text-base')}>control 되는 예시</h1>
+      <p>
+        openDelay : {args.openDelay} | closeDelay : {args.closeDelay}
+      </p>
+      <div className={'flex items-center justify-center py-10'}>
+        <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']}>
           {childrenMap['profile']}
         </HoverCard>
       </div>
-      <div className={cn(flexColBoxGap4, commonBoxClass, 'py-40')}>
-        <span className={cn(subTitleCommonClass, 'text-sm')}>
-          5초뒤 열리고 10초 뒤 닫힘
-          <br />
-          openDelay: 500 ms
-          <br />
-          closeDelay: 1000 ms
-        </span>
-        <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']} openDelay={500} closeDelay={1000}>
-          {childrenMap['profile']}
-        </HoverCard>
-      </div>
-      <div className={cn(flexColBoxGap4, commonBoxClass, 'py-40')}>
-        <span className={cn(subTitleCommonClass, 'text-sm')}>
-          7초뒤 열리고 3초 뒤 닫힘
-          <br />
-          openDelay: 700 ms
-          <br />
-          closeDelay: 300 ms
-        </span>
-        <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']} openDelay={700} closeDelay={300}>
-          {childrenMap['profile']}
-        </HoverCard>
-      </div>
-      <div className={cn(flexColBoxGap4, commonBoxClass, 'py-40')}>
-        <span className={cn(subTitleCommonClass, 'text-sm')}>
-          10초뒤 열리고 20초 뒤 닫힘
-          <br />
-          openDelay: 1000 ms
-          <br />
-          closeDelay: 2000 ms
-        </span>
-        <HoverCard {...args} trigger={triggerMap['btnAlertTriangle']} openDelay={1000} closeDelay={2000}>
-          {childrenMap['profile']}
-        </HoverCard>
+    </div>
+  ),
+};
+
+export const Position: Story = {
+  args: {},
+  argTypes: {
+    side: { table: { disable: true } },
+    align: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'HoverCard 의 다양한 위치를 확인하실 수 있는 예시입니다.',
+          '마우스 hover 시 각 위치를 확인하실 수 있으며, props에 따라서 sideOffset 과 alignOffset 을 조절하여 거리나 위치감을 확인해보실 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
+  render: (args) => (
+    <div className={cn(commonBoxClass, flexColBoxGap4, 'w-full')}>
+      <div className={cn(commonBoxClass, flexColBoxGap4, 'w-full')}>
+        <h3 className={cn(titleCommonClass)}>side와 align의 다양한 위치의 예시</h3>
+        <div className={cn(flexColBoxGap4, commonBoxClass, 'relative w-full')}>
+          <h4>
+            <span className={cn(subTitleCommonClass, blueTxtClass, 'text-left block mb-1')}>
+              side와 align의 모든 조합으로서 각 버튼 hover 시 위치가 확인이 됩니다. <br />
+            </span>
+          </h4>
+          <div className={cn(commonBoxClass)}></div>
+          <div className={cn(flexColBoxGap4, commonBoxClass, 'relative w-9/10 min-h-140')}>
+            <div className={'relative z-10 items-center text-center'}></div>
+            {sideOptions.map((side) => (
+              <div
+                key={`${side}`}
+                className={cn(
+                  flexColBoxGap4,
+                  commonBoxClass,
+                  'absolute -translate-x-1/2 -translate-y-1/2',
+                  side === 'top'
+                    ? 'left-5/10 top-2/10'
+                    : side === 'left'
+                      ? 'left-2/9 top-5/10'
+                      : side === 'bottom'
+                        ? 'left-5/10 top-7/9'
+                        : 'left-7/9 top-5/10',
+                )}>
+                <div
+                  className={cn(
+                    'grid',
+                    side === 'top' || side === 'bottom' ? 'grid-cols-3 gap-20' : 'grid-rows-3 gap-20',
+                  )}>
+                  {alignOptions.map((align) => (
+                    <div key={align} className={cn()}>
+                      <HoverCard
+                        {...args}
+                        side={side}
+                        align={align}
+                        trigger={
+                          <Button variant={'gradient'}>
+                            {side}-{align}
+                          </Button>
+                        }>
+                        <div className={cn()}>
+                          <p>Position:</p>
+                          <p>
+                            side : {side} | align : {align}
+                          </p>
+                          <p>
+                            sideOffset : {args.sideOffset} | alignOffset : {args.alignOffset}
+                          </p>
+                        </div>
+                      </HoverCard>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   ),
