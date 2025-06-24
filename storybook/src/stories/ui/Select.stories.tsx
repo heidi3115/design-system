@@ -209,6 +209,20 @@ export const WithContentfitTriggerWidth: Story = {
   ),
 };
 
+export const WithErrorAndHelperText: Story = {
+  args: {
+    options: baseOptions,
+    placeholder: '옵션을 선택하세요',
+    error: true,
+    helperText: '필수 항목입니다.',
+  },
+  render: (args) => (
+    <div className="flex flex-col gap-4 w-60">
+      <Select {...args} />
+    </div>
+  ),
+};
+
 const controlledOptions = [
   { label: 'Option A', value: 'a' },
   { label: 'Option B', value: 'b' },
