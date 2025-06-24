@@ -170,38 +170,10 @@ const previewNChildMap = {
   },
 };
 
-type TriggerKey = keyof typeof triggerMap;
-type PreviewNChildKey = keyof typeof previewNChildMap;
 type sizeType = keyof typeof collapsibleVariants.variants.size;
-const triggerOptions = Object.keys(triggerMap) as TriggerKey[];
-const previewNChildKeyOptions = Object.keys(previewNChildMap) as PreviewNChildKey[];
 const sizeOptions = Object.keys(collapsibleVariants.variants.size) as sizeType[];
 
-type CollapsibleRenderProps = Omit<CollapsibleProps, 'children' | 'trigger' | 'preview'> & {
-  trigger?: TriggerKey;
-  preview?: PreviewNChildKey;
-  children: PreviewNChildKey;
-};
-
-function CollapsibleRender({
-  trigger,
-  showPreview,
-  preview = 'defaultTest',
-  children = 'defaultTest',
-  ...args
-}: CollapsibleRenderProps) {
-  return (
-    <Collapsible
-      {...args}
-      showPreview={showPreview}
-      trigger={trigger ? triggerMap[trigger] : undefined}
-      preview={showPreview ? previewNChildMap[preview].preview : null}>
-      {previewNChildMap[children].children}
-    </Collapsible>
-  );
-}
-
-const meta: Meta<CollapsibleRenderProps> = {
+const meta: Meta<typeof Collapsible> = {
   title: 'UI/Collapsible',
   component: Collapsible,
   args: {
@@ -210,9 +182,9 @@ const meta: Meta<CollapsibleRenderProps> = {
     defaultOpen: false,
     open: undefined,
     size: 'basic',
-    trigger: 'btnUpDownIcon',
-    preview: 'defaultTest',
-    children: 'defaultTest',
+    trigger: triggerMap['btnUpDownIcon'],
+    preview: previewNChildMap['defaultTest'].preview,
+    children: previewNChildMap['defaultTest'].children,
     onOpenChange: undefined,
     openStatusRef: undefined,
     className: '',
@@ -243,19 +215,19 @@ const meta: Meta<CollapsibleRenderProps> = {
       ].join('<br/>'),
     },
     trigger: {
-      control: 'select',
-      options: triggerOptions,
+      // control: 'select',
+      // options: triggerOptions,
+      control: false,
       trigger: {
         type: { summary: 'ReactReactElement' },
       },
       description: [
         'Collapsible 의 열고/닫을(toggle) 트리거 요소(ReactElement)로서, ReactElement 로 표현 가능한 모든 요소를 넣을 수 있습니다.',
-        '스토리에서는 임의로 선택하실 수 있도록 요소를 생성 하였습니다.',
+        '스토리에서는 제어하실 수 없습니다.',
       ].join('<br/>'),
     },
     preview: {
-      control: 'select',
-      options: previewNChildKeyOptions,
+      control: false,
       trigger: {
         type: { summary: 'ReactReactElement' },
       },
@@ -263,12 +235,11 @@ const meta: Meta<CollapsibleRenderProps> = {
         'Collapsible 가 닫혀 있을 때, 트리거 옆에 표시되는 미리보기(요약) 영역의 콘텐츠입니다.',
         'ReactNode 타입으로, 텍스트, 아이콘, 요약 정보 등 원하는 내용을 자유롭게 넣을 수 있습니다.',
         'showPreview가 false면 보여지지 않습니다.',
-        '스토리에서는 임의로 선택하실 수 있도록 요소를 생성 하였습니다.',
+        '스토리에서는 제어하실 수 없습니다.',
       ].join('<br/>'),
     },
     children: {
-      control: 'select',
-      options: previewNChildKeyOptions,
+      control: false,
       trigger: {
         type: { summary: 'ReactReactElement' },
       },
@@ -276,7 +247,7 @@ const meta: Meta<CollapsibleRenderProps> = {
         '숨겨진 콘텐츠 내용으로서, Collapsible 가 열렸을 때 표시되는 실제 콘텐츠입니다.',
         'ReactNode 타입으로, 원하는 내용을 자유롭게 넣을 수 있습니다.',
         'Collapsible 가 닫혀 있을 때는 렌더링되지 않거나, 접근성 목적의 aria 속성만 유지됩니다.',
-        '스토리에서는 임의로 선택하실 수 있도록 요소를 생성 하였습니다.',
+        '스토리에서는 제어하실 수 없습니다.',
       ].join('<br/>'),
     },
     openStatusRef: {
@@ -304,9 +275,18 @@ const meta: Meta<CollapsibleRenderProps> = {
 
 export default meta;
 
-type Story = StoryObj<CollapsibleRenderProps>;
+type Story = StoryObj<CollapsibleProps>;
 
 export const Default: Story = {
+  args: {
+    trigger: (
+      <Button asChild variant={'transparent'} size={'small'} className={'rounded-md shadow-md aspect-square p-0'}>
+        <ChevronUpDownIcon size={'small'} />
+      </Button>
+    ),
+    preview: previewNChildMap['defaultTest'].preview,
+    children: previewNChildMap['defaultTest'].children,
+  },
   parameters: {
     docs: {
       description: {
@@ -316,16 +296,16 @@ export const Default: Story = {
   },
   render: (args) => (
     <div className={cn(flexColBoxGap4, commonBoxClass)}>
-      <CollapsibleRender {...args} />
+      <Collapsible {...args} />
     </div>
   ),
 };
 
 export const Preview: Story = {
   args: {
-    trigger: 'previewMore',
-    preview: 'gallery',
-    children: 'gallery',
+    trigger: triggerMap['previewMore'],
+    preview: previewNChildMap['gallery'].preview,
+    children: previewNChildMap['gallery'].children,
   },
   argTypes: {
     showPreview: { control: false, table: { disable: true } },
@@ -345,24 +325,25 @@ export const Preview: Story = {
   },
   render: (args) => (
     <div className={cn(flexColBoxGap4)}>
-      <h1 className={cn(titleCommonClass, 'text-sm')}>프리뷰 없는 예시</h1>
+      <h1 className={cn(titleCommonClass, 'text-sm')}>프리뷰 없는 예시들</h1>
       <div className={cn(flexRowBoxGap4)}>
-        <CollapsibleRender {...args} trigger={'previewMore'} preview={'gallery'} showPreview={false}>
-          {'gallery' as const}
-        </CollapsibleRender>
-        <CollapsibleRender trigger={'countBadge'} showPreview={false}>
-          {'alarm' as const}
-        </CollapsibleRender>
+        <Collapsible {...args} showPreview={false} />
+        <Collapsible trigger={triggerMap['countBadge']} showPreview={false}>
+          {previewNChildMap['alarm'].children}
+        </Collapsible>
       </div>
       <hr />
       <h1 className={cn(titleCommonClass, 'text-sm')}>프리뷰 있는 예시</h1>
       <div className={cn(flexRowBoxGap4)}>
-        <CollapsibleRender {...args} trigger={'btnUpDownIcon'} preview={'profile'}>
-          {'profile' as const}
-        </CollapsibleRender>
-        <CollapsibleRender {...args} trigger={'ExpansionContentIcon'} preview={'deliver'}>
-          {'deliver' as const}
-        </CollapsibleRender>
+        <Collapsible {...args} trigger={triggerMap['btnUpDownIcon']} preview={previewNChildMap['profile'].preview}>
+          {previewNChildMap['profile'].children}
+        </Collapsible>
+        <Collapsible
+          {...args}
+          trigger={triggerMap['ExpansionContentIcon']}
+          preview={previewNChildMap['deliver'].preview}>
+          {previewNChildMap['deliver'].children}
+        </Collapsible>
       </div>
     </div>
   ),
@@ -370,9 +351,9 @@ export const Preview: Story = {
 
 export const Sizes: Story = {
   args: {
-    trigger: 'btnLeftRightIcon',
-    preview: 'deliver',
-    children: 'deliver',
+    trigger: triggerMap['btnLeftRightIcon'],
+    preview: previewNChildMap['deliver'].preview,
+    children: previewNChildMap['deliver'].children,
     showPreview: true,
   },
   argTypes: {
@@ -396,7 +377,7 @@ export const Sizes: Story = {
       },
     },
   },
-  render: (args: CollapsibleRenderProps) => (
+  render: (args: CollapsibleProps) => (
     <div className={cn(flexColBoxGap4, 'gap-10')}>
       <h3 className={cn(titleCommonClass, 'text-base')}>Size Variants</h3>
       <div className={cn('flex flex-wrap')}>
@@ -405,7 +386,7 @@ export const Sizes: Story = {
             <h2 className={cn(blueTxtClass, 'mb-2 text-sm')}>
               {size} size: {collapsibleVariants.variants.size[size].contentVariant}
             </h2>
-            <CollapsibleRender {...args} size={size} />
+            <Collapsible {...args} size={size} />
           </div>
         ))}
       </div>
@@ -416,7 +397,7 @@ const returnOpenStatus = (stat: boolean | undefined | null) => (stat ? '열림' 
 const returnOpenTextColor = (stat: boolean | undefined | null) =>
   stat ? 'text-juiStatus-complete' : 'text-juiScore-alert';
 
-function UncontrolledDemo({ open, defaultOpen, ...args }: CollapsibleRenderProps) {
+function UncontrolledDemo({ open, defaultOpen, ...args }: CollapsibleProps) {
   const openRef = useRef(defaultOpen ?? null);
   const [openState, setOpenState] = useState(openRef.current);
 
@@ -425,19 +406,19 @@ function UncontrolledDemo({ open, defaultOpen, ...args }: CollapsibleRenderProps
       <h2 className={cn(titleCommonClass, 'text-xl')}>비제어(Uncontrolled) Collapsible 예시</h2>
       <div className={cn(flexColBoxGap4)}>
         <div className={cn(flexColBoxGap4, 'w-auto')}>
-          <CollapsibleRender
+          <Collapsible
             {...args}
             defaultOpen={defaultOpen}
             open={undefined}
-            trigger={'btnTxtMore'}
-            preview={'faq'}
+            trigger={triggerMap['btnTxtMore']}
+            preview={previewNChildMap['faq'].preview}
             onOpenChange={(openStat) => {
               openRef.current = openStat;
               setOpenState(openStat);
             }}
             openStatusRef={openRef}>
-            {'faq' as const}
-          </CollapsibleRender>
+            {previewNChildMap['faq'].children}
+          </Collapsible>
           <div className={cn(flexColBoxGap4, 'text-sm')}>
             <b className={cn('flex flex-row gap-2')}>
               <span>defaultOpen :</span>
@@ -463,7 +444,7 @@ function UncontrolledDemo({ open, defaultOpen, ...args }: CollapsibleRenderProps
   );
 }
 
-function ControlledDemo({ defaultOpen, ...args }: CollapsibleRenderProps) {
+function ControlledDemo({ defaultOpen, ...args }: CollapsibleProps) {
   const controlOpenRef = useRef<boolean | null>(null);
   const [controlOpenState, setControlOpenState] = useState(false);
 
@@ -483,10 +464,10 @@ function ControlledDemo({ defaultOpen, ...args }: CollapsibleRenderProps) {
           </Button>
         </div>
         <div className={cn(flexColBoxGap4, 'w-auto')}>
-          <CollapsibleRender
+          <Collapsible
             {...args}
-            trigger={'btnTxtMore'}
-            preview={'faq'}
+            trigger={triggerMap['btnTxtMore']}
+            preview={previewNChildMap['faq'].preview}
             defaultOpen={defaultOpen}
             open={controlOpenState}
             onOpenChange={(open) => {
@@ -494,8 +475,8 @@ function ControlledDemo({ defaultOpen, ...args }: CollapsibleRenderProps) {
               setControlOpenState(open);
             }}
             openStatusRef={controlOpenRef}>
-            {'faq' as const}
-          </CollapsibleRender>
+            {previewNChildMap['faq'].children}
+          </Collapsible>
           <div className={cn(flexColBoxGap4, 'text-sm')}>
             <b className={cn('flex flex-row gap-2')}>
               <span>defaultOpen :</span>
@@ -525,9 +506,9 @@ export const UncontrolledControlled: Story = {
   name: 'Uncontrolled/Controlled',
   args: {
     defaultOpen: true,
-    trigger: 'btnLeftRightIcon',
-    preview: 'faq',
-    children: 'faq',
+    trigger: triggerMap['btnLeftRightIcon'],
+    preview: previewNChildMap['faq'].preview,
+    children: previewNChildMap['faq'].children,
     showPreview: true,
   },
   argTypes: {
@@ -553,7 +534,7 @@ export const UncontrolledControlled: Story = {
       },
     },
   },
-  render: (args: CollapsibleRenderProps) => {
+  render: (args: CollapsibleProps) => {
     const {
       size,
       showPreview,
