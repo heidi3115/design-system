@@ -498,7 +498,6 @@ export default function Page() {
                 { label: 'ㅅㅅㅅ666666666666667777777', value: 'ttt6' },
                 { label: 'ㅅㅅㅅ6666666666666677777773232dzdffsdfadsfadf232', value: 'ttt7' },
               ]}
-              className="bg-juiPrimary"
             />
             <Button
               onClick={() => {

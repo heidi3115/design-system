@@ -16,6 +16,7 @@ import { type VariantProps } from 'tailwind-variants';
 import { CheckIcon, ChevronDownIcon } from '@common/ui/icons';
 import { Popover } from '@common/ui';
 
+import { useInputSize } from './hooks/useInputSize';
 import { CommandGroup, CommandItem, CommandList, CommandEmpty, CommandSeparator } from './CommandParts';
 import autoCompleteVariants from './autoCompleteVariants';
 import { cn } from '../../lib/utils';
@@ -91,25 +92,10 @@ const AutoComplete = ({
     error: errorBorder,
   } = autoCompleteVariants({ width: isNumberWidth ? undefined : width, size, error });
 
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [inputWidth, setInputWidth] = useState<number | null>(null);
-  const [inputHeight, setInputHeight] = useState<number | null>(null);
-
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  useLayoutEffect(() => {
-    if (!isContentfitTriggerWidth) return;
-
-    if (inputRef.current) {
-      setInputWidth(inputRef.current.getBoundingClientRect().width);
-    }
-  }, [inputRef, isOpen, width, isContentfitTriggerWidth]);
-
-  useLayoutEffect(() => {
-    if (inputRef.current) {
-      setInputHeight(inputRef.current.getBoundingClientRect().height);
-    }
-  }, [inputRef]);
+  const { inputWidth, inputHeight } = useInputSize({ inputRef, isOpen });
 
   const [selected, setSelected] = useState<OptionItem | undefined>(undefined);
 
@@ -212,7 +198,7 @@ const AutoComplete = ({
     [isControlled, onValueChange],
   );
 
-  const RenderInputTrigger = (triggerRef: Ref<HTMLInputElement>) => {
+  const renderInputTrigger = (triggerRef: Ref<HTMLInputElement>) => {
     return (
       <CommandPrimitive.Input
         data-slot="command-input"
@@ -283,11 +269,11 @@ const AutoComplete = ({
           open={isOpen}
           align="start"
           sideOffset={4}
-          trigger={RenderInputTrigger(inputRef)}
+          trigger={renderInputTrigger(inputRef)}
           className={popoverBase()}>
           <CommandList
             style={{
-              width: `${inputWidth}px`,
+              ...(isContentfitTriggerWidth ? { width: `${inputWidth}px` } : { minWidth: `${inputWidth}px` }),
               ...(isNumberWidth && { minWidth: `${width}px` }),
             }}>
             {inputValue && canFilter && <CommandEmpty>{emptyText}</CommandEmpty>}
@@ -326,11 +312,13 @@ const AutoComplete = ({
             {helperText}
           </p>
         )}
-        <span
-          className={cn(chevronIconBase(), disabled && 'cursor-not-allowed opacity-50')}
-          style={inputHeight ? { top: `${inputHeight / 2}px` } : undefined}>
-          <ChevronDownIcon />
-        </span>
+        {inputHeight && (
+          <span
+            className={cn(chevronIconBase(), disabled && 'cursor-not-allowed opacity-50')}
+            style={inputHeight ? { top: `${inputHeight / 2}px` } : undefined}>
+            <ChevronDownIcon />
+          </span>
+        )}
       </div>
     </CommandPrimitive>
   );
