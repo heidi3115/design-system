@@ -111,7 +111,21 @@ function CommandItem({ className, ...props }: React.ComponentProps<typeof Comman
     <CommandPrimitive.Item
       data-slot="command-item"
       className={cn(
-        "data-[selected=true]:bg-current/10 [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // 상태 기반 스타일
+        'data-[selected=true]:bg-current/10',
+        'data-[disabled=true]:cursor-not-allowed',
+        'data-[disabled=true]:opacity-50',
+
+        // SVG 스타일
+        '[&_svg]:pointer-events-none',
+        '[&_svg]:shrink-0',
+        "[&_svg:not([class*='size-'])]:size-4",
+        "[&_svg:not([class*='text-'])]:text-muted-foreground",
+
+        // 레이아웃 및 기본 스타일
+        'cursor-pointer',
+        'relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none',
+
         className,
       )}
       {...props}

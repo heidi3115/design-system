@@ -227,7 +227,7 @@ function SelectSeparator({ className, ...props }: ComponentProps<typeof SelectPr
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn('bg-juiText-secondary pointer-events-none mx-1 my-1 h-px', className)}
+      className={cn('bg-juiText-secondary pointer-events-none my-1 h-px', className)}
       {...props}
     />
   );

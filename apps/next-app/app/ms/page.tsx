@@ -112,9 +112,16 @@ export default function Page() {
   const selectRef = useRef(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  const [selectAutoValue, setSelectAutoValue] = useState('');
+  const selectAutoRef = useRef(null);
+
   useUpdateEffect(() => {
     console.warn(selectValue);
   }, [selectValue]);
+
+  useUpdateEffect(() => {
+    console.warn(selectAutoValue);
+  }, [selectAutoValue]);
 
   const portalRef = useRef<HTMLDivElement | null>(null);
 
@@ -371,6 +378,7 @@ export default function Page() {
               selectRef={selectRef}
               defaultValue="pst"
               size="small"
+              width="fit"
               // width={200}
               isContentfitTriggerWidth
               options={[
@@ -396,7 +404,10 @@ export default function Page() {
             </Button>
 
             <AutoComplete
+              value={selectAutoValue}
+              onValueChange={setSelectAutoValue}
               placeholder="오토컴플리트"
+              width={500}
               isSelectIndicator
               options={[
                 { label: 'Eastern Time (EST)', value: 'est' },
@@ -405,19 +416,38 @@ export default function Page() {
                 { label: 'Pacific Time (bbb)', value: 'bbb' },
                 { label: 'Pacific Time (ccc)', value: 'ccc' },
                 { label: 'Pacific Time (ddd)', value: 'ddd' },
-                { label: 'Pacific Time (eee)', value: 'eee' },
-                { type: 'separator' },
-                { label: '보안담당', value: 'qqq' },
-                {
-                  type: 'group',
-                  label: 'North America',
-                  items: [
-                    { label: 'Eastern Standard Time (EST)', value: 'e22st' },
-                    { label: 'Pacific Standard Time (PST)', value: 'ps22t' },
-                  ],
-                },
+                { label: 'Pacific Time (eee)aaaaaaaaaaa', value: 'eee' },
+                // { type: 'separator' },
+                { label: 'zz보안담당', value: '1qqq' },
+                // {
+                //   type: 'group',
+                //   label: 'North America',
+                //   items: [
+                //     { label: 'Eastern Standard Time (EST)', value: 'e22st' },
+                //     { label: 'Pacific Standard Time (PST)', value: 'ps22t', disabled: true },
+                //   ],
+                // },
               ]}
             />
+
+            <AutoComplete
+              selectRef={selectAutoRef}
+              options={[
+                { label: 'Eastern Time (EST)dddddddddddddddddddddd', value: 'est' },
+                { label: 'Pacific Time (PST)', value: 'pst' },
+                { label: 'Pacific Time (aaa)', value: 'aaa' },
+                { label: 'Pacific Time (bbb)', value: 'bbb' },
+                { label: 'Pacific Time (ccc)', value: 'ccc' },
+              ]}
+            />
+            <Button
+              onClick={() => {
+                if (selectAutoRef.current) {
+                  console.warn('비제어', selectAutoRef.current);
+                }
+              }}>
+              AutoComplete select 비제어
+            </Button>
 
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}

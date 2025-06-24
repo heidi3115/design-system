@@ -1,17 +1,40 @@
 'use client';
 
-import { useState, useRef, useCallback, type KeyboardEvent, useLayoutEffect } from 'react';
+import {
+  useState,
+  useRef,
+  useCallback,
+  useLayoutEffect,
+  useImperativeHandle,
+  type KeyboardEvent,
+  type Ref,
+} from 'react';
 import { Command as CommandPrimitive } from 'cmdk';
+import { tv, type VariantProps } from 'tailwind-variants';
 import { CheckIcon, ChevronDownIcon } from '@common/ui/icons';
-import { Popover, Separator } from '@common/ui';
+import { Popover } from '@common/ui';
 
-import { CommandGroup, CommandItem, CommandList, CommandEmpty } from './CommandParts';
+import { CommandGroup, CommandItem, CommandList, CommandEmpty, CommandSeparator } from './CommandParts';
 import { cn } from '../../lib/utils';
+
+const autoCompleteVariants = tv({
+  base: '',
+  variants: {
+    width: {
+      full: 'w-full',
+      fit: 'w-fit',
+    },
+  },
+  defaultVariants: {
+    width: 'full',
+  },
+});
 
 export type OptionItem = {
   type?: 'item';
   label: string;
   value: string;
+  disabled?: boolean;
 };
 
 export type OptionSeparator = {
@@ -26,11 +49,13 @@ export type OptionGroup = {
 
 export type OptionType = OptionItem | OptionSeparator | OptionGroup;
 
-export type AutoCompleteProps = {
+export type AutoCompleteProps = Omit<VariantProps<typeof autoCompleteVariants>, 'width'> & {
   options: OptionType[];
-  value?: OptionItem;
-  onValueChange?: (value: OptionItem) => void;
-  isLoading?: boolean;
+  value?: OptionItem['value'];
+  defaultValue?: OptionItem['value'];
+  onValueChange?: (value: OptionItem['value']) => void;
+  selectRef?: Ref<string>;
+  width?: VariantProps<typeof autoCompleteVariants>['width'] | number;
   disabled?: boolean;
   placeholder?: string;
   emptyText?: string;
@@ -39,20 +64,34 @@ export type AutoCompleteProps = {
 
 const AutoComplete = ({
   options,
-  value,
+  value: controlledValue,
+  defaultValue,
   onValueChange,
+  selectRef,
+  width,
   disabled,
   placeholder,
   emptyText = 'No Options',
   isSelectIndicator = false,
 }: AutoCompleteProps) => {
+  const isNumberWidth = typeof width === 'number';
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [inputWidth, setInputWidth] = useState<number | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<OptionItem>(value as OptionItem);
-  const [inputValue, setInputValue] = useState(value?.label || '');
+
+  const [selected, setSelected] = useState<OptionItem | undefined>(undefined);
+
+  const [inputValue, setInputValue] = useState('');
+  const [interanlValue, setInternalValue] = useState(defaultValue ?? '');
+
+  const isControlled = controlledValue !== undefined;
+  const currentValue = isControlled ? controlledValue : interanlValue;
+
+  useImperativeHandle(selectRef, () => currentValue);
+
   const [canFilter, setCanFilter] = useState(false);
 
   useLayoutEffect(() => {
@@ -60,6 +99,28 @@ const AutoComplete = ({
       setInputWidth(inputRef.current.getBoundingClientRect().width);
     }
   }, [inputRef, isOpen]);
+
+  useLayoutEffect(() => {
+    if (!currentValue) {
+      setSelected(undefined);
+      setInputValue('');
+
+      return;
+    }
+
+    const foundOption = options
+      .flatMap((opt) => {
+        if ('type' in opt && opt.type === 'group')
+          return opt.items.filter((item): item is OptionItem => 'value' in item);
+        if ('type' in opt && opt.type === 'separator') return [];
+
+        return [opt];
+      })
+      .find((opt) => opt.value === currentValue);
+
+    setSelected(foundOption);
+    setInputValue(foundOption?.label || '');
+  }, [currentValue, options]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {
@@ -84,8 +145,12 @@ const AutoComplete = ({
           .find((option) => option.label === input.value);
 
         if (optionToSelect) {
+          if (!isControlled) {
+            setInternalValue(optionToSelect.value);
+          }
+
           setSelected(optionToSelect);
-          onValueChange?.(optionToSelect);
+          onValueChange?.(optionToSelect.value);
         }
       }
 
@@ -93,7 +158,7 @@ const AutoComplete = ({
         input.blur();
       }
     },
-    [isOpen, options, onValueChange],
+    [isOpen, options, isControlled, onValueChange],
   );
 
   const handleOpen = () => {
@@ -109,25 +174,56 @@ const AutoComplete = ({
 
   const handleSelectOption = useCallback(
     (selectedOption: OptionItem) => {
+      if (!isControlled) {
+        setInternalValue(selectedOption.value);
+      }
+
       setInputValue(selectedOption.label);
       setSelected(selectedOption);
-      onValueChange?.(selectedOption);
+      onValueChange?.(selectedOption.value);
 
       requestAnimationFrame(() => {
         inputRef?.current?.blur();
       });
     },
-    [onValueChange],
+    [isControlled, onValueChange],
   );
 
+  const renderCommandItem = (item: OptionItem) => {
+    const isSelected = selected?.value === item.value;
+
+    return (
+      <CommandItem
+        key={item.value}
+        value={item.label}
+        disabled={item.disabled}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+        onSelect={() => handleSelectOption(item)}
+        className={cn(
+          'cursor-pointer flex w-full items-center gap-2 rounded-none py-1.5',
+          isSelected && 'bg-juiPrimary/15',
+          isSelected && isSelectIndicator && 'pl-1.5',
+        )}>
+        {isSelected && isSelectIndicator && (
+          <span className="absolute right-2 flex size-3.5 items-center justify-center">
+            <CheckIcon key={item.value} className="size-4" />
+          </span>
+        )}
+        <div className="block overflow-hidden text-ellipsis">{item.label}</div>
+      </CommandItem>
+    );
+  };
+
   return (
-    <CommandPrimitive
-      onKeyDown={handleKeyDown}
-      className={cn('bg-juiBackground-default text-juiText-primary cursor-pointer')}>
-      <div className={`relative ${isOpen && '[&_svg]:rotate-180'}`}>
+    <CommandPrimitive onKeyDown={handleKeyDown} className={cn('text-juiText-primary cursor-pointer')}>
+      <div
+        className={cn(`relative ${isOpen && '[&_svg]:rotate-180'}`, !isNumberWidth && autoCompleteVariants({ width }))}
+        style={isNumberWidth ? { width: `${width}px` } : undefined}>
         <Popover
           open={isOpen}
-          // open={true}
           sideOffset={4}
           className={cn('bg-juiBackground-default animate-in fade-in-0 zoom-in-95 z-10 outline-none w-full h-fit p-0')}
           trigger={
@@ -155,8 +251,9 @@ const AutoComplete = ({
               placeholder={placeholder}
               disabled={disabled}
               className={cn(
-                'flex w-full items-center justify-between gap-2 whitespace-nowrap',
+                'flex w-full items-center justify-between gap-2 truncate',
                 'px-3 py-2 pr-8 light:border light:border-juiBorder-primary shadow-xs',
+                'disabled:cursor-not-allowed disabled:opacity-50',
                 'bg-juiBackground-input',
                 'aria-invalid:border-juiError aria-invalid:ring-juiError/20 dark:aria-invalid:ring-juiError/40',
                 'placeholder:text-juiText-secondary',
@@ -188,75 +285,30 @@ const AutoComplete = ({
                           return <div key={`separator-${i}`} className="h-px bg-juiBorder-primary my-1" />;
                         }
 
-                        const isSelected = selected?.value === item.value;
-
-                        return (
-                          <CommandItem
-                            key={item.value}
-                            value={item.label}
-                            onMouseDown={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                            }}
-                            onSelect={() => handleSelectOption(item)}
-                            className={cn(
-                              'cursor-pointer flex w-full items-center gap-2 rounded-none py-1.5',
-                              isSelected && 'bg-juiPrimary/15',
-                              isSelected && isSelectIndicator && 'pl-1.5',
-                            )}>
-                            {isSelected && isSelectIndicator && (
-                              <span className="absolute right-2 flex size-3.5 items-center justify-center">
-                                <CheckIcon key={item.value} className="size-4" />
-                              </span>
-                            )}
-                            <div className="block overflow-hidden text-ellipsis">{item.label}</div>
-                          </CommandItem>
-                        );
+                        return renderCommandItem(item);
                       })}
                     </div>
                   );
                 }
 
                 if ('type' in opt && opt.type === 'separator') {
-                  return (
-                    <CommandItem key={`separator-${idx}`} value="">
-                      <Separator orientation="horizontal" />
-                    </CommandItem>
-                  );
+                  return <CommandSeparator key={`separator-${idx}`} className="bg-juiText-secondary" />;
                 }
 
                 const item = opt as OptionItem;
-                const isSelected = selected?.value === item.value;
 
-                return (
-                  <CommandItem
-                    key={item.value}
-                    value={item.label}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
-                    onSelect={() => handleSelectOption(item)}
-                    className={cn(
-                      'cursor-pointer flex w-full items-center gap-2 rounded-none py-1.5',
-                      isSelected && 'bg-juiPrimary/15',
-                      isSelected && isSelectIndicator && 'pl-1.5',
-                    )}>
-                    {isSelected && isSelectIndicator && (
-                      <span className="absolute right-2 flex size-3.5 items-center justify-center">
-                        <CheckIcon key={item.value} className="size-4" />
-                      </span>
-                    )}
-                    <div className="block overflow-hidden text-ellipsis">{item.label}</div>
-                  </CommandItem>
-                );
+                return renderCommandItem(item);
               })}
             </CommandGroup>
           </CommandList>
         </Popover>
 
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-          <ChevronDownIcon className="size-4 transition-transform duration-200" />
+        <span
+          className={cn(
+            'absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none',
+            disabled && 'cursor-not-allowed opacity-50',
+          )}>
+          <ChevronDownIcon className={cn('size-4 transition-transform duration-200')} />
         </span>
       </div>
     </CommandPrimitive>
