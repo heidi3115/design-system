@@ -13,8 +13,8 @@ export const separatorVariants = tv({
   ],
   variants: {
     variant: {
-      default: 'bg-juiBackground-default',
-      primary: 'bg-juiText-primary',
+      default: 'bg-juiBorder-primary',
+      primary: 'bg-juiPrimary',
       secondary: 'bg-juiText-secondary',
       disabled: 'bg-juiText-disabled',
       blue: 'bg-juiText-blue',
@@ -82,10 +82,10 @@ export type SeparatorProps = React.ComponentProps<typeof SeparatorPrimitive.Root
 function Separator({
   className,
   position = 'static',
-  orientation = 'vertical',
+  orientation = 'horizontal',
   decorative = true,
-  variant = 'primary',
-  size = 'basic',
+  variant = 'default',
+  size = 'small',
   ...props
 }: SeparatorProps) {
   return (
