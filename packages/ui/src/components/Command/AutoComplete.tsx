@@ -315,7 +315,7 @@ const AutoComplete = ({
         {inputHeight && (
           <span
             className={cn(chevronIconBase(), disabled && 'cursor-not-allowed opacity-50')}
-            style={inputHeight ? { top: `${inputHeight / 2}px` } : undefined}>
+            style={{ top: `${inputHeight / 2}px` }}>
             <ChevronDownIcon />
           </span>
         )}
