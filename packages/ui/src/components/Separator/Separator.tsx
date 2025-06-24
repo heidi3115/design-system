@@ -13,8 +13,8 @@ export const separatorVariants = tv({
   ],
   variants: {
     variant: {
-      default: 'bg-juiBackground-default',
-      primary: 'bg-juiText-primary',
+      default: 'bg-juiBorder-primary',
+      primary: 'bg-juiPrimary',
       secondary: 'bg-juiText-secondary',
       disabled: 'bg-juiText-disabled',
       blue: 'bg-juiText-blue',
@@ -84,7 +84,7 @@ function Separator({
   position = 'static',
   orientation = 'horizontal',
   decorative = true,
-  variant = 'primary',
+  variant = 'default',
   size = 'small',
   ...props
 }: SeparatorProps) {
