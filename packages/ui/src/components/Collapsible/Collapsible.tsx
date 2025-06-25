@@ -106,10 +106,6 @@ function Collapsible({
   const handleCollapsibleOpenChange = (nextOpen: boolean) => {
     if (!isControlled) setInternalOpen(nextOpen);
     onOpenChange?.(nextOpen);
-
-    if (openStatusRef && typeof openStatusRef !== 'function') {
-      openStatusRef.current = currentOpen;
-    }
   };
 
   return (
