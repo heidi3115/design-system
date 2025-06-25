@@ -151,7 +151,7 @@ const AutoComplete = ({
 
             return [opt];
           })
-          .find((option) => option.label === input.value);
+          .find((option) => option.value === input.value);
 
         if (optionToSelect) {
           if (!isControlled) {
@@ -234,7 +234,7 @@ const AutoComplete = ({
     return (
       <CommandItem
         key={item.value}
-        value={item.label}
+        value={item.value}
         disabled={item.disabled}
         onMouseDown={(e) => {
           e.preventDefault();
