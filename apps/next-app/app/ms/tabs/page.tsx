@@ -1,9 +1,10 @@
 'use client';
 
-import { Separator, Skeleton, Tabs, type TabItemType } from '@common/ui';
+import { Button, Separator, Skeleton, Tabs, type TabItemType } from '@common/ui';
 import ThemeToggle from '../../../components/ThemeToggle';
 import { useState } from 'react';
 import { PlayIcon } from '@common/ui/icons';
+import { toast } from 'sonner';
 
 export default function TabsPage() {
   function ScenarioList(props: { scenarioId: number }) {
@@ -71,7 +72,7 @@ export default function TabsPage() {
           // size="small"
           // variant="secondary"
           // shape="text"
-          shape="folder"
+          // shape="folder"
           tabs={tabsArray}
           // maxWidth={100}
           // align="full"
@@ -83,6 +84,7 @@ export default function TabsPage() {
             Target
             <Separator orientation="horizontal" />
             <div className="flex flex-col gap-2">
+              <Button onClick={() => toast('Event has been created')}>Show Toast</Button>
               <Skeleton className="w-20 h-3" />
               <Skeleton className="w-16 h-3" />
               <Skeleton className="w-full h-3" />

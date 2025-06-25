@@ -132,3 +132,5 @@ export {
   AccordionContent,
   accordionVariants,
 } from './Accordion';
+
+export { Toaster } from './Toaster';
