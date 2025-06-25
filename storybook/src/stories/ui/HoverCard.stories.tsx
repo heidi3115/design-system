@@ -200,9 +200,9 @@ const meta: Meta<typeof HoverCard> = {
         defaultValue: { summary: `${DEFAULT_CLOSE_DELAY_MS}` },
       },
       description: [
-        'openDelay 는 마우스를 올린 후 HoverCard 의 내용이 보이기까지의 지연 시간(ms) 입니다.',
+        'closeDelay 는 마우스를 올린 후 HoverCard 의 내용이 닫히기까지의 지연 시간(ms) 입니다.',
         `HoverCard 의 내용이 보여지는 간격을 조절할 수 있는 prop 입니다.`,
-        `현재 기본값은 ${DEFAULT_OPEN_DELAY_MS} 로 처리하고 있습니다.`,
+        `현재 기본값은 ${DEFAULT_CLOSE_DELAY_MS} 로 처리하고 있습니다.`,
       ].join('<br/>'),
     },
     defaultOpen: {

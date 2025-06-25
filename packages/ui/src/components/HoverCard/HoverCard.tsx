@@ -15,7 +15,7 @@ export const hoverCardVariants = tv({
   slots: {
     cardContents: [
       'flex items-center justify-center z-50',
-      'rounded-md border shadow-md outline-hidden text-juiText-primary',
+      'rounded-md shadow-md outline-hidden text-juiText-primary',
       'origin-(--radix-hover-card-content-transform-origin)',
       'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
       'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
@@ -25,7 +25,7 @@ export const hoverCardVariants = tv({
   },
   variants: {
     variant: {
-      default: 'bg-juiBackground-default',
+      default: 'bg-juiBackground-popover',
       primary: 'bg-juiPrimary',
       secondary: 'bg-juiSecondary',
       error: 'bg-juiError',
@@ -79,7 +79,7 @@ export type HoverCardProps = Pick<
 function HoverCard({
   variant = 'default',
   size = 'small',
-  side = 'top',
+  side = 'bottom',
   align = 'center',
   sideOffset = DEFAULT_SIDE_OFFSET,
   alignOffset = DEFAULT_ALIGN_OFFSET,
@@ -105,10 +105,6 @@ function HoverCard({
 
   const handleHoverCardOpenChange = (nextOpen: boolean) => {
     if (!isControlled) setInternalOpen(nextOpen);
-
-    if (openStatusRef && typeof openStatusRef !== 'function') {
-      openStatusRef.current = nextOpen;
-    }
 
     onOpenChange?.(nextOpen);
   };
