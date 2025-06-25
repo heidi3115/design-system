@@ -115,13 +115,32 @@ function DialogContent({
   );
 }
 
-function DialogHeader({ className, ...props }: ComponentProps<'div'>) {
+function DialogHeader({
+  isDraggable,
+  className,
+  ...props
+}: ComponentProps<'div'> & {
+  isDraggable?: boolean;
+}) {
   const { attributes, listeners } = useDraggable({
     id: 'dialog',
   });
 
+  const style = {
+    cursor: isDraggable ? 'move' : 'auto',
+  };
+  const dragListeners = isDraggable ? listeners : {};
+  const dragAttributes = isDraggable ? attributes : {};
+
   return (
-    <div data-slot="dialog-header" {...attributes} {...listeners} className={cn(header(), className)} {...props} />
+    <div
+      style={style}
+      data-slot="dialog-header"
+      {...dragAttributes}
+      {...dragListeners}
+      className={cn(header(), className)}
+      {...props}
+    />
   );
 }
 

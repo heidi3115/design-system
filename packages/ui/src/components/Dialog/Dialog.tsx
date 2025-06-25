@@ -45,6 +45,7 @@ type DialogProps = {
   maxHeight?: number;
   onSubmit?: (e: FormEvent<HTMLFormElement>, close: () => void) => void;
   showCloseButton?: boolean;
+  isDraggable?: boolean;
 };
 
 const defaultButtonMap: Record<DefaultButtonType, { icon?: ReactNode; label: string }> = {
@@ -66,6 +67,7 @@ const Dialog = ({
   maxHeight,
   onSubmit,
   showCloseButton = true,
+  isDraggable = false,
 }: DialogProps) => {
   const [open, setOpen] = useState(false);
 
@@ -92,7 +94,7 @@ const Dialog = ({
             onSubmit?.(e, () => setOpen(false));
           }}
           id="baseDialog">
-          <DialogHeader>
+          <DialogHeader isDraggable={isDraggable}>
             <DialogTitle className="flex gap-2 items-center mx-0 my-auto text-white">
               {titleIcon}
               {title}
