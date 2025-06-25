@@ -191,55 +191,64 @@ export const ContentSize: Story = {
       <div className="flex gap-10">
         <div className="flex flex-col gap-2">
           <div>Small</div>
-          <Dialog
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-            trigger={<Button>Dialog 열기</Button>}
-            title={args.title}
-            className={args.className}
-            titleIcon={args.titleIcon}
-            contentSize="small"
-            showCloseButton={args.showCloseButton}
-            footerLocate={args.footerLocate}
-            buttons={args.buttons}
-            maxHeight={args.maxHeight}>
-            {args.children}
-          </Dialog>
+          <DndContext>
+            <Dialog
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+              trigger={<Button>Dialog 열기</Button>}
+              title={args.title}
+              isDraggable={args.isDraggable}
+              className={args.className}
+              titleIcon={args.titleIcon}
+              contentSize="small"
+              showCloseButton={args.showCloseButton}
+              footerLocate={args.footerLocate}
+              buttons={args.buttons}
+              maxHeight={args.maxHeight}>
+              {args.children}
+            </Dialog>
+          </DndContext>
         </div>
         <div className="flex flex-col gap-2">
           <div>Medium</div>
-          <Dialog
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-            trigger={<Button>Dialog 열기</Button>}
-            title={args.title}
-            className={args.className}
-            titleIcon={args.titleIcon}
-            contentSize="medium"
-            footerLocate={args.footerLocate}
-            buttons={args.buttons}
-            maxHeight={args.maxHeight}>
-            {args.children}
-          </Dialog>
+          <DndContext>
+            <Dialog
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+              trigger={<Button>Dialog 열기</Button>}
+              title={args.title}
+              isDraggable={args.isDraggable}
+              className={args.className}
+              titleIcon={args.titleIcon}
+              contentSize="medium"
+              footerLocate={args.footerLocate}
+              buttons={args.buttons}
+              maxHeight={args.maxHeight}>
+              {args.children}
+            </Dialog>
+          </DndContext>
         </div>
         <div className="flex flex-col gap-2">
           <div>Large</div>
-          <Dialog
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-            trigger={<Button>Dialog 열기</Button>}
-            title={args.title}
-            className={args.className}
-            titleIcon={args.titleIcon}
-            contentSize="large"
-            footerLocate={args.footerLocate}
-            buttons={args.buttons}
-            maxHeight={args.maxHeight}>
-            {args.children}
-          </Dialog>
+          <DndContext>
+            <Dialog
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+              trigger={<Button>Dialog 열기</Button>}
+              title={args.title}
+              isDraggable={args.isDraggable}
+              className={args.className}
+              titleIcon={args.titleIcon}
+              contentSize="large"
+              footerLocate={args.footerLocate}
+              buttons={args.buttons}
+              maxHeight={args.maxHeight}>
+              {args.children}
+            </Dialog>
+          </DndContext>
         </div>
       </div>
     );
@@ -251,258 +260,267 @@ const ButtonsExample = (args: DialogStoryArgs) => {
     <div className="flex gap-10">
       <div className="flex flex-col gap-2">
         <div>Button 없음</div>
-        <Dialog
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-          trigger={<Button>Dialog 열기</Button>}
-          title={args.title}
-          className={args.className}
-          titleIcon={args.titleIcon}
-          showCloseButton={args.showCloseButton}
-          contentSize="small"
-          footerLocate={args.footerLocate}
-          buttons={[]}
-          maxHeight={args.maxHeight}>
-          <table className="m-auto text-xs">
-            <tbody>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  소속
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <RadioGroup
-                    direction="horizontal"
-                    options={[
-                      { label: '정직원', value: '1' },
-                      { label: '파트너', value: '2' },
-                      { label: '관계사', value: '3' },
-                    ]}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  ID
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <Input name="id" placeholder="아이디를 입력해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  비밀번호
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70">
-                  <Input name="psword" placeholder="비밀번호를 입력해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  비밀번호 확인
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70">
-                  <Input name="pswordCheck" placeholder="비밀번호를 확인해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  접근제어 IP
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <Input name="ip" placeholder="접근제어 IP를 입력해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  이름
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <Input name="name" placeholder="이름을 입력해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  연락처
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <Input name="phone" placeholder="연락처를 입력해주세요" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </Dialog>
+        <DndContext>
+          <Dialog
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+            isDraggable={args.isDraggable}
+            trigger={<Button>Dialog 열기</Button>}
+            title={args.title}
+            className={args.className}
+            titleIcon={args.titleIcon}
+            showCloseButton={args.showCloseButton}
+            contentSize="small"
+            footerLocate={args.footerLocate}
+            buttons={[]}
+            maxHeight={args.maxHeight}>
+            <table className="m-auto text-xs">
+              <tbody>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    소속
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <RadioGroup
+                      direction="horizontal"
+                      options={[
+                        { label: '정직원', value: '1' },
+                        { label: '파트너', value: '2' },
+                        { label: '관계사', value: '3' },
+                      ]}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    ID
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <Input name="id" placeholder="아이디를 입력해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    비밀번호
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70">
+                    <Input name="psword" placeholder="비밀번호를 입력해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    비밀번호 확인
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70">
+                    <Input name="pswordCheck" placeholder="비밀번호를 확인해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    접근제어 IP
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <Input name="ip" placeholder="접근제어 IP를 입력해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    이름
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <Input name="name" placeholder="이름을 입력해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    연락처
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <Input name="phone" placeholder="연락처를 입력해주세요" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </Dialog>
+        </DndContext>
       </div>
       <div className="flex flex-col gap-2">
         <div>등록된 Button</div>
-        <Dialog
-          onSubmit={(e, close) => {
-            e.preventDefault();
-            close();
-          }}
-          trigger={<Button>Dialog 열기</Button>}
-          title={args.title}
-          className={args.className}
-          titleIcon={args.titleIcon}
-          showCloseButton={args.showCloseButton}
-          contentSize={args.contentSize}
-          footerLocate={args.footerLocate}
-          buttons={['save', 'check', 'cancel']}
-          maxHeight={args.maxHeight}>
-          <table className="m-auto text-xs">
-            <tbody>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  소속
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <RadioGroup
-                    direction="horizontal"
-                    options={[
-                      { label: '정직원', value: '1' },
-                      { label: '파트너', value: '2' },
-                      { label: '관계사', value: '3' },
-                    ]}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  ID
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <Input name="id" placeholder="아이디를 입력해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  비밀번호
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70">
-                  <Input name="psword" placeholder="비밀번호를 입력해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  비밀번호 확인
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70">
-                  <Input name="pswordCheck" placeholder="비밀번호를 확인해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  접근제어 IP
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <Input name="ip" placeholder="접근제어 IP를 입력해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  이름
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <Input name="name" placeholder="이름을 입력해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  연락처
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <Input name="phone" placeholder="연락처를 입력해주세요" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </Dialog>
+        <DndContext>
+          <Dialog
+            onSubmit={(e, close) => {
+              e.preventDefault();
+              close();
+            }}
+            isDraggable={args.isDraggable}
+            trigger={<Button>Dialog 열기</Button>}
+            title={args.title}
+            className={args.className}
+            titleIcon={args.titleIcon}
+            showCloseButton={args.showCloseButton}
+            contentSize={args.contentSize}
+            footerLocate={args.footerLocate}
+            buttons={['save', 'check', 'cancel']}
+            maxHeight={args.maxHeight}>
+            <table className="m-auto text-xs">
+              <tbody>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    소속
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <RadioGroup
+                      direction="horizontal"
+                      options={[
+                        { label: '정직원', value: '1' },
+                        { label: '파트너', value: '2' },
+                        { label: '관계사', value: '3' },
+                      ]}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    ID
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <Input name="id" placeholder="아이디를 입력해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    비밀번호
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70">
+                    <Input name="psword" placeholder="비밀번호를 입력해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    비밀번호 확인
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70">
+                    <Input name="pswordCheck" placeholder="비밀번호를 확인해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    접근제어 IP
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <Input name="ip" placeholder="접근제어 IP를 입력해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    이름
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <Input name="name" placeholder="이름을 입력해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    연락처
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <Input name="phone" placeholder="연락처를 입력해주세요" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </Dialog>
+        </DndContext>
       </div>
       <div className="flex flex-col gap-2">
         <div>Custom Button</div>
-        <Dialog
-          onSubmit={(e, close) => {
-            e.preventDefault();
-            alert('폼이 저장되었습니다');
-            close();
-          }}
-          trigger={<Button>Dialog 열기</Button>}
-          title={args.title}
-          className={args.className}
-          showCloseButton={args.showCloseButton}
-          titleIcon={args.titleIcon}
-          contentSize={args.contentSize}
-          footerLocate={args.footerLocate}
-          buttons={args.buttons}
-          maxHeight={args.maxHeight}>
-          <table className="m-auto text-xs">
-            <tbody>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  소속
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <RadioGroup
-                    direction="horizontal"
-                    options={[
-                      { label: '정직원', value: '1' },
-                      { label: '파트너', value: '2' },
-                      { label: '관계사', value: '3' },
-                    ]}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  ID
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <Input name="id" placeholder="아이디를 입력해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  비밀번호
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70">
-                  <Input name="psword" placeholder="비밀번호를 입력해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  비밀번호 확인
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70">
-                  <Input name="pswordCheck" placeholder="비밀번호를 확인해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  접근제어 IP
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <Input name="ip" placeholder="접근제어 IP를 입력해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  이름
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <Input name="name" placeholder="이름을 입력해주세요" />
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
-                  연락처
-                </th>
-                <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
-                  <Input name="phone" placeholder="연락처를 입력해주세요" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </Dialog>
+        <DndContext>
+          <Dialog
+            onSubmit={(e, close) => {
+              e.preventDefault();
+              alert('폼이 저장되었습니다');
+              close();
+            }}
+            isDraggable={args.isDraggable}
+            trigger={<Button>Dialog 열기</Button>}
+            title={args.title}
+            className={args.className}
+            showCloseButton={args.showCloseButton}
+            titleIcon={args.titleIcon}
+            contentSize={args.contentSize}
+            footerLocate={args.footerLocate}
+            buttons={args.buttons}
+            maxHeight={args.maxHeight}>
+            <table className="m-auto text-xs">
+              <tbody>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    소속
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <RadioGroup
+                      direction="horizontal"
+                      options={[
+                        { label: '정직원', value: '1' },
+                        { label: '파트너', value: '2' },
+                        { label: '관계사', value: '3' },
+                      ]}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    ID
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <Input name="id" placeholder="아이디를 입력해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    비밀번호
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70">
+                    <Input name="psword" placeholder="비밀번호를 입력해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    비밀번호 확인
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70">
+                    <Input name="pswordCheck" placeholder="비밀번호를 확인해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    접근제어 IP
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <Input name="ip" placeholder="접근제어 IP를 입력해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    이름
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <Input name="name" placeholder="이름을 입력해주세요" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" className="bg-juiGrey-a700 p-3 w-30 text-left">
+                    연락처
+                  </th>
+                  <td className="border border-juiGrey-50 p-2 w-70 text-juiGrey-400">
+                    <Input name="phone" placeholder="연락처를 입력해주세요" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </Dialog>
+        </DndContext>
       </div>
     </div>
   );
