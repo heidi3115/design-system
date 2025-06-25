@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import {
   Button,
@@ -13,6 +14,9 @@ import {
   Toggle,
   Popover,
   Tooltip,
+  Switch,
+  Skeleton,
+  CardSkeleton,
   CommandInput,
   CommandList,
   CommandEmpty,
@@ -34,6 +38,7 @@ import {
   FilePlusIcon,
   FileTextIcon,
   LockIcon,
+  PlusCircleIcon,
   StarIcon,
   TagIcon,
   UserIcon,
@@ -151,6 +156,42 @@ export default function Page() {
       <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper" ref={wrapperRef}>
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
+          <Button
+            onClick={() =>
+              toast.error('Event has been created', {
+                description: 'test',
+                action: {
+                  label: 'test',
+                  onClick: () => {},
+                },
+                richColors: true,
+              })
+            }>
+            Show Toast
+          </Button>
+          <Button
+            onClick={() =>
+              toast('Event has been created', {
+                description: 'test',
+                action: (
+                  <div className="ml-auto">
+                    <Button variant="gradient">test</Button>
+                  </div>
+                ),
+                richColors: true,
+              })
+            }>
+            Show Toast
+          </Button>
+
+          <PlusCircleIcon />
+
+          <Button onClick={() => toast(<Switch />)}>Custom</Button>
+          <Button onClick={() => toast.success(<Switch />)}>Custom success</Button>
+          <Button onClick={() => toast.info(<Switch />)}>Custom info</Button>
+          <Button onClick={() => toast.warning(<Switch />)}>Custom warring</Button>
+          <Button onClick={() => toast.loading(<Switch />)}>Custom loading</Button>
+
           <RadioGroup direction="horizontal" defaultValue="banana" valueRef={radioRef} options={options} />
           <Button
             onClick={() => {
@@ -214,8 +255,29 @@ export default function Page() {
             {...fruitField}
           />
 
-          <Popover trigger={FilePlusIcon} className="bg-juiStatus-alert" size="small" isArrow>
-            dadfdsfadsffsdfadfsfasdfadfasfas
+          <Popover trigger={FilePlusIcon} size="small">
+            <div className="flex flex-col gap-2">
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <CardSkeleton />
+              <Select
+                isContentfitTriggerWidth
+                options={[
+                  { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
+                  { label: 'Pacific Standard Time (PST)', value: 'pst1' },
+                  { type: 'separator' },
+                  {
+                    type: 'group',
+                    label: 'North America',
+                    items: [
+                      { label: 'Eastern Standard Time (EST)', value: 'est' },
+                      { label: 'Pacific Standard Time (PST)', value: 'pst' },
+                    ],
+                  },
+                ]}
+              />
+            </div>
           </Popover>
           <Popover
             trigger={<Button>popover</Button>}

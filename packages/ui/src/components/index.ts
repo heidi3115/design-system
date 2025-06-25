@@ -133,6 +133,8 @@ export {
   accordionVariants,
 } from './Accordion';
 
+export { Toaster } from './Toaster';
+
 export {
   CommandRoot,
   CommandDialog,
