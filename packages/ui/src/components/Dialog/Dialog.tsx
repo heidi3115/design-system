@@ -81,6 +81,7 @@ const Dialog = ({
         {trigger}
       </DialogTrigger>
       <DialogContent
+        open={open}
         portalContainer={portalContainer}
         className={className}
         size={contentSize}

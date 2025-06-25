@@ -4,7 +4,9 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { XIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { dialogVariants } from './dialogVariants';
-import { type ComponentProps } from 'react';
+import { type ComponentProps, useState, useEffect, useRef } from 'react';
+
+import { useDraggable } from '@dnd-kit/core';
 
 const { overlay, header, title, description, closeButton } = dialogVariants();
 
@@ -31,6 +33,7 @@ function DialogTrigger({ ...props }: ComponentProps<typeof DialogPrimitive.Trigg
 function DialogContent({
   className,
   children,
+  open,
   showCloseButton = true,
   size = 'medium',
   portalContainer,
@@ -39,6 +42,7 @@ function DialogContent({
   showCloseButton?: boolean;
   size?: 'small' | 'medium' | 'large';
   portalContainer?: HTMLElement | null;
+  open?: boolean;
 }) {
   const positioning = portalContainer ? 'absolute' : 'fixed';
 
@@ -48,10 +52,57 @@ function DialogContent({
     className,
   });
 
+  const { setNodeRef, transform, isDragging } = useDraggable({
+    id: 'dialog',
+  });
+
+  // 현재까지 드래그된 누적 위치
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+  const prevIsDraggingRef = useRef(false); // 이전 isDragging 상태
+  const lastTransformRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 }); // 마지막 transform 값 저장
+
+  useEffect(() => {
+    if (transform) {
+      lastTransformRef.current = transform;
+    }
+
+    // 드래그가 끝나면 transform 값을 offset에 누적시킴
+    if (prevIsDraggingRef.current && !isDragging) {
+      setOffset((prev) => ({
+        x: prev.x + lastTransformRef.current.x,
+        y: prev.y + lastTransformRef.current.y,
+      }));
+    }
+
+    // 현재 드래그 상태를 저장
+    prevIsDraggingRef.current = isDragging;
+  }, [transform, isDragging]);
+
+  useEffect(() => {
+    if (open) {
+      setOffset({ x: 0, y: 0 });
+    }
+  }, [open]);
+
+  // 화면에 적용할 최종 위치 = 누적 offset + 현재 드래그 중인 위치
+  const finalX = offset.x + (transform?.x ?? 0);
+  const finalY = offset.y + (transform?.y ?? 0);
+
+  const style = {
+    transform: `translate3d(${finalX}px, ${finalY}px, 0)`,
+    transition: 'none',
+  };
+
   return (
     <DialogPortal container={portalContainer} data-slot="dialog-portal">
       <DialogOverlay />
-      <DialogPrimitive.Content data-slot="dialog-content" className={cn(content(), className)} {...props}>
+      <DialogPrimitive.Content
+        ref={setNodeRef}
+        data-slot="dialog-content"
+        className={cn(content(), className)}
+        style={style}
+        {...props}>
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close data-slot="dialog-close" className={closeButton()}>
@@ -65,7 +116,13 @@ function DialogContent({
 }
 
 function DialogHeader({ className, ...props }: ComponentProps<'div'>) {
-  return <div data-slot="dialog-header" className={cn(header(), className)} {...props} />;
+  const { attributes, listeners } = useDraggable({
+    id: 'dialog',
+  });
+
+  return (
+    <div data-slot="dialog-header" {...attributes} {...listeners} className={cn(header(), className)} {...props} />
+  );
 }
 
 function DialogFooter({

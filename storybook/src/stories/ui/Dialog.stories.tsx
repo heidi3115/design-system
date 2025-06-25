@@ -4,6 +4,7 @@ import { Button, Input, RadioGroup } from '@common/ui';
 import Dialog from '@common/ui/components/Dialog/Dialog.tsx';
 import { EditIcon, SaveIcon, Trash2Icon } from '@common/ui/icons';
 import type { VariantProps } from 'tailwind-variants';
+import { DndContext } from '@dnd-kit/core';
 
 type DefaultButtonType = 'save' | 'cancel' | 'check';
 
@@ -131,24 +132,26 @@ const Template = (args: DialogStoryArgs) => {
 
   return (
     <div ref={dialogAreaRef}>
-      <Dialog
-        onSubmit={(e, close) => {
-          e.preventDefault();
-          alert('저장되었습니다');
-          close();
-        }}
-        showCloseButton={args.showCloseButton}
-        trigger={<Button>Dialog 열기</Button>}
-        title={args.title}
-        className={args.className}
-        titleIcon={args.titleIcon}
-        contentSize={args.contentSize}
-        footerLocate={args.footerLocate}
-        buttons={args.buttons}
-        maxHeight={args.maxHeight}
-        portalContainer={shouldUseArea ? portalContainer : undefined}>
-        {args.children}
-      </Dialog>
+      <DndContext>
+        <Dialog
+          onSubmit={(e, close) => {
+            e.preventDefault();
+            alert('저장되었습니다');
+            close();
+          }}
+          showCloseButton={args.showCloseButton}
+          trigger={<Button>Dialog 열기</Button>}
+          title={args.title}
+          className={args.className}
+          titleIcon={args.titleIcon}
+          contentSize={args.contentSize}
+          footerLocate={args.footerLocate}
+          buttons={args.buttons}
+          maxHeight={args.maxHeight}
+          portalContainer={shouldUseArea ? portalContainer : undefined}>
+          {args.children}
+        </Dialog>
+      </DndContext>
     </div>
   );
 };

@@ -28,6 +28,7 @@
     "@chromatic-com/storybook": "^3",
     "@common/eslint-config": "workspace:^",
     "@common/typescript-config": "workspace:^",
+    "@dnd-kit/core": "^6.3.1",
     "@eslint/js": "^9.25.0",
     "@storybook/addon-essentials": "^8.6.13",
     "@storybook/addon-onboarding": "^8.6.13",
