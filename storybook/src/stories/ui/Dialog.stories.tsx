@@ -25,6 +25,7 @@ type DialogStoryArgs = {
   onClick?: () => void;
   showCloseButton?: boolean;
   isDraggable?: boolean;
+  isKeepOffset?: boolean;
 };
 
 const meta: Meta<DialogStoryArgs> = {
@@ -38,6 +39,11 @@ const meta: Meta<DialogStoryArgs> = {
     isDraggable: {
       control: { type: 'boolean' },
       description: '드래그 가능 여부를 설정할 수 있다.',
+    },
+    isKeepOffset: {
+      control: { type: 'boolean' },
+      description:
+        '최종 드래그 위치 유지여부. true로 지정 시, Dialog를 닫았다가 다시 열어도 직전 위치가 계속 유지된다.',
     },
     title: {
       control: { type: 'text' },
@@ -92,6 +98,7 @@ const meta: Meta<DialogStoryArgs> = {
   },
   args: {
     title: 'Example Title',
+    isKeepOffset: false,
     isDraggable: false,
     showCloseButton: true,
     titleIcon: <EditIcon />,
@@ -145,6 +152,7 @@ const Template = (args: DialogStoryArgs) => {
             alert('저장되었습니다');
             close();
           }}
+          isKeepOffset={args.isKeepOffset}
           isDraggable={args.isDraggable}
           showCloseButton={args.showCloseButton}
           trigger={<Button>Dialog 열기</Button>}
@@ -196,6 +204,7 @@ export const ContentSize: Story = {
               onSubmit={(e) => {
                 e.preventDefault();
               }}
+              isKeepOffset={args.isKeepOffset}
               trigger={<Button>Dialog 열기</Button>}
               title={args.title}
               isDraggable={args.isDraggable}
@@ -217,6 +226,7 @@ export const ContentSize: Story = {
               onSubmit={(e) => {
                 e.preventDefault();
               }}
+              isKeepOffset={args.isKeepOffset}
               trigger={<Button>Dialog 열기</Button>}
               title={args.title}
               isDraggable={args.isDraggable}
@@ -237,6 +247,7 @@ export const ContentSize: Story = {
               onSubmit={(e) => {
                 e.preventDefault();
               }}
+              isKeepOffset={args.isKeepOffset}
               trigger={<Button>Dialog 열기</Button>}
               title={args.title}
               isDraggable={args.isDraggable}
@@ -265,6 +276,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
             onSubmit={(e) => {
               e.preventDefault();
             }}
+            isKeepOffset={args.isKeepOffset}
             isDraggable={args.isDraggable}
             trigger={<Button>Dialog 열기</Button>}
             title={args.title}
@@ -353,6 +365,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
               e.preventDefault();
               close();
             }}
+            isKeepOffset={args.isKeepOffset}
             isDraggable={args.isDraggable}
             trigger={<Button>Dialog 열기</Button>}
             title={args.title}
@@ -442,6 +455,7 @@ const ButtonsExample = (args: DialogStoryArgs) => {
               alert('폼이 저장되었습니다');
               close();
             }}
+            isKeepOffset={args.isKeepOffset}
             isDraggable={args.isDraggable}
             trigger={<Button>Dialog 열기</Button>}
             title={args.title}

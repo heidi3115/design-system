@@ -34,6 +34,7 @@ function DialogContent({
   className,
   children,
   open,
+  isKeepOffset = false,
   showCloseButton = true,
   size = 'medium',
   portalContainer,
@@ -43,6 +44,7 @@ function DialogContent({
   size?: 'small' | 'medium' | 'large';
   portalContainer?: HTMLElement | null;
   open?: boolean;
+  isKeepOffset?: boolean;
 }) {
   const positioning = portalContainer ? 'absolute' : 'fixed';
 
@@ -80,7 +82,7 @@ function DialogContent({
   }, [transform, isDragging]);
 
   useEffect(() => {
-    if (open) {
+    if (!isKeepOffset && open) {
       setOffset({ x: 0, y: 0 });
     }
   }, [open]);

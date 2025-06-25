@@ -46,6 +46,7 @@ type DialogProps = {
   onSubmit?: (e: FormEvent<HTMLFormElement>, close: () => void) => void;
   showCloseButton?: boolean;
   isDraggable?: boolean;
+  isKeepOffset?: boolean;
 };
 
 const defaultButtonMap: Record<DefaultButtonType, { icon?: ReactNode; label: string }> = {
@@ -64,6 +65,7 @@ const Dialog = ({
   portalContainer,
   contentSize = 'small',
   className,
+  isKeepOffset,
   maxHeight,
   onSubmit,
   showCloseButton = true,
@@ -84,6 +86,7 @@ const Dialog = ({
       </DialogTrigger>
       <DialogContent
         open={open}
+        isKeepOffset={isKeepOffset}
         portalContainer={portalContainer}
         className={className}
         size={contentSize}
