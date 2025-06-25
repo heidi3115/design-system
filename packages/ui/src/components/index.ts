@@ -53,7 +53,7 @@ export {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  BaseDialog,
+  Dialog,
 } from './Dialog';
 export { Switch } from './Switch';
 export { Skeleton, CardSkeleton } from './Skeleton';
@@ -132,6 +132,31 @@ export {
   AccordionContent,
   accordionVariants,
 } from './Accordion';
+
+export { Toaster } from './Toaster';
+
+export {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleRoot,
+  CollapsibleTrigger,
+  collapsibleVariants,
+  type CollapsibleProps,
+} from './Collapsible';
+
+export {
+  HoverCard,
+  type HoverCardProps,
+  HoverCardRoot,
+  HoverCardTrigger,
+  HoverCardPortal,
+  HoverCardContent,
+  type HoverCardRootProps,
+  type HoverCardTriggerProps,
+  type HoverCardPortalProps,
+  type HoverCardContentProps,
+  hoverCardVariants,
+} from './HoverCard';
 
 export {
   Slider,
