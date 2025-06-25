@@ -266,8 +266,9 @@ const AutoComplete = ({
       ref={ref}
       onKeyDown={handleKeyDown}
       filter={(value, search) => {
-        const label = flattenedOptions.find((item) => item.value === value)?.label;
+        if (!canFilter) return 1;
 
+        const label = flattenedOptions.find((item) => item.value === value)?.label;
         if (!label) return 0;
 
         return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
@@ -288,7 +289,7 @@ const AutoComplete = ({
             }}>
             {inputValue && canFilter && <CommandEmpty>{emptyText}</CommandEmpty>}
 
-            <CommandGroup forceMount={!canFilter}>
+            <CommandGroup>
               {options.map((opt, idx) => {
                 if ('type' in opt && opt.type === 'group') {
                   return (
