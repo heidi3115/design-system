@@ -100,10 +100,10 @@ const AutoComplete = ({
   const [selected, setSelected] = useState<OptionItem | undefined>(undefined);
 
   const [inputValue, setInputValue] = useState('');
-  const [interanlValue, setInternalValue] = useState(defaultValue ?? '');
+  const [internalValue, setInternalValue] = useState(defaultValue ?? '');
 
   const isControlled = controlledValue !== undefined;
-  const currentValue = isControlled ? controlledValue : interanlValue;
+  const currentValue = isControlled ? controlledValue : internalValue;
 
   useImperativeHandle(selectRef, () => currentValue);
 
