@@ -17,6 +17,7 @@ import { CheckIcon, ChevronDownIcon } from '@common/ui/icons';
 import { Popover } from '@common/ui';
 
 import { useInputSize } from './hooks/useInputSize';
+import { useFlattenedOptions } from './hooks/useFlattenedOptions';
 import { CommandGroup, CommandItem, CommandList, CommandEmpty, CommandSeparator } from './CommandParts';
 import autoCompleteVariants from './autoCompleteVariants';
 import { cn } from '../../lib/utils';
@@ -94,6 +95,8 @@ const AutoComplete = ({
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const flattenedOptions = useFlattenedOptions(options);
 
   const { inputWidth, inputHeight } = useInputSize({ inputRef, isOpen });
 
@@ -262,6 +265,13 @@ const AutoComplete = ({
     <CommandPrimitive
       ref={ref}
       onKeyDown={handleKeyDown}
+      filter={(value, search) => {
+        const label = flattenedOptions.find((item) => item.value === value)?.label;
+
+        if (!label) return 0;
+
+        return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
+      }}
       className={cn(`flex ${isOpen && '[&_svg]:rotate-180'}`, !isNumberWidth && triggerWidth())}
       style={isNumberWidth ? { width: `${width}px` } : undefined}>
       <div className={cn('relative flex flex-col flex-1')}>

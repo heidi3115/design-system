@@ -511,7 +511,7 @@ export default function Page() {
                 { label: 'Eastern Time (EST)', value: 'est' },
                 { label: 'Pacific Time (PST)', value: 'pst' },
                 { label: 'Pacific Time (aaa)', value: 'aaa' },
-                { label: 'Pacific Time (bbb)', value: 'bbb' },
+                { label: 'Pacific Time ()', value: 'bbb' },
                 { label: 'Pacific Time (ccc)', value: 'ccc' },
                 { label: 'Pacific Time (ddd)', value: 'ddd' },
                 { label: 'Pacific Time (eee)aaaaaaaaaaa', value: 'eee' },
@@ -537,7 +537,7 @@ export default function Page() {
               isContentfitTriggerWidth
               options={[
                 { label: 'Eastern Time (EST)dddddddddddddddddddddd', value: 'est' },
-                { label: 'Pacific Time (PST)', value: 'pst' },
+                { label: 'Pacific Time (aaa)', value: 'pst' },
                 { label: 'Pacific Time (aaa)', value: 'aaa' },
                 { label: 'Pacific Time (bbb)', value: 'bbb' },
                 { label: 'Pacific Time (ccc)', value: 'ccc' },
