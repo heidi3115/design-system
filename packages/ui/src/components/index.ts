@@ -145,6 +145,20 @@ export {
 } from './Collapsible';
 
 export {
+  HoverCard,
+  type HoverCardProps,
+  HoverCardRoot,
+  HoverCardTrigger,
+  HoverCardPortal,
+  HoverCardContent,
+  type HoverCardRootProps,
+  type HoverCardTriggerProps,
+  type HoverCardPortalProps,
+  type HoverCardContentProps,
+  hoverCardVariants,
+} from './HoverCard';
+
+export {
   CommandRoot,
   CommandDialog,
   CommandInput,
