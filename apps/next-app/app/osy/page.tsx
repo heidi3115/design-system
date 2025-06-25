@@ -2,11 +2,8 @@
 
 import Link from 'next/link';
 import ThemeToggle from '../../components/ThemeToggle';
-import { Button } from '@common/ui/components/Button';
+import { Avatar, AvatarContents, Button, Separator, separatorVariants } from '@common/ui';
 import { CornerDownLeftIcon, RotateIcon } from '@common/ui/icons';
-import { Separator, separatorVariants } from '@common/ui/components/Separator';
-import { Avatar } from '@common/ui/components/Avatar';
-import { AvatarContents } from '@common/ui/components/Avatar/Avatar';
 
 const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '80%', height: '2px' }} />;
 

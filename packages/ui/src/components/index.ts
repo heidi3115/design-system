@@ -134,3 +134,12 @@ export {
 } from './Accordion';
 
 export { Toaster } from './Toaster';
+
+export {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleRoot,
+  CollapsibleTrigger,
+  collapsibleVariants,
+  type CollapsibleProps,
+} from './Collapsible';
