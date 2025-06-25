@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { cn } from '@common/ui/lib/utils';
 import {
@@ -9,11 +9,28 @@ import {
   AccordionItem,
   AccordionRoot,
   AccordionTrigger,
+  Avatar,
   Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleRoot,
+  CollapsibleTrigger,
   Separator,
 } from '@common/ui';
-import { AccordionSingleItemProps } from '@common/ui/components/Accordion';
-import { CornerDownLeftIcon } from '@common/ui/icons';
+import type { AccordionSingleItemProps } from '@common/ui/components/Accordion';
+import {
+  ChevronDownUpIcon,
+  ChevronLeftRightIcon,
+  ChevronRightLeftIcon,
+  ChevronUpDownIcon,
+  CornerDownLeftIcon,
+} from '@common/ui/icons';
 import ThemeToggle from '../../../components/ThemeToggle';
 
 export default function CollapsiblesPage() {
@@ -76,6 +93,7 @@ export default function CollapsiblesPage() {
 
   const largeRef = useRef(null);
   const mediumRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <main className={'relative w-full'}>
@@ -89,6 +107,176 @@ export default function CollapsiblesPage() {
       </div>
       <section className={cn(flexColClass, alignCenterClass, 'relative w-full min-w-full h-full min-h-9/10')}>
         <div className={cn(flexColClass, alignCenterClass, 'gap-4 w-full h-full')}>
+          <div className={'flex flex-col gap-4'}>
+            <h2 className={'text-juiText-blue text-3xl font-bold'}>Collapsible</h2>
+            <div className={'flex flex-col gap-4'}>
+              <h3 className={'my-3 text-base'}>Collapsible test</h3>
+              <div className={'flex flex-col gap-4'}>
+                <div className={'flex flex-col gap-2'}>
+                  <span className={'text-juiText-blue text-base font-bold'}>Collapsible Demo</span>
+                  <div className={'flex flex-row gap-3'}>
+                    <CollapsibleRoot open={isOpen} onOpenChange={setIsOpen} className="flex w-[350px] flex-col gap-2">
+                      <div className="flex items-center justify-between gap-4 px-4">
+                        <h4 className="text-sm font-semibold">@peduarte starred 3 repositories</h4>
+                        <CollapsibleTrigger asChild>
+                          <Button variant="transparentGrey" size="small" className={''}>
+                            <ChevronUpDownIcon />
+                            <ChevronDownUpIcon />
+                            <span className="sr-only">Toggle</span>
+                          </Button>
+                        </CollapsibleTrigger>
+                      </div>
+                      <div className="rounded-md border px-4 py-2 font-mono text-sm">@radix-ui/primitives</div>
+                      <CollapsibleContent className="flex flex-col gap-2">
+                        <div className="rounded-md border px-4 py-2 font-mono text-sm">@radix-ui/colors</div>
+                        <div className="rounded-md border px-4 py-2 font-mono text-sm">@stitches/react</div>
+                      </CollapsibleContent>
+                    </CollapsibleRoot>
+                  </div>
+                </div>
+                <div className={'flex flex-col gap-2'}>
+                  <span className={'text-juiText-blue text-base font-bold'}>Collapsible assembled - with Preview</span>
+                  <div className={'flex flex-row gap-3'}>
+                    <Collapsible
+                      trigger={
+                        <Button variant={'transparent'}>
+                          <ChevronLeftRightIcon />
+                          <ChevronRightLeftIcon />
+                        </Button>
+                      }
+                      preview={
+                        <div className={cn('flex flex-row gap-2 items-center bg-red-200')}>
+                          <Avatar
+                            src={
+                              'https://images.unsplash.com/photo-1511485977113-f34c92461ad9?ixlib=rb-1.2.1&w=128&h=128&dpr=2&q=80'
+                            }
+                            fallback={'web test'}
+                            size={'basic'}
+                            shape={'square'}
+                          />
+                          <p>Avatar User Name</p>
+                        </div>
+                      }>
+                      <div className={'flex flex-col gap-4 bg-lime-300'}>
+                        <div className={'flex flex-row gap-4'}>
+                          <Card
+                          // onClick={() => setCount((prev) => (prev += 1))}
+                          >
+                            <CardHeader>
+                              <CardTitle>Card Title 1</CardTitle>
+                              <CardDescription>Card Description 1</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                            </CardContent>
+                            <CardFooter>
+                              <p>Card Footer</p>
+                            </CardFooter>
+                          </Card>
+                          <Card
+                          // onClick={() => setCount((prev) => (prev += 1))}
+                          >
+                            <CardHeader>
+                              <CardTitle>Card Title 2</CardTitle>
+                              <CardDescription>Card Description 2</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                            </CardContent>
+                            <CardFooter>
+                              <p>Card Footer</p>
+                            </CardFooter>
+                          </Card>
+                        </div>
+                      </div>
+                    </Collapsible>
+                  </div>
+                </div>
+                <div className={'flex flex-col gap-2'}>
+                  <span className={'text-juiText-blue text-base font-bold'}>Collapsible assembled - no Preview</span>
+                  <div className={'flex flex-row gap-3'}>
+                    <Collapsible
+                      trigger={
+                        <Button variant={'transparent'}>
+                          <ChevronUpDownIcon />
+                        </Button>
+                      }
+                      preview={
+                        <div className={cn('flex flex-row gap-2 items-center')}>
+                          <Avatar
+                            src={
+                              'https://images.unsplash.com/photo-1511485977113-f34c92461ad9?ixlib=rb-1.2.1&w=128&h=128&dpr=2&q=80'
+                            }
+                            fallback={'web test'}
+                            size={'basic'}
+                            shape={'square'}
+                          />
+                          <p>Avatar User Name</p>
+                        </div>
+                      }
+                      showPreview={false}>
+                      <div className={'flex flex-col gap-4'}>
+                        <div className={'flex flex-row gap-4'}>
+                          <Card
+                          // onClick={() => setCount((prev) => (prev += 1))}
+                          >
+                            <CardHeader>
+                              <CardTitle>Card Title 1</CardTitle>
+                              <CardDescription>Card Description 1</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                            </CardContent>
+                            <CardFooter>
+                              <p>Card Footer</p>
+                            </CardFooter>
+                          </Card>
+                          <Card
+                          // onClick={() => setCount((prev) => (prev += 1))}
+                          >
+                            <CardHeader>
+                              <CardTitle>Card Title 2</CardTitle>
+                              <CardDescription>Card Description 2</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                              <p>Card Content</p>
+                            </CardContent>
+                            <CardFooter>
+                              <p>Card Footer</p>
+                            </CardFooter>
+                          </Card>
+                        </div>
+                      </div>
+                    </Collapsible>
+                  </div>
+                </div>
+              </div>
+              <h3 className={'my-3 text-base'}></h3>
+              <div className={'flex flex-row gap-4'}>
+                <div className={'flex flex-col gap-2'}>
+                  <span className={'text-juiText-blue text-base font-bold'}></span>
+                  <div className={'flex flex-row gap-3'}></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <Separator orientation={'horizontal'} />
           <h2 className={cn(mainBlueTit)}>Accordion</h2>
           <div className={cn(flexColClass, alignCenterClass, 'gap-4 w-full h-full')}>
             <h3 className={cn(mainBlueSubTit)}>Accordion Demo</h3>

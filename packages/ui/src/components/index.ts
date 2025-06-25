@@ -136,6 +136,15 @@ export {
 export { Toaster } from './Toaster';
 
 export {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleRoot,
+  CollapsibleTrigger,
+  collapsibleVariants,
+  type CollapsibleProps,
+} from './Collapsible';
+
+export {
   CommandRoot,
   CommandDialog,
   CommandInput,
