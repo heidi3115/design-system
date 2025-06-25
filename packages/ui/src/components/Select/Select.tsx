@@ -1,6 +1,6 @@
 'use client';
 
-import { type Ref, useImperativeHandle, useState, type ComponentProps } from 'react';
+import { type Ref, useImperativeHandle, useState, type ComponentProps, type ReactNode, type RefCallback } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 import {
@@ -22,9 +22,14 @@ const selectVariaints = tv({
       full: 'w-full',
       fit: 'w-fit',
     },
+    error: {
+      true: 'border border-juiError light:border-juiError',
+      false: 'focus:border-juiText-primary light:focus:border-juiText-secondary', // 에러 아닐 때만 기본 파란색 포커스
+    },
   },
   defaultVariants: {
     width: 'full',
+    error: false,
   },
 });
 
@@ -51,24 +56,30 @@ type SelectOptions = OptionType[];
 type SelectProps = ComponentProps<typeof SelectRoot> &
   Omit<VariantProps<typeof selectVariaints>, 'width'> & {
     options: SelectOptions;
+    ref?: RefCallback<HTMLElement>;
     placeholder?: string;
     size?: 'small' | 'default' | 'large';
     width?: VariantProps<typeof selectVariaints>['width'] | number;
     isSelectIndicator?: boolean;
     isContentfitTriggerWidth?: boolean;
     selectRef?: Ref<string>;
+    error?: boolean;
+    helperText?: ReactNode;
   };
 
 function Select({
+  ref,
   options,
   size,
   width,
-  placeholder = '-',
+  placeholder,
   isSelectIndicator = false,
   isContentfitTriggerWidth = false,
   value: controlledValue,
   onValueChange,
   selectRef,
+  error,
+  helperText,
   ...props
 }: SelectProps) {
   const isNumberWidth = typeof width === 'number';
@@ -88,12 +99,29 @@ function Select({
         onValueChange?.(value);
       }}
       {...props}>
-      <SelectTrigger
-        size={size}
-        className={cn(!isNumberWidth && selectVariaints({ width }))}
-        style={isNumberWidth ? { width: `${width}px` } : undefined}>
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
+      <div
+        style={
+          isNumberWidth ? { width: `${width}px` } : width === 'fit' ? { width: 'fit-content' } : { width: '100%' }
+        }>
+        <SelectTrigger
+          ref={ref}
+          size={size}
+          style={isNumberWidth ? { width: `100%` } : undefined}
+          className={cn(!isNumberWidth && selectVariaints({ width, error }))}>
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        {helperText && (
+          <p
+            className={cn(
+              'text-xs mx-1 mt-1',
+              error && 'text-juiError',
+              props.disabled && 'opacity-50 cursor-not-allowed',
+            )}>
+            {helperText}
+          </p>
+        )}
+      </div>
+
       <SelectContent isContentfitTriggerWidth={isContentfitTriggerWidth}>
         {options.map((opt, idx) => {
           // 그룹일 경우

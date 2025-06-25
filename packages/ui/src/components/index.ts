@@ -157,3 +157,16 @@ export {
   type HoverCardContentProps,
   hoverCardVariants,
 } from './HoverCard';
+
+export {
+  CommandRoot,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandShortcut,
+  CommandSeparator,
+  AutoComplete,
+} from './Command';
