@@ -6,6 +6,7 @@ import {
   Avatar,
   AvatarContents,
   Button,
+  HoverCard,
   HoverCardContent,
   HoverCardRoot,
   HoverCardTrigger,
@@ -14,7 +15,6 @@ import {
 } from '@common/ui';
 import { CornerDownLeftIcon, InfoIcon, RotateIcon } from '@common/ui/icons';
 import { useRef } from 'react';
-import HoverCard from '@common/ui/src/components/HoverCard/HoverCard';
 
 const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '100%', height: '2px' }} />;
 
