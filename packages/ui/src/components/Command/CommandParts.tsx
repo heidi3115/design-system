@@ -12,7 +12,7 @@ function CommandRoot({ className, ...props }: React.ComponentProps<typeof Comman
     <CommandPrimitive
       data-slot="command"
       className={cn(
-        'bg-juiBackground-default text-popover-foreground shadow-md flex h-full w-full flex-col p-2 overflow-hidden',
+        'bg-juiBackground-default text-juiText-secondary shadow-md flex h-full w-full flex-col p-2 overflow-hidden',
         className,
       )}
       {...props}
@@ -92,7 +92,7 @@ function CommandGroup({ className, ...props }: React.ComponentProps<typeof Comma
     <CommandPrimitive.Group
       data-slot="command-group"
       className={cn(
-        'text-foreground [&_[cmdk-group-heading]]:text-muted-foreground overflow-hidden [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium',
+        '[&_[cmdk-group-heading]]:text-juiText-secondary overflow-hidden [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium',
         className,
       )}
       {...props}
@@ -124,7 +124,7 @@ function CommandItem({ className, ...props }: React.ComponentProps<typeof Comman
         '[&_svg]:pointer-events-none',
         '[&_svg]:shrink-0',
         "[&_svg:not([class*='size-'])]:size-4",
-        "[&_svg:not([class*='text-'])]:text-muted-foreground",
+        "[&_svg:not([class*='text-'])]:text-juiText-secondary",
 
         // 레이아웃 및 기본 스타일
         'cursor-pointer',
@@ -141,7 +141,7 @@ function CommandShortcut({ className, ...props }: React.ComponentProps<'span'>) 
   return (
     <span
       data-slot="command-shortcut"
-      className={cn('text-muted-foreground ml-auto text-xs tracking-widest', className)}
+      className={cn('text-juiText-secondary ml-auto text-xs tracking-widest', className)}
       {...props}
     />
   );
