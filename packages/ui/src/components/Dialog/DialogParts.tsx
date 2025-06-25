@@ -5,6 +5,7 @@ import { XIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { dialogVariants } from './dialogVariants';
 import { type ComponentProps, useState, useEffect, useRef } from 'react';
+import { DraggableDialogContext, useDraggableDialog } from './DraggableDialogContext';
 
 import { useDraggable } from '@dnd-kit/core';
 
@@ -46,16 +47,13 @@ function DialogContent({
   open?: boolean;
   isKeepOffset?: boolean;
 }) {
+  const { setNodeRef, transform, isDragging, listeners, attributes } = useDraggable({ id: 'dialog' });
   const positioning = portalContainer ? 'absolute' : 'fixed';
 
   const { content } = dialogVariants({
     contentSize: size,
     positioning,
     className,
-  });
-
-  const { setNodeRef, transform, isDragging } = useDraggable({
-    id: 'dialog',
   });
 
   // 현재까지 드래그된 누적 위치
@@ -99,20 +97,22 @@ function DialogContent({
   return (
     <DialogPortal container={portalContainer} data-slot="dialog-portal">
       <DialogOverlay />
-      <DialogPrimitive.Content
-        ref={setNodeRef}
-        data-slot="dialog-content"
-        className={cn(content(), className)}
-        style={style}
-        {...props}>
-        {children}
-        {showCloseButton && (
-          <DialogPrimitive.Close data-slot="dialog-close" className={closeButton()}>
-            <XIcon />
-            <span className="sr-only">Close</span>
-          </DialogPrimitive.Close>
-        )}
-      </DialogPrimitive.Content>
+      <DraggableDialogContext.Provider value={{ listeners, attributes }}>
+        <DialogPrimitive.Content
+          ref={setNodeRef}
+          data-slot="dialog-content"
+          className={cn(content(), className)}
+          style={style}
+          {...props}>
+          {children}
+          {showCloseButton && (
+            <DialogPrimitive.Close data-slot="dialog-close" className={closeButton()}>
+              <XIcon />
+              <span className="sr-only">Close</span>
+            </DialogPrimitive.Close>
+          )}
+        </DialogPrimitive.Content>
+      </DraggableDialogContext.Provider>
     </DialogPortal>
   );
 }
@@ -124,9 +124,7 @@ function DialogHeader({
 }: ComponentProps<'div'> & {
   isDraggable?: boolean;
 }) {
-  const { attributes, listeners } = useDraggable({
-    id: 'dialog',
-  });
+  const { listeners, attributes } = useDraggableDialog();
 
   const style = {
     cursor: isDraggable ? 'move' : 'auto',
