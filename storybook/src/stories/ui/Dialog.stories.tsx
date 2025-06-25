@@ -24,6 +24,7 @@ type DialogStoryArgs = {
   onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
   onClick?: () => void;
   showCloseButton?: boolean;
+  isDraggable?: boolean;
 };
 
 const meta: Meta<DialogStoryArgs> = {
@@ -33,6 +34,10 @@ const meta: Meta<DialogStoryArgs> = {
     showCloseButton: {
       control: { type: 'boolean' },
       description: '우측 상단의 X버튼 노출 여부를 설정할 수 있다.',
+    },
+    isDraggable: {
+      control: { type: 'boolean' },
+      description: '드래그 가능 여부를 설정할 수 있다.',
     },
     title: {
       control: { type: 'text' },
@@ -87,6 +92,7 @@ const meta: Meta<DialogStoryArgs> = {
   },
   args: {
     title: 'Example Title',
+    isDraggable: false,
     showCloseButton: true,
     titleIcon: <EditIcon />,
     children: 'Example Children',
@@ -139,6 +145,7 @@ const Template = (args: DialogStoryArgs) => {
             alert('저장되었습니다');
             close();
           }}
+          isDraggable={args.isDraggable}
           showCloseButton={args.showCloseButton}
           trigger={<Button>Dialog 열기</Button>}
           title={args.title}
