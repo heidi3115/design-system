@@ -20,6 +20,14 @@ const meta: Meta<typeof AutoComplete> = {
       table: { defaultValue: { summary: 'full' } },
       description: 'AutoComplete 너비(input의 특성상 fit하게 조절할 수 없음)',
     },
+    disabled: {
+      control: 'boolean',
+      table: { defaultValue: { summary: 'false' } },
+      description: 'AutoComplete 비활성화',
+    },
+    emptyText: {
+      description: 'AutoComplete options 없을때, 대체 문구',
+    },
     isSelectIndicator: {
       control: 'boolean',
       description: '선택 시 우측 체크 아이콘 표시 여부',
@@ -28,10 +36,17 @@ const meta: Meta<typeof AutoComplete> = {
       control: 'boolean',
       description: '선택된 항목 길이에 따라 trigger 버튼의 너비 조절',
     },
+    error: {
+      description: 'form 에러 여부',
+    },
+    helperText: {
+      description: 'AutoComplete 아래 문구',
+    },
     selectRef: { table: { disable: true } },
-  },
-  args: {
-    placeholder: '선택해 주세요',
+    ref: { table: { disable: true } },
+    value: { table: { disable: true } },
+    defaultValue: { table: { disable: true } },
+    onValueChange: { table: { disable: true } },
   },
 };
 
@@ -47,6 +62,7 @@ const baseOptions = [
 export const Default: Story = {
   args: {
     options: baseOptions,
+    placeholder: '선택해주세요.',
   },
 };
 
@@ -69,8 +85,12 @@ export const WithGroupsAndSeparators: Story = {
       },
     ],
     placeholder: 'Select from group',
-    isSelectIndicator: true,
   },
+  render: (args) => (
+    <div className="flex flex-col gap-4 h-60">
+      <AutoComplete {...args} />
+    </div>
+  ),
 };
 
 export const FixedWidth: Story = {
@@ -89,6 +109,11 @@ export const FixedWidth: Story = {
   args: {
     options: baseOptions,
   },
+  argTypes: {
+    width: {
+      table: { disable: true },
+    },
+  },
 };
 
 export const ResponsiveWidths: Story = {
@@ -101,23 +126,33 @@ export const ResponsiveWidths: Story = {
   args: {
     options: baseOptions,
   },
+  argTypes: {
+    width: {
+      table: { disable: true },
+    },
+  },
 };
 
 export const Sizes: Story = {
   render: (args) => (
     <div className="flex flex-col gap-4 w-60">
-      <p className="font-bold text-sm">Size: small</p>
+      <p className="font-bold text-sm">Size: small(height: 28px)</p>
       <AutoComplete {...args} size="small" placeholder="Small" />
 
-      <p className="font-bold text-sm">Size: default</p>
+      <p className="font-bold text-sm">Size: default(height: 32px)</p>
       <AutoComplete {...args} size="default" placeholder="Default" />
 
-      <p className="font-bold text-sm">Size: large</p>
+      <p className="font-bold text-sm">Size: large(height: 36px)</p>
       <AutoComplete {...args} size="large" placeholder="Large" />
     </div>
   ),
   args: {
     options: baseOptions,
+  },
+  argTypes: {
+    width: {
+      table: { disable: true },
+    },
   },
 };
 
@@ -127,6 +162,11 @@ export const WithSelectIndicator: Story = {
     defaultValue: 'a',
     isSelectIndicator: true,
     options: baseOptions,
+  },
+  argTypes: {
+    isSelectIndicator: {
+      table: { disable: true },
+    },
   },
   render: (args) => (
     <div className="flex gap-4 h-36">
@@ -163,10 +203,10 @@ export const WithContentfitTriggerWidth: Story = {
     options: longLabelOptions,
   },
   render: (args) => (
-    <div className="flex flex-col gap-4 w-60">
-      <p className="font-bold text-sm">Trigger 너비 고정</p>
+    <div className="flex flex-col gap-4">
+      <p className="font-bold text-sm">선택상자 부모(trigger) 넓이 고정</p>
       <AutoComplete {...args} width={300} isContentfitTriggerWidth placeholder="Trigger 고정" />
-      <p className="font-bold text-sm">Trigger가 옵션 길이에 맞춤</p>
+      <p className="font-bold text-sm">선택상자 옵션들의 최대길이에 맞춤(Default)</p>
       <AutoComplete {...args} width={300} placeholder="옵션 길이 고정" />
     </div>
   ),
@@ -180,7 +220,7 @@ export const WithErrorAndHelperText: Story = {
     helperText: '필수 항목입니다.',
   },
   render: (args) => (
-    <div className="flex flex-col gap-4 w-60">
+    <div className="flex flex-col gap-4">
       <AutoComplete {...args} />
     </div>
   ),
@@ -191,9 +231,11 @@ const controlledOptions = [
   { label: 'Option B', value: 'b' },
   { label: 'Option C', value: 'c' },
   { label: 'Option D', value: 'd' },
+  { label: 'Option E', value: 'e' },
+  { label: 'Option F', value: 'f' },
 ];
 
-const ControlledComponent = ({ onValueChange, ...args }: ComponentProps<typeof AutoComplete>) => {
+const ControllComp = ({ onValueChange, ...args }: ComponentProps<typeof AutoComplete>) => {
   const [value, setValue] = useState('');
   const ref = useRef<string | null>(null);
 
@@ -238,20 +280,15 @@ export const ControlledAndUncontrolled: Story = {
   args: {
     placeholder: 'Select an option',
   },
-  argTypes: {
-    width: { table: { disable: true } },
-    size: { table: { disable: true } },
-    isSelectIndicator: { table: { disable: true } },
-    isContentfitTriggerWidth: { table: { disable: true } },
-    options: { table: { disable: true } },
-  },
-  render: (args) => <ControlledComponent {...args} />,
+  render: (args) => <ControllComp {...args} />,
   parameters: {
+    controls: {
+      disable: true,
+    },
     docs: {
       description: {
         story: '제어형과 비제어형 AutoComplete를 비교하는 스토리입니다.',
       },
     },
-    disable: true,
   },
 };

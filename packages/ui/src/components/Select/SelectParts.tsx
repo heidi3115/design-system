@@ -32,7 +32,7 @@ function SelectTrigger({
       data-size={size}
       className={cn(
         // 레이아웃 및 플렉스 관련
-        'flex min-w-24 items-center justify-between gap-2 whitespace-nowrap',
+        'relative flex min-w-24 items-center justify-between gap-2 whitespace-nowrap',
 
         // 박스 모델 (패딩, 보더, 라운드, 쉐도우)
         'px-3 py-2 light:border light:border-juiBorder-primary shadow-xs',

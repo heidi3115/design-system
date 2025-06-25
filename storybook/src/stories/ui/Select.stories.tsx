@@ -19,6 +19,11 @@ const meta: Meta<typeof Select> = {
       table: { defaultValue: { summary: 'full' } },
       description: 'Select의 너비 설정 (full: 부모 너비에 맞춤, fit: 내용에 맞춤)',
     },
+    disabled: {
+      control: 'boolean',
+      table: { defaultValue: { summary: 'false' } },
+      description: 'Select 비활성화',
+    },
     isSelectIndicator: {
       control: 'boolean',
       description: '선택 시 우측 체크 아이콘 표시 여부',
@@ -27,12 +32,16 @@ const meta: Meta<typeof Select> = {
       control: 'boolean',
       description: '선택된 항목의 길이에 따라 trigger 버튼의 너비를 조절',
     },
+    error: {
+      description: 'form 에러 여부',
+    },
+    helperText: {
+      description: 'Select 아래 문구',
+    },
     selectRef: {
       table: { disable: true },
     },
-  },
-  args: {
-    placeholder: '선택해 주세요',
+    ref: { table: { disable: true } },
   },
 };
 
@@ -44,6 +53,13 @@ const baseOptions = [
   { label: 'Disabled', value: 'b', disabled: true },
   { label: 'Option C', value: 'c' },
 ];
+
+export const Default: Story = {
+  args: {
+    options: baseOptions,
+    placeholder: '선택해주세요.',
+  },
+};
 
 const groupedOptions: ComponentProps<typeof Select>['options'] = [
   {
@@ -62,17 +78,10 @@ const groupedOptions: ComponentProps<typeof Select>['options'] = [
   },
 ];
 
-export const Default: Story = {
-  args: {
-    options: baseOptions,
-  },
-};
-
 export const WithGroupsAndSeparators: Story = {
   args: {
     options: groupedOptions,
     placeholder: 'Select from group',
-    isSelectIndicator: true,
   },
   render: (args) => (
     <div className="flex flex-col gap-4 h-60">
@@ -163,7 +172,7 @@ export const WithSelectIndicator: Story = {
     return (
       <div className="flex gap-4 h-36">
         <Select {...args} width={350} isSelectIndicator defaultValue="a" />
-        <p className="w-fit">클릭하여 아이템을 확인해 보면 선택된 대상 오른쪽에 체크 표시</p>
+        <p className="w-fit">클릭 시 오른쪽 체크 표시</p>
       </div>
     );
   },
@@ -176,7 +185,6 @@ const longBaseOptions = Array.from({ length: 100 }, (_, i) => ({
 
 export const ScrollItems: Story = {
   args: {
-    ...Default.args,
     options: longBaseOptions,
   },
   render: (args) => {
@@ -196,14 +204,13 @@ const longLabelOptions = [
 
 export const WithContentfitTriggerWidth: Story = {
   args: {
-    ...Default.args,
     options: longLabelOptions,
   },
   render: (args) => (
-    <div className="flex flex-col gap-4 w-60">
+    <div className="flex flex-col gap-4">
       <p className="font-bold text-sm">선택상자 부모(trigger) 넓이 고정</p>
       <Select {...args} width={300} isContentfitTriggerWidth placeholder="선택상자 trigger에 고정" />
-      <p className="font-bold text-sm">선택상자 옵션들의 최대길이에 맞춤</p>
+      <p className="font-bold text-sm">선택상자 옵션들의 최대길이에 맞춤(Default)</p>
       <Select {...args} width={300} placeholder="선택상자 옵션의 길이에 맞춤" />
     </div>
   ),
@@ -217,7 +224,7 @@ export const WithErrorAndHelperText: Story = {
     helperText: '필수 항목입니다.',
   },
   render: (args) => (
-    <div className="flex flex-col gap-4 w-60">
+    <div className="flex flex-col gap-4">
       <Select {...args} />
     </div>
   ),
@@ -277,25 +284,11 @@ export const ControlledAndUncontrolled: Story = {
   args: {
     placeholder: 'Select an option',
   },
-  argTypes: {
-    width: {
-      table: { disable: true },
-    },
-    size: {
-      table: { disable: true },
-    },
-    isSelectIndicator: {
-      table: { disable: true },
-    },
-    isContentfitTriggerWidth: {
-      table: { disable: true },
-    },
-    options: {
-      table: { disable: true },
-    },
-  },
   render: (args) => <ControllComp {...args} />,
   parameters: {
+    controls: {
+      disable: true,
+    },
     docs: {
       description: {
         story:
@@ -303,6 +296,5 @@ export const ControlledAndUncontrolled: Story = {
           '각 방식의 차이와 동작 방식을 쉽게 비교할 수 있습니다.',
       },
     },
-    disable: true,
   },
 };

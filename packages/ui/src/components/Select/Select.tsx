@@ -99,61 +99,17 @@ function Select({
         onValueChange?.(value);
       }}
       {...props}>
-      <div className="flex flex-col flex-1">
+      <div
+        style={
+          isNumberWidth ? { width: `${width}px` } : width === 'fit' ? { width: 'fit-content' } : { width: '100%' }
+        }>
         <SelectTrigger
           ref={ref}
           size={size}
-          className={cn(!isNumberWidth && selectVariaints({ width, error }))}
-          style={isNumberWidth ? { width: `${width}px` } : undefined}>
+          style={isNumberWidth ? { width: `100%` } : undefined}
+          className={cn(!isNumberWidth && selectVariaints({ width, error }))}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent isContentfitTriggerWidth={isContentfitTriggerWidth}>
-          {options.map((opt, idx) => {
-            // 그룹일 경우
-            if ('type' in opt && opt.type === 'group') {
-              return (
-                <SelectGroup key={`group-${idx}`}>
-                  <SelectLabel>{opt.label}</SelectLabel>
-                  {opt.items.map((item, i) => {
-                    if ('type' in item && item.type === 'separator') {
-                      return <SelectSeparator key={`separator-${i}`} />;
-                    }
-
-                    return (
-                      <SelectItem
-                        key={item.value}
-                        value={item.value}
-                        disabled={item.disabled}
-                        size={size}
-                        isSelectIndicator={isSelectIndicator}>
-                        {item.label}
-                      </SelectItem>
-                    );
-                  })}
-                </SelectGroup>
-              );
-            }
-
-            // separator (group 밖에서 쓰이는 경우)
-            if ('type' in opt && opt.type === 'separator') {
-              return <SelectSeparator key={`separator-${idx}`} />;
-            }
-
-            // item (type이 없거나 item인 경우)
-            const item = opt as OptionItem;
-
-            return (
-              <SelectItem
-                key={item.value}
-                value={item.value}
-                disabled={item.disabled}
-                size={size}
-                isSelectIndicator={isSelectIndicator}>
-                {item.label}
-              </SelectItem>
-            );
-          })}
-        </SelectContent>
         {helperText && (
           <p
             className={cn(
@@ -165,6 +121,54 @@ function Select({
           </p>
         )}
       </div>
+
+      <SelectContent isContentfitTriggerWidth={isContentfitTriggerWidth}>
+        {options.map((opt, idx) => {
+          // 그룹일 경우
+          if ('type' in opt && opt.type === 'group') {
+            return (
+              <SelectGroup key={`group-${idx}`}>
+                <SelectLabel>{opt.label}</SelectLabel>
+                {opt.items.map((item, i) => {
+                  if ('type' in item && item.type === 'separator') {
+                    return <SelectSeparator key={`separator-${i}`} />;
+                  }
+
+                  return (
+                    <SelectItem
+                      key={item.value}
+                      value={item.value}
+                      disabled={item.disabled}
+                      size={size}
+                      isSelectIndicator={isSelectIndicator}>
+                      {item.label}
+                    </SelectItem>
+                  );
+                })}
+              </SelectGroup>
+            );
+          }
+
+          // separator (group 밖에서 쓰이는 경우)
+          if ('type' in opt && opt.type === 'separator') {
+            return <SelectSeparator key={`separator-${idx}`} />;
+          }
+
+          // item (type이 없거나 item인 경우)
+          const item = opt as OptionItem;
+
+          return (
+            <SelectItem
+              key={item.value}
+              value={item.value}
+              disabled={item.disabled}
+              size={size}
+              isSelectIndicator={isSelectIndicator}>
+              {item.label}
+            </SelectItem>
+          );
+        })}
+      </SelectContent>
     </SelectRoot>
   );
 }
