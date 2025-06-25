@@ -27,6 +27,7 @@ import {
   CommandDialog,
   Dialog,
   AutoComplete,
+  MultiSelect,
 } from '@common/ui';
 import {
   ArrowLeftIcon,
@@ -540,6 +541,19 @@ export default function Page() {
                 { label: 'Pacific Time (aaa)', value: 'pst' },
                 { label: 'Pacific Time (aaa)', value: 'aaa' },
                 { label: 'Pacific Time (bbb)', value: 'bbb' },
+                { label: 'Pacific Time (ccc)', value: 'ccc' },
+              ]}
+            />
+
+            <MultiSelect
+              width={600}
+              defaultValue={['est', 'pst']}
+              onValueChange={(val) => console.warn(val)}
+              options={[
+                { label: 'MMM', value: 'est' },
+                { label: 'DDDD', value: 'pst' },
+                { label: 'FFF', value: 'aaa' },
+                { label: 'FFF2 ', value: 'bbb' },
                 { label: 'Pacific Time (ccc)', value: 'ccc' },
               ]}
             />

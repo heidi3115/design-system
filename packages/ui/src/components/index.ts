@@ -169,4 +169,5 @@ export {
   CommandShortcut,
   CommandSeparator,
   AutoComplete,
+  MultiSelect,
 } from './Command';
