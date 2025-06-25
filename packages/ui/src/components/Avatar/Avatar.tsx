@@ -110,7 +110,8 @@ function AvatarFallback({ className, asChild = false, size, alt, delayMs, ...pro
           size,
           className,
         }),
-        'has-[img,svg]:aspect-square', // svg, img 있을 때만
+        // svg, img 있을 때만
+        'has-[img,svg]:aspect-square [&_svg[data-slot=avatar-fallback-icon]]:fill-white',
         '[&:not(:has(img,svg))]:p-2',
       )}
       delayMs={delayMs}
@@ -216,7 +217,9 @@ function AvatarContents(props: AvatarContentsProps) {
         delayMs={delayMs}
         className={cn(className, isSrcLoading && 'invisible')}
         {...rest}>
-        {children || fallback || <UserFilledIcon size={size === 'fit' ? 'basic' : size} />}
+        {children || fallback || (
+          <UserFilledIcon data-slot="avatar-fallback-icon" size={size === 'fit' ? 'basic' : size} />
+        )}
       </AvatarFallback>
     </>
   );
