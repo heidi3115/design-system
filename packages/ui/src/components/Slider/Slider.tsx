@@ -1,11 +1,10 @@
 'use client';
 
 import * as React from 'react';
-
 import { cn } from '../../lib/utils';
+import type { VariantProps } from 'tailwind-variants';
 import { SliderRange, SliderRoot, type SliderRootProps, SliderThumb, SliderTrack } from './SliderParts';
 import { sliderVariants } from '@common/ui/components';
-import type { VariantProps } from 'tailwind-variants';
 
 export type SliderProps = SliderRootProps & VariantProps<typeof sliderVariants> & {};
 
@@ -28,7 +27,8 @@ export default function Slider({
   const rangeClass = range();
   const thumbClass = thumb();
 
-  console.warn('\n\nSliderDefault\nbaseClass :', baseClass);
+  console.warn('\n\nSlider\norientation :', orientation, 'variant :', variant, 'size :', size);
+  console.warn('baseClass :', baseClass);
   console.warn('rootClass :', rootClass);
   console.warn('trackClass :', trackClass);
   console.warn('rangeClass :', rangeClass);
@@ -42,6 +42,8 @@ export default function Slider({
   return (
     <SliderRoot
       data-slot="slider"
+      disabled={disabled}
+      orientation={orientation}
       defaultValue={defaultValue}
       value={value}
       min={min}

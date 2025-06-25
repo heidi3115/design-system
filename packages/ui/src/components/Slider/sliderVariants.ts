@@ -4,94 +4,76 @@ export const sliderVariants = tv({
   base: '',
   slots: {
     root: [
-      'relative flex items-center w-full touch-none select-none',
+      'relative flex items-center touch-none select-none',
+      'data-[orientation=horizontal]:w-full data-[orientation=horizontal]:h-auto',
       'data-[orientation=vertical]:w-auto data-[orientation=vertical]:h-full data-[orientation=vertical]:flex-col',
     ],
     track: [
       'overflow-hidden relative grow',
-      'rounded-full',
+      'bg-[color-mix(in_srgb,_var(--slider-color),_transparent_60%)]',
+      'rounded-full inset-shadow-xs',
       'data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full',
     ],
-    range: ['absolute', 'data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full'],
+    range: [
+      'absolute rounded-md',
+      'bg-[color-mix(in_srgb,_var(--slider-color),_transparent_0%)]',
+      'data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full',
+    ],
     thumb: [
-      'ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm ',
+      'bg-[color-mix(in_srgb,_var(--slider-color),_transparent_0%)]',
+      'ring-ring/50 block shrink-0 rounded-full border shadow-sm ',
       'transition-[color,box-shadow]',
-      'hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden ',
-      'disabled:pointer-events-none disabled:opacity-50',
+      'hover:ring-2 focus-visible:ring-2 focus-visible:outline-hidden ',
+      // 'disabled:pointer-events-none disabled:opacity-50',
     ],
   },
   variants: {
     variant: {
-      default: {
-        base: '',
-        root: '',
-        range: '',
-        track: 'bg-juiGrey-a700',
-        thumb: 'bg-juiGrey-a700/40',
-      },
-      primary: {
-        base: '',
-        root: '',
-        range: '',
-        track: 'bg-juiPrimary',
-        thumb: '',
-      },
-      secondary: {
-        base: '',
-        root: '',
-        range: '',
-        track: 'bg-juiSecondary',
-        thumb: '',
-      },
-      error: {
-        base: '',
-        root: '',
-        range: '',
-        track: 'bg-juiError',
-        thumb: '',
-      },
-      custom: {
-        base: '',
-        root: '',
-        range: '',
-        track: '',
-        thumb: '',
-      },
+      default: '[--slider-color:var(--juiGrey-a700)]',
+      primary: '[--slider-color:var(--juiPrimary)]',
+      secondary: '[--slider-color:var(--juiSecondary)]',
+      error: '[--slider-color:var(--juiError)]',
+      // 커스텀을 위한 슬롯으로 variant 가 custom 일 때는 className에 필수로
+      custom: '', // [--slider-color:색상지정] 해야 함.
+      // [--slider-color:#ac8fd1] -> 직접 지정 가능
+      // [--slider-color:theme(colors.red.500)] -> tailwindCSS 에서 인식하는 색상 가능
+      // [--slider-color:var(--juiScore-veryLow)] -> custom.css 에 등록된 색상 가능
+      // [--slider-color:oklch(0.7_0.1_304/42.86%)] -> oklch 뿐만 아니라 rgba 등 hsl도 작동은 하나 띄어쓰기 없어야 하고 필요할 경우 tailwind 에서 인식하도록 _ 처리
     },
     size: {
       default: {
         base: '',
         root: '',
-        range: '',
         track: '',
-        thumb: '',
+        range: '',
+        thumb: 'size-4',
       },
       small: {
         base: '',
         root: '',
-        range: '',
         track: '',
-        thumb: '',
+        range: '',
+        thumb: 'size-2.5',
       },
       medium: {
         base: '',
         root: '',
-        range: '',
         track: '',
-        thumb: '',
+        range: '',
+        thumb: 'size-5',
       },
       large: {
         base: '',
         root: '',
-        range: '',
         track: '',
-        thumb: '',
+        range: '',
+        thumb: 'size-7',
       },
       custom: {
         base: '',
         root: '',
-        range: '',
         track: '',
+        range: '',
         thumb: '',
       },
     },
@@ -115,9 +97,9 @@ export const sliderVariants = tv({
       class: {
         base: '',
         root: '',
-        range: '',
-        track: '',
-        thumb: '',
+        track: 'h-1.5',
+        // range: 'h-1.5',
+        // thumb: '',
       },
     },
     {
@@ -126,9 +108,9 @@ export const sliderVariants = tv({
       class: {
         base: '',
         root: '',
-        track: '',
-        range: '',
-        thumb: '',
+        track: 'w-1.5',
+        // range: 'w-1.5',
+        // thumb: '',
       },
     },
     {
@@ -137,9 +119,9 @@ export const sliderVariants = tv({
       class: {
         base: '',
         root: '',
-        track: '',
-        range: '',
-        thumb: '',
+        track: 'h-1',
+        // range: 'h-1',
+        // thumb: '',
       },
     },
     {
@@ -148,8 +130,8 @@ export const sliderVariants = tv({
       class: {
         base: '',
         root: '',
-        track: '',
-        range: '',
+        track: 'w-1',
+        // range: 'w-1',
         thumb: '',
       },
     },
@@ -159,8 +141,8 @@ export const sliderVariants = tv({
       class: {
         base: '',
         root: '',
-        track: '',
-        range: '',
+        track: 'h-2',
+        // range: '',
         thumb: '',
       },
     },
@@ -170,8 +152,8 @@ export const sliderVariants = tv({
       class: {
         base: '',
         root: '',
-        track: '',
-        range: '',
+        track: 'w-2',
+        // range: '',
         thumb: '',
       },
     },
@@ -181,8 +163,8 @@ export const sliderVariants = tv({
       class: {
         base: '',
         root: '',
-        track: '',
-        range: '',
+        track: 'h-3',
+        // range: '',
         thumb: '',
       },
     },
@@ -192,8 +174,8 @@ export const sliderVariants = tv({
       class: {
         base: '',
         root: '',
-        track: '',
-        range: '',
+        track: 'w-3',
+        // range: '',
         thumb: '',
       },
     },
