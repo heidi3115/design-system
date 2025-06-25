@@ -1,3 +1,5 @@
+'use client';
+
 import { isValidElement, type ReactNode, useState } from 'react';
 import { SheetContent, SheetDescription, SheetHeader, SheetRoot, SheetTitle, SheetTrigger } from '@common/ui';
 import { cn } from '@common/ui/lib/utils';
