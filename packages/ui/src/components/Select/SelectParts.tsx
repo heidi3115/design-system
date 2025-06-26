@@ -32,7 +32,7 @@ function SelectTrigger({
       data-size={size}
       className={cn(
         // 레이아웃 및 플렉스 관련
-        'flex min-w-24 items-center justify-between gap-2 whitespace-nowrap',
+        'relative flex min-w-24 items-center justify-between gap-2 whitespace-nowrap',
 
         // 박스 모델 (패딩, 보더, 라운드, 쉐도우)
         'px-3 py-2 light:border light:border-juiBorder-primary shadow-xs',
@@ -116,7 +116,7 @@ function SelectContent({
           // 위치 관련
           'relative z-50',
 
-          // 크기 관련(외부에서 wrapptr 만들면 검토)
+          // 크기 관련(외부에서 wrapper 만들면 검토)
           'max-h-96 min-w-32',
 
           // 트랜스폼 원점
@@ -180,13 +180,13 @@ function SelectItem({
       data-size={size}
       className={cn(
         // 상태 및 상호작용 관련
-        'focus:bg-current/5 focus:text-juiText-primary',
+        'focus:bg-current/10 focus:text-juiText-primary',
         'data-[state=checked]:bg-juiPrimary/15',
         'data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
 
         // 레이아웃 및 정렬
         'relative flex w-full items-center gap-2 pr-2 pl-2 py-1.5',
-        isSelectIndicator && 'pr-8',
+        isSelectIndicator && 'data-[state=checked]:pr-8',
 
         // 타이포그래피 및 사용자 선택
         'text-sm select-none',
@@ -216,7 +216,7 @@ function SelectItem({
           </SelectPrimitive.ItemIndicator>
         </span>
       )}
-      <div className="block overflow-hidden text-ellipsis">
+      <div className="block truncate">
         <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
       </div>
     </SelectPrimitive.Item>
@@ -227,7 +227,7 @@ function SelectSeparator({ className, ...props }: ComponentProps<typeof SelectPr
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn('bg-juiText-secondary pointer-events-none mx-1 my-1 h-px', className)}
+      className={cn('bg-juiText-secondary pointer-events-none my-1 h-px', className)}
       {...props}
     />
   );

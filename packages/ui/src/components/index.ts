@@ -159,6 +159,19 @@ export {
 } from './HoverCard';
 
 export {
+  CommandRoot,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandShortcut,
+  CommandSeparator,
+  AutoComplete,
+} from './Command';
+
+export {
   Slider,
   type SliderProps,
   sliderVariants,

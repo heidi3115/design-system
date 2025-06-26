@@ -17,6 +17,16 @@ import {
   Switch,
   Skeleton,
   CardSkeleton,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandSeparator,
+  CommandShortcut,
+  CommandDialog,
+  Dialog,
+  AutoComplete,
 } from '@common/ui';
 import {
   ArrowLeftIcon,
@@ -37,7 +47,7 @@ import {
 import { useController, useForm } from 'react-hook-form';
 import ThemeToggle from '../../components/ThemeToggle';
 import { useUpdateEffect } from '@common/utils';
-import { TvIcon } from 'lucide-react';
+import { CalculatorIcon, SmileIcon, TvIcon } from 'lucide-react';
 import { ConfirmAlertDialog } from '@common/ui/components/AlertDialog';
 
 export default function Page() {
@@ -53,11 +63,18 @@ export default function Page() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ email: string; tv: boolean; area: string; fruit: string; timeZone: string }>({
+  } = useForm<{ email: string; tv: boolean; area: string; fruit: string; timeZone: string; auto: string }>({
     mode: 'onBlur',
   });
 
-  const onValid = (data: { email: string; tv: boolean; area: string; fruit: string; timeZone: string }) => {
+  const onValid = (data: {
+    email: string;
+    tv: boolean;
+    area: string;
+    fruit: string;
+    timeZone: string;
+    auto: string;
+  }) => {
     console.warn('폼 제출됨', data);
   };
 
@@ -78,11 +95,22 @@ export default function Page() {
   });
 
   const {
-    field: { value: timeZoneValue, onChange: timeZoneOnChange, ...timeZoneField },
+    field: { ref: timeZoneRef, value: timeZoneValue, onChange: timeZoneOnChange, ...timeZoneField },
+    fieldState: { error: timeZoneError },
   } = useController({
     name: 'timeZone',
-    defaultValue: 'est1',
+    // defaultValue: 'est1',
     control,
+    rules: { required: '필수 입력 항목입니다.' },
+  });
+
+  const {
+    field: { value: autoValue, onChange: autoOnChange, ...autoField },
+    fieldState: { error: autoError },
+  } = useController({
+    name: 'auto',
+    control,
+    rules: { required: '필수 입력 항목입니다.' },
   });
 
   const [isPress, setIsPress] = useState(false);
@@ -107,9 +135,16 @@ export default function Page() {
   const selectRef = useRef(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  const [selectAutoValue, setSelectAutoValue] = useState('');
+  const selectAutoRef = useRef(null);
+
   useUpdateEffect(() => {
     console.warn(selectValue);
   }, [selectValue]);
+
+  useUpdateEffect(() => {
+    console.warn(selectAutoValue);
+  }, [selectAutoValue]);
 
   const portalRef = useRef<HTMLDivElement | null>(null);
 
@@ -166,6 +201,50 @@ export default function Page() {
             }}>
             라디오그룹 비제어
           </Button>
+
+          <Dialog title="dialog" trigger={<Button>aa</Button>}>
+            aaaa
+          </Dialog>
+          <CommandDialog trigger={<Button>command</Button>}>
+            {/* <CommandRoot> */}
+            <CommandInput placeholder="Type a command or search..." />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup heading="Suggestions">
+                <CommandItem>
+                  <CalendarIcon />
+                  <span>Calendar</span>
+                </CommandItem>
+                <CommandItem>
+                  <SmileIcon />
+                  <span>Search Emoji</span>
+                </CommandItem>
+                <CommandItem disabled>
+                  <CalculatorIcon />
+                  <span>Calculator</span>
+                </CommandItem>
+              </CommandGroup>
+              <CommandSeparator />
+              <CommandGroup heading="Settings">
+                <CommandItem>
+                  <CalculatorIcon />
+                  <span>Profile</span>
+                  <CommandShortcut>⌘P</CommandShortcut>
+                </CommandItem>
+                <CommandItem>
+                  <CalculatorIcon />
+                  <span>Billing</span>
+                  <CommandShortcut>⌘B</CommandShortcut>
+                </CommandItem>
+                <CommandItem>
+                  <CalculatorIcon />
+                  <span>Settings</span>
+                  <CommandShortcut>⌘S</CommandShortcut>
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+            {/* </CommandRoot> */}
+          </CommandDialog>
 
           <RadioGroup
             direction="vertical"
@@ -243,6 +322,22 @@ export default function Page() {
           <ConfirmAlertDialog title="warning" trigger={<Button>confirm</Button>} />
 
           <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
+          <SplitOtpInput />
 
           <Toggle
             defaultPressed
@@ -300,6 +395,42 @@ export default function Page() {
           <Checkbox label="normal" customIcon={{ CheckedIcon: EyeIcon, UnCheckedIcon: EyeOffIcon }} />
           <Checkbox id="aa" defaultChecked />
           <div className="w-2xs flex flex-col gap-2">
+            <AutoComplete
+              defaultValue={autoValue}
+              onValueChange={autoOnChange}
+              options={[
+                { label: 'Eastern Time (EST)dddddddddddddddddddddd', value: 'est' },
+                { label: 'Pacific Time (PST)', value: 'pst' },
+                { label: 'Pacific Time (aaa)', value: 'aaa' },
+                { label: 'Pacific Time (bbb)', value: 'bbb' },
+                { label: 'Pacific Time (ccc)', value: 'ccc' },
+              ]}
+              error={!!autoError}
+              helperText={autoError?.message}
+              {...autoField}
+            />
+
+            <Select
+              defaultValue={timeZoneValue}
+              onValueChange={timeZoneOnChange}
+              options={[
+                { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
+                { label: 'Pacific Standard Time (PST)', value: 'pst1' },
+                { type: 'separator' },
+                {
+                  type: 'group',
+                  label: 'North America',
+                  items: [
+                    { label: 'Eastern Standard Time (EST)', value: 'est', disabled: true },
+                    { label: 'Pacific Standard Time (PST)', value: 'pst' },
+                  ],
+                },
+              ]}
+              error={!!timeZoneError}
+              helperText={timeZoneError?.message}
+              ref={timeZoneRef}
+              {...timeZoneField}
+            />
             <div className="h-26">
               <Textarea defaultValue="aaaa" size="full" />
             </div>
@@ -328,7 +459,7 @@ export default function Page() {
               options={[
                 { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
                 { label: 'Pacific Standard Time (PST)', value: 'pst1' },
-                { type: 'separator' },
+                // { type: 'separator' },
                 {
                   type: 'group',
                   label: 'North America',
@@ -341,29 +472,11 @@ export default function Page() {
             />
 
             <Select
-              defaultValue={timeZoneValue}
-              onValueChange={timeZoneOnChange}
-              options={[
-                { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
-                { label: 'Pacific Standard Time (PST)', value: 'pst1' },
-                { type: 'separator' },
-                {
-                  type: 'group',
-                  label: 'North America',
-                  items: [
-                    { label: 'Eastern Standard Time (EST)', value: 'est', disabled: true },
-                    { label: 'Pacific Standard Time (PST)', value: 'pst' },
-                  ],
-                },
-              ]}
-              {...timeZoneField}
-            />
-
-            <Select
               selectRef={selectRef}
               defaultValue="pst"
               size="small"
-              width={200}
+              width="fit"
+              isSelectIndicator
               isContentfitTriggerWidth
               options={[
                 { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
@@ -385,6 +498,76 @@ export default function Page() {
                 }
               }}>
               select 비제어
+            </Button>
+
+            <AutoComplete
+              value={selectAutoValue}
+              onValueChange={setSelectAutoValue}
+              placeholder="오토컴플리트"
+              width={200}
+              // size="small"
+              isSelectIndicator
+              options={[
+                { label: 'Eastern Time (EST)', value: 'est' },
+                { label: 'Pacific Time (PST)', value: 'pst' },
+                { label: 'Pacific Time (aaa)', value: 'aaa' },
+                { label: 'Pacific Time ()', value: 'bbb' },
+                { label: 'Pacific Time (ccc)', value: 'ccc' },
+                { label: 'Pacific Time (ddd)', value: 'ddd' },
+                { label: 'Pacific Time (eee)aaaaaaaaaaa', value: 'eee' },
+                { type: 'separator' },
+                { label: 'zz보안담당', value: '1qqq' },
+                { label: 'zz보안담당2', value: '2qqq' },
+                { label: 'zz보안담당3', value: '3qqq' },
+                { label: 'zz보안담당4', value: '4qqq' },
+                {
+                  type: 'group',
+                  label: 'North America',
+                  items: [
+                    { label: 'Eastern Standard Time (EST)', value: 'e22st' },
+                    { type: 'separator' },
+                    { label: 'Pacific Standard Time (PST)', value: 'ps22t', disabled: true },
+                  ],
+                },
+              ]}
+            />
+
+            <AutoComplete
+              isSelectIndicator
+              isContentfitTriggerWidth
+              options={[
+                { label: 'Eastern Time (EST)dddddddddddddddddddddd', value: 'est' },
+                { label: 'Pacific Time (aaa)', value: 'pst' },
+                { label: 'Pacific Time (aaa)', value: 'aaa' },
+                { label: 'Pacific Time (bbb)', value: 'bbb' },
+                { label: 'Pacific Time (ccc)', value: 'ccc' },
+              ]}
+            />
+
+            <AutoComplete
+              selectRef={selectAutoRef}
+              // isSelectIndicator
+              defaultValue="ttt4"
+              size="large"
+              // isContentfitTriggerWidth
+              options={[
+                // { label: 'Eastern Time (EST)dddddddddddddddddddddd', value: 'est' },
+                // { label: 'Pacific Time (PST)', value: 'pst' },
+                // { label: 'Pacific Time (aaa)', value: 'aaa' },
+                // { label: 'Pacific Time (bbb)', value: 'bbb' },
+                // { label: 'Pacific Time (ccc)', value: 'ccc' },
+                { label: 'ㅅㅅㅅ4', value: 'ttt4' },
+                { label: 'ㅅㅅㅅ666666666666667777777', value: 'ttt6' },
+                { label: 'ㅅㅅㅅ6666666666666677777773232dzdffsdfadsfadf232', value: 'ttt7' },
+              ]}
+            />
+            <Button
+              onClick={() => {
+                if (selectAutoRef.current) {
+                  console.warn('비제어', selectAutoRef.current);
+                }
+              }}>
+              AutoComplete select 비제어
             </Button>
 
             <Input
