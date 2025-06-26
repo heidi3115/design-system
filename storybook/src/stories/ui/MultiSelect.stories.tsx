@@ -56,6 +56,8 @@ const baseOptions = [
   { label: 'Option A', value: 'a' },
   { label: 'Disabled Option', value: 'b', disabled: true },
   { label: 'Option C', value: 'c' },
+  { label: 'Option D', value: 'd' },
+  { label: 'Option E', value: 'E' },
 ];
 
 export const Default: Story = {
@@ -94,12 +96,24 @@ export const WithGroupsAndSeparators: Story = {
 
 export const FixedWidth: Story = {
   render: (args) => (
-    <div className="flex flex-col gap-4 w-80">
-      <MultiSelect {...args} width={300} placeholder="고정 너비 300px" />
+    <div className="flex flex-col gap-4 w-60">
+      <p className="font-bold text-sm">고정 너비 200px</p>
+      <MultiSelect {...args} width={200} placeholder="200px" />
+
+      <p className="font-bold text-sm">고정 너비 400px</p>
+      <MultiSelect {...args} width={400} placeholder="400px" />
+
+      <p className="font-bold text-sm">고정 너비 600px</p>
+      <MultiSelect {...args} width={600} placeholder="600px" />
     </div>
   ),
   args: {
     options: baseOptions,
+  },
+  argTypes: {
+    width: {
+      table: { disable: true },
+    },
   },
 };
 
@@ -113,18 +127,33 @@ export const ResponsiveWidths: Story = {
   args: {
     options: baseOptions,
   },
+  argTypes: {
+    width: {
+      table: { disable: true },
+    },
+  },
 };
 
 export const Sizes: Story = {
   render: (args) => (
     <div className="flex flex-col gap-4 w-60">
+      <p className="font-bold text-sm">Size: small(height: 28px)</p>
       <MultiSelect {...args} size="small" placeholder="Small" />
+
+      <p className="font-bold text-sm">Size: default(height: 32px)</p>
       <MultiSelect {...args} size="default" placeholder="Default" />
+
+      <p className="font-bold text-sm">Size: large(height: 36px)</p>
       <MultiSelect {...args} size="large" placeholder="Large" />
     </div>
   ),
   args: {
     options: baseOptions,
+  },
+  argTypes: {
+    width: {
+      table: { disable: true },
+    },
   },
 };
 
