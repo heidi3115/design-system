@@ -12,28 +12,22 @@ function TableRoot({ className, ...props }: ComponentProps<'table'>) {
 }
 
 function TableHeader({ className, ...props }: ComponentProps<'thead'>) {
-  return <thead data-slot="table-header" className={cn('[&_tr]:border-b', className)} {...props} />;
+  return <thead data-slot="table-header" className={cn('h-[44px]', className)} {...props} />;
 }
 
 function TableBody({ className, ...props }: ComponentProps<'tbody'>) {
-  return <tbody data-slot="table-body" className={cn('[&_tr:last-child]:border-0', className)} {...props} />;
+  return <tbody data-slot="table-body" className={cn(className)} {...props} />;
 }
 
 function TableFooter({ className, ...props }: ComponentProps<'tfoot'>) {
-  return (
-    <tfoot
-      data-slot="table-footer"
-      className={cn('bg-muted/50 border-t font-medium [&>tr]:last:border-b-0', className)}
-      {...props}
-    />
-  );
+  return <tfoot data-slot="table-footer" className={cn('bg-muted/50 font-medium', className)} {...props} />;
 }
 
 function TableRow({ className, ...props }: ComponentProps<'tr'>) {
   return (
     <tr
       data-slot="table-row"
-      className={cn('hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors', className)}
+      className={cn('hover:bg-muted/50 data-[state=selected]:bg-muted transition-colors', className)}
       {...props}
     />
   );
@@ -57,7 +51,7 @@ function TableCell({ className, ...props }: ComponentProps<'td'>) {
     <td
       data-slot="table-cell"
       className={cn(
-        'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+        'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] border-b border-juiBorder-table',
         className,
       )}
       {...props}
