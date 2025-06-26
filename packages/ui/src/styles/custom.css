@@ -135,6 +135,7 @@
   --color-juiText-blue: var(--juiText-blue);
   --color-juiText-purple: var(--juiText-purple);
   --color-juiBorder-primary: var(--juiBorder-primary);
+  --color-juiBorder-table: var(--juiBorder-table);
   --color-juiScore-veryLow: var(--juiScore-veryLow);
   --color-juiScore-low: var(--juiScore-low);
   --color-juiScore-normal: var(--juiScore-normal);
@@ -156,4 +157,5 @@
   --juiText-primary: #333333;
   --juiText-secondary: rgba(0, 0, 0, 0.4);
   --juiText-disabled: #c7c7c7;
+  --juiBorder-table: #eaeaea;
 }
