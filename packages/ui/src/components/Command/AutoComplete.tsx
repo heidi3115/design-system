@@ -87,7 +87,6 @@ const AutoComplete = ({
     popoverBase,
     triggerBase,
     itemBase,
-    groupLabelBase,
     checkIconBase,
     chevronIconBase,
     error: errorBorder,
@@ -96,7 +95,7 @@ const AutoComplete = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const flattenedOptions = useFlattenedOptions(options);
+  const flattenedOptions = useFlattenedOptions<OptionItem>(options);
 
   const { inputWidth, inputHeight } = useInputSize({ inputRef, isOpen });
 
@@ -289,32 +288,29 @@ const AutoComplete = ({
             }}>
             {inputValue && canFilter && <CommandEmpty>{emptyText}</CommandEmpty>}
 
-            <CommandGroup>
-              {options.map((opt, idx) => {
-                if ('type' in opt && opt.type === 'group') {
-                  return (
-                    <div key={`group-${idx}`} className="mt-1.5">
-                      <span className={cn(groupLabelBase())}>{opt.label}</span>
-                      {opt.items.map((item, i) => {
-                        if ('type' in item && item.type === 'separator') {
-                          return <CommandSeparator key={`separatorGroup-${i}`} />;
-                        }
+            {options.map((opt, idx) => {
+              if ('type' in opt && opt.type === 'group') {
+                return (
+                  <CommandGroup key={`group-${idx}`} heading={opt.label}>
+                    {opt.items.map((item, i) => {
+                      if ('type' in item && item.type === 'separator') {
+                        return <CommandSeparator key={`separatorGroup-${i}`} />;
+                      }
 
-                        return renderCommandItem(item);
-                      })}
-                    </div>
-                  );
-                }
+                      return renderCommandItem(item);
+                    })}
+                  </CommandGroup>
+                );
+              }
 
-                if ('type' in opt && opt.type === 'separator') {
-                  return <CommandSeparator key={`separator-${idx}`} />;
-                }
+              if ('type' in opt && opt.type === 'separator') {
+                return <CommandSeparator key={`separator-${idx}`} />;
+              }
 
-                const item = opt as OptionItem;
+              const item = opt as OptionItem;
 
-                return renderCommandItem(item);
-              })}
-            </CommandGroup>
+              return <CommandGroup key={`normal-${idx}`}>{renderCommandItem(item)}</CommandGroup>;
+            })}
           </CommandList>
         </Popover>
 

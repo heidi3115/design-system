@@ -234,6 +234,12 @@ export default function Page() {
                 </CommandItem>
                 <CommandItem>
                   <CalculatorIcon />
+                  <span>Billing2</span>
+                  <CommandShortcut>⌘B</CommandShortcut>
+                </CommandItem>
+                <CommandSeparator />
+                <CommandItem>
+                  <CalculatorIcon />
                   <span>Billing</span>
                   <CommandShortcut>⌘B</CommandShortcut>
                 </CommandItem>
@@ -510,7 +516,7 @@ export default function Page() {
               isSelectIndicator
               options={[
                 { label: 'Eastern Time (EST)', value: 'est' },
-                { label: 'Pacific Time (PST)', value: 'pst' },
+                { label: 'Pacific Time (PST)', value: 'pst', disabled: true },
                 { label: 'Pacific Time (aaa)', value: 'aaa' },
                 { label: 'Pacific Time ()', value: 'bbb' },
                 { label: 'Pacific Time (ccc)', value: 'ccc' },
@@ -520,7 +526,7 @@ export default function Page() {
                 { label: 'zz보안담당', value: '1qqq' },
                 { label: 'zz보안담당2', value: '2qqq' },
                 { label: 'zz보안담당3', value: '3qqq' },
-                { label: 'zz보안담당4', value: '4qqq' },
+                { label: 'zz보안담당4', value: '4qqq', disabled: true },
                 {
                   type: 'group',
                   label: 'North America',
