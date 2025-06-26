@@ -59,18 +59,17 @@ function SliderDefault({
 
   return (
     <SliderRoot
-      data-slot="slider"
       defaultValue={defaultValue}
       value={value}
       min={min}
       max={max}
       className={cn(baseClass, rootClass, className)}
       {...props}>
-      <SliderTrack data-slot="slider-track" className={cn(baseClass, trackClass)}>
-        <SliderRange data-slot="slider-range" className={cn(baseClass, rangeClass)} />
+      <SliderTrack className={cn(baseClass, trackClass)}>
+        <SliderRange className={cn(baseClass, rangeClass)} />
       </SliderTrack>
       {Array.from({ length: _values.length }, (_, index) => (
-        <SliderThumb data-slot="slider-thumb" key={index} className={cn(baseClass, thumbClass)} />
+        <SliderThumb key={index} className={cn(baseClass, thumbClass)} />
       ))}
     </SliderRoot>
   );

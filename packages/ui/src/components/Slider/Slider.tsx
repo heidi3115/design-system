@@ -69,7 +69,6 @@ export default function Slider({
 
   return (
     <SliderRoot
-      data-slot="slider"
       disabled={disabled}
       orientation={orientation}
       min={min}
@@ -81,11 +80,11 @@ export default function Slider({
       onValueCommit={handleValueCommit}
       className={cn(baseClass, rootClass, className)}
       {...props}>
-      <SliderTrack data-slot="slider-track" className={cn(baseClass, trackClass)}>
-        <SliderRange data-slot="slider-range" className={cn(baseClass, rangeClass)} />
+      <SliderTrack className={cn(baseClass, trackClass)}>
+        <SliderRange className={cn(baseClass, rangeClass)} />
       </SliderTrack>
       {Array.from({ length: currentValues.length }, (_, index) => (
-        <SliderThumb data-slot="slider-thumb" key={index} className={cn(baseClass, thumbClass)} />
+        <SliderThumb key={index} className={cn(baseClass, thumbClass)} />
       ))}
     </SliderRoot>
   );
