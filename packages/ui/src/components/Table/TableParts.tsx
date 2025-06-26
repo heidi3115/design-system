@@ -12,7 +12,13 @@ function TableRoot({ className, ...props }: ComponentProps<'table'>) {
 }
 
 function TableHeader({ className, ...props }: ComponentProps<'thead'>) {
-  return <thead data-slot="table-header" className={cn('h-[44px]', className)} {...props} />;
+  return (
+    <thead
+      data-slot="table-header"
+      className={cn('h-[44px] bg-juiGrey-a700 text-juiText-tableHead', className)}
+      {...props}
+    />
+  );
 }
 
 function TableBody({ className, ...props }: ComponentProps<'tbody'>) {
@@ -38,7 +44,7 @@ function TableHead({ className, ...props }: ComponentProps<'th'>) {
     <th
       data-slot="table-head"
       className={cn(
-        'text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+        'h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] font-bold',
         className,
       )}
       {...props}
@@ -51,7 +57,7 @@ function TableCell({ className, ...props }: ComponentProps<'td'>) {
     <td
       data-slot="table-cell"
       className={cn(
-        'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] border-b border-juiBorder-table',
+        'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] border border-juiBorder-table border-b-juiBorder-tableBottom',
         className,
       )}
       {...props}
@@ -60,9 +66,7 @@ function TableCell({ className, ...props }: ComponentProps<'td'>) {
 }
 
 function TableCaption({ className, ...props }: ComponentProps<'caption'>) {
-  return (
-    <caption data-slot="table-caption" className={cn('text-muted-foreground mt-4 text-sm', className)} {...props} />
-  );
+  return <caption data-slot="table-caption" className={cn('mt-4 text-sm', className)} {...props} />;
 }
 
 export { TableRoot, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption };

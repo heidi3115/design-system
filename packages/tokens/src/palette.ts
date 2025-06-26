@@ -43,10 +43,12 @@ const palette = {
     disabled: { main: '#505050', light: '#c7c7c7' },
     blue: { main: '#7A97FF' },
     purple: { main: '#9747FF' },
+    tableHead: { main: 'rgba(255, 255, 255, 0.5)', light: '#fff' },
   },
   juiBorder: {
     primary: { main: '#E0E0E0' },
-    table: { main: '#282E3F', light: '#EAEAEA'}
+    table: { main: 'transparent', light: '#EAEAEA'},
+    tableBottom: { main: '#282E3F', light: '#EAEAEA'},
   },
   juiScore: {
     veryLow: { main: '#8294FF' },

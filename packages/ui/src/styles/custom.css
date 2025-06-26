@@ -36,8 +36,10 @@
   --juiText-disabled: #505050;
   --juiText-blue: #7a97ff;
   --juiText-purple: #9747ff;
+  --juiText-tableHead: rgba(255, 255, 255, 0.5);
   --juiBorder-primary: #e0e0e0;
-  --juiBorder-table: #282e3f;
+  --juiBorder-table: transparent;
+  --juiBorder-tableBottom: #282e3f;
   --juiScore-veryLow: #8294ff;
   --juiScore-low: #5873ff;
   --juiScore-normal: #7635ff;
@@ -86,8 +88,10 @@
   --juiText-disabled: #505050;
   --juiText-blue: #7a97ff;
   --juiText-purple: #9747ff;
+  --juiText-tableHead: rgba(255, 255, 255, 0.5);
   --juiBorder-primary: #e0e0e0;
-  --juiBorder-table: #282e3f;
+  --juiBorder-table: transparent;
+  --juiBorder-tableBottom: #282e3f;
   --juiScore-veryLow: #8294ff;
   --juiScore-low: #5873ff;
   --juiScore-normal: #7635ff;
@@ -136,8 +140,10 @@
   --color-juiText-disabled: var(--juiText-disabled);
   --color-juiText-blue: var(--juiText-blue);
   --color-juiText-purple: var(--juiText-purple);
+  --color-juiText-tableHead: var(--juiText-tableHead);
   --color-juiBorder-primary: var(--juiBorder-primary);
   --color-juiBorder-table: var(--juiBorder-table);
+  --color-juiBorder-tableBottom: var(--juiBorder-tableBottom);
   --color-juiScore-veryLow: var(--juiScore-veryLow);
   --color-juiScore-low: var(--juiScore-low);
   --color-juiScore-normal: var(--juiScore-normal);
@@ -159,5 +165,7 @@
   --juiText-primary: #333333;
   --juiText-secondary: rgba(0, 0, 0, 0.4);
   --juiText-disabled: #c7c7c7;
+  --juiText-tableHead: #fff;
   --juiBorder-table: #eaeaea;
+  --juiBorder-tableBottom: #eaeaea;
 }
