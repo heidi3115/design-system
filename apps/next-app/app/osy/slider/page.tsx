@@ -8,14 +8,14 @@ import { Separator, Slider } from '@common/ui';
 
 export default function SliderPage() {
   const tempStd = 0;
-  // const tempMin1 = 0.1;
-  // const tempMin2 = 0.001;
-  // const tempMin3 = 0.000001;
+  const tempMin1 = 0.1;
+  const tempMin2 = 0.001;
+  const tempMin3 = 0.000001;
   const tempMax1 = 1;
   // const tempMax2 = 10;
   const tempMax3 = 100;
   const tempDefaultVal1 = 33;
-  // const tempDefaultVal2 = 0.37;
+  const tempDefaultVal2 = 0.37;
 
   return (
     <main className={'relative size-full'}>
@@ -42,7 +42,7 @@ export default function SliderPage() {
                     // Slider 의 부모에서 가로 길이 지정 필요.
                   >
                     <Slider
-                      variant={'default'}
+                      variant={'primary'}
                       defaultValue={[tempDefaultVal1]}
                       min={tempStd}
                       max={tempMax3}
@@ -66,7 +66,7 @@ export default function SliderPage() {
                     {/*/>*/}
                   </div>
                   <div
-                    className={'flex flex-row gap-3 w-120'}
+                    className={'flex flex-row gap-3 w-100'}
                     // Slider 의 부모에서 가로 길이 지정 필요.
                   >
                     primary - test :
@@ -74,7 +74,7 @@ export default function SliderPage() {
                       disabled={false}
                       size={'large'}
                       variant={'custom'}
-                      defaultValue={[tempDefaultVal1, 78]}
+                      defaultValue={[tempDefaultVal1, 78, 99, 15]}
                       min={tempStd}
                       max={tempMax3}
                       step={tempMax1}
@@ -90,74 +90,26 @@ export default function SliderPage() {
                       // className="[--slider-color:var(--juiScore-veryLow)]"
                     />
                   </div>
-                  <div
-                    className={'flex flex-row gap-3 w-80'}
-                    // Slider 의 부모에서 가로 길이 지정 필요.
-                  >
+                </div>
+                <div className={'flex flex-col gap-2'}>
+                  <span className={'text-juiText-blue text-base font-bold'}>Float no defaultValue</span>
+                  <div className={'flex flex-row gap-3'}>
                     <Slider
                       variant={'primary'}
-                      defaultValue={[tempDefaultVal1]}
-                      min={tempStd}
-                      max={tempMax3}
-                      step={tempMax1}
+                      defaultValue={[tempMin3, tempDefaultVal2]}
+                      min={tempMin2}
+                      max={tempMin1}
+                      step={tempMin2}
                       orientation={'horizontal'}
                       onValueChange={(e) => {
-                        console.warn('Integer - SliderDefault - horizontal');
                         console.warn('onValueChange => e :', e);
                       }}
-                    />
-                  </div>
-                  <div
-                    className={'flex flex-row gap-3 w-80'}
-                    // Slider 의 부모에서 가로 길이 지정 필요.
-                  >
-                    <Slider
-                      variant={'secondary'}
-                      defaultValue={[tempDefaultVal1]}
-                      min={tempStd}
-                      max={tempMax3}
-                      step={tempMax1}
-                      orientation={'horizontal'}
-                      onValueChange={(e) => {
-                        console.warn('Integer - SliderDefault - horizontal');
-                        console.warn('onValueChange => e :', e);
-                      }}
-                    />
-                  </div>
-                  <div
-                    className={'flex flex-row gap-3 w-80'}
-                    // Slider 의 부모에서 가로 길이 지정 필요.
-                  >
-                    <Slider
-                      variant={'error'}
-                      defaultValue={[tempDefaultVal1]}
-                      min={tempStd}
-                      max={tempMax3}
-                      step={tempMax1}
-                      orientation={'horizontal'}
-                      onValueChange={(e) => {
-                        console.warn('Integer - SliderDefault - horizontal');
-                        console.warn('onValueChange => e :', e);
+                      onValueCommit={(final) => {
+                        console.warn('onValueCommit => e :', final);
                       }}
                     />
                   </div>
                 </div>
-                {/*<div className={'flex flex-col gap-2'}>*/}
-                {/*  <span className={'text-juiText-blue text-base font-bold'}>Float</span>*/}
-                {/*  <div className={'flex flex-row gap-3'}>*/}
-                {/*    <SliderDefault*/}
-                {/*      defaultValue={[tempDefaultVal2]}*/}
-                {/*      min={tempMin2}*/}
-                {/*      max={tempMin1}*/}
-                {/*      step={tempMin2}*/}
-                {/*      orientation={'horizontal'}*/}
-                {/*      onValueChange={(e) => {*/}
-                {/*        console.warn('Float - SliderDefault - horizontal');*/}
-                {/*        console.warn('onValueChange => e :', e);*/}
-                {/*      }}*/}
-                {/*    />*/}
-                {/*  </div>*/}
-                {/*</div>*/}
               </div>
               {/*<div className={'flex flex-row gap-4'}>*/}
               {/*  <div className={'flex flex-col gap-2'}>*/}

@@ -29,10 +29,10 @@ export const sliderVariants = tv({
   },
   variants: {
     variant: {
-      default: '[--slider-color:var(--juiGrey-a700)]',
       primary: '[--slider-color:var(--juiPrimary)]',
       secondary: '[--slider-color:var(--juiSecondary)]',
       error: '[--slider-color:var(--juiError)]',
+      grey: '[--slider-color:var(--juiGrey-a700)]',
       // 커스텀을 위한 슬롯으로 variant 가 custom 일 때는 className에 필수로
       custom: '', // [--slider-color:색상지정] 해야 함.
       // [--slider-color:#ac8fd1] -> 직접 지정 가능
@@ -110,7 +110,7 @@ export const sliderVariants = tv({
         root: '',
         track: 'w-1.5',
         // range: 'w-1.5',
-        // thumb: '',
+        thumb: '',
       },
     },
     {

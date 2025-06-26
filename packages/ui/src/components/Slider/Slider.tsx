@@ -1,22 +1,33 @@
 'use client';
 
-import * as React from 'react';
+import { type Ref, useCallback, useImperativeHandle, useState } from 'react';
 import { cn } from '../../lib/utils';
 import type { VariantProps } from 'tailwind-variants';
 import { SliderRange, SliderRoot, type SliderRootProps, SliderThumb, SliderTrack } from './SliderParts';
-import { sliderVariants } from '@common/ui/components';
+import { sliderVariants } from './sliderVariants';
 
-export type SliderProps = SliderRootProps & VariantProps<typeof sliderVariants> & {};
+export type SliderProps = SliderRootProps &
+  VariantProps<typeof sliderVariants> & {
+    sliderRef?: Ref<number[]>;
+  };
+
+const MIN_INT_VALUE = 0;
+const MAX_INT_VALUE = 100;
+const DEFAULT_STEP = 1;
 
 export default function Slider({
-  variant = 'default',
+  variant = 'primary',
   size = 'default',
   orientation = 'horizontal',
   disabled = false,
+  min = MIN_INT_VALUE,
+  max = MAX_INT_VALUE,
+  step = DEFAULT_STEP,
+  sliderRef = undefined,
   defaultValue,
   value,
-  min = 0,
-  max = 100,
+  onValueChange,
+  onValueCommit,
   className,
   ...props
 }: SliderProps) {
@@ -27,33 +38,53 @@ export default function Slider({
   const rangeClass = range();
   const thumbClass = thumb();
 
-  console.warn('\n\nSlider\norientation :', orientation, 'variant :', variant, 'size :', size);
-  console.warn('baseClass :', baseClass);
-  console.warn('rootClass :', rootClass);
-  console.warn('trackClass :', trackClass);
-  console.warn('rangeClass :', rangeClass);
-  console.warn('thumbClass :', thumbClass);
+  const isControlled = value !== undefined;
+  const DefaultValueArray = Array.isArray(defaultValue) ? defaultValue : [min || max];
+  const ValueArray = Array.isArray(value) ? value : [min || max];
+  const [internalValues, setInternalValues] = useState<number[]>(DefaultValueArray ?? [min || max]);
+  const currentValues = isControlled ? ValueArray : internalValues;
 
-  const _values = React.useMemo(
-    () => (Array.isArray(value) ? value : Array.isArray(defaultValue) ? defaultValue : [min, max]),
-    [value, defaultValue, min, max],
+  const handleValueChange = useCallback(
+    (newValues: number[]) => {
+      if (!isControlled) {
+        setInternalValues(newValues);
+      }
+
+      onValueChange?.(newValues);
+    },
+    [isControlled, onValueChange],
   );
+
+  const handleValueCommit = useCallback(
+    (commitedValues: number[]) => {
+      if (onValueCommit) {
+        onValueCommit(commitedValues);
+      }
+    },
+    [onValueCommit],
+  );
+
+  // 비제어 선택값
+  useImperativeHandle(sliderRef, () => currentValues);
 
   return (
     <SliderRoot
       data-slot="slider"
       disabled={disabled}
       orientation={orientation}
-      defaultValue={defaultValue}
-      value={value}
       min={min}
       max={max}
+      step={step}
+      defaultValue={internalValues}
+      value={currentValues}
+      onValueChange={handleValueChange}
+      onValueCommit={handleValueCommit}
       className={cn(baseClass, rootClass, className)}
       {...props}>
       <SliderTrack data-slot="slider-track" className={cn(baseClass, trackClass)}>
         <SliderRange data-slot="slider-range" className={cn(baseClass, rangeClass)} />
       </SliderTrack>
-      {Array.from({ length: _values.length }, (_, index) => (
+      {Array.from({ length: currentValues.length }, (_, index) => (
         <SliderThumb data-slot="slider-thumb" key={index} className={cn(baseClass, thumbClass)} />
       ))}
     </SliderRoot>

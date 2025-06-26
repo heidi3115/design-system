@@ -30,8 +30,22 @@ function SliderThumb({ className, ...props }: SliderThumbProps) {
   return <SliderPrimitive.Thumb data-slot="slider-thumb" className={cn(className)} {...props} />;
 }
 
-function SliderDefault({ className, defaultValue, value, min = 0, max = 100, orientation, ...props }: SliderRootProps) {
-  const { base, root, track, range, thumb } = sliderVariants({ variant: 'default', size: 'default', orientation });
+function SliderDefault({
+  min = 0,
+  max = 100,
+  orientation = 'horizontal',
+  disabled = false,
+  defaultValue,
+  value,
+  className,
+  ...props
+}: SliderRootProps) {
+  const { base, root, track, range, thumb } = sliderVariants({
+    variant: 'primary',
+    size: 'default',
+    orientation,
+    disabled,
+  });
   const baseClass = base();
   const rootClass = root();
   const trackClass = track();
