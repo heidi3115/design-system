@@ -132,11 +132,11 @@ export default function Page() {
 
   const radioRef = useRef(null);
 
-  const [selectValue, setSelectValue] = useState('');
+  const [selectValue, setSelectValue] = useState('est1');
   const selectRef = useRef(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const [selectAutoValue, setSelectAutoValue] = useState('');
+  const [selectAutoValue, setSelectAutoValue] = useState('est');
   const selectAutoRef = useRef(null);
 
   useUpdateEffect(() => {
@@ -146,6 +146,13 @@ export default function Page() {
   useUpdateEffect(() => {
     console.warn(selectAutoValue);
   }, [selectAutoValue]);
+
+  const [selectMultiValue, setSelectMultiValue] = useState<string[]>([]);
+  const selectMultiRef = useRef(null);
+
+  useUpdateEffect(() => {
+    console.warn(setSelectMultiValue);
+  }, [setSelectMultiValue]);
 
   const portalRef = useRef<HTMLDivElement | null>(null);
 
@@ -551,25 +558,13 @@ export default function Page() {
               ]}
             />
 
-            <MultiSelect
-              width={600}
-              defaultValue={['est', 'pst']}
-              onValueChange={(val) => console.warn(val)}
-              options={[
-                { label: 'MMM', value: 'est' },
-                { label: 'DDDD', value: 'pst' },
-                { label: 'FFF', value: 'aaa' },
-                { label: 'FFF2 ', value: 'bbb' },
-                { label: 'Pacific Time (ccc)', value: 'ccc' },
-              ]}
-            />
-
             <AutoComplete
               selectRef={selectAutoRef}
               // isSelectIndicator
               defaultValue="ttt4"
               size="large"
               // isContentfitTriggerWidth
+              isLeaveClose
               options={[
                 // { label: 'Eastern Time (EST)dddddddddddddddddddddd', value: 'est' },
                 // { label: 'Pacific Time (PST)', value: 'pst' },
@@ -588,6 +583,57 @@ export default function Page() {
                 }
               }}>
               AutoComplete select 비제어
+            </Button>
+
+            <MultiSelect
+              width={600}
+              size="small"
+              onValueChange={(val) => console.warn(val)}
+              isAddNewItem
+              options={[
+                { label: 'mmm', value: 'est' },
+                { label: 'DDDD', value: 'pst' },
+                { label: 'FFF', value: 'aaa' },
+                { label: 'FFF2 ', value: 'bbb' },
+                { label: 'Pacific Time (ccc)', value: 'ccc' },
+              ]}
+            />
+
+            <MultiSelect
+              width={600}
+              value={selectMultiValue}
+              onValueChange={setSelectMultiValue}
+              placeholder="tets"
+              options={[
+                { label: 'mmm', value: 'est' },
+                { label: 'DDDD', value: 'pst' },
+                { label: 'FFF', value: 'aaa' },
+                { label: 'FFF2 ', value: 'bbb' },
+                { label: 'Pacific Time (ccc)', value: 'ccc' },
+              ]}
+            />
+
+            <MultiSelect
+              size="large"
+              selectRef={selectMultiRef}
+              // isContentfitTriggerWidth
+              onValueChange={(val) => console.warn(val)}
+              options={[
+                { label: 'MMM', value: 'est' },
+                { label: 'DDDD', value: 'pst' },
+                { label: 'FFF', value: 'aaa' },
+                { label: 'FFF2 ', value: 'bbb' },
+                { label: 'ㅅㅅㅅ6666666666666677777773232dzdffsdfadsfadf232', value: 'ccc' },
+              ]}
+            />
+
+            <Button
+              onClick={() => {
+                if (selectMultiRef.current) {
+                  console.warn('비제어', selectMultiRef.current);
+                }
+              }}>
+              Multi select 비제어
             </Button>
 
             <Input

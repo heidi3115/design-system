@@ -10,17 +10,22 @@ import {
   type Ref,
   type RefCallback,
   type ReactNode,
+  type RefObject,
 } from 'react';
 import { Command as CommandPrimitive } from 'cmdk';
 import { type VariantProps } from 'tailwind-variants';
-import { CheckIcon } from '@common/ui/icons';
-import { Popover, TextBadge } from '@common/ui';
+import { useRect } from '@common/utils';
+import { CheckIcon, ChevronDownIcon, XIcon } from '@common/ui/icons';
+import { Popover, TextBadge, Tooltip } from '@common/ui';
 
 import { useInputSize } from './hooks/useInputSize';
 import { useFlattenedOptions } from './hooks/useFlattenedOptions';
+import { useOptionMatch } from './hooks/useOptionMatch';
 import { CommandGroup, CommandItem, CommandList, CommandEmpty, CommandSeparator } from './CommandParts';
-import autoCompleteVariants from './autoCompleteVariants';
+import commandSelectVariants from './commandSelectVariants';
 import { cn } from '../../lib/utils';
+
+const MAX_WRAPPER_WIDTH_PADDING = 55 as const;
 
 export type OptionItem = {
   type?: 'item';
@@ -41,13 +46,14 @@ export type OptionGroup = {
 
 export type OptionType = OptionItem | OptionSeparator | OptionGroup;
 
-export type MultiSelectProps = Omit<VariantProps<typeof autoCompleteVariants>, 'width'> & {
+export type MultiSelectProps = Omit<VariantProps<typeof commandSelectVariants>, 'width'> & {
   options: OptionType[];
+  open?: boolean;
   value?: OptionItem['value'][];
   defaultValue?: OptionItem['value'][];
   onValueChange?: (value: OptionItem['value'][]) => void;
   selectRef?: Ref<string[]>;
-  width?: VariantProps<typeof autoCompleteVariants>['width'] | number;
+  width?: VariantProps<typeof commandSelectVariants>['width'] | number;
   disabled?: boolean;
   placeholder?: string;
   emptyText?: string;
@@ -58,6 +64,8 @@ export type MultiSelectProps = Omit<VariantProps<typeof autoCompleteVariants>, '
   helperText?: ReactNode;
   className?: string;
   itemClassName?: string;
+  isLeaveClose?: boolean;
+  isAddNewItem?: boolean;
 };
 
 const MultiSelect = ({
@@ -65,6 +73,7 @@ const MultiSelect = ({
   error,
   helperText,
   options,
+  open,
   value: controlledValue,
   defaultValue,
   onValueChange,
@@ -76,6 +85,8 @@ const MultiSelect = ({
   emptyText = 'No Options',
   isSelectIndicator = false,
   isContentfitTriggerWidth = false,
+  isLeaveClose = true,
+  isAddNewItem = false,
   className,
   itemClassName,
 }: MultiSelectProps) => {
@@ -84,23 +95,45 @@ const MultiSelect = ({
   const {
     width: triggerWidth,
     height,
+    minHeight,
+    badgeHeight,
+    popoverWrapperBase,
     popoverBase,
-    triggerBase,
+    multiTriggerWrapperBase,
+    multeiTriggerBase,
     itemBase,
     checkIconBase,
-    // chevronIconBase,
+    inputIconBase,
+    chevronIconBase,
+    allClearIconBase,
     error: errorBorder,
-  } = autoCompleteVariants({ width: isNumberWidth ? undefined : width, size, error });
+  } = commandSelectVariants({ width: isNumberWidth ? undefined : width, size, error });
+
+  const [customOptions, setCustomOptions] = useState<OptionItem[]>([]);
+  const isComposingRef = useRef(false);
+  const isNewValueAdded = useRef(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const triggerWrapperRef = useRef<HTMLDivElement | null>(null);
+
+  const [triggerFixedWidth, setTriggerFixedWidht] = useState(0);
+  const { width: triggerWrapperWidth } = useRect(triggerWrapperRef);
+
+  useLayoutEffect(() => {
+    setTriggerFixedWidht(triggerWrapperWidth - MAX_WRAPPER_WIDTH_PADDING);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [triggerWrapperRef.current]);
+
+  const [isOpen, setIsOpen] = useState(open ?? false);
 
   const flattenedOptions = useFlattenedOptions<OptionItem>(options);
 
-  // const { inputWidth, inputHeight } = useInputSize({ inputRef, isOpen });
-  const { inputWidth } = useInputSize({ inputRef, isOpen });
+  const { matchedByLabel, matchedByValue, isDuplicateValue } = useOptionMatch(
+    flattenedOptions,
+    inputRef.current?.value.trim() ?? '',
+  );
 
-  const [selected, setSelected] = useState<OptionItem[] | undefined>(undefined);
+  const [selectList, setSelectList] = useState<OptionItem[] | undefined>(undefined);
 
   const [inputValue, setInputValue] = useState('');
   const [internalValue, setInternalValue] = useState(defaultValue ?? []);
@@ -108,11 +141,19 @@ const MultiSelect = ({
   const isControlled = controlledValue !== undefined;
   const currentValue = isControlled ? controlledValue : internalValue;
 
+  const { inputWidth, inputHeight } = useInputSize({
+    inputRef: triggerWrapperRef,
+    isOpen,
+    values: selectList?.map((item) => item.label),
+  });
+
+  const ignoreNextBlurRef = useRef(false);
+
   useImperativeHandle(selectRef, () => currentValue);
 
   useLayoutEffect(() => {
     if (!currentValue) {
-      setSelected(undefined);
+      setSelectList(undefined);
       setInputValue('');
 
       return;
@@ -126,12 +167,18 @@ const MultiSelect = ({
           : [opt as OptionItem],
     );
 
-    const optionMap = new Map(allOptions.map((opt) => [opt.value, opt]));
+    const mergedOptions = [...allOptions, ...customOptions];
+    const optionMap = new Map(mergedOptions.map((opt) => [opt.value, opt]));
 
     const foundOption = currentValue.map((val) => optionMap.get(val)).filter((opt): opt is OptionItem => Boolean(opt));
 
-    setSelected(foundOption);
-  }, [currentValue, options]);
+    setSelectList(foundOption);
+  }, [currentValue, options, customOptions]);
+
+  const handleClose = () => {
+    setIsOpen(false);
+    inputRef.current?.blur();
+  };
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {
@@ -141,42 +188,68 @@ const MultiSelect = ({
       if (!isOpen) setIsOpen(true);
 
       if (e.key === 'Enter' && input.value !== '') {
-        const optionToSelect = options
-          .flatMap((opt) => {
-            if ('type' in opt && opt.type === 'group')
-              return opt.items.filter((item): item is OptionItem => 'value' in item);
-            if ('type' in opt && opt.type === 'separator') return [];
+        if (isComposingRef.current) return;
 
-            return [opt];
-          })
-          .find((option) => option.label === input.value);
+        const inputText = input.value.trim();
+        if (!inputText) return;
 
-        if (optionToSelect) {
+        const isAlreadySelected = isDuplicateValue(currentValue);
+
+        // 이미 있는 경우
+        if (matchedByLabel || matchedByValue || isAlreadySelected) {
+          setInputValue('');
+          isNewValueAdded.current = false;
+
+          return;
+        }
+
+        // 새로운 아이템이 들어온 경우
+        if (!matchedByLabel && !isAlreadySelected && isAddNewItem) {
+          const newOption: OptionItem = {
+            label: inputText,
+            value: inputText,
+          };
+
+          setCustomOptions((prev) => [...prev, newOption]);
+
           if (!isControlled) {
-            setInternalValue((prev) => [...prev, optionToSelect.value]);
+            setInternalValue((prev) => [...prev, newOption.value]);
           }
 
-          setSelected((prev) => {
-            if (prev) return [...prev, optionToSelect];
+          setSelectList((prev) => (prev ? [...prev, newOption] : [newOption]));
+          onValueChange?.((selectList?.map((opt) => opt.value) ?? []).concat(newOption.value));
 
-            return [optionToSelect];
-          });
-
-          const selectedValues = selected?.map((opt) => opt.value) ?? [];
-
-          onValueChange?.(selectedValues);
+          isNewValueAdded.current = true;
         }
+
+        setInputValue('');
       }
 
       if (e.key === 'Escape') {
         input.blur();
       }
     },
-    [isOpen, options, isControlled, selected, onValueChange],
+    [
+      isOpen,
+      isDuplicateValue,
+      currentValue,
+      matchedByLabel,
+      matchedByValue,
+      isAddNewItem,
+      isControlled,
+      onValueChange,
+      selectList,
+    ],
   );
 
   const handleSelectOption = useCallback(
     (selectedOption: OptionItem) => {
+      if (isAddNewItem && isNewValueAdded.current) {
+        isNewValueAdded.current = false;
+
+        return;
+      }
+
       if (currentValue.includes(selectedOption.value)) return;
 
       const newValue = [...currentValue, selectedOption.value];
@@ -188,23 +261,39 @@ const MultiSelect = ({
       setInputValue('');
       onValueChange?.(newValue);
     },
-    [currentValue, isControlled, onValueChange],
+    [currentValue, isAddNewItem, isControlled, onValueChange],
   );
 
-  const ignoreNextBlurRef = useRef(false);
+  const handleClearAll = useCallback(() => {
+    if (!isControlled) setInternalValue([]);
 
-  const renderInputTrigger = (triggerRef: Ref<HTMLInputElement>) => {
+    onValueChange?.([]);
+    setSelectList(undefined);
+    setInputValue('');
+  }, [isControlled, onValueChange]);
+
+  const generateSearchFilter = (value: string, search: string) => {
+    const label = flattenedOptions.find((item) => item.value === value)?.label;
+
+    if (!label) return 0;
+
+    return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
+  };
+
+  const renderInputTrigger = (triggerRef: RefObject<HTMLDivElement | null>) => {
     return (
       <div
+        ref={triggerRef}
         onMouseDown={() => {
           if (isOpen) {
             ignoreNextBlurRef.current = true;
           }
         }}
         onClick={() => {
+          if (disabled) return;
+
           if (isOpen) {
-            setIsOpen(false);
-            inputRef.current?.blur();
+            handleClose();
 
             return;
           } else {
@@ -216,17 +305,22 @@ const MultiSelect = ({
           }
         }}
         className={cn(
-          triggerBase(),
+          multiTriggerWrapperBase(),
           errorBorder(),
-          height(),
-          'flex flex-wrap justify-start gap-1 px-2 py-1 h-auto',
+          minHeight(),
+          disabled && 'cursor-not-allowed opacity-50',
           className,
         )}>
-        {!!selected?.length &&
-          selected.map((item) => (
+        {!!selectList?.length &&
+          selectList.map((item) => (
             <TextBadge
               key={item.value}
+              title={item.label}
+              style={{ maxWidth: `${triggerFixedWidth}px` }}
+              className={cn(badgeHeight(), 'cursor-auto', disabled && 'cursor-not-allowed opacity-50')}
+              aria-disabled={disabled}
               onClick={(e) => {
+                if (disabled) return;
                 e.stopPropagation();
 
                 const newValue = currentValue.filter((v) => v !== item.value);
@@ -239,7 +333,7 @@ const MultiSelect = ({
 
         <CommandPrimitive.Input
           data-slot="command-input"
-          ref={triggerRef}
+          ref={inputRef}
           value={inputValue}
           onValueChange={setInputValue}
           onFocus={() => setIsOpen(true)}
@@ -257,41 +351,50 @@ const MultiSelect = ({
             if (e.key === 'Backspace' && inputValue === '' && currentValue.length > 0) {
               const newValue = currentValue.slice(0, -1);
               if (!isControlled) setInternalValue(newValue);
+
               onValueChange?.(newValue);
             }
           }}
+          onCompositionStart={() => {
+            isComposingRef.current = true;
+          }}
+          onCompositionEnd={() => {
+            isComposingRef.current = false;
+          }}
           placeholder={placeholder}
-          className="flex-1 min-w-[60px] border-none focus:outline-none bg-transparent"
           disabled={disabled}
+          className={cn(multeiTriggerBase(), 'group-hover:pr-11')}
         />
       </div>
     );
   };
 
   const renderCommandItem = (item: OptionItem) => {
-    const selectedValues = selected?.map((opt) => opt.value) ?? [];
-    const isSelected = selectedValues.includes(item.value);
+    const selectListValues = selectList?.map((opt) => opt.value) ?? [];
+    const isSelected = selectListValues.includes(item.value);
 
     if (isSelected) return null;
 
     return (
-      <CommandItem
-        key={item.value}
-        value={item.value}
-        disabled={item.disabled}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-        onSelect={() => handleSelectOption(item)}
-        className={cn(itemBase(), height(), itemClassName)}>
-        {isSelected && isSelectIndicator && (
-          <span className={checkIconBase()}>
-            <CheckIcon key={item.value} className="size-4" />
-          </span>
-        )}
-        <div className="itemLabel">{item.label}</div>
-      </CommandItem>
+      <div onClick={handleClose}>
+        <CommandItem
+          key={item.value}
+          value={item.value}
+          disabled={item.disabled}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          onSelect={() => handleSelectOption(item)}
+          className={cn(itemBase(), height(), itemClassName)}>
+          {isSelectIndicator && (
+            <span className={checkIconBase()}>
+              <CheckIcon key={item.value} className="size-4" />
+            </span>
+          )}
+          {item.label}
+        </CommandItem>
+      </div>
     );
   };
 
@@ -299,28 +402,28 @@ const MultiSelect = ({
     <CommandPrimitive
       ref={ref}
       onKeyDown={handleKeyDown}
-      filter={(value, search) => {
-        const label = flattenedOptions.find((item) => item.value === value)?.label;
-
-        if (!label) return 0;
-
-        return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
-      }}
+      filter={generateSearchFilter}
       className={cn(`flex ${isOpen && '[&_svg]:rotate-180'}`, !isNumberWidth && triggerWidth())}
       style={isNumberWidth ? { width: `${width}px` } : undefined}>
-      <div className={cn('relative flex flex-col flex-1')}>
+      <div
+        onMouseLeave={() => {
+          if (isLeaveClose) {
+            handleClose();
+          }
+        }}
+        className={cn('group', popoverWrapperBase())}>
         <Popover
           open={isOpen}
           align="start"
-          sideOffset={4}
-          trigger={renderInputTrigger(inputRef)}
+          sideOffset={0}
+          trigger={renderInputTrigger(triggerWrapperRef)}
           className={popoverBase()}>
           <CommandList
             style={{
               ...(isContentfitTriggerWidth ? { width: `${inputWidth}px` } : { minWidth: `${inputWidth}px` }),
               ...(isNumberWidth && { minWidth: `${width}px` }),
             }}>
-            {inputValue && <CommandEmpty>{emptyText}</CommandEmpty>}
+            <CommandEmpty>{emptyText}</CommandEmpty>
 
             {options.map((opt, idx) => {
               if ('type' in opt && opt.type === 'group') {
@@ -353,13 +456,28 @@ const MultiSelect = ({
             {helperText}
           </p>
         )}
-        {/* {inputHeight && (
-          <span
-            className={cn(chevronIconBase(), disabled && 'cursor-not-allowed opacity-50')}
-            style={{ top: `${inputHeight / 2}px` }}>
-            <ChevronDownIcon />
-          </span>
-        )} */}
+        {inputHeight && (
+          <>
+            {selectList && selectList?.length > 0 && (
+              <span
+                className={cn(inputIconBase(), allClearIconBase(), disabled && 'opacity-50 pointer-events-none')}
+                style={{ top: `${inputHeight / 2}px` }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClearAll();
+                }}>
+                <Tooltip isArrow={false} side="bottom" sideOffset={2} contents="All">
+                  <XIcon className="fill-juiGrey-a400" size="small" />
+                </Tooltip>
+              </span>
+            )}
+            <span
+              className={cn(inputIconBase(), chevronIconBase(), disabled && 'cursor-not-allowed opacity-50')}
+              style={{ top: `${inputHeight / 2}px` }}>
+              <ChevronDownIcon />
+            </span>
+          </>
+        )}
       </div>
     </CommandPrimitive>
   );

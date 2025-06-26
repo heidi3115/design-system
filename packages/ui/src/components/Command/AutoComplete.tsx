@@ -19,7 +19,7 @@ import { Popover } from '@common/ui';
 import { useInputSize } from './hooks/useInputSize';
 import { useFlattenedOptions } from './hooks/useFlattenedOptions';
 import { CommandGroup, CommandItem, CommandList, CommandEmpty, CommandSeparator } from './CommandParts';
-import autoCompleteVariants from './autoCompleteVariants';
+import commandSelectVariants from './commandSelectVariants';
 import { cn } from '../../lib/utils';
 
 export type OptionItem = {
@@ -41,13 +41,14 @@ export type OptionGroup = {
 
 export type OptionType = OptionItem | OptionSeparator | OptionGroup;
 
-export type AutoCompleteProps = Omit<VariantProps<typeof autoCompleteVariants>, 'width'> & {
+export type AutoCompleteProps = Omit<VariantProps<typeof commandSelectVariants>, 'width'> & {
   options: OptionType[];
+  open?: boolean;
   value?: OptionItem['value'];
   defaultValue?: OptionItem['value'];
   onValueChange?: (value: OptionItem['value']) => void;
   selectRef?: Ref<string>;
-  width?: VariantProps<typeof autoCompleteVariants>['width'] | number;
+  width?: VariantProps<typeof commandSelectVariants>['width'] | number;
   disabled?: boolean;
   placeholder?: string;
   emptyText?: string;
@@ -58,6 +59,7 @@ export type AutoCompleteProps = Omit<VariantProps<typeof autoCompleteVariants>, 
   helperText?: ReactNode;
   className?: string;
   itemClassName?: string;
+  isLeaveClose?: boolean;
 };
 
 const AutoComplete = ({
@@ -65,6 +67,7 @@ const AutoComplete = ({
   error,
   helperText,
   options,
+  open,
   value: controlledValue,
   defaultValue,
   onValueChange,
@@ -76,6 +79,7 @@ const AutoComplete = ({
   emptyText = 'No Options',
   isSelectIndicator = false,
   isContentfitTriggerWidth = false,
+  isLeaveClose = false,
   className,
   itemClassName,
 }: AutoCompleteProps) => {
@@ -84,16 +88,18 @@ const AutoComplete = ({
   const {
     width: triggerWidth,
     height,
+    popoverWrapperBase,
     popoverBase,
     triggerBase,
     itemBase,
     checkIconBase,
+    inputIconBase,
     chevronIconBase,
     error: errorBorder,
-  } = autoCompleteVariants({ width: isNumberWidth ? undefined : width, size, error });
+  } = commandSelectVariants({ width: isNumberWidth ? undefined : width, size, error });
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(open ?? false);
 
   const flattenedOptions = useFlattenedOptions<OptionItem>(options);
 
@@ -200,11 +206,20 @@ const AutoComplete = ({
     [isControlled, onValueChange],
   );
 
-  const renderInputTrigger = (triggerRef: Ref<HTMLInputElement>) => {
+  const generateSearchFilter = (value: string, search: string) => {
+    if (!canFilter) return 1;
+
+    const label = flattenedOptions.find((item) => item.value === value)?.label;
+    if (!label) return 0;
+
+    return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
+  };
+
+  const renderInputTrigger = () => {
     return (
       <CommandPrimitive.Input
         data-slot="command-input"
-        ref={triggerRef}
+        ref={inputRef}
         value={isOpen ? inputValue : selected?.label || ''}
         onValueChange={setInputValue}
         onBlur={handleBlur}
@@ -255,7 +270,7 @@ const AutoComplete = ({
             <CheckIcon key={item.value} className="size-4" />
           </span>
         )}
-        <div className="itemLabel">{item.label}</div>
+        {item.label}
       </CommandItem>
     );
   };
@@ -264,23 +279,18 @@ const AutoComplete = ({
     <CommandPrimitive
       ref={ref}
       onKeyDown={handleKeyDown}
-      filter={(value, search) => {
-        if (!canFilter) return 1;
-
-        const label = flattenedOptions.find((item) => item.value === value)?.label;
-        if (!label) return 0;
-
-        return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
-      }}
+      filter={generateSearchFilter}
       className={cn(`flex ${isOpen && '[&_svg]:rotate-180'}`, !isNumberWidth && triggerWidth())}
       style={isNumberWidth ? { width: `${width}px` } : undefined}>
-      <div className={cn('relative flex flex-col flex-1')}>
-        <Popover
-          open={isOpen}
-          align="start"
-          sideOffset={4}
-          trigger={renderInputTrigger(inputRef)}
-          className={popoverBase()}>
+      <div
+        onMouseLeave={() => {
+          if (isLeaveClose) {
+            setIsOpen(false);
+            inputRef.current?.blur();
+          }
+        }}
+        className={popoverWrapperBase()}>
+        <Popover open={isOpen} align="start" sideOffset={0} trigger={renderInputTrigger()} className={popoverBase()}>
           <CommandList
             style={{
               ...(isContentfitTriggerWidth ? { width: `${inputWidth}px` } : { minWidth: `${inputWidth}px` }),
@@ -321,7 +331,7 @@ const AutoComplete = ({
         )}
         {inputHeight && (
           <span
-            className={cn(chevronIconBase(), disabled && 'cursor-not-allowed opacity-50')}
+            className={cn(inputIconBase(), chevronIconBase(), disabled && 'cursor-not-allowed opacity-50')}
             style={{ top: `${inputHeight / 2}px` }}>
             <ChevronDownIcon />
           </span>

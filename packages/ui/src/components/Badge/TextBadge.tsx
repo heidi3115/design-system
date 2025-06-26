@@ -28,12 +28,12 @@ function TextBadgeContent({ children, onClick, textOnly }: TextBadgeContentProps
   return (
     <span
       className={cn(
-        `${textOnly ? 'inline-block align-middle' : 'inline-flex gap-1.5 items-center justify-center'}`,
-        textOnly && 'overflow-hidden text-ellipsis whitespace-nowrap',
+        `${textOnly ? 'inline-block align-middle' : 'max-w-full inline-flex gap-1.5 items-center justify-center'}`,
+        textOnly && 'truncate',
         '[&>svg]:basis-[1.4em]] [&>svg]:min-w-4',
       )}
       aria-hidden={textOnly ? 'true' : undefined}>
-      {children}
+      {textOnly ? children : <span className={cn('max-w-full truncate')}>{children}</span>}
       {!textOnly && (
         <button
           type={'button'}
