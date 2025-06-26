@@ -226,6 +226,24 @@ export const WithErrorAndHelperText: Story = {
   ),
 };
 
+export const WithIsLeaveClose: Story = {
+  args: {
+    options: baseOptions,
+    placeholder: '마우스를 벗어나면 닫힘 여부',
+  },
+  render: (args) => (
+    <div className="flex flex-col gap-4">
+      <p className="text-sm font-bold">기본값 (isLeaveClose: false)</p>
+      <p className="text-xs text-gray-500">마우스가 Popover 바깥으로 나가도 닫히지 않습니다.</p>
+      <AutoComplete {...args} />
+
+      <p className="text-sm font-bold mt-4">isLeaveClose: true</p>
+      <p className="text-xs text-gray-500">마우스가 Popover 바깥으로 나가면 자동으로 닫힙니다.</p>
+      <AutoComplete {...args} isLeaveClose={true} />
+    </div>
+  ),
+};
+
 const controlledOptions = [
   { label: 'Option A', value: 'a' },
   { label: 'Option B', value: 'b' },

@@ -616,7 +616,7 @@ export default function Page() {
             <MultiSelect
               size="large"
               selectRef={selectMultiRef}
-              // isContentfitTriggerWidth
+              isContentfitTriggerWidth
               onValueChange={(val) => console.warn(val)}
               options={[
                 { label: 'MMM', value: 'est' },

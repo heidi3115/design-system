@@ -270,7 +270,7 @@ const AutoComplete = ({
             <CheckIcon key={item.value} className="size-4" />
           </span>
         )}
-        {item.label}
+        <div className="itemLabel">{item.label}</div>
       </CommandItem>
     );
   };
