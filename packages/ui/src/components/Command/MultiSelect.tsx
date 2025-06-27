@@ -119,9 +119,10 @@ const MultiSelect = ({
     error: errorBorder,
   } = commandSelectVariants({ width: isNumberWidth ? undefined : width, size, error, badgeColor });
 
-  const [customOptions, setCustomOptions] = useState<OptionItem[]>([]);
+  const [userAddedOptions, setUserAddedOptions] = useState<OptionItem[]>([]);
   const isComposingRef = useRef(false);
   const isNewValueAdded = useRef(false);
+  const ignoreNextBlurRef = useRef(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const triggerWrapperRef = useRef<HTMLDivElement | null>(null);
@@ -131,8 +132,7 @@ const MultiSelect = ({
 
   useLayoutEffect(() => {
     setTriggerFixedWidht(triggerWrapperWidth - MAX_WRAPPER_WIDTH_PADDING);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [triggerWrapperRef.current]);
+  }, [triggerWrapperWidth]);
 
   const [isOpen, setIsOpen] = useState(open ?? false);
 
@@ -145,19 +145,17 @@ const MultiSelect = ({
 
   const [selectList, setSelectList] = useState<OptionItem[] | undefined>(undefined);
 
-  const [inputValue, setInputValue] = useState('');
-  const [internalValue, setInternalValue] = useState(defaultValue ?? []);
-
-  const isControlled = controlledValue !== undefined;
-  const currentValue = isControlled ? controlledValue : internalValue;
-
   const { inputWidth, inputHeight } = useInputSize({
     inputRef: triggerWrapperRef,
     isOpen,
     values: selectList?.map((item) => item.label),
   });
 
-  const ignoreNextBlurRef = useRef(false);
+  const [inputValue, setInputValue] = useState('');
+  const [internalValue, setInternalValue] = useState(defaultValue ?? []);
+
+  const isControlled = controlledValue !== undefined;
+  const currentValue = isControlled ? controlledValue : internalValue;
 
   useImperativeHandle(selectRef, () => currentValue);
 
@@ -177,13 +175,13 @@ const MultiSelect = ({
           : [opt as OptionItem],
     );
 
-    const mergedOptions = [...allOptions, ...customOptions];
+    const mergedOptions = [...allOptions, ...userAddedOptions];
     const optionMap = new Map(mergedOptions.map((opt) => [opt.value, opt]));
 
     const foundOption = currentValue.map((val) => optionMap.get(val)).filter((opt): opt is OptionItem => Boolean(opt));
 
     setSelectList(foundOption);
-  }, [currentValue, options, customOptions]);
+  }, [currentValue, options, userAddedOptions]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -224,7 +222,7 @@ const MultiSelect = ({
             value: inputText,
           };
 
-          setCustomOptions((prev) => [...prev, newOption]);
+          setUserAddedOptions((prev) => [...prev, newOption]);
 
           if (!isControlled) {
             setInternalValue((prev) => [...prev, newOption.value]);
