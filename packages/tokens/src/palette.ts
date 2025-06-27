@@ -48,7 +48,8 @@ const palette = {
   },
   juiBorder: {
     primary: { main: '#E0E0E0' },
-    tableBottom: { main: '#30374b', light: '#EAEAEA'},
+    tableBottom: { main: '#30374B', light: '#EAEAEA'},
+    tableHead: {main: '#4B5062', light: '#EAEAEA'}
   },
   juiScore: {
     veryLow: { main: '#8294FF' },

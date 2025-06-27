@@ -40,6 +40,7 @@
   --juiText-tableHead: rgba(255, 255, 255, 0.5);
   --juiBorder-primary: #e0e0e0;
   --juiBorder-tableBottom: #30374b;
+  --juiBorder-tableHead: #4b5062;
   --juiScore-veryLow: #8294ff;
   --juiScore-low: #5873ff;
   --juiScore-normal: #7635ff;
@@ -92,6 +93,7 @@
   --juiText-tableHead: rgba(255, 255, 255, 0.5);
   --juiBorder-primary: #e0e0e0;
   --juiBorder-tableBottom: #30374b;
+  --juiBorder-tableHead: #4b5062;
   --juiScore-veryLow: #8294ff;
   --juiScore-low: #5873ff;
   --juiScore-normal: #7635ff;
@@ -144,6 +146,7 @@
   --color-juiText-tableHead: var(--juiText-tableHead);
   --color-juiBorder-primary: var(--juiBorder-primary);
   --color-juiBorder-tableBottom: var(--juiBorder-tableBottom);
+  --color-juiBorder-tableHead: var(--juiBorder-tableHead);
   --color-juiScore-veryLow: var(--juiScore-veryLow);
   --color-juiScore-low: var(--juiScore-low);
   --color-juiScore-normal: var(--juiScore-normal);
@@ -168,4 +171,5 @@
   --juiText-disabled: #c7c7c7;
   --juiText-tableHead: #000;
   --juiBorder-tableBottom: #eaeaea;
+  --juiBorder-tableHead: #eaeaea;
 }
