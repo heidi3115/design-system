@@ -10,6 +10,8 @@
 @source "../**/*.{ts,tsx}";
 
 @custom-variant light (&:is(.light *));
+@custom-variant orientation-vertical (&:where(table[data-orientation="vertical"] *));
+@custom-variant orientation-horizontal (&:where(table[data-orientation="horizontal"] *));
 
 @layer base {
   * {

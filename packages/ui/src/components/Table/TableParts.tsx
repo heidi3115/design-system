@@ -3,22 +3,20 @@
 import { cn } from '../../lib/utils';
 import { type ComponentProps } from 'react';
 
-function TableRoot({ className, ...props }: ComponentProps<'table'>) {
+type TableRootProps = {
+  orientation?: 'horizontal' | 'vertical';
+} & ComponentProps<'table'>;
+
+function TableRoot({ orientation = 'horizontal', className, ...props }: TableRootProps) {
   return (
     <div data-slot="table-container" className="relative w-full overflow-x-auto">
-      <table data-slot="table" className={cn('w-full caption-bottom text-sm', className)} {...props} />
+      <table data-orientation={orientation} className={cn('w-full caption-bottom text-sm', className)} {...props} />
     </div>
   );
 }
 
 function TableHeader({ className, ...props }: ComponentProps<'thead'>) {
-  return (
-    <thead
-      data-slot="table-header"
-      className={cn('h-[44px] bg-juiGrey-a700 text-juiText-tableHead', className)}
-      {...props}
-    />
-  );
+  return <thead data-slot="table-header" className={cn(className)} {...props} />;
 }
 
 function TableBody({ className, ...props }: ComponentProps<'tbody'>) {
@@ -44,7 +42,9 @@ function TableHead({ className, ...props }: ComponentProps<'th'>) {
     <th
       data-slot="table-head"
       className={cn(
-        'h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] font-bold',
+        'border bg-juiBackground-tableHead text-juiText-tableHead h-10 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] text-xs font-bold w-[200px]',
+        'orientation-vertical:py-[12px] orientation-vertical:px-[16px] orientation-vertical:border-transparent orientation-vertical:border-b-juiBorder-tableBottom',
+        'orientation-horizontal:border-juiBorder-tableBottom orientation-horizontal:py-[15px] orientation-horizontal:px-[16px]',
         className,
       )}
       {...props}
@@ -57,7 +57,9 @@ function TableCell({ className, ...props }: ComponentProps<'td'>) {
     <td
       data-slot="table-cell"
       className={cn(
-        'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] border border-juiBorder-table border-b-juiBorder-tableBottom',
+        'border text-xs align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] bg-juiBackground-default',
+        'orientation-vertical:py-[12px] orientation-vertical:px-[16px] orientation-vertical:border-transparent orientation-vertical:border-b-juiBorder-tableBottom orientation-vertical:bg-juiBackground-default',
+        'orientation-horizontal:border-juiBorder-tableBottom orientation-horizontal:py-[15px] orientation-horizontal:px-[16px]',
         className,
       )}
       {...props}
