@@ -36,6 +36,9 @@ const meta: Meta<typeof AutoComplete> = {
       control: 'boolean',
       description: '선택된 항목 길이에 따라 trigger 버튼의 너비 조절',
     },
+    isLeaveClose: {
+      description: '마우스가 벗어나면 리스트가 닫힘 여부',
+    },
     error: {
       description: 'form 에러 여부',
     },
@@ -184,6 +187,7 @@ const longBaseOptions = Array.from({ length: 100 }, (_, i) => ({
 export const ScrollItems: Story = {
   args: {
     options: longBaseOptions,
+    open: true,
   },
   render: (args) => (
     <div className="flex gap-4 h-[500px]">

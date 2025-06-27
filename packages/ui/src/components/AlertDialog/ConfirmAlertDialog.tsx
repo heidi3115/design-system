@@ -1,7 +1,7 @@
 import { isValidElement } from 'react';
 
 import {
-  AlertDialog,
+  AlertDialogRoot,
   AlertDialogTrigger,
   AlertDialogContent,
   AlertDialogHeader,
@@ -60,7 +60,7 @@ function ConfirmAlertDialog({
   }
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialogRoot open={open} onOpenChange={onOpenChange}>
       <AlertDialogTrigger asChild>{triggerNode}</AlertDialogTrigger>
 
       <AlertDialogContent portalContainer={portalContainer} contentSize={contentSize}>
@@ -75,7 +75,7 @@ function ConfirmAlertDialog({
           {footerType !== 'confirm' && <AlertDialogCancel onClick={onCancel}>{cancelLabel}</AlertDialogCancel>}
         </AlertDialogFooter>
       </AlertDialogContent>
-    </AlertDialog>
+    </AlertDialogRoot>
   );
 }
 

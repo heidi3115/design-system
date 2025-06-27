@@ -35,6 +35,18 @@ const meta: Meta<typeof MultiSelect> = {
       control: 'boolean',
       description: '선택된 항목에 따라 트리거 너비 자동 조절',
     },
+    maxItemLength: {
+      description: '최대 아이템 선택 갯수 1 이하의 숫자를 넣으면 1로 작동 합니다.',
+    },
+    isAddNewItem: {
+      description: 'options 의 없는 아이템을 추가할 수 있는 기능',
+    },
+    onNewValueAdd: {
+      description: 'isAddNewItem 를 통해 새로 추가된 아이템 콜백',
+    },
+    isLeaveClose: {
+      description: '마우스가 벗어나면 리스트가 닫힘 여부',
+    },
     error: {
       description: '에러 상태 여부',
     },
@@ -149,6 +161,7 @@ export const Sizes: Story = {
   ),
   args: {
     options: baseOptions,
+    defaultValue: ['c'],
   },
   argTypes: {
     width: {
@@ -163,6 +176,8 @@ export const ScrollItems: Story = {
       label: `Option ${i + 1}`,
       value: `opt-${i + 1}`,
     })),
+    open: true,
+    isLeaveClose: false,
   },
   render: (args) => (
     <div className="h-[400px] overflow-auto">
