@@ -1,8 +1,8 @@
 'use client';
 
-import { ConfirmAlertDialog } from '@common/ui/components/AlertDialog';
 import { createRoot, type Root } from 'react-dom/client';
 import { useState, useCallback, useRef, useEffect, type ComponentProps } from 'react';
+import { ConfirmAlertDialog } from '../components/AlertDialog';
 
 export function useConfirmDialog() {
   const [isOpen, setIsOpen] = useState(false);
