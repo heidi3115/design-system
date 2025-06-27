@@ -47,6 +47,9 @@ const meta: Meta<typeof MultiSelect> = {
     isLeaveClose: {
       description: '마우스가 벗어나면 리스트가 닫힘 여부',
     },
+    badgeColor: {
+      description: 'badge 색상',
+    },
     error: {
       description: '에러 상태 여부',
     },
@@ -124,6 +127,33 @@ export const FixedWidth: Story = {
   },
   argTypes: {
     width: {
+      table: { disable: true },
+    },
+  },
+};
+
+export const BadgeColor: Story = {
+  render: (args) => (
+    <div className="flex flex-col gap-4 w-2xs">
+      <p className="font-bold text-sm">default</p>
+      <MultiSelect {...args} placeholder="200px" />
+
+      <p className="font-bold text-sm">primary</p>
+      <MultiSelect {...args} badgeColor="primary" placeholder="200px" />
+
+      <p className="font-bold text-sm">secondary</p>
+      <MultiSelect {...args} badgeColor="secondary" placeholder="400px" />
+
+      <p className="font-bold text-sm">error</p>
+      <MultiSelect {...args} badgeColor="error" placeholder="600px" />
+    </div>
+  ),
+  args: {
+    options: baseOptions,
+    defaultValue: ['a'],
+  },
+  argTypes: {
+    badgeColor: {
       table: { disable: true },
     },
   },

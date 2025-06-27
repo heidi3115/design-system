@@ -617,6 +617,7 @@ export default function Page() {
               value={selectMultiValue}
               onValueChange={setSelectMultiValue}
               placeholder="tets"
+              badgeClassName="bg-juiStatus-urgency"
               options={[
                 { label: 'mmm', value: 'est' },
                 { label: 'DDDD', value: 'pst' },

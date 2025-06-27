@@ -5,6 +5,7 @@ const commandSelectVariants = tv({
     height: '',
     minHeight: '',
     badgeHeight: '',
+    badgeColor: '',
     width: '',
     error: '',
     popoverWrapperBase: 'relative flex flex-col flex-1',
@@ -57,11 +58,18 @@ const commandSelectVariants = tv({
       true: { error: 'border border-juiError light:border-juiError' },
       false: { error: 'focus:border-juiText-primary light:focus:border-juiText-secondary' }, // 에러 아닐 때만 기본 파란색 포커스
     },
+    badgeColor: {
+      default: { badgeColor: '' },
+      primary: { badgeColor: 'text-juiText-blue light:text-juiPrimary border-juiPrimary bg-juiPrimary/30' },
+      secondary: { badgeColor: 'text-juiText-purple border-juiSecondary bg-juiSecondary/30' },
+      error: { badgeColor: 'text-juiError border-juiError bg-juiError/30' },
+    },
   },
   defaultVariants: {
     width: 'full',
     size: 'default',
     error: false,
+    badgeColor: 'default',
   },
 });
 

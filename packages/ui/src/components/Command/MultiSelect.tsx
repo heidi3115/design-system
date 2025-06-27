@@ -64,6 +64,7 @@ export type MultiSelectProps = Omit<VariantProps<typeof commandSelectVariants>, 
   helperText?: ReactNode;
   className?: string;
   itemClassName?: string;
+  badgeClassName?: string;
   isLeaveClose?: boolean;
   isAddNewItem?: boolean;
   onNewValueAdd?: (value: string) => void;
@@ -83,6 +84,7 @@ const MultiSelect = ({
   selectRef,
   width,
   size,
+  badgeColor,
   disabled,
   placeholder,
   emptyText = 'No Options',
@@ -95,6 +97,7 @@ const MultiSelect = ({
   onOverItem,
   className,
   itemClassName,
+  badgeClassName,
 }: MultiSelectProps) => {
   const isNumberWidth = typeof width === 'number';
 
@@ -112,8 +115,9 @@ const MultiSelect = ({
     inputIconBase,
     chevronIconBase,
     allClearIconBase,
+    badgeColor: badgeVariants,
     error: errorBorder,
-  } = commandSelectVariants({ width: isNumberWidth ? undefined : width, size, error });
+  } = commandSelectVariants({ width: isNumberWidth ? undefined : width, size, error, badgeColor });
 
   const [customOptions, setCustomOptions] = useState<OptionItem[]>([]);
   const isComposingRef = useRef(false);
@@ -336,7 +340,13 @@ const MultiSelect = ({
             <TextBadge
               key={item.value}
               style={{ maxWidth: `${triggerFixedWidth}px` }}
-              className={cn(badgeHeight(), 'cursor-auto', disabled && 'cursor-not-allowed opacity-50')}
+              className={cn(
+                badgeHeight(),
+                badgeVariants(),
+                'cursor-auto ',
+                disabled && 'cursor-not-allowed opacity-50',
+                badgeClassName,
+              )}
               aria-disabled={disabled}
               onClick={(e) => {
                 if (disabled) return;
