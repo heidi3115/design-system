@@ -58,7 +58,7 @@ function TableCell({ className, ...props }: ComponentProps<'td'>) {
       data-slot="table-cell"
       className={cn(
         'px-[16px] border text-xs align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] bg-juiBackground-default',
-        'orientation-vertical:py-[5px] orientation-vertical:px-[15px] orientation-vertical:border-transparent orientation-vertical:border-b-juiBorder-tableBottom orientation-vertical:bg-juiBackground-default',
+        'orientation-vertical:py-[9px] orientation-vertical:px-[15px] orientation-vertical:border-transparent orientation-vertical:border-b-juiBorder-tableBottom orientation-vertical:bg-juiBackground-default',
         'orientation-horizontal:border-juiBorder-tableBottom orientation-horizontal:py-[15px]',
         className,
       )}
