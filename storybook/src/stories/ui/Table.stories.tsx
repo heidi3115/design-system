@@ -8,7 +8,7 @@ import {
   TableFooter,
   TableHead,
   TableHeader,
-  TableRoot,
+  Table,
   TableRow,
 } from '@common/ui';
 
@@ -49,7 +49,7 @@ type Story = StoryObj<TableStoryArgs>;
 
 const Template = (args: TableStoryArgs) => {
   return (
-    <TableRoot orientation={args.orientation}>
+    <Table orientation={args.orientation}>
       {args.showCaption && <TableCaption>Example Caption</TableCaption>}
       <TableHeader>
         <TableRow>
@@ -71,7 +71,7 @@ const Template = (args: TableStoryArgs) => {
         </TableRow>
       </TableBody>
       {args.showFooter && <TableFooter>Example Footer</TableFooter>}
-    </TableRoot>
+    </Table>
   );
 };
 
@@ -85,7 +85,7 @@ export const Orientation: Story = {
     docs: {
       description: {
         story:
-          'Horizontal Table과 Vertical Table의 style이 상이하여 horizontal과 vertical로 구분한다. TableRoot에 orientation 값을 추가하여 사용할 수 있다. 추가하지 않을 경우에는 horizontal 스타일이 적용된다.',
+          'Horizontal Table과 Vertical Table의 style이 상이하여 horizontal과 vertical로 구분한다. Table에 orientation 값을 추가하여 사용할 수 있다. 추가하지 않을 경우에는 horizontal 스타일이 적용된다.',
       },
     },
   },
@@ -93,7 +93,7 @@ export const Orientation: Story = {
     return (
       <div className={'flex flex-col gap-2'}>
         <div className="text-lg">Vertical(수직) Table</div>
-        <TableRoot orientation="vertical">
+        <Table orientation="vertical">
           <TableCaption>Example Caption</TableCaption>
           <TableHeader>
             <TableRow>
@@ -115,9 +115,9 @@ export const Orientation: Story = {
             </TableRow>
           </TableBody>
           <TableFooter>Example Footer</TableFooter>
-        </TableRoot>
+        </Table>
         <div className="text-lg">Horizontal(수평) Table</div>
-        <TableRoot orientation={args.orientation}>
+        <Table orientation={args.orientation}>
           <TableBody>
             <TableRow>
               <TableHead scope="row">보고서명</TableHead>
@@ -136,7 +136,7 @@ export const Orientation: Story = {
               <TableCell>2025-06-26 14:45</TableCell>
             </TableRow>
           </TableBody>
-        </TableRoot>
+        </Table>
       </div>
     );
   },

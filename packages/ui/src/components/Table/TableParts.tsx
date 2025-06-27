@@ -7,7 +7,7 @@ type TableRootProps = {
   orientation?: 'horizontal' | 'vertical';
 } & ComponentProps<'table'>;
 
-function TableRoot({ orientation = 'horizontal', className, ...props }: TableRootProps) {
+function Table({ orientation = 'horizontal', className, ...props }: TableRootProps) {
   return (
     <div data-slot="table-container" className="relative w-full overflow-x-auto">
       <table data-orientation={orientation} className={cn('w-full caption-bottom text-sm', className)} {...props} />
@@ -71,4 +71,4 @@ function TableCaption({ className, ...props }: ComponentProps<'caption'>) {
   return <caption data-slot="table-caption" className={cn('mt-4 text-sm', className)} {...props} />;
 }
 
-export { TableRoot, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption };
+export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption };
