@@ -36,6 +36,7 @@ const palette = {
     skeleton: { main: '#3c4f6b', light: '#e0e0e0' },
     tooltip: { main: '#3B4154', light: '#3B4154' },
     popover: { main: '#101822', light: '#fff' },
+    tableHead: {main: '#3B4154', light: '#e0e0e0'}
   },
   juiText: {
     primary: { main: '#fff', light: '#333333' },
@@ -43,12 +44,11 @@ const palette = {
     disabled: { main: '#505050', light: '#c7c7c7' },
     blue: { main: '#7A97FF' },
     purple: { main: '#9747FF' },
-    tableHead: { main: 'rgba(255, 255, 255, 0.5)', light: '#fff' },
+    tableHead: { main: 'rgba(255, 255, 255, 0.5)', light: '#000' },
   },
   juiBorder: {
     primary: { main: '#E0E0E0' },
-    table: { main: 'transparent', light: '#EAEAEA'},
-    tableBottom: { main: '#282E3F', light: '#EAEAEA'},
+    tableBottom: { main: '#30374b', light: '#EAEAEA'},
   },
   juiScore: {
     veryLow: { main: '#8294FF' },

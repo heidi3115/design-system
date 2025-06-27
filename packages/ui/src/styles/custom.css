@@ -31,6 +31,7 @@
   --juiBackground-skeleton: #3c4f6b;
   --juiBackground-tooltip: #3b4154;
   --juiBackground-popover: #101822;
+  --juiBackground-tableHead: #3b4154;
   --juiText-primary: #fff;
   --juiText-secondary: rgba(255, 255, 255, 0.4);
   --juiText-disabled: #505050;
@@ -38,8 +39,7 @@
   --juiText-purple: #9747ff;
   --juiText-tableHead: rgba(255, 255, 255, 0.5);
   --juiBorder-primary: #e0e0e0;
-  --juiBorder-table: transparent;
-  --juiBorder-tableBottom: #282e3f;
+  --juiBorder-tableBottom: #30374b;
   --juiScore-veryLow: #8294ff;
   --juiScore-low: #5873ff;
   --juiScore-normal: #7635ff;
@@ -83,6 +83,7 @@
   --juiBackground-skeleton: #3c4f6b;
   --juiBackground-tooltip: #3b4154;
   --juiBackground-popover: #101822;
+  --juiBackground-tableHead: #3b4154;
   --juiText-primary: #fff;
   --juiText-secondary: rgba(255, 255, 255, 0.4);
   --juiText-disabled: #505050;
@@ -90,8 +91,7 @@
   --juiText-purple: #9747ff;
   --juiText-tableHead: rgba(255, 255, 255, 0.5);
   --juiBorder-primary: #e0e0e0;
-  --juiBorder-table: transparent;
-  --juiBorder-tableBottom: #282e3f;
+  --juiBorder-tableBottom: #30374b;
   --juiScore-veryLow: #8294ff;
   --juiScore-low: #5873ff;
   --juiScore-normal: #7635ff;
@@ -135,6 +135,7 @@
   --color-juiBackground-skeleton: var(--juiBackground-skeleton);
   --color-juiBackground-tooltip: var(--juiBackground-tooltip);
   --color-juiBackground-popover: var(--juiBackground-popover);
+  --color-juiBackground-tableHead: var(--juiBackground-tableHead);
   --color-juiText-primary: var(--juiText-primary);
   --color-juiText-secondary: var(--juiText-secondary);
   --color-juiText-disabled: var(--juiText-disabled);
@@ -142,7 +143,6 @@
   --color-juiText-purple: var(--juiText-purple);
   --color-juiText-tableHead: var(--juiText-tableHead);
   --color-juiBorder-primary: var(--juiBorder-primary);
-  --color-juiBorder-table: var(--juiBorder-table);
   --color-juiBorder-tableBottom: var(--juiBorder-tableBottom);
   --color-juiScore-veryLow: var(--juiScore-veryLow);
   --color-juiScore-low: var(--juiScore-low);
@@ -162,10 +162,10 @@
   --juiBackground-skeleton: #e0e0e0;
   --juiBackground-tooltip: #3b4154;
   --juiBackground-popover: #fff;
+  --juiBackground-tableHead: #e0e0e0;
   --juiText-primary: #333333;
   --juiText-secondary: rgba(0, 0, 0, 0.4);
   --juiText-disabled: #c7c7c7;
-  --juiText-tableHead: #fff;
-  --juiBorder-table: #eaeaea;
+  --juiText-tableHead: #000;
   --juiBorder-tableBottom: #eaeaea;
 }
