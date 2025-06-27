@@ -231,8 +231,8 @@ export const WithIsAddNewItem: Story = {
         <p className="text-sm">새로운 값을 입력하고 Enter를 누르면 추가됩니다.</p>
         <MultiSelect
           {...args}
-          onValueChange={(v) => {
-            action('추가된 값')(v);
+          onNewValueAdd={(v) => {
+            action(' 새로 추가된 값')(v);
           }}
         />
       </div>
