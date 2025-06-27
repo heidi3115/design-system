@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import {
   Input,
+  Switch,
   TableBody,
   TableCaption,
   TableCell,
@@ -125,8 +126,10 @@ export const Orientation: Story = {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableHead scope="row">전송구분</TableHead>
-              <TableCell>일간</TableCell>
+              <TableHead scope="row">전송여부</TableHead>
+              <TableCell>
+                <Switch />
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableHead scope="row">전송일시</TableHead>
