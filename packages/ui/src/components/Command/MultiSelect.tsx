@@ -335,7 +335,6 @@ const MultiSelect = ({
           selectList.map((item) => (
             <TextBadge
               key={item.value}
-              title={item.label}
               style={{ maxWidth: `${triggerFixedWidth}px` }}
               className={cn(badgeHeight(), 'cursor-auto', disabled && 'cursor-not-allowed opacity-50')}
               aria-disabled={disabled}
@@ -347,7 +346,9 @@ const MultiSelect = ({
                 if (!isControlled) setInternalValue(newValue);
                 onValueChange?.(newValue);
               }}>
-              {item.label}
+              <Tooltip contents={item.label} isArrow={false} className="p-1.5">
+                <span>{item.label}</span>
+              </Tooltip>
             </TextBadge>
           ))}
 

@@ -11,9 +11,9 @@ export type TextBadgeContentProps = {
    */
   textOnly?: boolean;
   /**
-   * children: TextBadge 내부는 아이콘 및 형태, 스타일이 고정되어 있으므로 children은 필수값으로서 string 으로만 받도록 고정.
+   * children: ReactNode.
    */
-  children: string;
+  children: React.ReactNode;
   /**
    * onClick: TextBadge 내부의 textOnly가 false 일 때 삭제 버튼의 클릭 이벤트 처리.
    */
