@@ -42,6 +42,7 @@ export {
   AlertDialogCancel,
   AlertDialogDescription,
   AlertDialogOverlay,
+  ConfirmAlertDialog,
 } from './AlertDialog';
 export { Label } from './Label';
 export {

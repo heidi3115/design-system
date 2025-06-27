@@ -28,6 +28,8 @@ import {
   Dialog,
   AutoComplete,
   MultiSelect,
+  useConfirmDialog,
+  ConfirmAlertDialog,
 } from '@common/ui';
 import {
   ArrowLeftIcon,
@@ -49,7 +51,6 @@ import { useController, useForm } from 'react-hook-form';
 import ThemeToggle from '../../components/ThemeToggle';
 import { useUpdateEffect } from '@common/utils';
 import { CalculatorIcon, SmileIcon, TvIcon } from 'lucide-react';
-import { ConfirmAlertDialog } from '@common/ui/components/AlertDialog';
 
 export default function Page() {
   const [value, setValue] = useState('');
@@ -155,6 +156,8 @@ export default function Page() {
   }, [setSelectMultiValue]);
 
   const portalRef = useRef<HTMLDivElement | null>(null);
+
+  const { openDialog } = useConfirmDialog();
 
   return (
     <form className="p-4" onSubmit={handleSubmit(onValid)}>
@@ -590,6 +593,16 @@ export default function Page() {
               size="small"
               onValueChange={(val) => console.warn(val)}
               isAddNewItem
+              onNewValueAdd={(val) => console.warn('new', val)}
+              onOverItem={(over) =>
+                over &&
+                openDialog({
+                  title: 'warning',
+                  description: '최대 선택 갯수 초과',
+                  onConfirm: () => console.warn('확인'),
+                })
+              }
+              maxItemLength={2}
               options={[
                 { label: 'mmm', value: 'est' },
                 { label: 'DDDD', value: 'pst' },

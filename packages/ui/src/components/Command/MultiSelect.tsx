@@ -66,6 +66,9 @@ export type MultiSelectProps = Omit<VariantProps<typeof commandSelectVariants>, 
   itemClassName?: string;
   isLeaveClose?: boolean;
   isAddNewItem?: boolean;
+  onNewValueAdd?: (value: string) => void;
+  maxItemLength?: number;
+  onOverItem?: (isOver: boolean) => void;
 };
 
 const MultiSelect = ({
@@ -87,6 +90,9 @@ const MultiSelect = ({
   isContentfitTriggerWidth = false,
   isLeaveClose = true,
   isAddNewItem = false,
+  onNewValueAdd,
+  maxItemLength,
+  onOverItem,
   className,
   itemClassName,
 }: MultiSelectProps) => {
@@ -195,10 +201,14 @@ const MultiSelect = ({
 
         const isAlreadySelected = isDuplicateValue(currentValue);
 
+        const isMaxItems = maxItemLength && currentValue.length + 1 > Math.max(maxItemLength ?? 1, 1);
+
         // 이미 있는 경우
-        if (matchedByLabel || matchedByValue || isAlreadySelected) {
+        if (matchedByLabel || matchedByValue || isAlreadySelected || isMaxItems) {
           setInputValue('');
           isNewValueAdded.current = false;
+
+          if (isMaxItems) onOverItem?.(true);
 
           return;
         }
@@ -218,6 +228,7 @@ const MultiSelect = ({
 
           setSelectList((prev) => (prev ? [...prev, newOption] : [newOption]));
           onValueChange?.((selectList?.map((opt) => opt.value) ?? []).concat(newOption.value));
+          onNewValueAdd?.(inputText);
 
           isNewValueAdded.current = true;
         }
@@ -233,12 +244,15 @@ const MultiSelect = ({
       isOpen,
       isDuplicateValue,
       currentValue,
+      maxItemLength,
       matchedByLabel,
       matchedByValue,
       isAddNewItem,
+      onOverItem,
       isControlled,
       onValueChange,
       selectList,
+      onNewValueAdd,
     ],
   );
 
@@ -254,6 +268,12 @@ const MultiSelect = ({
 
       const newValue = [...currentValue, selectedOption.value];
 
+      if (maxItemLength && newValue.length > Math.max(maxItemLength ?? 1, 1)) {
+        onOverItem?.(true);
+
+        return;
+      }
+
       if (!isControlled) {
         setInternalValue(newValue);
       }
@@ -261,7 +281,7 @@ const MultiSelect = ({
       setInputValue('');
       onValueChange?.(newValue);
     },
-    [currentValue, isAddNewItem, isControlled, onValueChange],
+    [currentValue, isAddNewItem, isControlled, maxItemLength, onOverItem, onValueChange],
   );
 
   const handleClearAll = useCallback(() => {
@@ -361,7 +381,7 @@ const MultiSelect = ({
           onCompositionEnd={() => {
             isComposingRef.current = false;
           }}
-          placeholder={placeholder}
+          {...(selectList?.length === 0 ? { placeholder } : {})}
           disabled={disabled}
           className={cn(multeiTriggerBase(), 'group-hover:pr-11')}
         />
@@ -458,7 +478,7 @@ const MultiSelect = ({
         )}
         {inputHeight && (
           <>
-            {selectList && selectList?.length > 0 && (
+            {!disabled && selectList && selectList?.length > 0 && (
               <span
                 className={cn(inputIconBase(), allClearIconBase(), disabled && 'opacity-50 pointer-events-none')}
                 style={{ top: `${inputHeight / 2}px` }}

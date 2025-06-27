@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { MultiSelect, Button } from '@common/ui';
+import { MultiSelect, Button, useConfirmDialog } from '@common/ui';
 import { useRef, useState, type ComponentProps } from 'react';
 import { action } from '@storybook/addon-actions';
 
@@ -238,6 +238,36 @@ export const WithIsAddNewItem: Story = {
       </div>
     );
   },
+};
+
+const WithMaxItemTemplate = (args: ComponentProps<typeof MultiSelect>) => {
+  const { openDialog } = useConfirmDialog();
+
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="text-sm">2개 이상 아이템을 추가 할 수 없습니다.</p>
+      <MultiSelect
+        {...args}
+        onOverItem={() => {
+          openDialog({
+            title: 'warning',
+            description: '2개 이상 추가할 수 없습니다.',
+          });
+        }}
+      />
+    </div>
+  );
+};
+
+export const WithMaxItem: Story = {
+  args: {
+    options: baseOptions,
+    placeholder: '2 개 이상 추가 금지',
+    isAddNewItem: true,
+    maxItemLength: 2,
+    onOverItem: () => alert('추가'),
+  },
+  render: (args) => <WithMaxItemTemplate {...args} />,
 };
 
 const ControlledComponent = ({ onValueChange, ...args }: ComponentProps<typeof MultiSelect>) => {
