@@ -43,8 +43,8 @@ function TableHead({ className, ...props }: ComponentProps<'th'>) {
       data-slot="table-head"
       className={cn(
         'px-[16px] border bg-juiBackground-tableHead text-juiText-tableHead h-10 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] text-xs font-bold w-[200px]',
-        'orientation-vertical:py-[12px] orientation-vertical:border-transparent',
-        'orientation-horizontal:border-juiBorder-tableHead orientation-horizontal:py-[15px]',
+        'orientation-horizontal:py-[12px] orientation-horizontal:border-transparent',
+        'orientation-vertical:border-juiBorder-tableHead orientation-vertical:py-[15px]',
         className,
       )}
       {...props}
@@ -58,8 +58,8 @@ function TableCell({ className, ...props }: ComponentProps<'td'>) {
       data-slot="table-cell"
       className={cn(
         'px-[16px] border text-xs align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] bg-juiBackground-default',
-        'orientation-vertical:py-[9px] orientation-vertical:px-[15px] orientation-vertical:border-transparent orientation-vertical:border-b-juiBorder-tableBottom orientation-vertical:bg-juiBackground-default',
-        'orientation-horizontal:border-juiBorder-tableBottom orientation-horizontal:py-[15px]',
+        'orientation-horizontal:py-[9px] orientation-horizontal:px-[15px] orientation-horizontal:border-transparent orientation-horizontal:border-b-juiBorder-tableBottom orientation-horizontal:bg-juiBackground-default',
+        'orientation-vertical:border-juiBorder-tableBottom orientation-vertical:py-[15px]',
         className,
       )}
       {...props}

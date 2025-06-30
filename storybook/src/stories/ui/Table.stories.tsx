@@ -92,8 +92,8 @@ export const Orientation: Story = {
   render: (args) => {
     return (
       <div className={'flex flex-col gap-2'}>
-        <div className="text-lg">Vertical(수직) Table</div>
-        <Table orientation="vertical">
+        <div className="text-lg">Horizontal Table</div>
+        <Table orientation={args.orientation}>
           <TableCaption>Example Caption</TableCaption>
           <TableHeader>
             <TableRow>
@@ -116,8 +116,8 @@ export const Orientation: Story = {
           </TableBody>
           <TableFooter>Example Footer</TableFooter>
         </Table>
-        <div className="text-lg">Horizontal(수평) Table</div>
-        <Table orientation={args.orientation}>
+        <div className="text-lg">Vertical Table</div>
+        <Table orientation="vertical">
           <TableBody>
             <TableRow>
               <TableHead scope="row">보고서명</TableHead>
