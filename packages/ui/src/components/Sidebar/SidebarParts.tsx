@@ -2,20 +2,11 @@
 
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { ArrowLeftIcon, ArrowRightIcon } from '@common/ui/icons';
+import { tv, type VariantProps } from 'tailwind-variants';
 
+import { Button, Input, Separator, Skeleton, Tooltip } from '../../components';
 import { cn } from '../../lib/utils';
-import {
-  Button,
-  Input,
-  Separator,
-  Skeleton,
-  TooltipRoot,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../../components';
-import { ArrowLeftIcon } from '@common/ui/icons';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -111,21 +102,25 @@ function SidebarProvider({
 
   return (
     <SidebarContext.Provider value={contextValue}>
-      <TooltipProvider delayDuration={0}>
-        <div
-          data-slot="sidebar-wrapper"
-          style={
-            {
-              '--sidebar-width': SIDEBAR_WIDTH,
-              '--sidebar-width-icon': SIDEBAR_WIDTH_ICON,
-              ...style,
-            } as React.CSSProperties
-          }
-          className={cn('group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full', className)}
-          {...props}>
-          {children}
-        </div>
-      </TooltipProvider>
+      <div
+        data-slot="sidebar-wrapper"
+        style={
+          {
+            '--sidebar-width': SIDEBAR_WIDTH,
+            '--sidebar-width-icon': SIDEBAR_WIDTH_ICON,
+            ...style,
+          } as React.CSSProperties
+        }
+        className={cn(
+          'flex',
+          'min-h-svh w-full',
+          'group/sidebar-wrapper', // group 이름 (sidebar-wrapper)
+          'has-data-[variant=inset]:bg-juiBackground-paper', // 부모에 data-variant="inset"일 때 배경색 적용
+          className,
+        )}
+        {...props}>
+        {children}
+      </div>
     </SidebarContext.Provider>
   );
 }
@@ -149,7 +144,9 @@ function SidebarRoot({
       <div
         data-slot="sidebar"
         className={cn(
-          'bg-juiBackground-paper text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col',
+          'bg-juiBackground-paper',
+          'flex flex-col',
+          'h-full w-(--sidebar-width)', // 사용자 정의 CSS 변수 기반 너비
           className,
         )}
         {...props}>
@@ -160,7 +157,7 @@ function SidebarRoot({
 
   return (
     <div
-      className="group peer text-juiText-primary hidden md:block"
+      className="group peer text-juiText-primary block"
       data-state={state}
       data-collapsible={state === 'collapsed' ? collapsible : ''}
       data-variant={variant}
@@ -170,32 +167,47 @@ function SidebarRoot({
       <div
         data-slot="sidebar-gap"
         className={cn(
-          'relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear',
+          'relative',
+          'w-(--sidebar-width)',
+          'bg-transparent',
+          'transition-[width]',
+          'duration-200 ease-linear',
           'group-data-[collapsible=offcanvas]:w-0',
           'group-data-[side=right]:rotate-180',
           variant === 'floating' || variant === 'inset'
-            ? 'group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]'
+            ? 'group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+var(--spacing-4))]'
             : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon)',
         )}
       />
       <div
         data-slot="sidebar-container"
         className={cn(
-          'fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex',
+          // 기본 레이아웃 & 스타일
+          'fixed inset-y-0 z-10 h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear flex',
+
+          // 왼쪽/오른쪽 위치에 따른 스타일
           side === 'left'
-            ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
-            : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
-          // Adjust the padding for floating and inset variants.
+            ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]' // offcanvas 시 왼쪽으로 숨김
+            : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]', // offcanvas 시 오른쪽으로 숨김
+
+          // variant 조건에 따른 패딩 및 너비 조절
           variant === 'floating' || variant === 'inset'
-            ? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]'
-            : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:shadow-md group-data-[side=right]:shadow-md',
-          className,
+            ? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]' // 아이콘 상태일 때 너비 계산식 적용
+            : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:shadow-md group-data-[side=right]:shadow-md', // 기본 너비 및 좌우 그림자
+
+          className, // 외부에서 전달된 추가 클래스
         )}
         {...props}>
         <div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
-          className="bg-juiBackground-paper group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm">
+          className={cn(
+            'bg-juiBackground-paper flex h-full w-full flex-col',
+            'group-data-[variant=floating]:border-sidebar-border', // variant=floating일 때 보더 색상
+            'group-data-[variant=floating]:rounded-lg', // variant=floating일 때 둥근 모서리
+            'group-data-[variant=floating]:border', // variant=floating일 때 보더 표시
+            'group-data-[variant=floating]:shadow-sm', // variant=floating일 때 그림자 효과
+          )}>
           {children}
         </div>
       </div>
@@ -204,21 +216,20 @@ function SidebarRoot({
 }
 
 function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, open } = useSidebar();
 
   return (
     <Button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
-      variant="transparent"
-      size="basic"
-      className={cn('size-7 hover:border-none active:border-none focus:border-none', className)}
+      className={cn(className)}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
       }}
       {...props}>
-      <ArrowLeftIcon size="large" />
+      {open ? <ArrowLeftIcon size="small" /> : <ArrowRightIcon size="small" />}
+
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );
@@ -236,12 +247,29 @@ function SidebarRail({ className, ...props }: React.ComponentProps<'button'>) {
       onClick={toggleSidebar}
       title="Toggle Sidebar"
       className={cn(
-        'hover:after:bg-sidebar-border absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] sm:flex',
+        // 기본 스타일 및 hover 시 after 요소 배경 변경
+        'hover:after:bg-juiBorder-primary absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear',
+        // 좌우 side에 따른 위치 조정
+        'group-data-[side=left]:-right-4 group-data-[side=right]:left-0',
+        // after 요소 스타일 (절대 위치, 세로 전체, 좌측 중앙, 2px 너비)
+        'after:absolute after:inset-y-0 after:left-1/2 after:w-[2px]',
+        // 화면 크기 sm 이상일 때 flex 적용
+        'sm:flex',
+
+        // in-data 조건부 커서 변경 (좌측은 w-resize, 우측은 e-resize)
         'in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize',
+
+        // data-state가 collapsed인 경우 커서 반대 방향으로 변경 (복잡한 CSS 셀렉터)
         '[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize',
+
+        // hover 시 collapsible이 offcanvas일 때 배경 및 위치 조절
         'hover:group-data-[collapsible=offcanvas]:bg-sidebar group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full',
+
+        // offcanvas 상태일 때 좌우 위치 미세 조정 (복잡한 CSS 셀렉터)
         '[[data-side=left][data-collapsible=offcanvas]_&]:-right-2',
         '[[data-side=right][data-collapsible=offcanvas]_&]:-left-2',
+
+        // 외부에서 받은 추가 클래스
         className,
       )}
       {...props}
@@ -254,8 +282,15 @@ function SidebarInset({ className, ...props }: React.ComponentProps<'main'>) {
     <main
       data-slot="sidebar-inset"
       className={cn(
-        'bg-background relative flex w-full flex-1 flex-col',
-        'md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
+        'bg-juiBackground-default relative flex w-full min-w-0 flex-1 flex-col overflow-hidden',
+
+        // md 이상일 때 variant=inset 조건에 따라 여백, 모서리, 그림자 적용
+        'peer-data-[variant=inset]:m-2', // 바깥 여백
+        'peer-data-[variant=inset]:ml-0', // 왼쪽 여백 제거
+        'peer-data-[variant=inset]:rounded-xl', // 둥근 모서리
+        'peer-data-[variant=inset]:shadow-sm', // 그림자 효과
+        'peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2', // 사이드바가 접혔을 때 왼쪽 여백 다시 추가
+
         className,
       )}
       {...props}
@@ -264,35 +299,18 @@ function SidebarInset({ className, ...props }: React.ComponentProps<'main'>) {
 }
 
 function SidebarInput({ className, ...props }: React.ComponentProps<typeof Input>) {
-  return (
-    <Input
-      data-slot="sidebar-input"
-      data-sidebar="input"
-      className={cn('bg-background h-8 w-full shadow-none', className)}
-      {...props}
-    />
-  );
+  return <Input data-slot="sidebar-input" data-sidebar="input" className={cn(className)} {...props} />;
 }
 
 function SidebarHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return (
-    <div
-      data-slot="sidebar-header"
-      data-sidebar="header"
-      className={cn('flex flex-col gap-2 p-2', className)}
-      {...props}
-    />
+    <div data-slot="sidebar-header" data-sidebar="header" className={cn('flex gap-2 p-2', className)} {...props} />
   );
 }
 
 function SidebarFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
-    <div
-      data-slot="sidebar-footer"
-      data-sidebar="footer"
-      className={cn('flex flex-col gap-2 p-2', className)}
-      {...props}
-    />
+    <div data-slot="sidebar-footer" data-sidebar="footer" className={cn('flex flex-col gap-2', className)} {...props} />
   );
 }
 
@@ -313,7 +331,8 @@ function SidebarContent({ className, ...props }: React.ComponentProps<'div'>) {
       data-slot="sidebar-content"
       data-sidebar="content"
       className={cn(
-        'flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden',
+        'flex min-h-0 flex-1 flex-col gap-2 overflow-auto',
+        'group-data-[collapsible=icon]:overflow-hidden', // variant=icon일 때 스크롤 숨김
         className,
       )}
       {...props}
@@ -344,8 +363,12 @@ function SidebarGroupLabel({
       data-slot="sidebar-group-label"
       data-sidebar="group-label"
       className={cn(
-        'text-sidebar-foreground/70 ring-sidebar-ring flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium outline-hidden transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
+        'text-juiText-primary/70 ring-juiBorder-primary flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium outline-hidden transition-[margin,opacity] duration-200 ease-linear',
+        '[&>svg]:size-4 [&>svg]:shrink-0', // 자식 svg 크기 및 고정 비율
+
+        // collapsible=icon일 때 숨김 처리 (위로 올리고 투명도 0)
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
+
         className,
       )}
       {...props}
@@ -365,10 +388,13 @@ function SidebarGroupAction({
       data-slot="sidebar-group-action"
       data-sidebar="group-action"
       className={cn(
-        'text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground absolute top-3.5 right-3 flex aspect-square w-5 items-center justify-center rounded-md p-0 outline-hidden transition-transform focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
-        // Increases the hit area of the button on mobile.
-        'after:absolute after:-inset-2 md:after:hidden',
-        'group-data-[collapsible=icon]:hidden',
+        'text-juiText-primary ring-juiBorder-primary hover:bg-juiPrimary hover:text-juiText-secondary',
+        'absolute top-3.5 right-3 flex aspect-square w-5 items-center justify-center rounded-md p-0 outline-hidden transition-transform',
+        '[&>svg]:size-4 [&>svg]:shrink-0', // 자식 svg 크기 및 비율 고정
+
+        'after:absolute after:-inset-2 after:hidden', // 모바일에서 클릭 영역 확장 (after 가상요소), md 이상에서 숨김
+        'group-data-[collapsible=icon]:hidden', // collapsible=icon 상태일 때 버튼 숨김
+
         className,
       )}
       {...props}
@@ -381,7 +407,7 @@ function SidebarGroupContent({ className, ...props }: React.ComponentProps<'div'
     <div
       data-slot="sidebar-group-content"
       data-sidebar="group-content"
-      className={cn('w-full text-sm', className)}
+      className={cn('w-full text-sm z-1', className)}
       {...props}
     />
   );
@@ -409,40 +435,38 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<'li'>) {
   );
 }
 
-const sidebarMenuButtonVariants = cva(
-  'peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
-  {
-    variants: {
-      variant: {
-        default: 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
-        outline:
-          'bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]',
-      },
-      size: {
-        default: 'h-8 text-sm',
-        sm: 'h-7 text-xs',
-        lg: 'h-12 text-sm group-data-[collapsible=icon]:p-0!',
-      },
+const sidebarMenuButtonVariants = tv({
+  base: 'peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+  variants: {
+    variant: {
+      default: 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+      outline:
+        'bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]',
     },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
+    size: {
+      default: 'h-8 text-sm',
+      sm: 'h-7 text-xs',
+      lg: 'h-12 text-sm group-data-[collapsible=icon]:p-0!',
     },
   },
-);
+  defaultVariants: {
+    variant: 'default',
+    size: 'default',
+  },
+});
 
 function SidebarMenuButton({
   asChild = false,
   isActive = false,
   variant = 'default',
   size = 'default',
-  tooltip,
+  tooltipContents,
   className,
   ...props
 }: React.ComponentProps<'button'> & {
   asChild?: boolean;
   isActive?: boolean;
-  tooltip?: string | React.ComponentProps<typeof TooltipContent>;
+  tooltipContents?: string;
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot : 'button';
   const { state } = useSidebar();
@@ -458,21 +482,12 @@ function SidebarMenuButton({
     />
   );
 
-  if (!tooltip) {
+  if (!tooltipContents) {
     return button;
   }
 
-  if (typeof tooltip === 'string') {
-    tooltip = {
-      children: tooltip,
-    };
-  }
-
   return (
-    <TooltipRoot>
-      <TooltipTrigger asChild>{button}</TooltipTrigger>
-      <TooltipContent side="right" align="center" hidden={state !== 'collapsed'} {...tooltip} />
-    </TooltipRoot>
+    <Tooltip trigger={button} side="right" align="center" contents={tooltipContents} disabled={state !== 'collapsed'} />
   );
 }
 
@@ -494,13 +509,13 @@ function SidebarMenuAction({
       className={cn(
         'text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground peer-hover/menu-button:text-sidebar-accent-foreground absolute top-1.5 right-1 flex aspect-square w-5 items-center justify-center rounded-md p-0 outline-hidden transition-transform focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
         // Increases the hit area of the button on mobile.
-        'after:absolute after:-inset-2 md:after:hidden',
+        'after:absolute after:-inset-2 after:hidden',
         'peer-data-[size=sm]/menu-button:top-1',
         'peer-data-[size=default]/menu-button:top-1.5',
         'peer-data-[size=lg]/menu-button:top-2.5',
         'group-data-[collapsible=icon]:hidden',
         showOnHover &&
-          'peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 md:opacity-0',
+          'peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 opacity-0',
         className,
       )}
       {...props}

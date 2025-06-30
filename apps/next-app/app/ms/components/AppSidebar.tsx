@@ -10,11 +10,12 @@ import {
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
-  Avatar,
   Button,
-  useSidebar,
+  SidebarInput,
+  SidebarMenuItem,
 } from '@common/ui';
 import { BellIcon, HomeIcon } from '@common/ui/icons';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export function AppSidebar() {
@@ -31,16 +32,14 @@ export function AppSidebar() {
     },
   ];
 
-  const { open } = useSidebar();
-
   return (
     <SidebarRoot collapsible="icon">
-      <SidebarHeader className="h-14 shrink-0 items-center">
-        <SidebarMenuButton asChild>
-          <div>
-            <Avatar src={'/images/avatar-jira.png'} />
-            {open && <Button variant="gradient">TEST</Button>}
-          </div>
+      <SidebarHeader className="shrink-0 items-center">
+        <SidebarMenuButton size="lg" asChild>
+          <Link href="/">
+            <Image src="/images/avatar-slack.png" alt="main" width={56} height={56} />
+            <Button variant="gradient">TEST</Button>
+          </Link>
         </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent>
@@ -49,20 +48,24 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenu key={item.title}>
-                  <SidebarMenuButton asChild>
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild tooltipContents={item.title}>
                     <Link href={item.url}>
                       {item.icon}
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
-                </SidebarMenu>
+                </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter>
+        <div className="p-4">
+          <SidebarInput />
+        </div>
+      </SidebarFooter>
     </SidebarRoot>
   );
 }

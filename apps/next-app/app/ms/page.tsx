@@ -156,6 +156,7 @@ export default function Page() {
       <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper" ref={wrapperRef}>
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-2xl font-bold underline">Hello World</h1>
+          <input type="datetime-local" />
           <Button
             onClick={() =>
               toast.error('Event has been created', {
