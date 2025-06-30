@@ -170,3 +170,5 @@ export {
   CommandSeparator,
   AutoComplete,
 } from './Command';
+
+export { Progress } from './Progress';
