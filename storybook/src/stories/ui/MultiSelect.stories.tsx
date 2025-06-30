@@ -290,13 +290,13 @@ const WithMaxItemTemplate = (args: ComponentProps<typeof MultiSelect>) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-sm">2개 이상 아이템을 추가 할 수 없습니다.</p>
+      <p className="text-sm">2개 초과의 아이템을 추가 할 수 없습니다.</p>
       <MultiSelect
         {...args}
         onOverItem={() => {
           openDialog({
             title: 'warning',
-            description: '2개 이상 추가할 수 없습니다.',
+            description: '2개 초과 추가할 수 없습니다.',
           });
         }}
       />
