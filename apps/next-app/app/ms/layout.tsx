@@ -1,12 +1,19 @@
 import { ReactNode } from 'react';
-import { Toaster } from '@common/ui';
+import { SidebarInset, SidebarProvider, SidebarTrigger, Toaster } from '@common/ui';
+import { AppSidebar } from './components/AppSidebar';
 
 export default function MsLayout({ children }: { children: ReactNode }) {
   return (
-    <div>
-      <h2>MS 테스트 페이지 전용 레이아웃</h2>
-      {children}
+    <SidebarProvider defaultOpen={false}>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2">
+          <SidebarTrigger />
+          <h1>header</h1>
+        </header>
+        <main className="flex flex-1 flex-col">{children}</main>
+      </SidebarInset>
       <Toaster position="top-center" closeButton duration={Infinity} />
-    </div>
+    </SidebarProvider>
   );
 }
