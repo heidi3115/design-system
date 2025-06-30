@@ -149,7 +149,7 @@ export default function Page() {
   const portalRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <form className="p-4" onSubmit={handleSubmit(onValid)}>
+    <form className="relative" onSubmit={handleSubmit(onValid)}>
       <div className="sticky top-2 z-10">
         <ThemeToggle />
       </div>

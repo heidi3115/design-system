@@ -60,7 +60,7 @@ export default function TabsPage() {
   ];
 
   return (
-    <div className="p-5">
+    <div className="relative">
       <div className="absolute top-2 right-1 flex flex-row-reverse z-10">
         <ThemeToggle />
       </div>

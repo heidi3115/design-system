@@ -35,7 +35,7 @@ export function AppSidebar() {
 
   return (
     <SidebarRoot collapsible="icon">
-      <SidebarHeader>
+      <SidebarHeader className="h-14 shrink-0 items-center">
         <SidebarMenuButton asChild>
           <div>
             <Avatar src={'/images/avatar-jira.png'} />

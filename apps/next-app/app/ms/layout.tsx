@@ -7,11 +7,11 @@ export default function MsLayout({ children }: { children: ReactNode }) {
     <SidebarProvider defaultOpen={false}>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2">
+        <header className="sticky top-0 z-1 flex h-14 shrink-0 items-center gap-2 bg-juiBackground-input light:border-b light:border-b-juiBorder-primary">
           <SidebarTrigger />
-          <h1>header</h1>
+          <h1 className="font-bold">header</h1>
         </header>
-        <main className="flex flex-1 flex-col">{children}</main>
+        <div className="flex flex-1 flex-col px-4 h-[calc(100svh-theme(spacing.14))] overflow-auto">{children}</div>
       </SidebarInset>
       <Toaster position="top-center" closeButton duration={Infinity} />
     </SidebarProvider>
