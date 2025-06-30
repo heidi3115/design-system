@@ -3,11 +3,11 @@
 import { cn } from '../../lib/utils';
 import { type ComponentProps } from 'react';
 
-type TableRootProps = {
+type TableProps = {
   orientation?: 'horizontal' | 'vertical';
 } & ComponentProps<'table'>;
 
-function Table({ orientation = 'horizontal', className, ...props }: TableRootProps) {
+function Table({ orientation = 'horizontal', className, ...props }: TableProps) {
   return (
     <div data-slot="table-container" className="relative w-full overflow-x-auto">
       <table data-orientation={orientation} className={cn('w-full caption-bottom text-sm', className)} {...props} />
