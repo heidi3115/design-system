@@ -1,18 +1,19 @@
-import type { OptionType, OptionItem } from '../AutoComplete';
 import { useMemo } from 'react';
 
-export const useFlattenedOptions = (options: OptionType[]): OptionItem[] => {
+export const useFlattenedOptions = <T extends { type?: 'item'; value: string }>(
+  options: (T | { type: 'separator' } | { type: 'group'; items: (T | { type: 'separator' })[] })[],
+): T[] => {
   return useMemo(() => {
     return options.flatMap((opt) => {
       if ('type' in opt) {
-        if (opt.type === 'group') {
-          return opt.items.filter((item): item is OptionItem => 'value' in item);
+        if (opt.type === 'group' && 'items' in opt) {
+          return opt.items.filter((item): item is T => 'value' in item);
         }
 
-        return []; // separator는 무시
+        return [];
       }
 
-      return [opt]; // 단일 item
+      return [opt];
     });
   }, [options]);
 };

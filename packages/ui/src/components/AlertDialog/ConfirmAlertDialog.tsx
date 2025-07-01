@@ -1,7 +1,7 @@
 import { isValidElement } from 'react';
 
 import {
-  AlertDialog,
+  AlertDialogRoot,
   AlertDialogTrigger,
   AlertDialogContent,
   AlertDialogHeader,
@@ -14,6 +14,8 @@ import {
 import { AlertCircleIcon, CheckCircleIcon } from '@common/ui/icons';
 
 type BaseProps = {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   title?: 'warning' | 'success';
   description?: string;
   confirmLabel?: string;
@@ -31,6 +33,8 @@ type TriggerType = { trigger: React.ReactElement };
 type ConfirmDialogProps = OnlyOne<ChildrenType, TriggerType> & BaseProps;
 
 function ConfirmAlertDialog({
+  open,
+  onOpenChange,
   trigger,
   children,
   title = 'warning',
@@ -56,7 +60,7 @@ function ConfirmAlertDialog({
   }
 
   return (
-    <AlertDialog>
+    <AlertDialogRoot open={open} onOpenChange={onOpenChange}>
       <AlertDialogTrigger asChild>{triggerNode}</AlertDialogTrigger>
 
       <AlertDialogContent portalContainer={portalContainer} contentSize={contentSize}>
@@ -71,7 +75,7 @@ function ConfirmAlertDialog({
           {footerType !== 'confirm' && <AlertDialogCancel onClick={onCancel}>{cancelLabel}</AlertDialogCancel>}
         </AlertDialogFooter>
       </AlertDialogContent>
-    </AlertDialog>
+    </AlertDialogRoot>
   );
 }
 
