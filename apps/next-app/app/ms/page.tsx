@@ -161,7 +161,7 @@ export default function Page() {
 
   return (
     <form className="relative" onSubmit={handleSubmit(onValid)}>
-      <div className="sticky top-2 z-10">
+      <div className="absolute top-2 right-1 flex flex-row-reverse z-10">
         <ThemeToggle />
       </div>
       <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper" ref={wrapperRef}>

@@ -8,7 +8,12 @@ import { toast } from 'sonner';
 
 export default function TabsPage() {
   function ScenarioList(props: { scenarioId: number }) {
-    return <div className="bg-juiBackground-paper w-full min-h-lvh p-4">Scenario {props.scenarioId}</div>;
+    return (
+      // <div className="bg-juiBackground-paper w-full p-4 h-[calc(100svh-120px)] overflow-auto">
+      //   <div className="h-[2000px]">Scenario {props.scenarioId}</div>
+      // </div>
+      <div className="bg-juiBackground-paper w-full p-4 h-[2000px] overflow-auto">Scenario {props.scenarioId}</div>
+    );
   }
 
   type ComplexScenarioProps = {
@@ -16,7 +21,7 @@ export default function TabsPage() {
   };
 
   function ComplexScenario(props: ComplexScenarioProps) {
-    return <div className="bg-juiBackground-paper w-full min-h-lvh p-4">Complex {props.name}</div>;
+    return <div className="bg-juiBackground-paper w-full p-4">Complex {props.name}</div>;
   }
 
   const [acitveTab, setActiveTab] = useState('');
@@ -64,35 +69,37 @@ export default function TabsPage() {
       <div className="absolute top-2 right-1 flex flex-row-reverse z-10">
         <ThemeToggle />
       </div>
-
-      <div className="min-h-full">
-        <Tabs
-          defaultValue="target"
-          // align="center"
-          // size="small"
-          // variant="secondary"
-          // shape="text"
-          // shape="folder"
-          tabs={tabsArray}
-          // maxWidth={100}
-          // align="full"
-          onValueChange={(val) => setActiveTab(val)}
-        />
-        {acitveTab === 'exception' && <div className="bg-juiBackground-paper w-full min-h-lvh p-4">Exception</div>}
-        {acitveTab === 'target' && (
-          <div className="bg-juiBackground-paper w-full p-4">
-            Target
-            <Separator orientation="horizontal" />
-            <div className="flex flex-col gap-2">
-              <Button onClick={() => toast('Event has been created')}>Show Toast</Button>
-              <Skeleton className="w-20 h-3" />
-              <Skeleton className="w-16 h-3" />
-              <Skeleton className="w-full h-3" />
-              <Skeleton className="w-full h-72" />
-            </div>
+      <Tabs
+        defaultValue="target"
+        // align="center"
+        // size="small"
+        // variant="secondary"
+        // shape="text"
+        // shape="folder"
+        tabs={tabsArray}
+        restScreenHeight={120}
+        // maxWidth={100}
+        // align="full"
+        onValueChange={(val) => setActiveTab(val)}
+      />
+      {acitveTab === 'exception' && (
+        <div className="max-h-[calc(100svh-120px)] overflow-auto bg-juiBackground-paper w-full p-4">
+          <div className="h-[2000px]">Exception</div>
+        </div>
+      )}
+      {acitveTab === 'target' && (
+        <div className="h-[2000px] bg-juiBackground-paper w-full p-4">
+          Target
+          <Separator orientation="horizontal" />
+          <div className="flex flex-col gap-2">
+            <Button onClick={() => toast('Event has been created')}>Show Toast</Button>
+            <Skeleton className="w-20 h-3" />
+            <Skeleton className="w-16 h-3" />
+            <Skeleton className="w-full h-3" />
+            <Skeleton className="w-full h-72" />
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
