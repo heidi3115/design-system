@@ -42,7 +42,7 @@ function TableHead({ className, ...props }: ComponentProps<'th'>) {
     <th
       data-slot="table-head"
       className={cn(
-        'px-[16px] border bg-juiBackground-tableHead text-juiText-tableHead h-10 text-left align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] text-xs font-bold w-[200px]',
+        'px-[16px] border bg-juiBackground-tableHead text-juiText-tableHead h-10 text-left align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] text-xs font-bold',
         'orientation-horizontal:py-[12px] orientation-horizontal:border-transparent',
         'orientation-vertical:border-juiBorder-tableHead orientation-vertical:py-[15px]',
         className,
