@@ -2,10 +2,19 @@
 
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
-import { ArrowLeftIcon, ArrowRightIcon } from '@common/ui/icons';
+import { ArrowLeftIcon, ArrowRightIcon, ChevronDownIcon, MinusIcon, PlusIcon, type IconProps } from '@common/ui/icons';
 import { tv, type VariantProps } from 'tailwind-variants';
 
-import { Button, Input, Separator, Skeleton, Tooltip } from '../../components';
+import {
+  Button,
+  CollapsibleContent,
+  CollapsibleRoot,
+  CollapsibleTrigger,
+  Input,
+  Separator,
+  Skeleton,
+  Tooltip,
+} from '../../components';
 import { cn } from '../../lib/utils';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
@@ -319,7 +328,7 @@ function SidebarSeparator({ className, ...props }: React.ComponentProps<typeof S
     <Separator
       data-slot="sidebar-separator"
       data-sidebar="separator"
-      className={cn('bg-sidebar-border mx-2 w-auto', className)}
+      className={cn('bg-juiBorder-primary mx-2 w-auto! min-w-auto!', className)}
       {...props}
     />
   );
@@ -364,7 +373,7 @@ function SidebarGroupLabel({
       data-sidebar="group-label"
       className={cn(
         'text-juiText-primary/70 ring-juiBorder-primary flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium outline-hidden transition-[margin,opacity] duration-200 ease-linear',
-        '[&>svg]:size-4 [&>svg]:shrink-0', // 자식 svg 크기 및 고정 비율
+        '[&>svg]:size-3 [&>svg]:shrink-0', // 자식 svg 크기 및 고정 비율
 
         // collapsible=icon일 때 숨김 처리 (위로 올리고 투명도 0)
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
@@ -460,6 +469,7 @@ const sidebarMenuButtonVariants = tv({
     variant: {
       default: `
         hover:bg-current/10
+        active:bg-juiPrimary/15 active:font-bold
       `,
       outline: `
         bg-juiBackground-default
@@ -622,14 +632,21 @@ function SidebarMenuSkeleton({
   );
 }
 
-function SidebarMenuSub({ className, ...props }: React.ComponentProps<'ul'>) {
+function SidebarMenuSub({
+  className,
+  isFloat = false,
+  ...props
+}: React.ComponentProps<'ul'> & {
+  isFloat?: boolean;
+}) {
   return (
     <ul
       data-slot="sidebar-menu-sub"
       data-sidebar="menu-sub"
       className={cn(
-        'border-sidebar-border mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l px-2.5 py-0.5',
+        'border-juiText-disabled light:border-juiBorder-primary mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l px-2.5 py-0.5',
         'group-data-[collapsible=icon]:hidden',
+        isFloat && 'ml-0 border-l-0 px-1.5',
         className,
       )}
       {...props}
@@ -668,50 +685,77 @@ function SidebarMenuSubButton({
       data-size={size}
       data-active={isActive}
       className={cn(
-        // 기본 텍스트 및 테두리 색상
-        'text-sidebar-foreground ring-sidebar-ring',
-
-        // hover 및 active 상태 시 배경/텍스트 강조
-        'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
-        'active:bg-sidebar-accent active:text-sidebar-accent-foreground',
-
-        // SVG 아이콘 강조 색상
-        '[&>svg]:text-sidebar-accent-foreground',
-
-        // 버튼 레이아웃: 높이, 최소 너비, 정렬 등
-        'flex h-7 min-w-0 -translate-x-px items-center gap-2 px-2',
-
-        // 모양: 둥근 테두리, 넘침 숨김, 외곽선 제거
-        'rounded-md overflow-hidden outline-hidden',
-
-        // 키보드 접근 시 ring 표시
-        'focus-visible:ring-2',
-
-        // 비활성화 상태 대응
-        'disabled:pointer-events-none disabled:opacity-50',
-        'aria-disabled:pointer-events-none aria-disabled:opacity-50',
-
-        // svg 크기 고정 및 축소 방지
-        '[&>svg]:size-4 [&>svg]:shrink-0',
-
-        // 텍스트가 길어질 경우 말줄임 처리
-        '[&>span:last-child]:truncate',
-
-        // 활성화된 메뉴일 때 배경/텍스트 강조
-        'data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground',
-
-        // size prop에 따른 글자 크기 설정
-        size === 'sm' && 'text-xs',
-        size === 'md' && 'text-sm',
-
-        // collapsible 메뉴가 아이콘 전용일 경우 숨김 처리
-        'group-data-[collapsible=icon]:hidden',
-
-        // 외부에서 전달된 클래스 추가
-        className,
+        'text-juiText-primary', // 기본 텍스트 색상
+        'hover:bg-current/10', // hover 시 배경 흐림 효과
+        'active:bg-juiPrimary/15 active:font-bold', // active 시 배경 강조 및 폰트 bold
+        '[&>svg]:font-bold', // 자식 svg 아이콘 bold 처리
+        'flex h-7 min-w-0 -translate-x-px items-center gap-2 px-2', // 버튼 레이아웃: 정렬, 간격, 높이 등
+        'rounded-md overflow-hidden outline-hidden', // 둥근 테두리, 넘침 숨김, outline 제거
+        'focus-visible:ring-2', // 키보드 focus 시 ring 표시
+        'disabled:pointer-events-none disabled:opacity-50', // 비활성화 시 클릭 불가 및 반투명
+        'aria-disabled:pointer-events-none aria-disabled:opacity-50', // 접근성 비활성화 대응
+        '[&>svg]:size-4 [&>svg]:shrink-0', // svg 아이콘 크기 고정 및 축소 방지
+        '[&>span:last-child]:truncate', // 마지막 span 내용 말줄임 처리
+        'data-[active=true]:bg-juiPrimary/15 data-[active=true]:font-bold', // active 상태일 때 배경 강조 및 굵은 텍스트
+        size === 'sm' && 'text-xs', // size가 sm일 경우 작은 글씨
+        size === 'md' && 'text-sm', // size가 md일 경우 기본 크기
+        'group-data-[collapsible=icon]:hidden', // 아이콘 전용 메뉴일 경우 숨김 처리
+        className, // 외부에서 전달된 클래스 추가
       )}
       {...props}
     />
+  );
+}
+
+function SidebarCollasibleGroup({
+  collasibleTitle,
+  groupTitle,
+  extendType = 'chev',
+  customIcon,
+  children,
+  ...props
+}: React.ComponentProps<typeof CollapsibleRoot> & {
+  collasibleTitle: React.ReactNode;
+  groupTitle?: string;
+  extendType?: 'chev' | 'plus';
+  customIcon?: {
+    open: React.ComponentType<IconProps>;
+    close: React.ComponentType<IconProps>;
+  };
+}) {
+  const OpenCustomIcon = customIcon?.open;
+  const CloseCustomIcon = customIcon?.close;
+
+  return (
+    <CollapsibleRoot className="group/collapsible" {...props}>
+      <SidebarGroup className="py-0">
+        {groupTitle && <SidebarGroupLabel className="py-0">{groupTitle}</SidebarGroupLabel>}
+        <SidebarGroupLabel
+          asChild
+          className="group/label text-juiText-primary hover:bg-current/10 hover:text-sidebar-accent-foreground text-sm">
+          <CollapsibleTrigger>
+            {collasibleTitle}
+            {customIcon && OpenCustomIcon && CloseCustomIcon ? (
+              <>
+                <OpenCustomIcon className="ml-auto group-data-[state=open]/collapsible:hidden" />
+                <CloseCustomIcon className="ml-auto group-data-[state=closed]/collapsible:hidden" />
+              </>
+            ) : (
+              extendType === 'chev' && (
+                <ChevronDownIcon className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+              )
+            )}
+            {extendType === 'plus' && (
+              <>
+                <PlusIcon className="ml-auto group-data-[state=open]/collapsible:hidden" />
+                <MinusIcon className="ml-auto group-data-[state=closed]/collapsible:hidden" />
+              </>
+            )}
+          </CollapsibleTrigger>
+        </SidebarGroupLabel>
+        <CollapsibleContent>{children}</CollapsibleContent>
+      </SidebarGroup>
+    </CollapsibleRoot>
   );
 }
 
@@ -739,5 +783,6 @@ export {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
+  SidebarCollasibleGroup,
   useSidebar,
 };

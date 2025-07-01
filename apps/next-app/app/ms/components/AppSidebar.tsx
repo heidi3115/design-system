@@ -17,11 +17,13 @@ import {
   SidebarGroupAction,
   SidebarMenuBadge,
   SidebarMenuSkeleton,
-  CollapsibleRoot,
-  CollapsibleTrigger,
-  CollapsibleContent,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+  SidebarSeparator,
+  SidebarCollasibleGroup,
 } from '@common/ui';
-import { BellIcon, ChevronDownIcon, HomeIcon, ListIcon, LockIcon, PlusIcon, TagIcon } from '@common/ui/icons';
+import { BellIcon, EditIcon, HomeIcon, ListIcon, LockIcon, MenuIcon, PlusIcon, TagIcon } from '@common/ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -48,6 +50,151 @@ export function AppSidebar() {
     },
   ];
 
+  const subData = {
+    navMain: [
+      {
+        title: 'Getting Started',
+        url: '#',
+        float: false,
+        items: [
+          {
+            title: 'Installation',
+            url: '#',
+          },
+          {
+            title: 'Project Structure',
+            url: '#',
+          },
+        ],
+      },
+      {
+        title: 'Float Sub Menu',
+        url: '#',
+        float: true,
+        items: [
+          {
+            title: 'Routing',
+            url: '#',
+          },
+          {
+            title: 'Data Fetching',
+            url: '#',
+            isActive: true,
+          },
+          {
+            title: 'Rendering',
+            url: '#',
+          },
+          {
+            title: 'Caching',
+            url: '#',
+          },
+          {
+            title: 'Styling',
+            url: '#',
+            icon: <EditIcon />,
+          },
+          {
+            title: 'Optimizing',
+            url: '#',
+          },
+          {
+            title: 'Configuring',
+            url: '#',
+          },
+          {
+            title: 'Testing',
+            url: '#',
+          },
+          {
+            title: 'Authentication',
+            url: '#',
+          },
+          {
+            title: 'Deploying',
+            url: '#',
+          },
+          {
+            title: 'Upgrading',
+            url: '#',
+          },
+          {
+            title: 'Examples',
+            url: '#',
+          },
+        ],
+      },
+      {
+        title: 'API Reference',
+        url: '#',
+        float: false,
+        items: [
+          {
+            title: 'Components',
+            url: '#',
+          },
+          {
+            title: 'File Conventions',
+            url: '#',
+          },
+          {
+            title: 'Functions',
+            url: '#',
+          },
+          {
+            title: 'next.config.js Options',
+            url: '#',
+          },
+          {
+            title: 'CLI',
+            url: '#',
+          },
+          {
+            title: 'Edge Runtime',
+            url: '#',
+          },
+        ],
+      },
+      {
+        title: 'Architecture',
+        url: '#',
+        float: false,
+        items: [
+          {
+            title: 'Accessibility',
+            url: '#',
+          },
+          {
+            title: 'Fast Refresh',
+            url: '#',
+          },
+          {
+            title: 'Next.js Compiler',
+            url: '#',
+          },
+          {
+            title: 'Supported Browsers',
+            url: '#',
+          },
+          {
+            title: 'Turbopack',
+            url: '#',
+          },
+        ],
+      },
+      {
+        title: 'Community',
+        url: '#',
+        items: [
+          {
+            title: 'Contribution Guide',
+            url: '#',
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <SidebarRoot collapsible="icon">
       <SidebarHeader className="shrink-0 items-center">
@@ -65,7 +212,7 @@ export function AppSidebar() {
       <SidebarContent>
         {/* 일반 그룹 */}
         <SidebarGroup>
-          <SidebarGroupLabel>장명수 사이드바</SidebarGroupLabel>
+          <SidebarGroupLabel>장명수 사이드바 일반</SidebarGroupLabel>
           <SidebarGroupAction title="Add Project">
             <PlusIcon /> <span className="sr-only">Add Project</span>
           </SidebarGroupAction>
@@ -125,43 +272,111 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
+        <SidebarSeparator />
+        {/* 서브 그룹 */}
+        <SidebarGroup>
+          <SidebarGroupLabel>서브 그룹 사이드바</SidebarGroupLabel>
+          <SidebarMenu>
+            {subData.navMain.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild>
+                  <Link data-slot="button" href={item.url}>
+                    {!item.float && <MenuIcon />}
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+                {item.items?.length ? (
+                  <SidebarMenuSub isFloat={item.float}>
+                    {item.items.map((sub) => (
+                      <SidebarMenuSubItem key={sub.title}>
+                        <SidebarMenuSubButton
+                          asChild
+                          size={item.float ? 'sm' : undefined}
+                          isActive={'isActive' in sub && sub.isActive}>
+                          <Link data-slot="button" href={sub.url}>
+                            {'icon' in sub && sub.icon}
+                            <span>{sub.title}</span>
+                          </Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))}
+                  </SidebarMenuSub>
+                ) : null}
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+
+        <SidebarSeparator />
         {/* Collapsible 그룹 */}
-        <CollapsibleRoot className="group/collapsible">
-          <SidebarGroup>
-            <SidebarGroupLabel asChild>
-              <CollapsibleTrigger>
-                Help
-                <ChevronDownIcon className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-              </CollapsibleTrigger>
-            </SidebarGroupLabel>
-            <CollapsibleContent>
+        <SidebarCollasibleGroup collasibleTitle="Collapsible" groupTitle="Collasible 사이드바">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <TagIcon />
+                  Badge
+                </SidebarMenuButton>
+                <SidebarMenuBadge>9</SidebarMenuBadge>
+              </SidebarMenuItem>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild tooltipContents={item.title} isActive={item.url === path}>
+                    <Link data-slot="button" href={item.url} aria-disabled={item.disabled}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                  <SidebarMenuAction showOnHover>
+                    <ListIcon /> <span className="sr-only">Add Project</span>
+                  </SidebarMenuAction>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarCollasibleGroup>
+
+        <SidebarSeparator />
+        {/* collasible 서브 그룹 */}
+        <SidebarGroup className="pb-0">
+          <SidebarGroupLabel>Collasible 서브 그룹 사이드바</SidebarGroupLabel>
+        </SidebarGroup>
+        {subData.navMain.map((item, index) => (
+          <SidebarCollasibleGroup
+            extendType="plus"
+            key={item.title}
+            defaultOpen={index === 1}
+            collasibleTitle={
+              index === 1 ? (
+                <div className="flex gap-2">
+                  <MenuIcon />
+                  {item.title}
+                </div>
+              ) : (
+                item.title
+              )
+            }>
+            {item.items?.length ? (
               <SidebarGroupContent>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton>
-                      <TagIcon />
-                      Badge
-                    </SidebarMenuButton>
-                    <SidebarMenuBadge>9</SidebarMenuBadge>
-                  </SidebarMenuItem>
-                  {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild tooltipContents={item.title} isActive={item.url === path}>
-                        <Link data-slot="button" href={item.url} aria-disabled={item.disabled}>
-                          {item.icon}
-                          <span>{item.title}</span>
+                <SidebarMenuSub isFloat={item.float}>
+                  {item.items.map((sub) => (
+                    <SidebarMenuSubItem key={sub.title}>
+                      <SidebarMenuSubButton
+                        asChild
+                        size={item.float ? 'sm' : undefined}
+                        isActive={'isActive' in sub && sub.isActive}>
+                        <Link data-slot="button" href={sub.url}>
+                          {'icon' in sub && sub.icon}
+                          <span>{sub.title}</span>
                         </Link>
-                      </SidebarMenuButton>
-                      <SidebarMenuAction showOnHover>
-                        <ListIcon /> <span className="sr-only">Add Project</span>
-                      </SidebarMenuAction>
-                    </SidebarMenuItem>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
                   ))}
-                </SidebarMenu>
+                </SidebarMenuSub>
               </SidebarGroupContent>
-            </CollapsibleContent>
-          </SidebarGroup>
-        </CollapsibleRoot>
+            ) : null}
+          </SidebarCollasibleGroup>
+        ))}
       </SidebarContent>
       <SidebarFooter>
         <div className="p-4">

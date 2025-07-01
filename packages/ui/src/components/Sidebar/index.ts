@@ -22,5 +22,6 @@ export {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
+  SidebarCollasibleGroup,
   useSidebar,
 } from './SidebarParts';
