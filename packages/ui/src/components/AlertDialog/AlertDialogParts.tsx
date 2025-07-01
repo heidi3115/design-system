@@ -8,7 +8,7 @@ import { alertDialogVariants } from './alertDialogVariants'; // 추가
 
 const { overlay, header, footer, title, description } = alertDialogVariants();
 
-function AlertDialog({ ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
+function AlertDialogRoot({ ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
   return <AlertDialogPrimitive.Root {...props} />;
 }
 
@@ -86,7 +86,7 @@ function AlertDialogCancel({ className, ...props }: React.ComponentProps<typeof 
 }
 
 export {
-  AlertDialog,
+  AlertDialogRoot,
   AlertDialogPortal,
   AlertDialogOverlay,
   AlertDialogTrigger,

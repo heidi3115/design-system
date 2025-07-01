@@ -31,7 +31,7 @@ export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
 export { Toggle, toggleVariants } from './Toggle';
 export { ToggleGroup } from './ToggleGroup';
 export {
-  AlertDialog,
+  AlertDialogRoot,
   AlertDialogTitle,
   AlertDialogPortal,
   AlertDialogTrigger,
@@ -42,6 +42,7 @@ export {
   AlertDialogCancel,
   AlertDialogDescription,
   AlertDialogOverlay,
+  ConfirmAlertDialog,
 } from './AlertDialog';
 export { Label } from './Label';
 export {
@@ -169,6 +170,7 @@ export {
   CommandShortcut,
   CommandSeparator,
   AutoComplete,
+  MultiSelect,
 } from './Command';
 
 export {
