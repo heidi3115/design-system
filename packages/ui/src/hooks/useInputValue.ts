@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 type InputLikeElement = HTMLInputElement | HTMLTextAreaElement;
 
@@ -22,10 +22,13 @@ export function useInputValue<T extends InputLikeElement = HTMLInputElement>({
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<T>) => {
-      setInternalValue(e.target.value); // 안전: T는 value 속성이 있는 타입임
+      if (!isControlled) {
+        setInternalValue(e.target.value); // 안전: T는 value 속성이 있는 타입임
+      }
+
       onChange?.(e);
     },
-    [onChange],
+    [isControlled, onChange],
   );
 
   return {

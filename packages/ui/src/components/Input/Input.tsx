@@ -16,6 +16,7 @@ type InputProps = Omit<React.ComponentProps<'input'>, 'size'> &
     iconRight?: ComponentType<IconProps>;
     error?: boolean;
     helperText?: ReactNode;
+    step?: number;
   };
 
 function Input({
@@ -27,6 +28,7 @@ function Input({
   disabled,
   value,
   defaultValue,
+  step,
   error,
   helperText,
   onChange,
@@ -103,7 +105,7 @@ function Input({
         )}
 
         {type === 'number' && !hasIconRight && !error && (
-          <NumberStepper inputValue={inputValue} handleChange={handleChange} />
+          <NumberStepper inputValue={inputValue} step={step} handleChange={handleChange} disabled={disabled} />
         )}
       </div>
 

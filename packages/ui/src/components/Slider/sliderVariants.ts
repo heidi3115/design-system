@@ -21,9 +21,9 @@ export const sliderVariants = tv({
     ],
     thumb: [
       'bg-[color-mix(in_srgb,_var(--slider-color),_transparent_0%)]',
-      'ring-ring/50 block shrink-0 rounded-full border shadow-sm ',
+      'ring-ring/50 block shrink-0 rounded-full border outline-hidden shadow-sm ',
       'transition-[color,box-shadow]',
-      'hover:ring-2 focus-visible:ring-2 focus-visible:outline-hidden ',
+      'hover:ring-2 focus-within:ring-2', // active:ring-2 focus:ring-2
       // 'disabled:pointer-events-none disabled:opacity-50',
     ],
   },
