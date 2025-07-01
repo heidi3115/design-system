@@ -27,6 +27,9 @@ import {
   CommandDialog,
   Dialog,
   AutoComplete,
+  MultiSelect,
+  useConfirmDialog,
+  ConfirmAlertDialog,
 } from '@common/ui';
 import {
   ArrowLeftIcon,
@@ -48,7 +51,6 @@ import { useController, useForm } from 'react-hook-form';
 import ThemeToggle from '../../components/ThemeToggle';
 import { useUpdateEffect } from '@common/utils';
 import { CalculatorIcon, SmileIcon, TvIcon } from 'lucide-react';
-import { ConfirmAlertDialog } from '@common/ui/components/AlertDialog';
 
 export default function Page() {
   const [value, setValue] = useState('');
@@ -131,11 +133,11 @@ export default function Page() {
 
   const radioRef = useRef(null);
 
-  const [selectValue, setSelectValue] = useState('');
+  const [selectValue, setSelectValue] = useState('est1');
   const selectRef = useRef(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const [selectAutoValue, setSelectAutoValue] = useState('');
+  const [selectAutoValue, setSelectAutoValue] = useState('est');
   const selectAutoRef = useRef(null);
 
   useUpdateEffect(() => {
@@ -146,7 +148,16 @@ export default function Page() {
     console.warn(selectAutoValue);
   }, [selectAutoValue]);
 
+  const [selectMultiValue, setSelectMultiValue] = useState<string[]>([]);
+  const selectMultiRef = useRef(null);
+
+  useUpdateEffect(() => {
+    console.warn(setSelectMultiValue);
+  }, [setSelectMultiValue]);
+
   const portalRef = useRef<HTMLDivElement | null>(null);
+
+  const { openDialog } = useConfirmDialog();
 
   return (
     <form className="p-4" onSubmit={handleSubmit(onValid)}>
@@ -231,6 +242,12 @@ export default function Page() {
                   <span>Profile</span>
                   <CommandShortcut>⌘P</CommandShortcut>
                 </CommandItem>
+                <CommandItem>
+                  <CalculatorIcon />
+                  <span>Billing2</span>
+                  <CommandShortcut>⌘B</CommandShortcut>
+                </CommandItem>
+                <CommandSeparator />
                 <CommandItem>
                   <CalculatorIcon />
                   <span>Billing</span>
@@ -509,7 +526,7 @@ export default function Page() {
               isSelectIndicator
               options={[
                 { label: 'Eastern Time (EST)', value: 'est' },
-                { label: 'Pacific Time (PST)', value: 'pst' },
+                { label: 'Pacific Time (PST)', value: 'pst', disabled: true },
                 { label: 'Pacific Time (aaa)', value: 'aaa' },
                 { label: 'Pacific Time ()', value: 'bbb' },
                 { label: 'Pacific Time (ccc)', value: 'ccc' },
@@ -519,7 +536,7 @@ export default function Page() {
                 { label: 'zz보안담당', value: '1qqq' },
                 { label: 'zz보안담당2', value: '2qqq' },
                 { label: 'zz보안담당3', value: '3qqq' },
-                { label: 'zz보안담당4', value: '4qqq' },
+                { label: 'zz보안담당4', value: '4qqq', disabled: true },
                 {
                   type: 'group',
                   label: 'North America',
@@ -550,6 +567,7 @@ export default function Page() {
               defaultValue="ttt4"
               size="large"
               // isContentfitTriggerWidth
+              isLeaveClose
               options={[
                 // { label: 'Eastern Time (EST)dddddddddddddddddddddd', value: 'est' },
                 // { label: 'Pacific Time (PST)', value: 'pst' },
@@ -568,6 +586,68 @@ export default function Page() {
                 }
               }}>
               AutoComplete select 비제어
+            </Button>
+
+            <MultiSelect
+              width={600}
+              size="small"
+              onValueChange={(val) => console.warn(val)}
+              isAddNewItem
+              onNewValueAdd={(val) => console.warn('new', val)}
+              onOverItem={(over) =>
+                over &&
+                openDialog({
+                  title: 'warning',
+                  description: '최대 선택 갯수 초과',
+                  onConfirm: () => console.warn('확인'),
+                })
+              }
+              maxItemLength={2}
+              options={[
+                { label: 'mmm', value: 'est' },
+                { label: 'DDDD', value: 'pst' },
+                { label: 'FFF', value: 'aaa' },
+                { label: 'FFF2 ', value: 'bbb' },
+                { label: 'Pacific Time (ccc)', value: 'ccc' },
+              ]}
+            />
+
+            <MultiSelect
+              width={600}
+              value={selectMultiValue}
+              onValueChange={setSelectMultiValue}
+              placeholder="tets"
+              badgeClassName="bg-juiStatus-urgency"
+              options={[
+                { label: 'mmm', value: 'est' },
+                { label: 'DDDD', value: 'pst' },
+                { label: 'FFF', value: 'aaa' },
+                { label: 'FFF2 ', value: 'bbb' },
+                { label: 'Pacific Time (ccc)', value: 'ccc' },
+              ]}
+            />
+
+            <MultiSelect
+              size="large"
+              selectRef={selectMultiRef}
+              isContentfitTriggerWidth
+              onValueChange={(val) => console.warn(val)}
+              options={[
+                { label: 'MMM', value: 'est' },
+                { label: 'DDDD', value: 'pst' },
+                { label: 'FFF', value: 'aaa' },
+                { label: 'FFF2 ', value: 'bbb' },
+                { label: 'ㅅㅅㅅ6666666666666677777773232dzdffsdfadsfadf232', value: 'ccc' },
+              ]}
+            />
+
+            <Button
+              onClick={() => {
+                if (selectMultiRef.current) {
+                  console.warn('비제어', selectMultiRef.current);
+                }
+              }}>
+              Multi select 비제어
             </Button>
 
             <Input

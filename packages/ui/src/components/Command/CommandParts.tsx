@@ -74,7 +74,7 @@ function CommandList({ className, ...props }: React.ComponentProps<typeof Comman
   return (
     <CommandPrimitive.List
       data-slot="command-list"
-      className={cn('max-h-96 min-w-32 scroll-py-1 overflow-x-hidden overflow-y-auto', className)}
+      className={cn('max-h-96 min-w-32 scroll-py-1 overflow-x-hidden overflow-y-auto my-1.5', className)}
       {...props}
     />
   );
@@ -95,7 +95,7 @@ function CommandGroup({ className, ...props }: React.ComponentProps<typeof Comma
     <CommandPrimitive.Group
       data-slot="command-group"
       className={cn(
-        '[&_[cmdk-group-heading]]:text-juiText-secondary overflow-hidden [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium',
+        '[&_[cmdk-group-heading]]:text-juiText-secondary overflow-hidden [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium',
         className,
       )}
       {...props}
