@@ -388,7 +388,7 @@ function SidebarGroupAction({
       data-slot="sidebar-group-action"
       data-sidebar="group-action"
       className={cn(
-        'text-juiText-primary ring-juiBorder-primary hover:bg-juiPrimary hover:text-juiText-secondary',
+        'text-juiText-primary ring-juiBorder-primary hover:bg-current/10 hover:text-juiText-secondary',
         'absolute top-3.5 right-3 flex aspect-square w-5 items-center justify-center rounded-md p-0 outline-hidden transition-transform',
         '[&>svg]:size-4 [&>svg]:shrink-0', // 자식 svg 크기 및 비율 고정
 
@@ -429,24 +429,53 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<'li'>) {
     <li
       data-slot="sidebar-menu-item"
       data-sidebar="menu-item"
-      className={cn('group/menu-item relative', className)}
+      className={cn('group/menu-item relative ', className)}
       {...props}
     />
   );
 }
 
 const sidebarMenuButtonVariants = tv({
-  base: 'peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+  base: `
+    peer/menu-button
+    flex w-full items-center gap-2
+    overflow-hidden rounded-md p-2
+    text-left text-sm
+    outline-hidden
+    transition-[width,height,padding]
+    focus-visible:ring-2
+    disabled:pointer-events-none disabled:opacity-50
+    aria-disabled:pointer-events-none aria-disabled:opacity-50
+    data-[active=true]:bg-juiPrimary/15
+    data-[active=true]:font-bold
+    data-[state=open]:hover:bg-juiPrimary/15
+    data-[state=open]:hover:text-juiText-secondary
+    group-has-data-[sidebar=menu-action]/menu-item:pr-8
+    group-data-[collapsible=icon]:size-8!
+    group-data-[collapsible=icon]:p-2!
+    [&>span:last-child]:truncate
+    [&>svg]:size-4 [&>svg]:shrink-0
+  `,
   variants: {
     variant: {
-      default: 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
-      outline:
-        'bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]',
+      default: `
+        hover:bg-current/10
+      `,
+      outline: `
+        bg-juiBackground-default
+        shadow-[0_0_0_1px_var(--juiBorder-primary)]
+        hover:bg-juiBackground-input
+        hover:text-juiText-secondary
+        hover:shadow-[0_0_0_1px_var(--juiText-disabled)]
+      `,
     },
     size: {
       default: 'h-8 text-sm',
       sm: 'h-7 text-xs',
-      lg: 'h-12 text-sm group-data-[collapsible=icon]:p-0!',
+      lg: `
+        h-12 text-sm
+        group-data-[collapsible=icon]:p-0!
+      `,
     },
   },
   defaultVariants: {
@@ -507,15 +536,31 @@ function SidebarMenuAction({
       data-slot="sidebar-menu-action"
       data-sidebar="menu-action"
       className={cn(
-        'text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground peer-hover/menu-button:text-sidebar-accent-foreground absolute top-1.5 right-1 flex aspect-square w-5 items-center justify-center rounded-md p-0 outline-hidden transition-transform focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
-        // Increases the hit area of the button on mobile.
+        // 기본 스타일
+        'text-juiText-primary ring-juiBorder-primary hover:bg-current/10 hover:text-juiText-primary/80',
+        'peer-hover/menu-button:text-juiText-primary',
+        'absolute top-1.5 right-1 flex aspect-square w-5 items-center justify-center',
+        'rounded-md p-0 outline-hidden transition-transform',
+        'focus-visible:ring-2',
+        '[&>svg]:size-4 [&>svg]:shrink-0',
+
+        // 모바일 hit 영역 확대
         'after:absolute after:-inset-2 after:hidden',
+
+        // size별 위치 조정
         'peer-data-[size=sm]/menu-button:top-1',
         'peer-data-[size=default]/menu-button:top-1.5',
         'peer-data-[size=lg]/menu-button:top-2.5',
+
+        // collapsible 옵션일 때 아이콘 숨김
         'group-data-[collapsible=icon]:hidden',
-        showOnHover &&
-          'peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 opacity-0',
+
+        // showOnHover가 true일 때만 적용
+        showOnHover && 'peer-data-[active=true]/menu-button:text-juiText-primary',
+        showOnHover && 'group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100',
+        showOnHover && 'data-[state=open]:opacity-100 opacity-0',
+
+        // 외부에서 넘겨받은 className
         className,
       )}
       {...props}
@@ -529,12 +574,28 @@ function SidebarMenuBadge({ className, ...props }: React.ComponentProps<'div'>) 
       data-slot="sidebar-menu-badge"
       data-sidebar="menu-badge"
       className={cn(
-        'text-sidebar-foreground pointer-events-none absolute right-1 flex h-5 min-w-5 items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums select-none',
-        'peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[active=true]/menu-button:text-sidebar-accent-foreground',
+        // 기본 스타일
+        'text-juiText-primary', // 기본 텍스트 색상
+        'pointer-events-none', // 마우스 이벤트 차단 (버튼 클릭 등 방지)
+        'absolute right-1 e', // 오른쪽 상단 고정
+        'flex h-5 min-w-5 items-center justify-center', // 동그란 배지 스타일
+        'aspect-squar rounded-full p-1 text-xs font-medium tabular-nums', // 숫자 균등 간격 폰트
+        'select-none', // 텍스트 선택 금지
+
+        // 상태별 강조 색상
+        'peer-hover/menu-button:font-bold',
+        'peer-hover/menu-button:bg-juiBackground-default',
+        'peer-data-[active=true]/menu-button:font-bold',
+
+        // 사이즈에 따라 top 위치 조정
         'peer-data-[size=sm]/menu-button:top-1',
         'peer-data-[size=default]/menu-button:top-1.5',
         'peer-data-[size=lg]/menu-button:top-2.5',
+
+        // collapsible 아이콘 모드일 때는 숨김
         'group-data-[collapsible=icon]:hidden',
+
+        // 외부에서 className으로 전달받은 추가 클래스
         className,
       )}
       {...props}
@@ -549,11 +610,6 @@ function SidebarMenuSkeleton({
 }: React.ComponentProps<'div'> & {
   showIcon?: boolean;
 }) {
-  // Random width between 50 to 90%.
-  const width = React.useMemo(() => {
-    return `${Math.floor(Math.random() * 40) + 50}%`;
-  }, []);
-
   return (
     <div
       data-slot="sidebar-menu-skeleton"
@@ -561,15 +617,7 @@ function SidebarMenuSkeleton({
       className={cn('flex h-8 items-center gap-2 rounded-md px-2', className)}
       {...props}>
       {showIcon && <Skeleton className="size-4 rounded-md" data-sidebar="menu-skeleton-icon" />}
-      <Skeleton
-        className="h-4 max-w-(--skeleton-width) flex-1"
-        data-sidebar="menu-skeleton-text"
-        style={
-          {
-            '--skeleton-width': width,
-          } as React.CSSProperties
-        }
-      />
+      <Skeleton className="h-4 max-w-full flex-1" data-sidebar="menu-skeleton-text" />
     </div>
   );
 }
@@ -620,11 +668,46 @@ function SidebarMenuSubButton({
       data-size={size}
       data-active={isActive}
       className={cn(
-        'text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground [&>svg]:text-sidebar-accent-foreground flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 outline-hidden focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+        // 기본 텍스트 및 테두리 색상
+        'text-sidebar-foreground ring-sidebar-ring',
+
+        // hover 및 active 상태 시 배경/텍스트 강조
+        'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+        'active:bg-sidebar-accent active:text-sidebar-accent-foreground',
+
+        // SVG 아이콘 강조 색상
+        '[&>svg]:text-sidebar-accent-foreground',
+
+        // 버튼 레이아웃: 높이, 최소 너비, 정렬 등
+        'flex h-7 min-w-0 -translate-x-px items-center gap-2 px-2',
+
+        // 모양: 둥근 테두리, 넘침 숨김, 외곽선 제거
+        'rounded-md overflow-hidden outline-hidden',
+
+        // 키보드 접근 시 ring 표시
+        'focus-visible:ring-2',
+
+        // 비활성화 상태 대응
+        'disabled:pointer-events-none disabled:opacity-50',
+        'aria-disabled:pointer-events-none aria-disabled:opacity-50',
+
+        // svg 크기 고정 및 축소 방지
+        '[&>svg]:size-4 [&>svg]:shrink-0',
+
+        // 텍스트가 길어질 경우 말줄임 처리
+        '[&>span:last-child]:truncate',
+
+        // 활성화된 메뉴일 때 배경/텍스트 강조
         'data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground',
+
+        // size prop에 따른 글자 크기 설정
         size === 'sm' && 'text-xs',
         size === 'md' && 'text-sm',
+
+        // collapsible 메뉴가 아이콘 전용일 경우 숨김 처리
         'group-data-[collapsible=icon]:hidden',
+
+        // 외부에서 전달된 클래스 추가
         className,
       )}
       {...props}
