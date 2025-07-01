@@ -11,7 +11,7 @@ export const sliderVariants = tv({
     track: [
       'overflow-hidden relative grow',
       'bg-[color-mix(in_srgb,_var(--slider-color),_transparent_60%)]',
-      'rounded-full inset-shadow-xs',
+      'rounded-full inset-shadow-xs pointer-events-none',
       'data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full',
     ],
     range: [
@@ -21,10 +21,15 @@ export const sliderVariants = tv({
     ],
     thumb: [
       'bg-[color-mix(in_srgb,_var(--slider-color),_transparent_0%)]',
-      'ring-ring/50 block shrink-0 rounded-full border outline-hidden shadow-sm ',
+      'block z-20 shrink-0 rounded-full border outline-hidden shadow-sm ',
       'transition-[color,box-shadow]',
-      'hover:ring-2 focus-within:ring-2', // active:ring-2 focus:ring-2
-      // 'disabled:pointer-events-none disabled:opacity-50',
+      'ring-ring/50 hover:ring-2 focus-visible:ring-2',
+      'disabled:pointer-events-none disabled:opacity-50',
+    ],
+    mark: [
+      'absolute -translate-x-1/2 -translate-y-1/2',
+      'touch-none select-none',
+      'data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full',
     ],
   },
   variants: {
@@ -40,33 +45,24 @@ export const sliderVariants = tv({
       // [--slider-color:var(--juiScore-veryLow)] -> custom.css 에 등록된 색상 가능
       // [--slider-color:oklch(0.7_0.1_304/42.86%)] -> oklch 뿐만 아니라 rgba 등 hsl도 작동은 하나 띄어쓰기 없어야 하고 필요할 경우 tailwind 에서 인식하도록 _ 처리
     },
+    sizeClass: {
+      default: 'size-4',
+      small: 'size-2.5',
+      medium: 'size-5',
+      large: 'size-7',
+      custom: '',
+    },
     size: {
       default: {
-        base: '',
-        root: '',
-        track: '',
-        range: '',
         thumb: 'size-4',
       },
       small: {
-        base: '',
-        root: '',
-        track: '',
-        range: '',
         thumb: 'size-2.5',
       },
       medium: {
-        base: '',
-        root: '',
-        track: '',
-        range: '',
         thumb: 'size-5',
       },
       large: {
-        base: '',
-        root: '',
-        track: '',
-        range: '',
         thumb: 'size-7',
       },
       custom: {
@@ -98,8 +94,7 @@ export const sliderVariants = tv({
         base: '',
         root: '',
         track: 'h-1.5',
-        // range: 'h-1.5',
-        // thumb: '',
+        thumb: 'size-4',
       },
     },
     {
@@ -109,8 +104,8 @@ export const sliderVariants = tv({
         base: '',
         root: '',
         track: 'w-1.5',
-        // range: 'w-1.5',
-        thumb: '',
+        range: '',
+        thumb: 'size-4',
       },
     },
     {
@@ -120,8 +115,8 @@ export const sliderVariants = tv({
         base: '',
         root: '',
         track: 'h-1',
-        // range: 'h-1',
-        // thumb: '',
+        range: '',
+        thumb: 'size-2.5',
       },
     },
     {
@@ -131,8 +126,8 @@ export const sliderVariants = tv({
         base: '',
         root: '',
         track: 'w-1',
-        // range: 'w-1',
-        thumb: '',
+        range: '',
+        thumb: 'size-2.5',
       },
     },
     {
@@ -142,8 +137,8 @@ export const sliderVariants = tv({
         base: '',
         root: '',
         track: 'h-2',
-        // range: '',
-        thumb: '',
+        range: '',
+        thumb: 'size-5',
       },
     },
     {
@@ -153,8 +148,8 @@ export const sliderVariants = tv({
         base: '',
         root: '',
         track: 'w-2',
-        // range: '',
-        thumb: '',
+        range: '',
+        thumb: 'size-5',
       },
     },
     {
@@ -164,8 +159,7 @@ export const sliderVariants = tv({
         base: '',
         root: '',
         track: 'h-3',
-        // range: '',
-        thumb: '',
+        thumb: 'size-7',
       },
     },
     {
@@ -175,8 +169,8 @@ export const sliderVariants = tv({
         base: '',
         root: '',
         track: 'w-3',
-        // range: '',
-        thumb: '',
+        range: '',
+        thumb: 'size-7',
       },
     },
   ],

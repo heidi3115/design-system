@@ -2,4 +2,3 @@ export { SliderDefault, SliderRoot, SliderTrack, SliderRange, SliderThumb } from
 export type { SliderRootProps, SliderTrackProps, SliderRangeProps, SliderThumbProps } from './SliderParts';
 export { sliderVariants } from './sliderVariants';
 export { default as Slider, type SliderProps } from './Slider';
-export { default as InputSlider } from './InputSlider';

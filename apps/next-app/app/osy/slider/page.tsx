@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import Link from 'next/link';
 import ThemeToggle from '../../../components/ThemeToggle';
 import { cn } from '@common/ui/lib/utils';
-import { Button, Input, InputSlider, Separator, Slider, SliderDefault } from '@common/ui';
+import { Button, Separator, Slider, SliderDefault } from '@common/ui';
 import { CornerDownLeftIcon } from '@common/ui/icons';
 
 export default function SliderPage() {
@@ -26,7 +26,7 @@ export default function SliderPage() {
   const blueTitleClass = 'text-juiText-blue font-bold';
 
   const val2Ref = useRef(null);
-  const [val1, setVal1] = useState<number[]>([10, tempDefaultVal1]);
+  const [val1, setVal1] = useState<number[]>([130, 650]);
   const [val2, setVal2] = useState<number[]>([]);
 
   return (
@@ -50,7 +50,7 @@ export default function SliderPage() {
                 <div className={cn(flexColBoxGap4)}>
                   <span className={cn(blueTitleClass, 'text-base')}>Integer - default [6, 11]</span>
                   <div
-                    className={cn(flexRowBoxGap4, 'w-80 mb-5')}
+                    className={cn(flexRowBoxGap4, 'w-80 h-80 mb-5')}
                     // Slider 의 부모에서 가로 길이 지정 필요.
                   >
                     <Slider
@@ -58,9 +58,11 @@ export default function SliderPage() {
                       min={tempStd}
                       max={50}
                       step={5}
+                      marks
                       orientation={'horizontal'}
                       showValueLabel={'auto'}
                       defaultValue={[5, 15]}
+                      // disabled
                     />
                   </div>
                   <span className={cn(blueTitleClass, 'text-base')}>Integer - default [15, 30]</span>
@@ -70,11 +72,12 @@ export default function SliderPage() {
                   >
                     <Slider
                       variant={'primary'}
+                      size={'small'}
                       min={tempStd}
                       max={tempMax3}
                       step={tempMax1}
                       orientation={'horizontal'}
-                      showValueLabel={'always'}
+                      showValueLabel={'none'}
                       defaultValue={[15, tempDefaultVal1]}
                     />
                   </div>
@@ -85,12 +88,14 @@ export default function SliderPage() {
                   >
                     <Slider
                       variant={'primary'}
+                      size={'medium'}
                       min={tempStd}
                       max={tempMax3}
                       step={10}
                       orientation={'horizontal'}
-                      showValueLabel={'none'}
-                      defaultValue={[tempMax2, tempDefaultVal1]}
+                      showValueLabel={'always'}
+                      minStepsBetweenThumbs={10}
+                      defaultValue={[tempMax2, tempDefaultVal1]} // tempMax2 = 10, tempDefaultVal1 = 30
                     />
                   </div>
                   <div
@@ -117,13 +122,17 @@ export default function SliderPage() {
                   </div>
                 </div>
                 <div className={cn(flexColBoxGap4)}>
-                  <span className={cn(blueTitleClass, 'text-base')}>Float no defaultValue</span>
-                  <div className={cn(flexRowBoxGap4)}>
+                  <span className={cn(blueTitleClass, 'text-base')}>Float no defaultValue w. marks</span>
+                  <div className={cn(flexRowBoxGap4, 'py-10')}>
                     <Slider
+                      size={'large'}
                       variant={'primary'}
                       min={tempMin2}
-                      max={tempMin1}
-                      step={tempMin2}
+                      max={tempMax1}
+                      step={tempMin1}
+                      marks
+                      unitLabel={'°C'}
+                      showValueLabel={'auto'}
                       orientation={'horizontal'}
                       defaultValue={[tempMin3, tempDefaultVal2]}
                     />
@@ -187,7 +196,7 @@ export default function SliderPage() {
                   </div>
                 </div>
                 <div className={'flex flex-col gap-2'}>
-                  <span className={'text-juiText-blue text-base font-bold'}>Integer - Controlled</span>
+                  <span className={'text-juiText-blue text-base font-bold'}>Integer - Controlled : inverted</span>
                   <div className={'flex flex-row gap-3 h-30'}>
                     <Slider
                       variant={'custom'}
@@ -195,41 +204,33 @@ export default function SliderPage() {
                       max={tempMax4}
                       step={tempMax2}
                       orientation={'vertical'}
-                      defaultValue={[tempDefaultVal1]}
                       value={val1}
                       onValueChange={(e) => setVal1(e)}
+                      inverted={true}
+                      showValueLabel={'always'}
                       // className="[--slider-color:theme(colors.red.500)]"
                       className={'[--slider-color:theme(colors.pink.500)]'}
                     />
                   </div>
-                  {val1?.map((v1) => <Input value={v1} key={v1} />)}
                 </div>
               </div>
             </div>
-            <h2 className={cn(blueTitleClass, 'text-3xl')}>InputSlider</h2>
+            <h2 className={cn(blueTitleClass, 'text-3xl')}>Slider</h2>
             <div className={cn(flexColBoxGap4, commonBoxClass, 'size-full')}>
-              <h3 className={cn(blueTitleClass, 'text-xl my-3')}>InputSlider test</h3>
+              <h3 className={cn(blueTitleClass, 'text-xl my-3')}>Slider test</h3>
               <div
                 className={cn(
                   flexRowBoxGap4,
                   // '[&_div]:items-center [&_div]:justify-center'
                 )}>
                 <div className={cn(flexColBoxGap4, 'w-50')}>
-                  <strong className={cn('text-base')}>InputSlider - horizontal</strong>
-                  <InputSlider
-                    orientation={'horizontal'}
-                    min={0.1}
-                    max={10}
-                    step={0.001}
-                    unitWord={'%'}
-                    showValueLabel={'always'}
-                  />
+                  <strong className={cn('text-base')}>Slider - horizontal</strong>
+                  <Slider orientation={'horizontal'} min={0.1} max={10} step={0.001} showValueLabel={'always'} />
                 </div>
                 <div className={cn(flexColBoxGap4, 'h-100')}>
-                  <strong className={cn('text-base')}>InputSlider - vertical</strong>
-                  <InputSlider
+                  <strong className={cn('text-base')}>Slider - vertical</strong>
+                  <Slider
                     orientation={'vertical'}
-                    inputClass={'w-20'}
                     disabled={false}
                     showValueLabel={'auto'}
                     min={0}

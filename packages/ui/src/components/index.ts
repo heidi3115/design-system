@@ -184,5 +184,4 @@ export {
   type SliderTrackProps,
   type SliderRangeProps,
   type SliderThumbProps,
-  InputSlider,
 } from './Slider';
