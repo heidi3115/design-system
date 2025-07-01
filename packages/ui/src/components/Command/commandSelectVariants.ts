@@ -28,7 +28,7 @@ const commandSelectVariants = tv({
       'light:border light:border-juiBorder-primary shadow-xs',
       'data-[state=open]:border data-[state=open]:border-juiBorder-primary light:data-[state=open]:border-juiText-secondary',
     ],
-    multeiTriggerBase: [
+    multiTriggerBase: [
       'flex-1 min-w-[60px] px-1 py-0 pr-8 border-none focus:outline-none bg-transparent',
       'disabled:cursor-not-allowed disabled:opacity-50',
       'placeholder:text-juiText-secondary',

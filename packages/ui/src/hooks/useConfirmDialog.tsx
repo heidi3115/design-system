@@ -27,7 +27,7 @@ export function useConfirmDialog() {
   }, []);
 
   const openDialog = useCallback(
-    (props: Omit<ComponentProps<typeof ConfirmAlertDialog>, 'children' | 'open' | 'onOpenChage'>) => {
+    (props: Omit<ComponentProps<typeof ConfirmAlertDialog>, 'children' | 'open' | 'onOpenChange'>) => {
       setDialogProps(props);
       setIsOpen(true);
     },

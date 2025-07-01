@@ -109,7 +109,7 @@ const MultiSelect = ({
     popoverWrapperBase,
     popoverBase,
     multiTriggerWrapperBase,
-    multeiTriggerBase,
+    multiTriggerBase,
     itemBase,
     checkIconBase,
     inputIconBase,
@@ -127,11 +127,11 @@ const MultiSelect = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const triggerWrapperRef = useRef<HTMLDivElement | null>(null);
 
-  const [triggerFixedWidth, setTriggerFixedWidht] = useState(0);
+  const [triggerFixedWidth, setTriggerFixedWidth] = useState(0);
   const { width: triggerWrapperWidth } = useRect(triggerWrapperRef);
 
   useLayoutEffect(() => {
-    setTriggerFixedWidht(triggerWrapperWidth - MAX_WRAPPER_WIDTH_PADDING);
+    setTriggerFixedWidth(triggerWrapperWidth - MAX_WRAPPER_WIDTH_PADDING);
   }, [triggerWrapperWidth]);
 
   const [isOpen, setIsOpen] = useState(open ?? false);
@@ -392,7 +392,7 @@ const MultiSelect = ({
           }}
           {...(selectList?.length === 0 ? { placeholder } : {})}
           disabled={disabled}
-          className={cn(multeiTriggerBase(), 'group-hover:pr-11')}
+          className={cn(multiTriggerBase(), 'group-hover:pr-11')}
         />
       </div>
     );
