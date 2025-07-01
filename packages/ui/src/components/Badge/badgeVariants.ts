@@ -12,7 +12,7 @@ const badgeVariants = tv({
       scoring: '',
       grading: 'text-juiText-primary rounded-none ',
       count: 'z-2', // absolute 대비
-      text: ['text-juiText-primary bg-juiGrey-50 rounded-xs border-juiText-secondary'],
+      text: ['text-juiText-primary bg-juiGrey-50 rounded-xs border-juiBorder-primary'],
     },
     /**
      * status : variant 가 state 일 때. StateBadge 에는 status 별로 스타일을 처리하고 있습니다.

@@ -33,10 +33,10 @@
   --juiBackground-popover: #101822;
   --juiText-primary: #fff;
   --juiText-secondary: rgba(255, 255, 255, 0.4);
-  --juiText-disabled: #505050;
+  --juiText-disabled: #334259;
   --juiText-blue: #7a97ff;
   --juiText-purple: #9747ff;
-  --juiBorder-primary: #e0e0e0;
+  --juiBorder-primary: #5a6372;
   --juiScore-veryLow: #8294ff;
   --juiScore-low: #5873ff;
   --juiScore-normal: #7635ff;
@@ -82,10 +82,10 @@
   --juiBackground-popover: #101822;
   --juiText-primary: #fff;
   --juiText-secondary: rgba(255, 255, 255, 0.4);
-  --juiText-disabled: #505050;
+  --juiText-disabled: #334259;
   --juiText-blue: #7a97ff;
   --juiText-purple: #9747ff;
-  --juiBorder-primary: #e0e0e0;
+  --juiBorder-primary: #5a6372;
   --juiScore-veryLow: #8294ff;
   --juiScore-low: #5873ff;
   --juiScore-normal: #7635ff;
@@ -156,4 +156,5 @@
   --juiText-primary: #333333;
   --juiText-secondary: rgba(0, 0, 0, 0.4);
   --juiText-disabled: #c7c7c7;
+  --juiBorder-primary: #d1d5db;
 }

@@ -477,7 +477,7 @@ export default function Page() {
               options={[
                 { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
                 { label: 'Pacific Standard Time (PST)', value: 'pst1' },
-                // { type: 'separator' },
+                { type: 'separator' },
                 {
                   type: 'group',
                   label: 'North America',
@@ -609,6 +609,7 @@ export default function Page() {
                 { label: 'DDDD', value: 'pst' },
                 { label: 'FFF', value: 'aaa' },
                 { label: 'FFF2 ', value: 'bbb' },
+                { type: 'separator' },
                 { label: 'Pacific Time (ccc)', value: 'ccc' },
               ]}
             />

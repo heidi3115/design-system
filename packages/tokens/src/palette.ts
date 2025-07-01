@@ -40,12 +40,12 @@ const palette = {
   juiText: {
     primary: { main: '#fff', light: '#333333' },
     secondary: { main: 'rgba(255, 255, 255, 0.4)', light: 'rgba(0, 0, 0, 0.4)' },
-    disabled: { main: '#505050', light: '#c7c7c7' },
+    disabled: { main: '#334259', light: '#c7c7c7' },
     blue: { main: '#7A97FF' },
     purple: { main: '#9747FF' },
   },
   juiBorder: {
-    primary: { main: '#E0E0E0' },
+    primary: { main: '#5A6372', light: '#D1D5DB' },
   },
   juiScore: {
     veryLow: { main: '#8294FF' },

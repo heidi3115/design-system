@@ -438,7 +438,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<'li'>) {
     <li
       data-slot="sidebar-menu-item"
       data-sidebar="menu-item"
-      className={cn('group/menu-item relative ', className)}
+      className={cn('group/menu-item relative my-auto', className)}
       {...props}
     />
   );
@@ -644,7 +644,7 @@ function SidebarMenuSub({
       data-slot="sidebar-menu-sub"
       data-sidebar="menu-sub"
       className={cn(
-        'border-juiText-disabled light:border-juiBorder-primary mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l px-2.5 py-0.5',
+        'border-juiBorder-primary mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l px-2.5 py-0.5',
         'group-data-[collapsible=icon]:hidden',
         isFloat && 'ml-0 border-l-0 px-1.5',
         className,
@@ -659,7 +659,7 @@ function SidebarMenuSubItem({ className, ...props }: React.ComponentProps<'li'>)
     <li
       data-slot="sidebar-menu-sub-item"
       data-sidebar="menu-sub-item"
-      className={cn('group/menu-sub-item relative', className)}
+      className={cn('group/menu-sub-item relative my-auto', className)}
       {...props}
     />
   );
