@@ -211,7 +211,7 @@ function Slider({
                       marksClass,
                       'size-1',
                       'rounded-full',
-                      'bg-white/50',
+                      'bg-juiText-primary/50',
                       isHorizontal ? 'top-1/2' : 'left-1/2',
                     )}
                     style={
