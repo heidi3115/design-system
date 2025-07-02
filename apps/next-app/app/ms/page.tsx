@@ -54,6 +54,7 @@ import { CalculatorIcon, SmileIcon, TvIcon } from 'lucide-react';
 export default function Page() {
   const [value, setValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const inputOTPRef = useRef<HTMLInputElement>(null);
 
   useUpdateEffect(() => {
     console.warn('제어', value);
@@ -371,8 +372,10 @@ export default function Page() {
           <SplitOtpInput
             size="small"
             variant="normal"
-            ref={inputRef}
-            onBlur={() => console.warn('비제어', inputRef.current?.value)}
+            ref={inputOTPRef}
+            onBlur={() => {
+              console.warn('비제어', inputOTPRef.current?.value);
+            }}
           />
           <p></p>
           <span>제어</span>
