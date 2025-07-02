@@ -41,6 +41,7 @@ function Slider({
   unitLabel = '',
   marks = false,
   disabled = false,
+  inverted = false,
   min = MIN_INT_VALUE,
   max = MAX_INT_VALUE,
   step = DEFAULT_STEP,
@@ -136,6 +137,7 @@ function Slider({
   return (
     <SliderRoot
       disabled={disabled}
+      inverted={inverted}
       orientation={orientation}
       min={min}
       max={max}
@@ -217,18 +219,36 @@ function Slider({
                     style={
                       isHorizontal
                         ? {
-                            left: `${convertValueToPercentage({
-                              value: markValue,
-                              min,
-                              max,
-                            })}%`,
+                            left: `${
+                              inverted
+                                ? 100 -
+                                  convertValueToPercentage({
+                                    value: markValue,
+                                    min,
+                                    max,
+                                  })
+                                : convertValueToPercentage({
+                                    value: markValue,
+                                    min,
+                                    max,
+                                  })
+                            }%`,
                           }
                         : {
-                            top: `${convertValueToPercentage({
-                              value: markValue,
-                              min,
-                              max,
-                            })}%`,
+                            top: `${
+                              inverted
+                                ? convertValueToPercentage({
+                                    value: markValue,
+                                    min,
+                                    max,
+                                  })
+                                : 100 -
+                                  convertValueToPercentage({
+                                    value: markValue,
+                                    min,
+                                    max,
+                                  })
+                            }%`,
                           }
                     }>
                     {label && (
