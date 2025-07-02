@@ -176,6 +176,7 @@ export {
 export {
   Slider,
   type SliderProps,
+  type SliderMark,
   sliderVariants,
   SliderDefault,
   SliderRoot,

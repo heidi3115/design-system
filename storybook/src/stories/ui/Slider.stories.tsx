@@ -1,0 +1,748 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import { cn } from '@common/ui/lib/utils.ts';
+import { Slider, type SliderMark, type SliderProps, sliderVariants } from '@common/ui';
+import { useRef, useState } from 'react';
+
+const flexCol = 'flex flex-col text-jui text-juiText-primary';
+const flexRow = 'flex flex-row';
+const allCenter = 'items-center justify-center';
+const blueTxt = 'text-juiText-blue';
+const titTxt = 'font-bold text-base';
+const subTitTxt = 'font-bold text-xs';
+
+const variantOptions = Object.keys(sliderVariants.variants.variant) as (keyof typeof sliderVariants.variants.variant)[];
+const sizeOptions = Object.keys(sliderVariants.variants.size) as (keyof typeof sliderVariants.variants.size)[];
+const orientationOptions = Object.keys(
+  sliderVariants.variants.orientation,
+) as (keyof typeof sliderVariants.variants.orientation)[];
+const showValueLabelOptions = ['always', 'auto', 'none'] as const;
+
+const MIN_INT_VALUE = 0;
+const MAX_INT_VALUE = 100;
+const MIN_DECIMAL_VALUE = 0.01;
+const DEFAULT_STEP = 1;
+const DECIMAL_STEP = 0.1;
+
+const INT_DEFAULT_VALUE_ARR = [5, 15];
+const INT_VALUE_ARR = [20, 50];
+const DECIMAL_DEFAULT_VALUE_ARR = [0.25, 0.45];
+const DECIMAL_VALUE_ARR = [0.55, 0.8];
+
+const customMarks: SliderMark[] = [
+  { value: 0, label: '0°C' },
+  { value: 25 },
+  { value: 30, label: '30°C', labelClass: 'text-blue-500 font-bold' },
+  { value: 50 },
+  { value: 75 },
+  { value: 90, label: '90°C', labelClass: 'text-red-500 font-bold' },
+  { value: 100, label: '100°C' },
+];
+
+const meta: Meta<typeof Slider> = {
+  title: 'UI/Slider',
+  component: Slider,
+  args: {
+    variant: 'primary',
+    size: 'default',
+    orientation: 'horizontal',
+    showValueLabel: 'auto',
+    unitLabel: '',
+    marks: false,
+    disabled: false,
+    inverted: false,
+    min: MIN_INT_VALUE,
+    max: MAX_INT_VALUE,
+    step: DEFAULT_STEP,
+    minStepsBetweenThumbs: MIN_INT_VALUE,
+    defaultValue: [INT_DEFAULT_VALUE_ARR[0]],
+    value: undefined,
+    onValueChange: undefined,
+    onValueCommit: undefined,
+    className: '',
+    sliderRef: undefined,
+  },
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: variantOptions,
+      table: {
+        type: { summary: `${variantOptions.map((d) => `'${d}'`).join(' | ')}` },
+        defaultValue: { summary: "'primary'" },
+      },
+      description: [
+        "슬라이더의 색상 변형을 설정합니다. 'custom'으로 설정 시, CSS 변수 `--slider-color`를 직접 지정해야 합니다.",
+      ].join('<br/>'),
+    },
+    size: {
+      control: 'select',
+      options: sizeOptions,
+      table: {
+        type: { summary: `${sizeOptions.map((d) => `'${d}'`).join(' | ')}` },
+        defaultValue: { summary: "'default'" },
+      },
+      description: ['슬라이더의 크기를 설정합니다.'].join('<br/>'),
+    },
+    orientation: {
+      control: 'inline-radio',
+      options: orientationOptions,
+      table: {
+        type: { summary: `${orientationOptions.map((d) => `'${d}'`).join(' | ')}` },
+        defaultValue: { summary: "'horizontal'" },
+      },
+      description: ['슬라이더의 방향을 수평 또는 수직으로 설정합니다.'].join('<br/>'),
+    },
+    showValueLabel: {
+      control: 'select',
+      options: showValueLabelOptions,
+      table: {
+        type: { summary: `${showValueLabelOptions.map((d) => `'${d}'`).join(' | ')}` },
+        defaultValue: { summary: "'auto'" },
+      },
+      description: ["값 레이블(툴팁)의 표시 여부를 설정합니다. 'auto'는 드래그 또는 호버 시에만 표시됩니다."].join(
+        '<br/>',
+      ),
+    },
+    unitLabel: {
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: "''" },
+      },
+      description: ["값 레이블에 표시될 단위를 설정합니다 (예: '%', 'px')."].join('<br/>'),
+    },
+    marks: {
+      control: 'boolean',
+      table: {
+        type: { summary: 'boolean | SliderMark[]' },
+        defaultValue: { summary: 'false' },
+      },
+      description: [
+        '슬라이더 트랙에 눈금을 표시할지 여부를 설정합니다. `true`일 경우 `step`에 따라 자동으로 눈금이 생성됩니다.',
+      ].join('<br/>'),
+    },
+    disabled: {
+      control: 'boolean',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: ['슬라이더를 비활성화할지 여부를 설정합니다.'].join('<br/>'),
+    },
+    inverted: {
+      control: 'boolean',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: ['슬라이더의 값 방향을 반전시킵니다.'].join('<br/>'),
+    },
+    min: {
+      control: { type: 'number' },
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: `${MIN_INT_VALUE}` },
+      },
+      description: ['슬라이더의 최솟값을 설정합니다.'].join('<br/>'),
+    },
+    max: {
+      control: { type: 'number' },
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: `${MAX_INT_VALUE}` },
+      },
+      description: ['슬라이더의 최댓값을 설정합니다.'].join('<br/>'),
+    },
+    step: {
+      control: { type: 'number', min: DEFAULT_STEP },
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: `${DEFAULT_STEP}` },
+      },
+      description: ['슬라이더 값의 증가 단위를 설정합니다.'].join('<br/>'),
+    },
+    minStepsBetweenThumbs: {
+      control: { type: 'number' },
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: `${MIN_INT_VALUE}` },
+      },
+      description: ['다중 Thumb 사용 시, Thumb 사이의 최소 간격(step 기준)을 설정합니다.'].join('<br/>'),
+    },
+    defaultValue: {
+      control: false,
+      table: {
+        type: { summary: 'number[]' },
+        defaultValue: { summary: '[]' },
+      },
+      description: ['슬라이더의 비제어 상태일 때의 초기값을 설정합니다.'].join('<br/>'),
+    },
+    value: {
+      control: false,
+      table: {
+        type: { summary: 'number[]' },
+        defaultValue: { summary: '[]' },
+      },
+      description: [
+        '슬라이더의 제어 상태일 때의 값을 설정합니다. 이 값을 사용하면 컴포넌트 외부에서 상태를 관리해야 합니다.',
+      ].join('<br/>'),
+    },
+    className: {
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: "''" },
+      },
+      description: ['컴포넌트의 최상위 요소에 추가할 tailwindCSS 클래스를 설정합니다.'].join('<br/>'),
+    },
+    onValueChange: {
+      control: false,
+      table: {
+        type: { summary: '(value: number[]) => void' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: ['슬라이더 값이 변경될 때마다 호출되는 콜백 함수입니다.', '스토리에서는 제어하실 수 없습니다.'].join(
+        '<br/>',
+      ),
+    },
+    onValueCommit: {
+      control: false,
+      table: {
+        type: { summary: '(value: number[]) => void' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '사용자가 값 변경을 마쳤을 때(예: 마우스 놓기) 호출되는 콜백 함수입니다.',
+        '스토리에서는 제어하실 수 없습니다.',
+      ].join('<br/>'),
+    },
+    sliderRef: {
+      control: false,
+      table: {
+        type: { summary: `Ref<number[]>` },
+        defaultValue: { summary: `${undefined}` },
+      },
+      description: [
+        'ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템의 value 값을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
+        '비제어(Uncontrolled)/제어(Controlled) 모드 모두에서 동작합니다.',
+        'value가 없는 경우 undefined가 될 수 있습니다.',
+        '스토리에서는 제어하실 수 없습니다.',
+      ].join('<br/>'),
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          'Slider 컴포넌트의 문서입니다.',
+          '**Slider 컴포넌트**는 사용자가 지정된 범위 내에서 단일 값을 선택하거나 값의 범위를 지정할 수 있게 해주는 UI 컨트롤입니다.',
+          '단일 및 범위 선택이 가능하여, `defaultValue` 또는 `value` prop에 숫자 배열을 전달하여 단일 핸들(thumb) 슬라이더 또는 범위 슬라이더를 구현할 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Slider>;
+
+export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: ['기본 Slider 컴포넌트의 예시입니다.'].join('<br/>'),
+      },
+    },
+  },
+  render: (args) => (
+    <div className={cn(flexCol, allCenter, 'size-full')}>
+      <div className={cn(flexCol, allCenter, 'w-100 h-100')}>
+        <Slider {...args} />
+      </div>
+    </div>
+  ),
+};
+
+export const Variants: Story = {
+  argTypes: {
+    variant: { table: { disable: true } },
+    defaultValue: { table: { disable: true } },
+    value: { table: { disable: true } },
+    onValueChange: { table: { disable: true } },
+    onValueCommit: { table: { disable: true } },
+    sliderRef: { table: { disable: true } },
+  },
+  parameters: {
+    docs: { description: { story: '다양한 `variant`(색상) 옵션을 보여주는 예시입니다.' } },
+  },
+  render: (args) => (
+    <div className={cn('gap-10 size-full', args.orientation === 'vertical' ? `${flexRow} h-100` : flexCol)}>
+      {variantOptions.map((variant) => (
+        <div key={variant} className={cn(flexCol, args.orientation === 'vertical' && allCenter, 'size-full gap-4')}>
+          <h3 className={cn(subTitTxt)}>{variant}</h3>
+          <div className={cn(args.orientation === 'vertical' ? `${flexRow} ${allCenter}` : flexCol, 'size-full gap-4')}>
+            <Slider {...args} variant={variant} defaultValue={[INT_DEFAULT_VALUE_ARR[0]]} />
+            <Slider {...args} variant={variant} defaultValue={INT_DEFAULT_VALUE_ARR} />
+          </div>
+        </div>
+      ))}
+    </div>
+  ),
+};
+
+export const Sizes: Story = {
+  argTypes: {
+    size: { table: { disable: true } },
+    defaultValue: { table: { disable: true } },
+    value: { table: { disable: true } },
+    onValueChange: { table: { disable: true } },
+    onValueCommit: { table: { disable: true } },
+    sliderRef: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: ['다양한 `size` 옵션을 보여주는 예시입니다.'].join('<br/>'),
+      },
+    },
+  },
+  render: (args) => (
+    <div className={cn('gap-10 size-full', args.orientation === 'vertical' ? `${flexRow} h-100` : flexCol)}>
+      {sizeOptions.map((size) => (
+        <div key={size} className={cn(flexCol, args.orientation === 'vertical' && allCenter, 'size-full gap-4')}>
+          <h3 className={cn(subTitTxt)}>{size}</h3>
+          <div className={cn(args.orientation === 'vertical' ? `${flexRow} ${allCenter}` : flexCol, 'size-full gap-4')}>
+            <Slider {...args} size={size} defaultValue={[INT_DEFAULT_VALUE_ARR[0]]} />
+            <Slider {...args} size={size} defaultValue={INT_DEFAULT_VALUE_ARR} />
+          </div>
+        </div>
+      ))}
+    </div>
+  ),
+};
+
+export const Orientations: Story = {
+  argTypes: {
+    orientation: { table: { disable: true } },
+    defaultValue: { table: { disable: true } },
+    value: { table: { disable: true } },
+    onValueChange: { table: { disable: true } },
+    onValueCommit: { table: { disable: true } },
+    sliderRef: { table: { disable: true } },
+  },
+  parameters: { docs: { description: { story: '`orientation` 옵션에 따른 가로 및 세로 모드 예시입니다.' } } },
+  render: (args) => (
+    <div className={cn(flexRow, 'gap-16 w-full h-100')}>
+      <div className={cn(flexCol, 'flex-1 gap-4')}>
+        <h3 className={cn(titTxt)}>Horizontal</h3>
+        <div className={cn(flexCol, 'size-full gap-15')}>
+          <p className={cn(subTitTxt)}>소수점</p>
+          <Slider
+            {...args}
+            orientation="horizontal"
+            min={MIN_INT_VALUE}
+            max={DEFAULT_STEP}
+            step={MIN_DECIMAL_VALUE}
+            defaultValue={[DECIMAL_DEFAULT_VALUE_ARR[0]]}
+          />
+          <p className={cn(subTitTxt)}>정수</p>
+          <Slider {...args} orientation="horizontal" defaultValue={INT_DEFAULT_VALUE_ARR} />
+        </div>
+      </div>
+      <div className={cn(flexRow, 'gap-12 size-full flex-1 ')}>
+        <div className={cn(flexCol, allCenter, 'gap-4 size-full')}>
+          <h3 className={cn(titTxt)}>Vertical</h3>
+          <div className={cn(flexRow, allCenter, 'size-full gap-20')}>
+            <div className={cn(flexCol, allCenter, 'size-full gap-2')}>
+              <p className={cn(subTitTxt)}>소수점</p>
+              <Slider
+                {...args}
+                orientation="vertical"
+                min={MIN_INT_VALUE}
+                max={DEFAULT_STEP}
+                step={MIN_DECIMAL_VALUE}
+                defaultValue={[DECIMAL_DEFAULT_VALUE_ARR[0]]}
+              />
+            </div>
+            <div className={cn(flexCol, allCenter, 'size-full gap-2')}>
+              <p className={cn(subTitTxt)}>정수</p>
+              <Slider {...args} orientation="vertical" defaultValue={INT_DEFAULT_VALUE_ARR} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const Labels: Story = {
+  args: {
+    step: 10,
+  },
+  argTypes: {
+    orientation: { table: { disable: true } },
+    showValueLabel: { table: { disable: true } },
+    unitLabel: { table: { disable: true } },
+    defaultValue: { table: { disable: true } },
+    value: { table: { disable: true } },
+    onValueChange: { table: { disable: true } },
+    onValueCommit: { table: { disable: true } },
+    sliderRef: { table: { disable: true } },
+  },
+  parameters: {
+    docs: { description: { story: '`showValueLabel`과 `unitLabel`을 활용한 레이블 표시의 다양한 예시입니다.' } },
+  },
+  render: (args) => (
+    <div className={cn(flexCol, 'w-full h-150')}>
+      <div className={cn(flexRow, 'gap-20 size-full')}>
+        <div className={cn(flexCol, 'gap-10 size-full')}>
+          <h2 className={cn(blueTxt, titTxt)}>Horizontal</h2>
+          <div className={cn(flexCol)}>
+            <h3 className={cn(subTitTxt, 'mb-15')}>항상 보기</h3>
+            <Slider
+              {...args}
+              orientation={'horizontal'}
+              showValueLabel="always"
+              defaultValue={[INT_DEFAULT_VALUE_ARR[0]]}
+            />
+          </div>
+          <div className={cn(flexCol)}>
+            <h3 className={cn(subTitTxt, 'mb-15')}>UnitLabel로 항상 보기</h3>
+            <Slider
+              {...args}
+              orientation={'horizontal'}
+              showValueLabel="always"
+              unitLabel="%"
+              defaultValue={INT_DEFAULT_VALUE_ARR}
+            />
+          </div>
+          <div className={cn(flexCol)}>
+            <h3 className={cn(subTitTxt, 'mb-15')}>Auto (Hover/Drag)</h3>
+            <Slider
+              {...args}
+              orientation={'horizontal'}
+              showValueLabel="auto"
+              defaultValue={[INT_DEFAULT_VALUE_ARR[0]]}
+            />
+          </div>
+          <div className={cn(flexCol)}>
+            <h3 className={cn(subTitTxt, 'mb-15')}>None</h3>
+            <Slider {...args} orientation={'horizontal'} showValueLabel="none" defaultValue={INT_DEFAULT_VALUE_ARR} />
+          </div>
+        </div>
+        <div className={cn(flexCol, 'gap-10 size-full')}>
+          <h2 className={cn(blueTxt, titTxt)}>Vertical</h2>
+          <div className={cn(flexRow, allCenter, 'gap-5 size-full')}>
+            <div className={cn(flexCol, allCenter, 'gap-5 size-full')}>
+              <h3 className={cn(subTitTxt, 'mb-15')}>항상 보기</h3>
+              <Slider
+                {...args}
+                orientation={'vertical'}
+                showValueLabel="always"
+                defaultValue={[INT_DEFAULT_VALUE_ARR[0]]}
+              />
+            </div>
+            <div className={cn(flexCol, allCenter, 'gap-5 size-full')}>
+              <h3 className={cn(subTitTxt, 'mb-15')}>UnitLabel로 항상 보기</h3>
+              <Slider
+                {...args}
+                orientation={'vertical'}
+                showValueLabel="always"
+                unitLabel="%"
+                defaultValue={INT_DEFAULT_VALUE_ARR}
+              />
+            </div>
+            <div className={cn(flexCol, allCenter, 'gap-5 size-full')}>
+              <h3 className={cn(subTitTxt, 'mb-15')}>Auto (Hover/Drag)</h3>
+              <Slider
+                {...args}
+                orientation={'vertical'}
+                showValueLabel="auto"
+                defaultValue={[INT_DEFAULT_VALUE_ARR[0]]}
+              />
+            </div>
+            <div className={cn(flexCol, allCenter, 'gap-5 size-full')}>
+              <h3 className={cn(subTitTxt, 'mb-15')}>None</h3>
+              <Slider {...args} orientation={'vertical'} showValueLabel="none" defaultValue={INT_DEFAULT_VALUE_ARR} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const StepsAndMarks: Story = {
+  name: 'Steps and Marks',
+  argTypes: {
+    min: { table: { disable: true } },
+    max: { table: { disable: true } },
+    step: { table: { disable: true } },
+    minStepsBetweenThumbs: { table: { disable: true } },
+    marks: { table: { disable: true } },
+    orientation: { table: { disable: true } },
+    defaultValue: { table: { disable: true } },
+    value: { table: { disable: true } },
+    onValueChange: { table: { disable: true } },
+    onValueCommit: { table: { disable: true } },
+    sliderRef: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          '`step`, `minStepsBetweenThumbs`, `marks` 관련 옵션 예시입니다.',
+          '`marks`의 경우 true로 하시면 label 없이, step 간격으로 mark 가 생성이 되고, 별도로 mark 별로 `label`를 기입하거나 간격을 커스텀으로 표시할 수 있고, `label`에 클래스를 추가하는 `labelClass`도 추가 가능합니다.',
+          '`minStepsBetweenThumbs` 의 경우 step 의 간격 만큼은 간격을 좁힐 수 없게 해주는 최소한의 간격 간의 거리를 지정하는 prop 입니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
+  render: (args) => {
+    return (
+      <div className={cn(flexCol, 'gap-12 w-full h-200')}>
+        <div className={cn(flexRow, 'gap-20 size-full')}>
+          <div className={cn(flexCol, 'gap-10 size-full')}>
+            <h2 className={cn(blueTxt, titTxt)}>Horizontal</h2>
+            <div className={cn(flexCol, 'size-full gap-10')}>
+              <div className={cn(flexCol, 'size-full')}>
+                <h3 className={cn(subTitTxt, 'mb-15')}>Integer Step (step: 10)</h3>
+                <Slider {...args} step={10} defaultValue={[20, 60]} />
+              </div>
+              <div className={cn(flexCol, 'size-full')}>
+                <h3 className={cn(subTitTxt, 'mb-15')}>
+                  Decimal Step (min: {MIN_INT_VALUE}, max: {DEFAULT_STEP}, step: {DECIMAL_STEP})
+                </h3>
+                <Slider
+                  {...args}
+                  min={MIN_INT_VALUE}
+                  max={DEFAULT_STEP}
+                  step={DECIMAL_STEP}
+                  defaultValue={DECIMAL_VALUE_ARR}
+                />
+              </div>
+              <div className={cn(flexCol, 'size-full')}>
+                <h3 className={cn(subTitTxt, 'mb-15')}>
+                  Min Steps Between Thumbs (step: {INT_DEFAULT_VALUE_ARR[0]}, minStepsBetweenThumbs: 3)
+                </h3>
+                <Slider
+                  {...args}
+                  step={INT_DEFAULT_VALUE_ARR[0]}
+                  minStepsBetweenThumbs={3}
+                  defaultValue={INT_VALUE_ARR}
+                />
+              </div>
+              <div className={cn(flexCol, 'size-full')}>
+                <h3 className={cn(subTitTxt, 'mb-15')}>
+                  Automatic Marks (marks: true, min: {MIN_INT_VALUE}, max: {MAX_INT_VALUE} ,step: 25)
+                </h3>
+                <Slider {...args} step={25} marks defaultValue={[INT_VALUE_ARR[1]]} />
+              </div>
+              <div className={cn(flexCol, 'size-full')}>
+                <h3 className={cn(subTitTxt, 'mb-15')}>Custom Marks (with labels and custom classes)</h3>
+                <Slider {...args} marks={customMarks} defaultValue={INT_DEFAULT_VALUE_ARR} />
+              </div>
+            </div>
+          </div>
+          <div className={cn(flexCol, 'gap-10 size-full')}>
+            <h2 className={cn(blueTxt, titTxt)}>Vertical</h2>
+            <div className={cn(flexRow, 'size-full gap-10')}>
+              <div className={cn(flexCol, 'flex-1 size-full items-center justify-between')}>
+                <h3 className={cn(subTitTxt, 'break-all flex-1/6')}>Integer Step (step: 10)</h3>
+                <Slider {...args} orientation={'vertical'} step={10} defaultValue={[20, 60]} className={'flex-2/3'} />
+              </div>
+              <div className={cn(flexCol, 'flex-1 size-full items-center justify-between')}>
+                <h3 className={cn(subTitTxt, 'break-all flex-1/6')}>
+                  Decimal Step (min: {MIN_INT_VALUE}, max: {DEFAULT_STEP}, step: {DECIMAL_STEP})
+                </h3>
+                <Slider
+                  {...args}
+                  orientation={'vertical'}
+                  min={MIN_INT_VALUE}
+                  max={DEFAULT_STEP}
+                  step={DECIMAL_STEP}
+                  defaultValue={DECIMAL_VALUE_ARR}
+                  className={'flex-2/3'}
+                />
+              </div>
+              <div className={cn(flexCol, 'flex-1 size-full items-center justify-between')}>
+                <h3 className={cn(subTitTxt, 'break-all flex-1/6')}>
+                  Min Steps Between Thumbs (step: {INT_DEFAULT_VALUE_ARR[0]}, minStepsBetweenThumbs: 3)
+                </h3>
+                <Slider
+                  {...args}
+                  orientation={'vertical'}
+                  step={INT_DEFAULT_VALUE_ARR[0]}
+                  minStepsBetweenThumbs={3}
+                  defaultValue={INT_VALUE_ARR}
+                  className={'flex-2/3'}
+                />
+              </div>
+              <div className={cn(flexCol, 'flex-1 size-full items-center justify-between')}>
+                <h3 className={cn(subTitTxt, 'break-all flex-1/6')}>
+                  Automatic Marks (marks: true, min: {MIN_INT_VALUE}, max: {MAX_INT_VALUE} ,step: 25)
+                </h3>
+                <Slider
+                  {...args}
+                  orientation={'vertical'}
+                  step={25}
+                  marks
+                  defaultValue={[INT_VALUE_ARR[1]]}
+                  className={'flex-2/3'}
+                />
+              </div>
+              <div className={cn(flexCol, 'flex-1 size-full items-center justify-between')}>
+                <h3 className={cn(subTitTxt, 'break-all flex-1/6')}>Custom Marks (with labels and custom classes)</h3>
+                <Slider
+                  {...args}
+                  orientation={'vertical'}
+                  marks={customMarks}
+                  defaultValue={INT_DEFAULT_VALUE_ARR}
+                  className={'flex-2/3'}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+function UncontrolledStory({ defaultValue = DECIMAL_DEFAULT_VALUE_ARR, ...args }: SliderProps) {
+  const singleSliderRef = useRef<number[]>(null);
+  const rangeSliderRef = useRef<number[]>(null);
+  const [singleValue, setSingleValue] = useState<number[]>([defaultValue?.[0] || DECIMAL_DEFAULT_VALUE_ARR[0]]);
+  const [rangeValue, setRangeValue] = useState<number[]>(defaultValue ?? []);
+
+  return (
+    <div className={cn(flexCol, 'gap-10 w-full h-100')}>
+      <div className={cn(args.orientation === 'horizontal' ? flexCol : flexRow, 'gap-8 size-full')}>
+        <div className={cn(flexCol, 'size-full gap-4')}>
+          <h3 className={cn(titTxt)}>Single Thumb</h3>
+          <div className={cn(flexRow, 'gap-2 items-center mb-4', blueTxt)}>
+            <p className={cn()}>{`defaultValue: ${singleValue}`}</p>
+            <p className={cn(subTitTxt)}>|</p>
+            <p className={cn()}>{`Current Value: ${singleSliderRef.current}`}</p>
+          </div>
+          <Slider
+            {...args}
+            defaultValue={singleValue}
+            sliderRef={singleSliderRef}
+            onValueChange={(val) => {
+              setSingleValue(val);
+              singleSliderRef.current = val;
+            }}
+          />
+        </div>
+        <div className={cn(flexCol, 'size-full gap-4')}>
+          <h3 className={cn(titTxt)}>Range Thumb</h3>
+          <div className={cn(flexRow, 'gap-2 items-center mb-4', blueTxt)}>
+            <p className={cn()}>{`defaultValue: ${rangeValue}`}</p>
+            <p className={cn(subTitTxt)}>|</p>
+            <p className={cn()}>{`Current Value: ${rangeSliderRef.current}`}</p>
+          </div>
+          <Slider
+            {...args}
+            defaultValue={rangeValue}
+            sliderRef={rangeSliderRef}
+            onValueChange={(val) => {
+              setRangeValue(val);
+              rangeSliderRef.current = val;
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const Uncontrolled: Story = {
+  name: 'Uncontrolled',
+  args: {
+    defaultValue: DECIMAL_DEFAULT_VALUE_ARR,
+    step: MIN_DECIMAL_VALUE,
+    min: MIN_INT_VALUE,
+    max: DEFAULT_STEP,
+  },
+  argTypes: {
+    defaultValue: { table: { disable: true } },
+    value: { table: { disable: true } },
+    onValueChange: { table: { disable: true } },
+    onValueCommit: { table: { disable: true } },
+    sliderRef: { table: { disable: true } },
+  },
+  parameters: { docs: { description: { story: '`defaultValue`와 `sliderRef`를 이용한 비제어 컴포넌트 예시입니다.' } } },
+  render: (args) => <UncontrolledStory {...args} />,
+};
+
+function ControlledStory({ defaultValue = INT_DEFAULT_VALUE_ARR, value = INT_VALUE_ARR, ...args }: SliderProps) {
+  const singleSliderRef = useRef<number[]>(null);
+  const rangeSliderRef = useRef<number[]>(null);
+  const [singleValue, setSingleValue] = useState<number[]>([value[0]]);
+  const [rangeValue, setRangeValue] = useState<number[]>(value);
+
+  return (
+    <div className={cn(flexCol, 'gap-10 w-full h-100')}>
+      <div className={cn(args.orientation === 'horizontal' ? flexCol : flexRow, 'gap-8 size-full')}>
+        <div className={cn(flexCol, 'size-full gap-4')}>
+          <h3 className={cn(titTxt)}>Single Thumb</h3>
+          <div className={cn(flexRow, 'gap-2 items-center mb-4', blueTxt)}>
+            <p className={cn()}>{`defaultValue: ${defaultValue[0]}`}</p>
+            <p className={cn(subTitTxt)}>|</p>
+            <p className={cn()}>{`value: ${singleValue}`}</p>
+            <p className={cn(subTitTxt)}>|</p>
+            <p className={cn()}>{`Current Value: ${singleSliderRef.current}`}</p>
+          </div>
+          <Slider
+            {...args}
+            defaultValue={[defaultValue[0]]}
+            value={singleValue}
+            sliderRef={singleSliderRef}
+            onValueChange={(val) => {
+              setSingleValue(val);
+              singleSliderRef.current = val;
+            }}
+          />
+        </div>
+        <div className={cn(flexCol, 'size-full gap-4')}>
+          <h3 className={cn(titTxt)}>Range Thumb</h3>
+          <div className={cn(flexRow, 'gap-2 items-center mb-4', blueTxt)}>
+            <p className={cn()}>{`defaultValue: ${defaultValue}`}</p>
+            <p className={cn(subTitTxt)}>|</p>
+            <p className={cn()}>{`value: ${rangeValue}`}</p>
+            <p className={cn(subTitTxt)}>|</p>
+            <p className={cn()}>{`Current Value: ${rangeSliderRef.current}`}</p>
+          </div>
+          <Slider
+            {...args}
+            defaultValue={defaultValue}
+            value={rangeValue}
+            sliderRef={rangeSliderRef}
+            onValueChange={(val) => {
+              setRangeValue(val);
+              rangeSliderRef.current = val;
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const Controlled: Story = {
+  name: 'Controlled',
+  args: {
+    defaultValue: INT_DEFAULT_VALUE_ARR,
+    value: INT_VALUE_ARR,
+  },
+  argTypes: {
+    defaultValue: { table: { disable: true } },
+    value: { table: { disable: true } },
+    onValueChange: { table: { disable: true } },
+    onValueCommit: { table: { disable: true } },
+    sliderRef: { table: { disable: true } },
+  },
+  parameters: { docs: { description: { story: '`value`와 `onValueChange`를 이용한 제어 컴포넌트 예시입니다.' } } },
+  render: (args) => <ControlledStory {...args} />,
+};

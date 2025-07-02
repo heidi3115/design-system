@@ -31,6 +31,7 @@ export const sliderVariants = tv({
       'touch-none select-none',
       'data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full',
     ],
+    customVal: '', // 동적 Thumb 사이즈 처리 위함.
   },
   variants: {
     variant: {
@@ -45,33 +46,12 @@ export const sliderVariants = tv({
       // [--slider-color:var(--juiScore-veryLow)] -> custom.css 에 등록된 색상 가능
       // [--slider-color:oklch(0.7_0.1_304/42.86%)] -> oklch 뿐만 아니라 rgba 등 hsl도 작동은 하나 띄어쓰기 없어야 하고 필요할 경우 tailwind 에서 인식하도록 _ 처리
     },
-    sizeClass: {
-      default: 'size-4',
-      small: 'size-2.5',
-      medium: 'size-5',
-      large: 'size-7',
-      custom: '',
-    },
     size: {
-      default: {
-        thumb: 'size-4',
-      },
-      small: {
-        thumb: 'size-2.5',
-      },
-      medium: {
-        thumb: 'size-5',
-      },
-      large: {
-        thumb: 'size-7',
-      },
-      custom: {
-        base: '',
-        root: '',
-        track: '',
-        range: '',
-        thumb: '',
-      },
+      default: { thumb: 'size-4', customVal: 'size-4' },
+      small: { thumb: 'size-2.5', customVal: 'size-2.5' },
+      medium: { thumb: 'size-5', customVal: 'size-5' },
+      large: { thumb: 'size-7', customVal: 'size-7' },
+      custom: { thumb: '' },
     },
     orientation: {
       horizontal: { root: '', track: 'w-full', range: 'h-full' },
@@ -91,75 +71,49 @@ export const sliderVariants = tv({
       size: 'default',
       orientation: 'horizontal',
       class: {
-        base: '',
-        root: '',
         track: 'h-1.5',
-        thumb: 'size-4',
       },
     },
     {
       size: 'default',
       orientation: 'vertical',
       class: {
-        base: '',
-        root: '',
         track: 'w-1.5',
-        range: '',
-        thumb: 'size-4',
       },
     },
     {
       size: 'small',
       orientation: 'horizontal',
       class: {
-        base: '',
-        root: '',
         track: 'h-1',
-        range: '',
-        thumb: 'size-2.5',
       },
     },
     {
       size: 'small',
       orientation: 'vertical',
       class: {
-        base: '',
-        root: '',
         track: 'w-1',
-        range: '',
-        thumb: 'size-2.5',
       },
     },
     {
       size: 'medium',
       orientation: 'horizontal',
       class: {
-        base: '',
-        root: '',
         track: 'h-2',
-        range: '',
-        thumb: 'size-5',
       },
     },
     {
       size: 'medium',
       orientation: 'vertical',
       class: {
-        base: '',
-        root: '',
         track: 'w-2',
-        range: '',
-        thumb: 'size-5',
       },
     },
     {
       size: 'large',
       orientation: 'horizontal',
       class: {
-        base: '',
-        root: '',
         track: 'h-3',
-        thumb: 'size-7',
       },
     },
     {
@@ -170,7 +124,6 @@ export const sliderVariants = tv({
         root: '',
         track: 'w-3',
         range: '',
-        thumb: 'size-7',
       },
     },
   ],

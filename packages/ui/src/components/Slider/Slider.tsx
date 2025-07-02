@@ -33,9 +33,9 @@ export function getDecimalPlaces(num: number) {
 function getSizeValue(size: string) {
   if (!size) return 0;
   const REM_PX = 4; // .25rem
-  const str = size.match(/size-([\d.]+)/)?.[1];
+  const str = size?.match(/size-([\d.]+)/)?.[1] || String(REM_PX);
 
-  return str ? Number(str) * REM_PX : REM_PX * REM_PX;
+  return Number(str) * REM_PX;
 }
 
 function convertValueToPercentage({
@@ -64,8 +64,8 @@ function Slider({
   orientation = 'horizontal',
   showValueLabel = 'auto',
   unitLabel = '',
-  disabled = false,
   marks = false,
+  disabled = false,
   min = MIN_INT_VALUE,
   max = MAX_INT_VALUE,
   step = DEFAULT_STEP,
@@ -77,14 +77,14 @@ function Slider({
   className,
   ...props
 }: SliderProps) {
-  const { base, root, track, range, thumb, mark } = sliderVariants({ variant, size, orientation, disabled });
+  const { base, root, track, range, thumb, mark, customVal } = sliderVariants({ variant, size, orientation, disabled });
   const baseClass = base();
   const rootClass = root();
   const trackClass = track();
   const rangeClass = range();
   const thumbClass = thumb();
   const marksClass = mark();
-  const sizeClass = sliderVariants({ variant: 'custom', sizeClass: size }).base();
+  const sizeClass = customVal();
   const thumbSize = getSizeValue(sizeClass);
   const isHorizontal = orientation === 'horizontal';
 
@@ -205,6 +205,7 @@ function Slider({
             open={isTooltipOpen}
             contents={`${val.toFixed(decimalPlaces)} ${unitLabel ? unitLabel : ''}`}>
             <SliderThumb
+              data-slot="slider-thumb"
               className={cn(baseClass, thumbClass)}
               onMouseEnter={() => setHoveredThumbIndex(index)}
               onMouseLeave={() => setHoveredThumbIndex(null)}
