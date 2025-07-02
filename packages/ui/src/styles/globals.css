@@ -25,3 +25,16 @@
     @apply overflow-visible;
   }
 }
+
+@keyframes shimmer {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s linear;
+}

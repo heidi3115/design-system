@@ -23,22 +23,15 @@ const meta: Meta<ProgressArgsType> = {
     value: 0,
     totalDuration: 100,
   },
-  parameters: {
-    docs: {
-      description: {
-        component: 'Progress 컴포넌트 문서',
-      },
-    },
-  },
 };
 
 export default meta;
 type Story = StoryObj<ProgressArgsType>;
 
-const Template = (args: ProgressArgsType) => {
+const Template = () => {
   return (
     <div className="flex flex-col gap-5">
-      <Progress {...args} />
+      <Progress />
     </div>
   );
 };
