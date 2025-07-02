@@ -1,6 +1,15 @@
 'use client';
 
-import { type Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import {
+  type PointerEvent,
+  type Ref,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import type { VariantProps } from 'tailwind-variants';
 import { cn } from '../../lib/utils';
 import { sliderVariants, Tooltip } from '@common/ui';
@@ -89,6 +98,12 @@ function Slider({
     [decimalPlaces, marks, max, min, step],
   );
 
+  const handleTargetBlur = useCallback((event: PointerEvent<HTMLDivElement>) => {
+    if (event.currentTarget instanceof HTMLElement) {
+      event.currentTarget.blur();
+    }
+  }, []);
+
   const handleValueChange = useCallback(
     (newValues: number[]) => {
       const prevValues = previousValuesRef.current || [];
@@ -164,6 +179,7 @@ function Slider({
               className={cn(baseClass, thumbClass)}
               onMouseEnter={() => setHoveredThumbIndex(index)}
               onMouseLeave={() => setHoveredThumbIndex(null)}
+              onPointerUp={handleTargetBlur}
             />
           );
         }
@@ -185,6 +201,7 @@ function Slider({
               className={cn(baseClass, thumbClass)}
               onMouseEnter={() => setHoveredThumbIndex(index)}
               onMouseLeave={() => setHoveredThumbIndex(null)}
+              onPointerUp={handleTargetBlur}
             />
           </Tooltip>
         );
