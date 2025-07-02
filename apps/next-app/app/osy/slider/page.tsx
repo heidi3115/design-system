@@ -265,20 +265,6 @@ export default function SliderPage() {
             </div>
           </div>
           <Separator orientation={'horizontal'} />
-          <div className={'flex flex-col gap-4'}>
-            <h2 className={'text-juiText-blue text-3xl font-bold'}>Components</h2>
-            <div className={'flex flex-col gap-4'}>
-              <h3 className={'my-3 text-base'}>title</h3>
-              <strong>subtitle</strong>
-              <div className={'flex flex-row gap-4'}>
-                <div className={'flex flex-col gap-2'}>
-                  <span className={'text-juiText-blue text-base font-bold'}></span>
-                  <div className={'flex flex-row gap-3'}></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <Separator orientation={'horizontal'} />
         </div>
       </section>
     </main>
