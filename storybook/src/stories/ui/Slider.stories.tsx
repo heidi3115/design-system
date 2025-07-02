@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { cn } from '@common/ui/lib/utils.ts';
-import { Slider, type SliderMark, type SliderProps, sliderVariants } from '@common/ui';
+import { Button, Input, Slider, type SliderMark, type SliderProps, sliderVariants, Tooltip } from '@common/ui';
 import { useRef, useState } from 'react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@common/ui/icons';
 
 const flexCol = 'flex flex-col text-jui text-juiText-primary';
 const flexRow = 'flex flex-row';
@@ -745,4 +746,143 @@ export const Controlled: Story = {
   },
   parameters: { docs: { description: { story: '`value`와 `onValueChange`를 이용한 제어 컴포넌트 예시입니다.' } } },
   render: (args) => <ControlledStory {...args} />,
+};
+
+function VariantExamplesStory({
+  defaultValue = INT_DEFAULT_VALUE_ARR,
+  value = INT_VALUE_ARR,
+  step = DEFAULT_STEP,
+  min = MIN_INT_VALUE,
+  max = MAX_INT_VALUE,
+  orientation,
+  ...args
+}: SliderProps) {
+  const singleSliderRef1 = useRef<number[]>(null);
+  const rangeSliderRef1 = useRef<number[]>(null);
+  const [singleValue1, setSingleValue1] = useState<number[]>([value[0]]);
+  const [rangeValue1, setRangeValue1] = useState<number[]>(value);
+
+  return (
+    <div className={cn(flexCol, 'gap-10 w-full h-100')}>
+      <div className={cn(orientation === 'horizontal' ? flexCol : flexRow, 'gap-8 size-full')}>
+        <div className={cn(flexCol, 'size-full gap-4')}>
+          <h3 className={cn(titTxt)}>Input 으로 값 조정하기</h3>
+          <div className={cn(flexRow, 'gap-2 items-center mb-4', blueTxt)}>
+            <p className={cn()}>{`defaultValue: ${defaultValue[0]}`}</p>
+            <p className={cn(subTitTxt)}>|</p>
+            <p className={cn()}>{`value: ${singleValue1}`}</p>
+            <p className={cn(subTitTxt)}>|</p>
+            <p className={cn()}>{`Current Value: ${singleSliderRef1.current}`}</p>
+          </div>
+          <div className={cn(flexRow, allCenter, 'size-full gap-4')}>
+            <Tooltip contents={'값 입력 시, Slider 의 값을 step 만큼 조정합니다.'}>
+              <Input
+                type={'number'}
+                step={step}
+                value={String(singleValue1[0])}
+                onChange={(e) => {
+                  const newVal = parseFloat(e.target.value);
+                  const rangedVal = newVal > max ? max : newVal < min ? min : newVal;
+                  const singleVal = [rangedVal];
+
+                  setSingleValue1(singleVal);
+                  singleSliderRef1.current = singleVal;
+                }}
+              />
+            </Tooltip>
+            <Slider
+              {...args}
+              orientation={orientation}
+              step={step}
+              min={min}
+              max={max}
+              defaultValue={[defaultValue[0]]}
+              value={singleValue1}
+              sliderRef={singleSliderRef1}
+              onValueChange={(val) => {
+                setSingleValue1(val);
+                singleSliderRef1.current = val;
+              }}
+            />
+          </div>
+        </div>
+        <div className={cn(flexCol, 'size-full gap-4')}>
+          <h3 className={cn(titTxt)}>범위를 각각 화살표로 조정하기</h3>
+          <div className={cn(flexRow, 'gap-2 items-center mb-4', blueTxt)}>
+            <p className={cn()}>{`defaultValue: ${defaultValue}`}</p>
+            <p className={cn(subTitTxt)}>|</p>
+            <p className={cn()}>{`value: ${rangeValue1}`}</p>
+            <p className={cn(subTitTxt)}>|</p>
+            <p className={cn()}>{`Current Value: ${rangeSliderRef1.current}`}</p>
+          </div>
+          <div className={cn(flexRow, allCenter, 'size-full gap-4')}>
+            <Tooltip contents={'클릭 시, Slider 범위의 min 값을 step 만큼 조정합니다.'}>
+              <Button
+                asChild
+                variant={'transparentGrey'}
+                onClick={() => {
+                  const newVal1 = rangeValue1[0] - step;
+                  const newValArr = [newVal1, rangeValue1[1]];
+
+                  setRangeValue1(newValArr);
+                  rangeSliderRef1.current = newValArr;
+                }}>
+                <ChevronLeftIcon size={'medium'} />
+              </Button>
+            </Tooltip>
+            <Slider
+              {...args}
+              step={step}
+              min={min}
+              max={max}
+              orientation={orientation}
+              defaultValue={defaultValue}
+              value={rangeValue1}
+              sliderRef={rangeSliderRef1}
+              onValueChange={(val) => {
+                setRangeValue1(val);
+                rangeSliderRef1.current = val;
+              }}
+            />
+            <Tooltip contents={'클릭 시, Slider 범위의 max 값을 step 만큼 조정합니다.'}>
+              <Button
+                asChild
+                variant={'transparentGrey'}
+                onClick={() => {
+                  const newVal2 = rangeValue1[1] + step;
+                  const newValArr = [rangeValue1[0], newVal2];
+
+                  setRangeValue1(newValArr);
+                  rangeSliderRef1.current = newValArr;
+                }}>
+                <ChevronRightIcon size={'medium'} />
+              </Button>
+            </Tooltip>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const VariantExamples: Story = {
+  name: 'Variant Examples',
+  args: {
+    defaultValue: INT_DEFAULT_VALUE_ARR,
+    value: INT_VALUE_ARR,
+    step: DEFAULT_STEP,
+    min: MIN_INT_VALUE,
+    max: MAX_INT_VALUE,
+  },
+  argTypes: {
+    min: { table: { disable: true } },
+    max: { table: { disable: true } },
+    defaultValue: { table: { disable: true } },
+    value: { table: { disable: true } },
+    onValueChange: { table: { disable: true } },
+    onValueCommit: { table: { disable: true } },
+    sliderRef: { table: { disable: true } },
+  },
+  parameters: { docs: { description: { story: '다양한 예시를 이용한 Slider 모음입니다.' } } },
+  render: (args) => <VariantExamplesStory {...args} />,
 };
