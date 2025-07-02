@@ -1,37 +1,19 @@
 'use client';
 
 import * as ProgressPrimitive from '@radix-ui/react-progress';
-import { useState, useEffect } from 'react';
-type ProgressProps = { value?: number; totalDuration?: number };
+import { cn } from '@common/ui/lib/utils';
+import { type HTMLAttributes } from 'react';
 
-const Progress = ({ value = 0, totalDuration = 100 }: ProgressProps) => {
-  const [progress, setProgress] = useState(value);
+type ProgressProps = HTMLAttributes<HTMLDivElement>;
 
-  useEffect(() => {
-    const steps = 30;
-    const gap = 100 / steps;
-    const intervalTime = totalDuration / steps;
-    let current = 0;
-    const interval = setInterval(() => {
-      current += gap;
-      setProgress(current);
-
-      if (current >= 100) {
-        clearInterval(interval);
-      }
-    }, intervalTime);
-
-    return () => clearInterval(interval);
-  }, [totalDuration]);
-
+const Progress = ({ className }: ProgressProps) => {
   return (
-    <ProgressPrimitive.Root
-      className="relative h-[15px] w-full overflow-hidden bg-juiBackground-solidPaper"
-      style={{ transform: 'translateZ(0)' }}
-      value={progress}>
+    <ProgressPrimitive.Root className="relative h-[15px] w-full overflow-hidden">
       <ProgressPrimitive.Indicator
-        className="ease-[cubic-bezier(0.65, 0, 0.35, 1)] w-full h-full bg-gradient-to-r from-[#2E589B] to-[#69CCF6] transition-transform duration-[660ms] "
-        style={{ transform: `translateX(-${100 - progress}%)` }}
+        className={cn(
+          ['w-full h-full', 'animate-shimmer', 'bg-gradient-to-r from-[#2E589B] via-[#5d2ce9] to-[#69CCF6]'],
+          className,
+        )}
       />
     </ProgressPrimitive.Root>
   );

@@ -1,48 +1,42 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Progress } from '@common/ui';
 
-type ProgressArgsType = {
-  value?: number;
-  totalDuration?: number;
+type ProgressProps = {
+  className?: string;
 };
 
-const meta: Meta<ProgressArgsType> = {
+const meta: Meta = {
   title: 'ui/Progress',
   component: Progress,
-  argTypes: {
-    value: {
-      control: 'number',
-      description: '초기값 및 변화할 값',
+  parameters: {
+    docs: {
+      description: {
+        component: '기본 Progress 컴포넌트 문서',
+      },
     },
-    totalDuration: {
-      control: 'number',
-      description: '몇 초에 걸쳐 증가할 지',
+  },
+  argTypes: {
+    className: {
+      control: 'text',
+      description: '추가 적용할 Tailwind CSS 클래스',
     },
   },
   args: {
-    value: 0,
-    totalDuration: 100,
+    className: '',
   },
 };
 
 export default meta;
-type Story = StoryObj<ProgressArgsType>;
+type Story = StoryObj;
 
-const Template = () => {
+const Template = (args: ProgressProps) => {
   return (
     <div className="flex flex-col gap-5">
-      <Progress />
+      <Progress {...args} />
     </div>
   );
 };
 
 export const Default: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Progress 기본 컴포넌트',
-      },
-    },
-  },
   render: Template,
 };
