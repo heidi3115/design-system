@@ -1,5 +1,7 @@
 'use client';
 
+import { useRef } from 'react';
+
 import {
   Button,
   Card,
@@ -22,12 +24,17 @@ import {
   Skeleton,
   SplitOtpInput,
   Switch,
+  useConfirmDialog,
 } from '@common/ui';
 import { CalendarIcon, ClockIcon, UserIcon } from '@common/ui/icons';
 
 export default function BoxPages() {
+  const otpRef = useRef(null);
+
+  const { openDialog } = useConfirmDialog();
+
   return (
-    <div className="flex flex-col gap-4 p-4 bg-juiBackground-paper min-h-full">
+    <div className="flex flex-col gap-4 p-4">
       <h1 className="text-4xl font-bold">BOX LAYOUT</h1>
       <Switch defaultChecked />
       <Switch variant="secondary" defaultChecked />
@@ -58,7 +65,20 @@ export default function BoxPages() {
         </div>
       </Popover>
       <Separator />
-      <SplitOtpInput value="123456" />
+      <SplitOtpInput defaultValue={123456} />
+      <SplitOtpInput defaultValue="654321" otpRef={otpRef} />
+      <Button
+        onClick={() => {
+          console.warn(otpRef.current);
+
+          openDialog({
+            title: 'warning',
+            description: `비제어 ${otpRef.current}`,
+            onConfirm: () => console.warn('확인'),
+          });
+        }}>
+        otp unControll
+      </Button>
       <SplitOtpInput value="123456" />
       <SplitOtpInput value="123456" />
       <SplitOtpInput value="123456" />

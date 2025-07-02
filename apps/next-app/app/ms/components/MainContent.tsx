@@ -23,7 +23,9 @@ export function MainContent({
     `}
       style={{ height: `calc(100svh - ${headerHeight}px)` }}
       {...props}>
-      <section className="layout-min-width h-full overflow-auto">{children}</section>
+      <section className="layout-min-width h-full overflow-auto">
+        {contentType === 'box' ? <div className="bg-juiBackground-paper min-h-full">{children}</div> : children}
+      </section>
     </div>
   );
 }
