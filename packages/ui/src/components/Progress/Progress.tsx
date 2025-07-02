@@ -11,7 +11,7 @@ const Progress = ({ className }: ProgressProps) => {
     <ProgressPrimitive.Root className="relative h-[15px] w-full overflow-hidden">
       <ProgressPrimitive.Indicator
         className={cn(
-          ['w-full h-full', 'animate-shimmer', 'bg-gradient-to-r from-[#2E589B] via-[#5d2ce9] to-[#69CCF6]'],
+          ['w-full h-full', 'animate-progressBar', 'bg-gradient-to-r from-[#2E589B] via-[#5d2ce9] to-[#69CCF6]'],
           className,
         )}
       />
