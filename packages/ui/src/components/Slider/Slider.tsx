@@ -1,10 +1,11 @@
 'use client';
 
-import { cn } from '../../lib/utils';
-import type { VariantProps } from 'tailwind-variants';
-import { SliderRange, SliderRoot, type SliderRootProps, SliderThumb, SliderTrack } from './SliderParts';
-import { sliderVariants, Tooltip } from '@common/ui';
 import { type Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import type { VariantProps } from 'tailwind-variants';
+import { cn } from '../../lib/utils';
+import { sliderVariants, Tooltip } from '@common/ui';
+import { convertValueToPercentage, getDecimalPlaces } from '@common/utils';
+import { SliderRange, SliderRoot, type SliderRootProps, SliderThumb, SliderTrack } from './SliderParts';
 
 export type SliderMark = {
   value: number;
@@ -24,38 +25,12 @@ const MIN_INT_VALUE = 0 as const;
 const MAX_INT_VALUE = 100 as const;
 const DEFAULT_STEP = 1 as const;
 
-export function getDecimalPlaces(num: number) {
-  const s = String(num);
-
-  return s.includes('.') ? s?.split('.')?.[1]?.length || 0 : 0;
-}
-
 function getSizeValue(size: string) {
   if (!size) return 0;
   const REM_PX = 4; // .25rem
   const str = size?.match(/size-([\d.]+)/)?.[1] || String(REM_PX);
 
   return Number(str) * REM_PX;
-}
-
-function convertValueToPercentage({
-  value = 0,
-  min = MIN_INT_VALUE,
-  max = MAX_INT_VALUE,
-}: {
-  value: number;
-  min: number;
-  max: number;
-}) {
-  const range = max - min;
-
-  if (range === 0) {
-    return 0;
-  }
-
-  const percentage = ((value - min) / range) * 100;
-
-  return Math.max(0, Math.min(100, percentage));
 }
 
 function Slider({
@@ -84,8 +59,7 @@ function Slider({
   const rangeClass = range();
   const thumbClass = thumb();
   const marksClass = mark();
-  const sizeClass = customVal();
-  const thumbSize = getSizeValue(sizeClass);
+  const thumbSize = getSizeValue(customVal());
   const isHorizontal = orientation === 'horizontal';
 
   const isControlled = value !== undefined;
