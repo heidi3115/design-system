@@ -48,7 +48,6 @@ import {
 } from '@common/ui/icons';
 
 import { useController, useForm } from 'react-hook-form';
-import ThemeToggle from '../../components/ThemeToggle';
 import { useUpdateEffect } from '@common/utils';
 import { CalculatorIcon, SmileIcon, TvIcon } from 'lucide-react';
 
@@ -161,12 +160,9 @@ export default function Page() {
 
   return (
     <form className="relative" onSubmit={handleSubmit(onValid)}>
-      <div className="absolute top-2 right-1 flex flex-row-reverse z-10">
-        <ThemeToggle />
-      </div>
-      <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper" ref={wrapperRef}>
+      <div className="flex items-center justify-center min-h-svh" ref={wrapperRef}>
         <div className="flex flex-col items-center justify-center gap-4">
-          <h1 className="text-2xl font-bold underline">Hello World</h1>
+          <h1 className="text-4xl font-bold">FLEX LAYOUT</h1>
           <input type="datetime-local" />
           <Button
             onClick={() =>

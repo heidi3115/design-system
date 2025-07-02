@@ -23,7 +23,17 @@ import {
   SidebarSeparator,
   SidebarCollasibleGroup,
 } from '@common/ui';
-import { BellIcon, EditIcon, HomeIcon, ListIcon, LockIcon, MenuIcon, PlusIcon, TagIcon } from '@common/ui/icons';
+import {
+  BellIcon,
+  EditIcon,
+  FileIcon,
+  HomeIcon,
+  ListIcon,
+  LockIcon,
+  MenuIcon,
+  PlusIcon,
+  TagIcon,
+} from '@common/ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -41,6 +51,11 @@ export function AppSidebar() {
       title: 'Tabs',
       url: '/ms/tabs',
       icon: <BellIcon />,
+    },
+    {
+      title: 'Box',
+      url: '/ms/box',
+      icon: <FileIcon />,
     },
     {
       title: 'as child Disabled',

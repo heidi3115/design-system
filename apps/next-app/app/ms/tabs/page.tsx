@@ -1,7 +1,6 @@
 'use client';
 
 import { Button, Separator, Skeleton, Tabs, type TabItemType } from '@common/ui';
-import ThemeToggle from '../../../components/ThemeToggle';
 import { useState } from 'react';
 import { PlayIcon } from '@common/ui/icons';
 import { toast } from 'sonner';
@@ -9,10 +8,10 @@ import { toast } from 'sonner';
 export default function TabsPage() {
   function ScenarioList(props: { scenarioId: number }) {
     return (
-      // <div className="bg-juiBackground-paper w-full p-4 h-[calc(100svh-120px)] overflow-auto">
-      //   <div className="h-[2000px]">Scenario {props.scenarioId}</div>
-      // </div>
-      <div className="bg-juiBackground-paper w-full p-4 h-[2000px] overflow-auto">Scenario {props.scenarioId}</div>
+      <div className="bg-juiBackground-paper w-full p-4 h-[2000px] overflow-auto">
+        <h1 className="text-4xl font-bold">TABS LAYOUT</h1>
+        Scenario {props.scenarioId}
+      </div>
     );
   }
 
@@ -66,11 +65,8 @@ export default function TabsPage() {
 
   return (
     <div className="relative">
-      <div className="absolute top-2 right-1 flex flex-row-reverse z-10">
-        <ThemeToggle />
-      </div>
       <Tabs
-        defaultValue="target"
+        // defaultValue="target"
         // align="center"
         // size="small"
         // variant="secondary"
