@@ -20,9 +20,9 @@ export type SliderProps = SliderRootProps &
     sliderRef?: Ref<number[]>;
   };
 
-export const MIN_INT_VALUE = 0;
-export const MAX_INT_VALUE = 100;
-export const DEFAULT_STEP = 1;
+const MIN_INT_VALUE = 0 as const;
+const MAX_INT_VALUE = 100 as const;
+const DEFAULT_STEP = 1 as const;
 
 export function getDecimalPlaces(num: number) {
   const s = String(num);
@@ -91,14 +91,14 @@ function Slider({
   const isControlled = value !== undefined;
   const DefaultValueArray = Array.isArray(defaultValue) ? defaultValue : [min];
   const ValueArray = Array.isArray(value) ? value : [min];
-  const [internalValues, setInternalValues] = useState<number[]>(DefaultValueArray);
+  const [internalValues, setInternalValues] = useState(DefaultValueArray);
   const currentValues = isControlled ? ValueArray : internalValues;
 
   const [activeThumbIndex, setActiveThumbIndex] = useState<number | null>(null);
   const [hoveredThumbIndex, setHoveredThumbIndex] = useState<number | null>(null);
   const previousValuesRef = useRef(currentValues);
 
-  const decimalPlaces: number = useMemo(() => getDecimalPlaces(step), [step]);
+  const decimalPlaces = useMemo(() => getDecimalPlaces(step), [step]);
 
   const processedMarks: SliderMark[] = useMemo(
     () =>
