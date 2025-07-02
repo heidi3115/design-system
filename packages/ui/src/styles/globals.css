@@ -26,15 +26,14 @@
   }
 }
 
-@keyframes progressBar {
-  0% {
-    width: 0;
+@theme {
+  --animate-progress-bar: progressBar 2s linear;
+  @keyframes progressBar {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 100%;
+    }
   }
-  100% {
-    width: 100%;
-  }
-}
-
-.animate-progressBar {
-  animation: progressBar 2s linear;
 }
