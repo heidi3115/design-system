@@ -27,7 +27,7 @@ import { CalendarIcon, ClockIcon, UserIcon } from '@common/ui/icons';
 
 export default function BoxPages() {
   return (
-    <div className="flex flex-col gap-4 bg-juiBackground-paper p-4">
+    <div className="flex flex-col gap-4 p-4 bg-juiBackground-paper min-h-full">
       <h1 className="text-4xl font-bold">BOX LAYOUT</h1>
       <Switch defaultChecked />
       <Switch variant="secondary" defaultChecked />
