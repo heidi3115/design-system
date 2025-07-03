@@ -12,6 +12,11 @@ import {
   CollapsibleTrigger,
   Input,
   Separator,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetRoot,
+  SheetTitle,
   Skeleton,
   Tooltip,
 } from '../../components';
@@ -32,6 +37,7 @@ type SidebarContextProps = {
 };
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null);
+const SidebarCollapsibleContext = React.createContext({ collapsible: 'offcanvas' });
 
 function useSidebar() {
   const context = React.useContext(SidebarContext);
@@ -41,6 +47,10 @@ function useSidebar() {
   }
 
   return context;
+}
+
+function useSidebarCollapsible() {
+  return React.useContext(SidebarCollapsibleContext);
 }
 
 function SidebarProvider({
@@ -144,9 +154,9 @@ function SidebarRoot({
 }: React.ComponentProps<'div'> & {
   side?: 'left' | 'right';
   variant?: 'sidebar' | 'floating' | 'inset';
-  collapsible?: 'offcanvas' | 'icon' | 'none';
+  collapsible?: 'offcanvas' | 'icon' | 'none' | 'sheet';
 }) {
-  const { state } = useSidebar();
+  const { state, setOpen } = useSidebar();
 
   if (collapsible === 'none') {
     return (
@@ -161,6 +171,36 @@ function SidebarRoot({
         {...props}>
         {children}
       </div>
+    );
+  }
+
+  if (collapsible === 'sheet') {
+    return (
+      <SidebarCollapsibleContext.Provider value={{ collapsible }}>
+        <SheetRoot open={state === 'expanded'} onOpenChange={setOpen} {...props}>
+          <SheetContent
+            data-sidebar="sidebar"
+            data-slot="sidebar"
+            className="bg-juiBackground-solidPaper w-(--sidebar-width) p-0 [&>button]:hidden"
+            style={
+              {
+                '--sidebar-width': SIDEBAR_WIDTH,
+              } as React.CSSProperties
+            }
+            side={side}>
+            <SheetHeader className="sr-only">
+              <SheetTitle>sidebar</SheetTitle>
+              <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+            </SheetHeader>
+            <div className="group peer flex h-full w-full flex-col" data-collapsible="sheet">
+              <div className="absolute top-0 right-0 z-99">
+                <SidebarTrigger />
+              </div>
+              {children}
+            </div>
+          </SheetContent>
+        </SheetRoot>
+      </SidebarCollapsibleContext.Provider>
     );
   }
 
@@ -508,7 +548,8 @@ function SidebarMenuButton({
   tooltipContents?: string;
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot : 'button';
-  const { state } = useSidebar();
+  const { state, setOpen } = useSidebar();
+  const { collapsible } = useSidebarCollapsible();
 
   const button = (
     <Comp
@@ -517,6 +558,13 @@ function SidebarMenuButton({
       data-size={size}
       data-active={isActive}
       className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+      onClick={(e) => {
+        props.onClick?.(e);
+
+        if (collapsible === 'sheet') {
+          setOpen(false);
+        }
+      }}
       {...props}
     />
   );
