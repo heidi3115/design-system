@@ -174,3 +174,5 @@ export {
   AutoComplete,
   MultiSelect,
 } from './Command';
+
+export { Progress } from './Progress';
