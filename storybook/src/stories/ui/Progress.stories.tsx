@@ -3,6 +3,7 @@ import { Progress } from '@common/ui';
 
 type ProgressProps = {
   className?: string;
+  value?: number;
 };
 
 const meta: Meta = {
@@ -20,9 +21,14 @@ const meta: Meta = {
       control: 'text',
       description: '추가 적용할 Tailwind CSS 클래스',
     },
+    value: {
+      control: 'number',
+      description: 'bar의 길이를 조절할 수 있다. (단위: %)',
+    },
   },
   args: {
     className: '',
+    value: undefined,
   },
 };
 
