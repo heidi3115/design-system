@@ -193,9 +193,6 @@ function SidebarRoot({
               <SheetDescription>Displays the mobile sidebar.</SheetDescription>
             </SheetHeader>
             <div className="group peer flex h-full w-full flex-col" data-collapsible="sheet">
-              <div className="absolute top-0 right-0 z-99">
-                <SidebarTrigger />
-              </div>
               {children}
             </div>
           </SheetContent>
@@ -725,6 +722,8 @@ function SidebarMenuSubButton({
   isActive?: boolean;
 }) {
   const Comp = asChild ? Slot : 'a';
+  const { setOpen } = useSidebar();
+  const { collapsible } = useSidebarCollapsible();
 
   return (
     <Comp
@@ -750,6 +749,13 @@ function SidebarMenuSubButton({
         'group-data-[collapsible=icon]:hidden', // 아이콘 전용 메뉴일 경우 숨김 처리
         className, // 외부에서 전달된 클래스 추가
       )}
+      onClick={(e) => {
+        props.onClick?.(e);
+
+        if (collapsible === 'sheet') {
+          setOpen(false);
+        }
+      }}
       {...props}
     />
   );
