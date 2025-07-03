@@ -272,8 +272,8 @@ function Slider({
                       <span
                         className={cn(
                           'absolute',
-                          isHorizontal ? 'top-full -translate-x-1/2' : '-translate-y-1/2',
-                          'text-sm',
+                          isHorizontal ? 'top-full left-1/2 -translate-x-1/2' : 'left-full top-1/2 -translate-y-1/2',
+                          'w-max text-xs',
                           labelClass,
                         )}
                         style={
