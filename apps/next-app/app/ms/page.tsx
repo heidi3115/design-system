@@ -43,8 +43,6 @@ import {
   DropdownMenuPortal,
   DropdownMenuSubContent,
   DropdownMenuCheckboxItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenu,
 } from '@common/ui';
 import {
@@ -673,7 +671,7 @@ export default function Page() {
               <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>Account</DropdownMenuLabel>
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem variant="destructive">
                     Propfile
                     <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                   </DropdownMenuItem>
@@ -710,23 +708,17 @@ export default function Page() {
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator />
-
-                {/* ✅ Radio 그룹 */}
-                <DropdownMenuLabel>Theme</DropdownMenuLabel>
-                <DropdownMenuRadioGroup value="system">
-                  <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenuRoot>
 
             <DropdownMenu
+              itemHeight="large"
               onOpenChange={(open) => console.warn(open)}
               align="end"
               side="right"
               options={[
                 { label: 'My Profile', value: 'profile' },
+                { type: 'check', label: 'check', value: 'ckeck', checked: true },
                 { type: 'separator' },
                 {
                   type: 'group',
@@ -744,6 +736,7 @@ export default function Page() {
                           label: 'Invite Members',
                           items: [
                             { label: 'Email', value: 'invite-email' },
+                            { type: 'check', label: 'Email Check', value: 'invite-email-check' },
                             { label: 'Slack', value: 'invite-slack', disabled: true },
                           ],
                         },

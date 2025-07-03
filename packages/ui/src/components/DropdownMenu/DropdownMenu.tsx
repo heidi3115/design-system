@@ -12,17 +12,29 @@ import {
   DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuCheckboxItem,
 } from './DropdownMenuparts';
 import { Button } from '../Button';
 
 import { cn } from '../../lib/utils';
+import { tv, type VariantProps } from 'tailwind-variants';
 
-// ---------- 타입 ----------
+const dropdownMenuItemVariants = tv({
+  base: '',
+  variants: {
+    itemHeight: { samll: 'h-7', default: 'h-8', large: 'h-9' },
+  },
+  defaultVariants: {
+    itemHeight: 'default',
+  },
+});
+
 type OptionItem = {
-  type?: 'item';
+  type?: 'item' | 'check';
   label: string;
   value: string;
   disabled?: boolean;
+  checked?: boolean;
 };
 
 type OptionSeparator = {
@@ -50,14 +62,14 @@ type BaseDropdownProps = {
   trigger?: React.ReactNode;
   onItemSelect?: (item: OptionItem) => void;
   className?: string;
+  itemClassName?: string;
   size?: number;
 } & Pick<ComponentProps<typeof DropdownMenuRoot>, 'open' | 'onOpenChange' | 'defaultOpen'> &
-  Pick<ComponentProps<typeof DropdownMenuContent>, 'align' | 'side' | 'sideOffset' | 'alignOffset'>;
+  Pick<ComponentProps<typeof DropdownMenuContent>, 'align' | 'side' | 'sideOffset' | 'alignOffset'> &
+  VariantProps<typeof dropdownMenuItemVariants>;
 
-// 최종 타입
 type DropdownProps = OnlyOne<ChildrenType, OptionsType> & BaseDropdownProps;
 
-// ---------- 메인 컴포넌트 ----------
 function DropdownMenu({
   options,
   children,
@@ -69,6 +81,8 @@ function DropdownMenu({
   sideOffset,
   alignOffset,
   className,
+  itemClassName,
+  itemHeight,
   ...props
 }: DropdownProps) {
   return (
@@ -82,14 +96,25 @@ function DropdownMenu({
         side={side}
         sideOffset={sideOffset}
         alignOffset={alignOffset}>
-        {children ? children : options?.map((option, i) => renderOption(option, onItemSelect, `root-${i}`))}
+        {children
+          ? children
+          : options?.map((option, i) =>
+              renderOption({ option, onItemSelect, keyPrefix: `root-${i}`, itemHeight, className: itemClassName }),
+            )}
       </DropdownMenuContent>
     </DropdownMenuRoot>
   );
 }
 
-// ---------- 렌더 유틸 ----------
-function renderOption(option: DropdownOption, onItemSelect?: (item: OptionItem) => void, keyPrefix = ''): ReactNode {
+type RenderOptionProps = {
+  option: DropdownOption;
+  onItemSelect?: (item: OptionItem) => void;
+  keyPrefix?: string;
+  itemHeight?: VariantProps<typeof dropdownMenuItemVariants>['itemHeight'];
+  className?: string;
+};
+
+function renderOption({ option, onItemSelect, keyPrefix = '', itemHeight, className }: RenderOptionProps): ReactNode {
   if ('type' in option) {
     if (option.type === 'separator') {
       return <DropdownMenuSeparator key={`${keyPrefix}-separator`} />;
@@ -97,9 +122,17 @@ function renderOption(option: DropdownOption, onItemSelect?: (item: OptionItem) 
 
     if (option.type === 'group') {
       return (
-        <DropdownMenuGroup key={`${keyPrefix}-group`}>
-          <DropdownMenuLabel>{option.label}</DropdownMenuLabel>
-          {option.items.map((item, i) => renderOption(item, onItemSelect, `${keyPrefix}-g${i}`))}
+        <DropdownMenuGroup key={`${keyPrefix}-group`} className={className}>
+          <DropdownMenuLabel className={cn(dropdownMenuItemVariants({ itemHeight }))}>{option.label}</DropdownMenuLabel>
+          {option.items.map((item, i) =>
+            renderOption({
+              option: item,
+              onItemSelect,
+              keyPrefix: `${keyPrefix}-g${i}`,
+              itemHeight,
+              className,
+            }),
+          )}
         </DropdownMenuGroup>
       );
     }
@@ -107,20 +140,51 @@ function renderOption(option: DropdownOption, onItemSelect?: (item: OptionItem) 
     if (option.type === 'sub') {
       return (
         <DropdownMenuSub key={`${keyPrefix}-sub`}>
-          <DropdownMenuSubTrigger>{option.label}</DropdownMenuSubTrigger>
+          <DropdownMenuSubTrigger className={cn(dropdownMenuItemVariants({ itemHeight }), className)}>
+            {option.label}
+          </DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
-            {option.items.map((item, i) => renderOption(item, onItemSelect, `${keyPrefix}-s${i}`))}
+            {option.items.map((item, i) =>
+              renderOption({
+                option: item,
+                onItemSelect,
+                keyPrefix: `${keyPrefix}-s${i}`,
+                itemHeight,
+                className,
+              }),
+            )}
           </DropdownMenuSubContent>
         </DropdownMenuSub>
       );
     }
   }
 
+  // 기본 item 처리
   const item = option as OptionItem;
+
+  // 무조건 제어로 처리
+  if (item.type === 'check') {
+    return (
+      <DropdownMenuCheckboxItem
+        key={`${keyPrefix}-check`}
+        className={cn(dropdownMenuItemVariants({ itemHeight }), className)}
+        onSelect={() => !item.disabled && onItemSelect?.(item)}
+        checked={item.checked}
+        disabled={item.disabled}
+        onCheckedChange={(checked) => {
+          if (!item.disabled) {
+            onItemSelect?.({ ...item, checked });
+          }
+        }}>
+        {item.label}
+      </DropdownMenuCheckboxItem>
+    );
+  }
 
   return (
     <DropdownMenuItem
       key={`${keyPrefix}-item`}
+      className={cn(dropdownMenuItemVariants({ itemHeight }), className)}
       onSelect={() => !item.disabled && onItemSelect?.(item)}
       disabled={item.disabled}>
       {item.label}
