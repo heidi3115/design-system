@@ -30,6 +30,22 @@ import {
   MultiSelect,
   useConfirmDialog,
   ConfirmAlertDialog,
+  DropdownMenuRoot,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuPortal,
+  DropdownMenuSubContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenu,
 } from '@common/ui';
 import {
   ArrowLeftIcon,
@@ -649,6 +665,118 @@ export default function Page() {
               }}>
               Multi select 비제어
             </Button>
+
+            <DropdownMenuRoot>
+              <DropdownMenuTrigger asChild>
+                <Button variant="gradient">open</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>Account</DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    Propfile
+                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Billing
+                    <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Settings
+                    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem disabled>Team</DropdownMenuItem>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Invite user</DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem>Email</DropdownMenuItem>
+                        <DropdownMenuItem>Message</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>More...</DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                  </DropdownMenuSub>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                {/* ✅ Checkbox 항목 */}
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>Preferences</DropdownMenuLabel>
+                  <DropdownMenuCheckboxItem checked>Show activity</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem>Marketing emails</DropdownMenuCheckboxItem>
+                </DropdownMenuGroup>
+
+                <DropdownMenuSeparator />
+
+                {/* ✅ Radio 그룹 */}
+                <DropdownMenuLabel>Theme</DropdownMenuLabel>
+                <DropdownMenuRadioGroup value="system">
+                  <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenuRoot>
+
+            <DropdownMenu
+              onOpenChange={(open) => console.warn(open)}
+              align="end"
+              side="right"
+              options={[
+                { label: 'My Profile', value: 'profile' },
+                { type: 'separator' },
+                {
+                  type: 'group',
+                  label: 'Team',
+                  items: [
+                    { label: 'Team Settings', value: 'team-settings' },
+                    {
+                      type: 'sub',
+                      label: 'Invite Members',
+                      items: [
+                        { label: 'Email', value: 'invite-email' },
+                        { label: 'Slack', value: 'invite-slack', disabled: true },
+                        {
+                          type: 'sub',
+                          label: 'Invite Members',
+                          items: [
+                            { label: 'Email', value: 'invite-email' },
+                            { label: 'Slack', value: 'invite-slack', disabled: true },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'sub',
+                  label: 'Appearance',
+                  items: [
+                    { label: 'Light', value: 'light' },
+                    { label: 'Dark', value: 'dark' },
+                  ],
+                },
+              ]}
+              trigger={<Button variant="gradient">Menu</Button>}
+              onItemSelect={(item) => {
+                console.warn('Selected:', item);
+              }}
+            />
+
+            <DropdownMenu trigger={<Button>열기</Button>} size={500}>
+              <DropdownMenuItem>Custom</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>More</DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem>Sub A</DropdownMenuItem>
+                  <DropdownMenuItem>Sub B</DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+            </DropdownMenu>
 
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}
