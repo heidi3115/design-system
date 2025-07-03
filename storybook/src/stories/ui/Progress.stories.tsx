@@ -4,6 +4,7 @@ import { Progress } from '@common/ui';
 type ProgressProps = {
   className?: string;
   value?: number;
+  bgClassName?: string;
 };
 
 const meta: Meta = {
@@ -25,9 +26,14 @@ const meta: Meta = {
       control: 'number',
       description: 'bar의 길이를 조절할 수 있다. (단위: %)',
     },
+    bgClassName: {
+      control: 'text',
+      description: 'Progress 바 배경의 스타일을 지정한다.',
+    },
   },
   args: {
     className: '',
+    bgClassName: '',
     value: undefined,
   },
 };
