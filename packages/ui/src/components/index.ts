@@ -175,6 +175,8 @@ export {
   MultiSelect,
 } from './Command';
 
+export { Progress } from './Progress';
+
 export {
   SidebarRoot,
   SidebarContent,
