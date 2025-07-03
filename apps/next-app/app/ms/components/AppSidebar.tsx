@@ -58,6 +58,11 @@ export function AppSidebar() {
       icon: <FileIcon />,
     },
     {
+      title: 'InBox',
+      url: '/ms/inBox',
+      icon: <FileIcon />,
+    },
+    {
       title: 'as child Disabled',
       url: '/ms/disabled',
       icon: <LockIcon />,

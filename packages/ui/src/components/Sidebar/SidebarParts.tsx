@@ -20,6 +20,8 @@ import {
   Skeleton,
   Tooltip,
 } from '../../components';
+
+import { useCollapsibleStore } from './store/collapsibleModeStore';
 import { cn } from '../../lib/utils';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
@@ -37,7 +39,6 @@ type SidebarContextProps = {
 };
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null);
-const SidebarCollapsibleContext = React.createContext({ collapsible: 'offcanvas' });
 
 function useSidebar() {
   const context = React.useContext(SidebarContext);
@@ -47,10 +48,6 @@ function useSidebar() {
   }
 
   return context;
-}
-
-function useSidebarCollapsible() {
-  return React.useContext(SidebarCollapsibleContext);
 }
 
 function SidebarProvider({
@@ -157,6 +154,11 @@ function SidebarRoot({
   collapsible?: 'offcanvas' | 'icon' | 'none' | 'sheet';
 }) {
   const { state, setOpen } = useSidebar();
+  const { setMode } = useCollapsibleStore();
+
+  React.useEffect(() => {
+    setMode(collapsible);
+  }, [collapsible, setMode]);
 
   if (collapsible === 'none') {
     return (
@@ -176,28 +178,26 @@ function SidebarRoot({
 
   if (collapsible === 'sheet') {
     return (
-      <SidebarCollapsibleContext.Provider value={{ collapsible }}>
-        <SheetRoot open={state === 'expanded'} onOpenChange={setOpen} {...props}>
-          <SheetContent
-            data-sidebar="sidebar"
-            data-slot="sidebar"
-            className="bg-juiBackground-solidPaper w-(--sidebar-width) p-0 [&>button]:hidden"
-            style={
-              {
-                '--sidebar-width': SIDEBAR_WIDTH,
-              } as React.CSSProperties
-            }
-            side={side}>
-            <SheetHeader className="sr-only">
-              <SheetTitle>sidebar</SheetTitle>
-              <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-            </SheetHeader>
-            <div className="group peer flex h-full w-full flex-col" data-collapsible="sheet">
-              {children}
-            </div>
-          </SheetContent>
-        </SheetRoot>
-      </SidebarCollapsibleContext.Provider>
+      <SheetRoot open={state === 'expanded'} onOpenChange={setOpen} {...props}>
+        <SheetContent
+          data-sidebar="sidebar"
+          data-slot="sidebar"
+          className="bg-juiBackground-solidPaper w-(--sidebar-width) p-0 [&>button]:hidden"
+          style={
+            {
+              '--sidebar-width': SIDEBAR_WIDTH,
+            } as React.CSSProperties
+          }
+          side={side}>
+          <SheetHeader className="sr-only">
+            <SheetTitle>sidebar</SheetTitle>
+            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+          </SheetHeader>
+          <div className="group peer flex h-full w-full flex-col" data-collapsible="sheet">
+            {children}
+          </div>
+        </SheetContent>
+      </SheetRoot>
     );
   }
 
@@ -545,8 +545,9 @@ function SidebarMenuButton({
   tooltipContents?: string;
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot : 'button';
-  const { state, setOpen } = useSidebar();
-  const { collapsible } = useSidebarCollapsible();
+
+  const { state, toggleSidebar } = useSidebar();
+  const { mode: collasibleMode } = useCollapsibleStore();
 
   const button = (
     <Comp
@@ -555,11 +556,13 @@ function SidebarMenuButton({
       data-size={size}
       data-active={isActive}
       className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
-      onClick={(e) => {
-        props.onClick?.(e);
+      onClick={(event) => {
+        props.onClick?.(event);
 
-        if (collapsible === 'sheet') {
-          setOpen(false);
+        if (collasibleMode === 'sheet') {
+          requestAnimationFrame(() => {
+            toggleSidebar();
+          });
         }
       }}
       {...props}
@@ -722,8 +725,9 @@ function SidebarMenuSubButton({
   isActive?: boolean;
 }) {
   const Comp = asChild ? Slot : 'a';
-  const { setOpen } = useSidebar();
-  const { collapsible } = useSidebarCollapsible();
+
+  const { toggleSidebar } = useSidebar();
+  const { mode: collasibleMode } = useCollapsibleStore();
 
   return (
     <Comp
@@ -749,11 +753,13 @@ function SidebarMenuSubButton({
         'group-data-[collapsible=icon]:hidden', // 아이콘 전용 메뉴일 경우 숨김 처리
         className, // 외부에서 전달된 클래스 추가
       )}
-      onClick={(e) => {
-        props.onClick?.(e);
+      onClick={(event) => {
+        props.onClick?.(event);
 
-        if (collapsible === 'sheet') {
-          setOpen(false);
+        if (collasibleMode === 'sheet') {
+          requestAnimationFrame(() => {
+            toggleSidebar();
+          });
         }
       }}
       {...props}

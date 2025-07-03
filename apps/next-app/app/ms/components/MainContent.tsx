@@ -10,13 +10,13 @@ export function MainContent({
   ...props
 }: ComponentProps<'div'> & {
   headerHeight?: number;
-  contentType?: 'tabs' | 'box' | 'flex';
+  contentType?: 'tabs' | 'box' | 'inBox' | 'flex';
 }) {
   return (
     <div
       className={`
         flex-col overflow-auto
-        ${contentType === 'box' && 'p-7'}
+        ${(contentType === 'box' || contentType === 'inBox') && 'p-7'}
         ${contentType === 'tabs' && 'px-7 pb-7'}
         ${contentType === 'flex' && 'p-0'}
         ${className}
@@ -24,7 +24,14 @@ export function MainContent({
       style={{ height: `calc(100svh - ${headerHeight}px)` }}
       {...props}>
       <section className="layout-min-width h-full overflow-auto">
-        {contentType === 'box' ? <div className="bg-juiBackground-paper min-h-full">{children}</div> : children}
+        {contentType === 'box' || contentType === 'inBox' ? (
+          <div
+            className={`bg-juiBackground-paper ${contentType === 'inBox' ? 'p-4 h-full overflow-hidden' : 'min-h-full'}`}>
+            {children}
+          </div>
+        ) : (
+          children
+        )}
       </section>
     </div>
   );
