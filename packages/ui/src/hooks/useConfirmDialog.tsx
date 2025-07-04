@@ -7,6 +7,8 @@ import { ConfirmAlertDialog } from '../components/AlertDialog';
 export function useConfirmDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const rootRef = useRef<Root | null>(null);
+  const isMountedRef = useRef(false);
+
   const [dialogProps, setDialogProps] =
     useState<Omit<ComponentProps<typeof ConfirmAlertDialog>, 'children' | 'open' | 'onOpenChange'>>();
 
@@ -21,6 +23,8 @@ export function useConfirmDialog() {
     rootRef.current = createRoot(container);
 
     return () => {
+      isMountedRef.current = false;
+
       // 렌더링 이후로 unmount 지연
       queueMicrotask(() => {
         rootRef.current?.unmount();
@@ -42,6 +46,7 @@ export function useConfirmDialog() {
   }, []);
 
   useEffect(() => {
+    isMountedRef.current = false;
     if (!rootRef.current || !dialogProps) return;
 
     rootRef.current.render(

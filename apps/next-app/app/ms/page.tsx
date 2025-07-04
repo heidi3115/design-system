@@ -176,7 +176,7 @@ export default function Page() {
   return (
     <form className="relative" onSubmit={handleSubmit(onValid)}>
       <div className="flex items-center justify-center min-h-svh" ref={wrapperRef}>
-        <div className="flex flex-col items-center justify-center gap-4 p-4">
+        <div className="flex flex-col items-center justify-center gap-4 p-4 bg-juiBackground-paper">
           <h1 className="text-4xl font-bold">FLEX LAYOUT</h1>
           <input type="datetime-local" />
           <Button
