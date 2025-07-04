@@ -34,6 +34,7 @@ export type TabItemType<C extends ComponentType<any> = ComponentType<any>> = Onl
 type TabsProps<T extends TabItemType> = {
   tabs: T;
   maxWidth?: number;
+  restScreenHeight?: number;
 } & ComponentProps<typeof TabsRoot> &
   VariantProps<typeof tabsTriggerVariants>;
 
@@ -46,6 +47,7 @@ function Tabs<T extends TabItemType>({
   className,
   shape = 'underline',
   size = 'default',
+  restScreenHeight = 120,
   onValueChange,
 }: TabsProps<T>) {
   const { content, underline, tabsAlign, list, firstForderTab } = tabsTriggerVariants({
@@ -128,7 +130,11 @@ function Tabs<T extends TabItemType>({
           if (!Component && !tabContent) return null;
 
           return (
-            <TabsContent key={value} value={value}>
+            <TabsContent
+              key={value}
+              value={value}
+              style={{ maxHeight: `calc(100svh - ${restScreenHeight}px)` }}
+              className={cn(`overflow-auto`)}>
               {Component ? <Component {...props} /> : (tabContent ?? null)}
             </TabsContent>
           );

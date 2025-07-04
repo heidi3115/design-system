@@ -36,7 +36,7 @@ function SelectTrigger({
 
         // 박스 모델 (패딩, 보더, 라운드, 쉐도우)
         'px-3 py-2 light:border light:border-juiBorder-primary shadow-xs',
-        'data-[state=open]:border data-[state=open]:border-juiBorder-primary light:data-[state=open]:border-juiText-secondary',
+        'data-[state=open]:border data-[state=open]:border-juiText-primary light:data-[state=open]:border-juiText-secondary',
 
         // 색상 및 배경색
         'bg-juiBackground-input',
@@ -227,7 +227,7 @@ function SelectSeparator({ className, ...props }: ComponentProps<typeof SelectPr
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn('bg-juiText-secondary pointer-events-none my-1 h-px', className)}
+      className={cn('bg-juiBorder-primary pointer-events-none my-1 h-px', className)}
       {...props}
     />
   );

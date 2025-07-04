@@ -21,8 +21,11 @@ export function useConfirmDialog() {
     rootRef.current = createRoot(container);
 
     return () => {
-      rootRef.current?.unmount();
-      container.remove();
+      // 렌더링 이후로 unmount 지연
+      queueMicrotask(() => {
+        rootRef.current?.unmount();
+        container.remove();
+      });
     };
   }, []);
 

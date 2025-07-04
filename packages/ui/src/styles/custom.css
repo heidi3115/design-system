@@ -34,11 +34,11 @@
   --juiBackground-tableHead: #3b4154;
   --juiText-primary: #fff;
   --juiText-secondary: rgba(255, 255, 255, 0.4);
-  --juiText-disabled: #505050;
+  --juiText-disabled: #334259;
   --juiText-blue: #7a97ff;
   --juiText-purple: #9747ff;
   --juiText-tableHead: rgba(255, 255, 255, 0.5);
-  --juiBorder-primary: #e0e0e0;
+  --juiBorder-primary: #5a6372;
   --juiBorder-tableBottom: #30374b;
   --juiBorder-tableHead: #4b5062;
   --juiScore-veryLow: #8294ff;
@@ -87,11 +87,11 @@
   --juiBackground-tableHead: #3b4154;
   --juiText-primary: #fff;
   --juiText-secondary: rgba(255, 255, 255, 0.4);
-  --juiText-disabled: #505050;
+  --juiText-disabled: #334259;
   --juiText-blue: #7a97ff;
   --juiText-purple: #9747ff;
   --juiText-tableHead: rgba(255, 255, 255, 0.5);
-  --juiBorder-primary: #e0e0e0;
+  --juiBorder-primary: #5a6372;
   --juiBorder-tableBottom: #30374b;
   --juiBorder-tableHead: #4b5062;
   --juiScore-veryLow: #8294ff;
@@ -170,6 +170,7 @@
   --juiText-secondary: rgba(0, 0, 0, 0.4);
   --juiText-disabled: #c7c7c7;
   --juiText-tableHead: #000;
+  --juiBorder-primary: #d1d5db;
   --juiBorder-tableBottom: #eaeaea;
   --juiBorder-tableHead: #eaeaea;
 }
