@@ -18,7 +18,7 @@ const commandSelectVariants = tv({
       'bg-juiBackground-input',
       'aria-invalid:border-juiError aria-invalid:ring-juiError/20 dark:aria-invalid:ring-juiError/40',
       'placeholder:text-juiText-secondary',
-      'data-[state=open]:border data-[state=open]:border-juiBorder-primary light:data-[state=open]:border-juiText-secondary',
+      'data-[state=open]:border data-[state=open]:border-juiText-primary light:data-[state=open]:border-juiText-secondary',
       'outline-none focus-visible:ring-0',
       'transition-[color,box-shadow]',
     ],
@@ -26,7 +26,7 @@ const commandSelectVariants = tv({
       'flex flex-wrap justify-start gap-1 py-1.5 pl-2 h-auto',
       'bg-juiBackground-input',
       'light:border light:border-juiBorder-primary shadow-xs',
-      'data-[state=open]:border data-[state=open]:border-juiBorder-primary light:data-[state=open]:border-juiText-secondary',
+      'data-[state=open]:border data-[state=open]:border-juiText-primary light:data-[state=open]:border-juiText-secondary',
     ],
     multiTriggerBase: [
       'flex-1 min-w-[60px] px-1 py-0 pr-8 border-none focus:outline-none bg-transparent',

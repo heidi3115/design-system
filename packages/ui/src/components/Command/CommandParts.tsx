@@ -107,7 +107,7 @@ function CommandSeparator({ className, ...props }: React.ComponentProps<typeof C
   return (
     <CommandPrimitive.Separator
       data-slot="command-separator"
-      className={cn('bg-juiText-secondary pointer-events-none my-1 h-px', className)}
+      className={cn('bg-juiBorder-primary pointer-events-none my-1 h-px', className)}
       {...props}
     />
   );
