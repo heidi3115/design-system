@@ -790,9 +790,7 @@ function SidebarCollasibleGroup({
     <CollapsibleRoot className="group/collapsible" {...props}>
       <SidebarGroup className="py-0">
         {groupTitle && <SidebarGroupLabel className="py-0">{groupTitle}</SidebarGroupLabel>}
-        <SidebarGroupLabel
-          asChild
-          className="group/label text-juiText-primary hover:bg-current/10 hover:text-sidebar-accent-foreground text-sm">
+        <SidebarGroupLabel asChild className="group/label text-juiText-primary hover:bg-current/10 text-sm">
           <CollapsibleTrigger>
             {collasibleTitle}
             {customIcon && OpenCustomIcon && CloseCustomIcon ? (
