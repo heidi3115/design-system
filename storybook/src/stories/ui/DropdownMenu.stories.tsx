@@ -213,7 +213,7 @@ export const PlacementOptions: Story = {
           aligns.map((align) => (
             <div key={`${side}-${align}`} className="flex flex-col items-center gap-2">
               {/* 현재 조합을 텍스트로 표시합니다. */}
-              <p className="text-sm font-bold bg-slate-100 px-2 py-1 rounded">{`side: "${side}", align: "${align}"`}</p>
+              <p className="text-sm font-bold  px-2 py-1 rounded">{`side: "${side}", align: "${align}"`}</p>
               {/* DropdownMenu 컴포넌트에 현재 순회의 side와 align 값을 전달합니다. */}
               <DropdownMenu {...args} side={side} align={align} />
             </div>

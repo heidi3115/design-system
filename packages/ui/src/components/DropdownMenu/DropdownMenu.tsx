@@ -13,7 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
-} from './DropdownMenuparts';
+} from './DropdownMenuParts';
 import { Button } from '../Button';
 
 import { cn } from '../../lib/utils';
