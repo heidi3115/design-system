@@ -10,6 +10,7 @@ import {
   CollapsibleContent,
   CollapsibleRoot,
   CollapsibleTrigger,
+  HoverCard,
   Input,
   Separator,
   SheetContent,
@@ -537,12 +538,14 @@ function SidebarMenuButton({
   variant = 'default',
   size = 'default',
   tooltipContents,
+  hoverCardContents,
   className,
   ...props
 }: React.ComponentProps<'button'> & {
   asChild?: boolean;
   isActive?: boolean;
   tooltipContents?: string;
+  hoverCardContents?: React.ReactNode;
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot : 'button';
 
@@ -569,8 +572,16 @@ function SidebarMenuButton({
     />
   );
 
-  if (!tooltipContents) {
+  if (!tooltipContents && !hoverCardContents) {
     return button;
+  }
+
+  if (hoverCardContents && state === 'collapsed') {
+    return (
+      <HoverCard trigger={button} openDelay={0} side="right" align="start" sideOffset={8} contentClass="p-0">
+        {hoverCardContents}
+      </HoverCard>
+    );
   }
 
   return (

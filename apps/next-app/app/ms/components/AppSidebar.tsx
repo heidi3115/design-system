@@ -22,10 +22,12 @@ import {
   SidebarMenuSubButton,
   SidebarSeparator,
   SidebarCollasibleGroup,
+  Progress,
 } from '@common/ui';
 import {
   BellIcon,
   EditIcon,
+  EyeIcon,
   FileIcon,
   HomeIcon,
   ListIcon,
@@ -261,7 +263,13 @@ export function AppSidebar() {
                 </SidebarMenuAction>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
+                <SidebarMenuButton
+                  hoverCardContents={
+                    <div className="w-20 h-12 p-2 flex flex-col gap-2 bg-juiPrimary">
+                      <Progress />
+                      <EyeIcon />
+                    </div>
+                  }>
                   <LockIcon />
                   Action
                 </SidebarMenuButton>
