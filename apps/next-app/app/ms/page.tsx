@@ -30,6 +30,12 @@ import {
   MultiSelect,
   useConfirmDialog,
   ConfirmAlertDialog,
+  NavigationMenuItem,
+  NavigationMenuContent,
+  NavigationMenuTrigger,
+  NavigationMenuLink,
+  navigationMenuTriggerStyle,
+  NavigationMenu,
 } from '@common/ui';
 import {
   ArrowLeftIcon,
@@ -50,6 +56,7 @@ import {
 import { useController, useForm } from 'react-hook-form';
 import { useUpdateEffect } from '@common/utils';
 import { CalculatorIcon, SmileIcon, TvIcon } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Page() {
   const [value, setValue] = useState('');
@@ -164,6 +171,126 @@ export default function Page() {
       <div className="flex items-center justify-center min-h-svh" ref={wrapperRef}>
         <div className="flex flex-col items-center justify-center gap-4 p-4">
           <h1 className="text-4xl font-bold">FLEX LAYOUT</h1>
+
+          <NavigationMenu
+            menus={[
+              {
+                trigger: 'opt1',
+                items: [
+                  { label: 'A', href: '#', disabled: true },
+                  { label: <Button variant="gradient">grt</Button>, href: '#' },
+                  { label: 'B', href: '#' },
+                  { label: 'B', href: '#' },
+                  { label: 'B', href: '#' },
+                ],
+              },
+              {
+                trigger: 'opt1',
+                items: [
+                  { label: 'A', href: '#', disabled: true },
+                  { label: <Button variant="gradient">grt</Button>, href: '#' },
+                  { label: 'B', href: '#' },
+                  { label: 'B', href: '#' },
+                  { label: 'B', href: '#' },
+                ],
+              },
+              {
+                trigger: 'Docs',
+                link: '/ms/tabs',
+              },
+              {
+                trigger: 'opt3',
+                disabled: true,
+                items: [
+                  { label: 'A', href: '#' },
+                  { label: 'B', href: '#' },
+                ],
+              },
+            ]}
+          />
+
+          <NavigationMenu>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Link Default</NavigationMenuTrigger>
+              <NavigationMenuContent className="w-[300px]">
+                <ul className="grid gap-4">
+                  <li>
+                    <NavigationMenuLink asChild disabled>
+                      <Link href="#">Link One</Link>
+                    </NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#" disabled>
+                      Link One-1
+                    </NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#">Link One-2</NavigationMenuLink>
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                <div>
+                  <Link href="/docs">Docs</Link>
+                </div>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger disabled>Item Two</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[250px] gap-4">
+                  <NavigationMenuLink asChild>
+                    <Link href="#">Link 2</Link>
+                  </NavigationMenuLink>
+                  <li>
+                    <NavigationMenuLink href="#">Link 2</NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#">Link 2</NavigationMenuLink>
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Item Two</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[200px] gap-4">
+                  <li>
+                    <NavigationMenuLink asChild>
+                      <Link href="#">Link 2</Link>
+                    </NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#">Link 2</NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#">Link 2</NavigationMenuLink>
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Item Two</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[200px] gap-4">
+                  <li>
+                    <NavigationMenuLink asChild>
+                      <Link href="#">Link 2</Link>
+                    </NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#">Link 2</NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#">Link 2</NavigationMenuLink>
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenu>
+
           <input type="datetime-local" />
           <Button
             onClick={() =>
