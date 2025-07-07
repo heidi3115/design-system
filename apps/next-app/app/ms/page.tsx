@@ -48,13 +48,13 @@ import {
 } from '@common/ui/icons';
 
 import { useController, useForm } from 'react-hook-form';
-import ThemeToggle from '../../components/ThemeToggle';
 import { useUpdateEffect } from '@common/utils';
 import { CalculatorIcon, SmileIcon, TvIcon } from 'lucide-react';
 
 export default function Page() {
   const [value, setValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const inputOTPRef = useRef<HTMLInputElement>(null);
 
   useUpdateEffect(() => {
     console.warn('제어', value);
@@ -160,13 +160,11 @@ export default function Page() {
   const { openDialog } = useConfirmDialog();
 
   return (
-    <form className="p-4" onSubmit={handleSubmit(onValid)}>
-      <div className="sticky top-2 z-10">
-        <ThemeToggle />
-      </div>
-      <div className="flex items-center justify-center min-h-svh bg-juiBackground-paper" ref={wrapperRef}>
-        <div className="flex flex-col items-center justify-center gap-4">
-          <h1 className="text-2xl font-bold underline">Hello World</h1>
+    <form className="relative" onSubmit={handleSubmit(onValid)}>
+      <div className="flex items-center justify-center min-h-svh" ref={wrapperRef}>
+        <div className="flex flex-col items-center justify-center gap-4 p-4">
+          <h1 className="text-4xl font-bold">FLEX LAYOUT</h1>
+          <input type="datetime-local" />
           <Button
             onClick={() =>
               toast.error('Event has been created', {
@@ -374,8 +372,10 @@ export default function Page() {
           <SplitOtpInput
             size="small"
             variant="normal"
-            ref={inputRef}
-            onBlur={() => console.warn('비제어', inputRef.current?.value)}
+            ref={inputOTPRef}
+            onBlur={() => {
+              console.warn('비제어', inputOTPRef.current?.value);
+            }}
           />
           <p></p>
           <span>제어</span>
@@ -476,7 +476,7 @@ export default function Page() {
               options={[
                 { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
                 { label: 'Pacific Standard Time (PST)', value: 'pst1' },
-                // { type: 'separator' },
+                { type: 'separator' },
                 {
                   type: 'group',
                   label: 'North America',
@@ -608,6 +608,7 @@ export default function Page() {
                 { label: 'DDDD', value: 'pst' },
                 { label: 'FFF', value: 'aaa' },
                 { label: 'FFF2 ', value: 'bbb' },
+                { type: 'separator' },
                 { label: 'Pacific Time (ccc)', value: 'ccc' },
               ]}
             />
