@@ -1,11 +1,13 @@
 'use client';
 
 import {
+  type CSSProperties,
   type PointerEvent,
   type Ref,
   useCallback,
   useEffect,
   useImperativeHandle,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -34,14 +36,6 @@ const MIN_INT_VALUE = 0 as const;
 const MAX_INT_VALUE = 100 as const;
 const DEFAULT_STEP = 1 as const;
 
-function getSizeValue(size: string) {
-  if (!size) return 0;
-  const REM_PX = 4; // .25rem
-  const str = size?.match(/size-([\d.]+)/)?.[1] || String(REM_PX);
-
-  return Number(str) * REM_PX;
-}
-
 function Slider({
   variant = 'primary',
   size = 'default',
@@ -62,25 +56,32 @@ function Slider({
   className,
   ...props
 }: SliderProps) {
-  const { base, root, track, range, thumb, mark, customVal } = sliderVariants({ variant, size, orientation, disabled });
+  const { base, root, track, range, thumb } = sliderVariants({ variant, size, orientation, disabled });
   const baseClass = base();
   const rootClass = root();
   const trackClass = track();
   const rangeClass = range();
   const thumbClass = thumb();
-  const marksClass = mark();
-  const thumbSize = getSizeValue(customVal());
-  const isHorizontal = orientation === 'horizontal';
 
+  const isHorizontal = orientation === 'horizontal';
   const isControlled = value !== undefined;
   const DefaultValueArray = Array.isArray(defaultValue) ? defaultValue : [min];
   const ValueArray = Array.isArray(value) ? value : [min];
   const [internalValues, setInternalValues] = useState(DefaultValueArray);
   const currentValues = isControlled ? ValueArray : internalValues;
 
+  const sliderWrapperRefs = useRef<HTMLDivElement | null>(null);
+  const thumbRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const markRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const previousValuesRef = useRef(currentValues);
+  const [isThumbMount, setIsThumbMount] = useState(false);
+  const [thumbSize, setThumbSize] = useState(0);
+  const [labelGap, setLabelGap] = useState({ labelTop: 0, labelLeft: 0 });
   const [activeThumbIndex, setActiveThumbIndex] = useState<number | null>(null);
   const [hoveredThumbIndex, setHoveredThumbIndex] = useState<number | null>(null);
-  const previousValuesRef = useRef(currentValues);
+  const [activeMarkIndex, setActiveMarkIndex] = useState<number[]>(currentValues);
+  const [wrapperStyle, setWrapperStyle] = useState<CSSProperties>();
 
   const decimalPlaces = useMemo(() => getDecimalPlaces(step), [step]);
 
@@ -107,10 +108,8 @@ function Slider({
   const handleValueChange = useCallback(
     (newValues: number[]) => {
       const prevValues = previousValuesRef.current || [];
-
       const prevSet = new Set(prevValues);
       const newSet = new Set(newValues);
-
       const addedValue = [...newSet].find((val) => !prevSet.has(val));
 
       if (addedValue !== undefined) {
@@ -129,6 +128,7 @@ function Slider({
         setInternalValues(newValues);
       }
 
+      setActiveMarkIndex(newValues);
       onValueChange?.(newValues);
     },
     [isControlled, onValueChange],
@@ -143,96 +143,157 @@ function Slider({
     [onValueCommit],
   );
 
+  useImperativeHandle(sliderRef, () => currentValues);
+
   useEffect(() => {
     previousValuesRef.current = currentValues;
   }, [currentValues]);
 
-  useImperativeHandle(sliderRef, () => currentValues);
+  useEffect(() => {
+    if (thumbRefs.current[0] && isThumbMount) {
+      setThumbSize(thumbRefs.current[0].offsetWidth);
+      setLabelGap({ labelTop: thumbRefs.current[0].offsetHeight, labelLeft: thumbRefs.current[0].offsetWidth * 1.5 });
+    }
+  }, [isThumbMount]);
+
+  useLayoutEffect(() => {
+    if (!sliderWrapperRefs.current) return;
+
+    const safeGetRect = (el?: Element | null): DOMRect | undefined => el?.getBoundingClientRect();
+    const rects = [
+      ...thumbRefs.current.map(safeGetRect),
+      ...markRefs.current.map(safeGetRect),
+      ...labelRefs.current.map(safeGetRect),
+    ].filter((r): r is DOMRect => !!r);
+
+    if (rects.length <= 0) return;
+
+    const left = Math.min(...rects.map((r) => r?.left || 0));
+    const top = Math.min(...rects.map((r) => r?.top || 0));
+    const right = Math.max(...rects.map((r) => r?.right || 0));
+    const bottom = Math.max(...rects.map((r) => r?.bottom || 0));
+    const width = right - left;
+    const height = bottom - top;
+
+    setWrapperStyle(
+      isHorizontal
+        ? {
+            width: '100%',
+            height: `${height + labelGap.labelTop * 2}px`,
+          }
+        : { width: `${width + labelGap.labelLeft * 2}px`, height: '100%' },
+    );
+  }, [isThumbMount, isHorizontal, labelGap, currentValues]);
 
   return (
-    <SliderRoot
-      disabled={disabled}
-      inverted={inverted}
-      orientation={orientation}
-      min={min}
-      max={max}
-      step={step}
-      defaultValue={internalValues}
-      value={currentValues}
-      onValueChange={handleValueChange}
-      onValueCommit={handleValueCommit}
-      className={cn(baseClass, rootClass, className)}
-      {...props}>
-      <SliderTrack className={cn(baseClass, trackClass)}>
-        <SliderRange className={cn(baseClass, rangeClass)} />
-      </SliderTrack>
-      {currentValues.map((val, index) => {
-        const isHovering = hoveredThumbIndex === index;
-        const isDragging = activeThumbIndex === index;
+    <div
+      data-slot="slider-wrapper"
+      data-orientation={orientation}
+      ref={sliderWrapperRefs}
+      className={cn(rootClass)}
+      style={wrapperStyle}>
+      <SliderRoot
+        disabled={disabled}
+        inverted={inverted}
+        orientation={orientation}
+        min={min}
+        max={max}
+        step={step}
+        defaultValue={internalValues}
+        value={currentValues}
+        onValueChange={handleValueChange}
+        onValueCommit={handleValueCommit}
+        className={cn(baseClass, rootClass, className)}
+        onMouseLeave={handleTargetBlur}
+        onPointerUp={handleTargetBlur}
+        {...props}>
+        <SliderTrack className={cn(baseClass, trackClass)}>
+          <SliderRange className={cn(baseClass, rangeClass)} />
+        </SliderTrack>
+        {currentValues.map((val, index) => {
+          const isHovering = hoveredThumbIndex === index;
+          const isDragging = activeThumbIndex === index;
 
-        let isTooltipOpen = false;
+          let isTooltipOpen = false;
 
-        if (showValueLabel === 'none') {
+          if (showValueLabel === 'none') {
+            return (
+              <SliderThumb
+                key={index}
+                ref={(el: HTMLSpanElement | null) => {
+                  thumbRefs.current[index] = el;
+
+                  if (!isThumbMount) {
+                    setIsThumbMount(true);
+                  }
+                }}
+                className={cn(baseClass, thumbClass)}
+                onMouseEnter={() => setHoveredThumbIndex(index)}
+                onMouseLeave={() => setHoveredThumbIndex(null)}
+                onPointerUp={handleTargetBlur}
+              />
+            );
+          }
+
+          if (showValueLabel === 'auto') {
+            isTooltipOpen = isDragging || (activeThumbIndex === null && isHovering);
+          } else if (showValueLabel === 'always') {
+            isTooltipOpen = true;
+          }
+
           return (
-            <SliderThumb
+            <Tooltip
               key={index}
-              className={cn(baseClass, thumbClass)}
-              onMouseEnter={() => setHoveredThumbIndex(index)}
-              onMouseLeave={() => setHoveredThumbIndex(null)}
-              onPointerUp={handleTargetBlur}
-            />
+              side={isHorizontal ? 'top' : 'left'}
+              open={!disabled && isTooltipOpen}
+              contents={`${val.toFixed(decimalPlaces)} ${unitLabel ? unitLabel : ''}`}>
+              <SliderThumb
+                data-slot="slider-thumb"
+                ref={(el: HTMLSpanElement | null) => {
+                  thumbRefs.current[index] = el;
+
+                  if (!isThumbMount) {
+                    setIsThumbMount(true);
+                  }
+                }}
+                className={cn(baseClass, thumbClass)}
+                onMouseEnter={() => setHoveredThumbIndex(index)}
+                onMouseLeave={() => setHoveredThumbIndex(null)}
+                onPointerUp={handleTargetBlur}
+              />
+            </Tooltip>
           );
-        }
-
-        if (showValueLabel === 'auto') {
-          isTooltipOpen = isDragging || (activeThumbIndex === null && isHovering);
-        } else if (showValueLabel === 'always') {
-          isTooltipOpen = true;
-        }
-
-        return (
-          <Tooltip
-            key={index}
-            side={isHorizontal ? 'top' : 'right'}
-            open={isTooltipOpen}
-            contents={`${val.toFixed(decimalPlaces)} ${unitLabel ? unitLabel : ''}`}>
-            <SliderThumb
-              data-slot="slider-thumb"
-              className={cn(baseClass, thumbClass)}
-              onMouseEnter={() => setHoveredThumbIndex(index)}
-              onMouseLeave={() => setHoveredThumbIndex(null)}
-              onPointerUp={handleTargetBlur}
-            />
-          </Tooltip>
-        );
-      })}
+        })}
+      </SliderRoot>
       {marks && (
-        <div
-          data-slot={'slider-mark-area'}
-          className={cn('absolute -z-1', isHorizontal ? 'top-1/2 w-full' : 'left-1/2 h-full')}
+        <span
+          data-slot="slider-mark-area"
+          className={cn('absolute block -z-2 size-full')}
           style={
             isHorizontal
               ? {
                   width: `calc(100% - ${thumbSize}px)`,
+                  height: '100%',
+                  top: 0,
                   left: `${thumbSize / 2}px`,
                 }
-              : { height: `calc(100% - ${thumbSize}px)`, top: `${thumbSize / 2}px` }
+              : { width: '100%', height: `calc(100% - ${thumbSize}px)`, top: `${thumbSize / 2}px`, left: 0 }
           }>
           {!!processedMarks?.length &&
-            processedMarks.map(
-              ({ value: markValue, label, labelClass }, idx) =>
+            processedMarks.map(({ value: markValue, label, labelClass }, idx) => {
+              const isActiveMark = activeMarkIndex?.includes(markValue);
+
+              return (
                 idx !== 0 &&
                 idx !== processedMarks.length && (
-                  <div
+                  <span
                     key={markValue}
-                    data-slot={'slider-mark'}
-                    className={cn(
-                      marksClass,
-                      'size-1',
-                      'rounded-full',
-                      'bg-juiText-primary/50',
-                      isHorizontal ? 'top-1/2' : 'left-1/2',
-                    )}
+                    data-value={markValue}
+                    data-slot="slider-mark"
+                    className={cn('absolute block -z-1 size-max')}
+                    ref={(el: HTMLSpanElement | null) => {
+                      markRefs.current[idx] = el;
+                    }}
                     style={
                       isHorizontal
                         ? {
@@ -250,6 +311,7 @@ function Slider({
                                     max,
                                   })
                             }%`,
+                            top: '50%',
                           }
                         : {
                             top: `${
@@ -266,34 +328,49 @@ function Slider({
                                     max,
                                   })
                             }%`,
+                            left: '50%',
                           }
                     }>
+                    <span
+                      data-slot="mark-point"
+                      className={cn(
+                        'relative block size-1',
+                        '-translate-x-1/2 -translate-y-1/2',
+                        'rounded-full bg-juiText-primary/50',
+                      )}
+                    />
                     {label && (
                       <span
+                        data-slot="mark-label"
+                        ref={(el: HTMLSpanElement | null) => {
+                          labelRefs.current[idx] = el;
+                        }}
                         className={cn(
-                          'absolute',
-                          isHorizontal ? 'top-full left-1/2 -translate-x-1/2' : 'left-full top-1/2 -translate-y-1/2',
-                          'w-max text-xs',
+                          'relative block',
+                          isHorizontal ? '-translate-x-1/2 -translate-y-1/2' : '-translate-x-1/2 -translate-y-3/4',
+                          'w-max text-xs whitespace-nowrap',
+                          isActiveMark && 'font-bold',
                           labelClass,
                         )}
                         style={
                           isHorizontal
                             ? {
-                                marginTop: thumbSize,
+                                top: labelGap.labelTop,
                               }
                             : {
-                                marginLeft: thumbSize,
+                                left: labelGap.labelLeft,
                               }
                         }>
                         {label}
                       </span>
                     )}
-                  </div>
-                ),
-            )}
-        </div>
+                  </span>
+                )
+              );
+            })}
+        </span>
       )}
-    </SliderRoot>
+    </div>
   );
 }
 

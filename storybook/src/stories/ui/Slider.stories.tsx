@@ -501,17 +501,17 @@ export const StepsAndMarks: Story = {
   },
   render: (args) => {
     return (
-      <div className={cn(flexCol, 'gap-12 w-full h-200')}>
+      <div className={cn(flexCol, 'gap-12 w-full h-200')} key={JSON.stringify(args)}>
         <div className={cn(flexRow, 'gap-20 size-full')}>
           <div className={cn(flexCol, 'gap-10 size-full')}>
             <h2 className={cn(blueTxt, titTxt)}>Horizontal</h2>
             <div className={cn(flexCol, 'size-full gap-10')}>
               <div className={cn(flexCol, 'size-full')}>
-                <h3 className={cn(subTitTxt, 'mb-15')}>Integer Step (step: 10)</h3>
+                <h3 className={cn(subTitTxt, 'mb-5')}>Integer Step (step: 10)</h3>
                 <Slider {...args} step={10} defaultValue={[20, 60]} />
               </div>
               <div className={cn(flexCol, 'size-full')}>
-                <h3 className={cn(subTitTxt, 'mb-15')}>
+                <h3 className={cn(subTitTxt, 'mb-5')}>
                   Decimal Step (min: {MIN_INT_VALUE}, max: {DEFAULT_STEP}, step: {DECIMAL_STEP})
                 </h3>
                 <Slider
@@ -523,7 +523,7 @@ export const StepsAndMarks: Story = {
                 />
               </div>
               <div className={cn(flexCol, 'size-full')}>
-                <h3 className={cn(subTitTxt, 'mb-15')}>
+                <h3 className={cn(subTitTxt, 'mb-5')}>
                   Min Steps Between Thumbs (step: {INT_DEFAULT_VALUE_ARR[0]}, minStepsBetweenThumbs: 3)
                 </h3>
                 <Slider
@@ -534,13 +534,23 @@ export const StepsAndMarks: Story = {
                 />
               </div>
               <div className={cn(flexCol, 'size-full')}>
-                <h3 className={cn(subTitTxt, 'mb-15')}>
+                <h3 className={cn(subTitTxt, 'mb-5')}>
                   Automatic Marks (marks: true, min: {MIN_INT_VALUE}, max: {MAX_INT_VALUE} ,step: 25)
                 </h3>
-                <Slider {...args} step={25} marks defaultValue={[INT_VALUE_ARR[1]]} />
+                <Slider
+                  {...args}
+                  min={MIN_INT_VALUE}
+                  max={MAX_INT_VALUE}
+                  step={25}
+                  marks={Array.from({ length: MAX_INT_VALUE / 25 }, (_, idx) => ({
+                    value: idx * 25,
+                    label: `${idx * 25} %`,
+                  }))}
+                  defaultValue={[INT_VALUE_ARR[1]]}
+                />
               </div>
               <div className={cn(flexCol, 'size-full')}>
-                <h3 className={cn(subTitTxt, 'mb-15')}>Custom Marks (with labels and custom classes)</h3>
+                <h3 className={cn(subTitTxt, 'mb-5')}>Custom Marks (with labels and custom classes)</h3>
                 <Slider {...args} marks={customMarks} defaultValue={INT_DEFAULT_VALUE_ARR} />
               </div>
             </div>
@@ -586,8 +596,13 @@ export const StepsAndMarks: Story = {
                 <Slider
                   {...args}
                   orientation={'vertical'}
+                  min={MIN_INT_VALUE}
+                  max={MAX_INT_VALUE}
                   step={25}
-                  marks
+                  marks={Array.from({ length: MAX_INT_VALUE / 25 }, (_, idx) => ({
+                    value: idx * 25,
+                    label: `${idx * 25} %`,
+                  }))}
                   defaultValue={[INT_VALUE_ARR[1]]}
                   className={'flex-2/3'}
                 />
@@ -617,7 +632,7 @@ function UncontrolledStory({ defaultValue = DECIMAL_DEFAULT_VALUE_ARR, ...args }
   const [rangeValue, setRangeValue] = useState<number[]>(defaultValue ?? []);
 
   return (
-    <div className={cn(flexCol, 'gap-10 w-full h-100')}>
+    <div className={cn(flexCol, 'gap-10 w-full h-100')} key={JSON.stringify(args)}>
       <div className={cn(args.orientation === 'horizontal' ? flexCol : flexRow, 'gap-8 size-full')}>
         <div className={cn(flexCol, 'size-full gap-4')}>
           <h3 className={cn(titTxt)}>Single Thumb</h3>
@@ -684,7 +699,7 @@ function ControlledStory({ defaultValue = INT_DEFAULT_VALUE_ARR, value = INT_VAL
   const [rangeValue, setRangeValue] = useState<number[]>(value);
 
   return (
-    <div className={cn(flexCol, 'gap-10 w-full h-100')}>
+    <div className={cn(flexCol, 'gap-10 w-full h-100')} key={JSON.stringify(args)}>
       <div className={cn(args.orientation === 'horizontal' ? flexCol : flexRow, 'gap-8 size-full')}>
         <div className={cn(flexCol, 'size-full gap-4')}>
           <h3 className={cn(titTxt)}>Single Thumb</h3>
@@ -763,7 +778,7 @@ function VariantExamplesStory({
   const [rangeValue1, setRangeValue1] = useState<number[]>(value);
 
   return (
-    <div className={cn(flexCol, 'gap-10 w-full h-100')}>
+    <div className={cn(flexCol, 'gap-10 w-full h-100')} key={JSON.stringify(args)}>
       <div className={cn(orientation === 'horizontal' ? flexCol : flexRow, 'gap-8 size-full')}>
         <div className={cn(flexCol, 'size-full gap-4')}>
           <h3 className={cn(titTxt)}>Input 으로 값 조정하기</h3>

@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import Link from 'next/link';
 import ThemeToggle from '../../../components/ThemeToggle';
 import { cn } from '@common/ui/lib/utils';
-import { Button, Separator, Slider, SliderDefault } from '@common/ui';
+import { Button, Separator, Slider } from '@common/ui';
 import { CornerDownLeftIcon } from '@common/ui/icons';
 
 export default function SliderPage() {
@@ -43,41 +43,99 @@ export default function SliderPage() {
         <div className={cn(flexColBoxGap4, commonBoxClass, 'w-9/10 min-h-9/10')}>
           <div className={cn(flexColBoxGap4)}>
             <h2 className={cn(blueTitleClass, 'text-3xl')}>Slider</h2>
-            <div className={cn(flexColBoxGap4)}>
+            <div className={cn(flexColBoxGap4, 'size-full')}>
               <h3 className={cn(blueTitleClass, 'text-xl my-3')}>Slider test</h3>
               <strong>기본</strong>
-              <div className={cn(flexColBoxGap4)}>
+              <div className={cn(flexColBoxGap4, 'size-full')}>
                 <div className={cn(flexColBoxGap4)}>
                   <span className={cn(blueTitleClass, 'text-base')}>Integer - default [6, 11]</span>
-                  <div
-                    className={cn(flexRowBoxGap4, 'w-80 h-80 mb-5')}
-                    // Slider 의 부모에서 가로 길이 지정 필요.
-                  >
-                    <Slider
-                      variant={'primary'}
-                      min={tempStd}
-                      max={50}
-                      step={5}
-                      marks
-                      orientation={'horizontal'}
-                      showValueLabel={'auto'}
-                      defaultValue={[5, 15]}
-                      // disabled
-                    />
+                  <div className={cn(flexRowBoxGap4)}>
+                    <div
+                      className={cn('relative flex flex-col', 'w-100 mb-5')}
+                      // Slider 의 부모에서 가로 길이 지정 필요.
+                    >
+                      <Slider
+                        variant={'primary'}
+                        size={'large'}
+                        min={tempStd}
+                        max={50}
+                        step={5}
+                        marks={Array.from({ length: 50 / 5 }, (_, idx) => ({
+                          value: idx * 5,
+                          label: `${idx * 5} %`,
+                        }))}
+                        orientation={'horizontal'}
+                        showValueLabel={'always'}
+                        defaultValue={[5, 15]}
+                        // disabled
+                      />
+                      <Slider
+                        variant={'primary'}
+                        size={'large'}
+                        min={tempStd}
+                        max={50}
+                        step={5}
+                        marks={Array.from({ length: 50 / 5 }, (_, idx) => ({
+                          value: idx * 5,
+                          label: `${idx * 5} %`,
+                          labelClass: idx % 2 === 0 ? 'text-red-500' : '',
+                        }))}
+                        orientation={'horizontal'}
+                        showValueLabel={'always'}
+                        defaultValue={[5, 15]}
+                        // disabled
+                      />
+                    </div>
+                    <div
+                      className={cn('relative flex flex-row', 'h-100 mb-5')}
+                      // Slider 의 부모에서 가로 길이 지정 필요.
+                    >
+                      <Slider
+                        variant={'primary'}
+                        size={'large'}
+                        min={tempStd}
+                        max={50}
+                        step={5}
+                        marks={Array.from({ length: 50 / 5 }, (_, idx) => ({
+                          value: idx * 5,
+                          label: `${idx * 5} %`,
+                        }))}
+                        orientation={'vertical'}
+                        showValueLabel={'always'}
+                        defaultValue={[5, 15]}
+                        // disabled
+                      />
+                      <Slider
+                        variant={'primary'}
+                        size={'large'}
+                        min={tempStd}
+                        max={50}
+                        step={5}
+                        marks={Array.from({ length: 50 / 5 }, (_, idx) => ({
+                          value: idx * 5,
+                          label: `${idx * 5} %`,
+                          labelClass: idx % 2 === 0 ? 'text-red-500' : '',
+                        }))}
+                        orientation={'vertical'}
+                        showValueLabel={'always'}
+                        defaultValue={[5, 15]}
+                        // disabled
+                      />
+                    </div>
                   </div>
                   <span className={cn(blueTitleClass, 'text-base')}>Integer - default [15, 30]</span>
                   <div
-                    className={cn(flexRowBoxGap4, 'w-80 mb-5')}
+                    className={cn(flexRowBoxGap4, 'w-80 h-100 mb-5')}
                     // Slider 의 부모에서 가로 길이 지정 필요.
                   >
                     <Slider
                       variant={'primary'}
-                      size={'small'}
+                      size={'large'}
                       min={tempStd}
                       max={tempMax3}
                       step={tempMax1}
-                      orientation={'horizontal'}
-                      showValueLabel={'none'}
+                      orientation={'vertical'}
+                      showValueLabel={'auto'}
                       defaultValue={[15, tempDefaultVal1]}
                     />
                   </div>
@@ -252,7 +310,7 @@ export default function SliderPage() {
                 </div>
                 <div className={cn(flexColBoxGap4, 'h-50')}>
                   <strong className={cn('text-base')}>SliderDefault - horizontal</strong>
-                  <SliderDefault
+                  <Slider
                     orientation={'horizontal'}
                     disabled={false}
                     min={1}

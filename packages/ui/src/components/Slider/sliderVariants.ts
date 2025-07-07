@@ -4,14 +4,14 @@ export const sliderVariants = tv({
   base: '',
   slots: {
     root: [
-      'relative flex items-center touch-none select-none',
-      'data-[orientation=horizontal]:w-full data-[orientation=horizontal]:h-auto',
-      'data-[orientation=vertical]:w-auto data-[orientation=vertical]:h-full data-[orientation=vertical]:flex-col',
+      'relative flex items-center',
+      'data-[orientation=horizontal]:w-full data-[orientation=horizontal]:h-max',
+      'data-[orientation=vertical]:w-max data-[orientation=vertical]:h-full',
     ],
     track: [
-      'overflow-hidden relative grow',
+      'relative grow z-1',
       'bg-[color-mix(in_srgb,_var(--slider-color),_transparent_60%)]',
-      'rounded-full inset-shadow-xs pointer-events-none',
+      'rounded-full inset-shadow-xs',
       'data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full',
     ],
     range: [
@@ -21,18 +21,12 @@ export const sliderVariants = tv({
     ],
     thumb: [
       'bg-[color-mix(in_srgb,_var(--slider-color),_transparent_0%)]',
-      'block z-20 shrink-0 rounded-full border-none outline-hidden shadow-sm ',
+      'block relative z-5 shrink-0 rounded-full border-none outline-hidden shadow-lg',
       'transition-[color,box-shadow]',
       'ring-[var(--slider-color)]/50 ring-0',
-      'hover:ring-6 active:ring-12 focus-visible:ring-12',
+      'hover:ring-5 active:ring-10 focus-visible:ring-10',
       'disabled:pointer-events-none disabled:opacity-50',
     ],
-    mark: [
-      'absolute -translate-x-1/2 -translate-y-1/2',
-      'touch-none select-none',
-      'data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full',
-    ],
-    customVal: '', // 동적 Thumb 사이즈 처리 위함.
   },
   variants: {
     variant: {
@@ -48,23 +42,20 @@ export const sliderVariants = tv({
       // [--slider-color:oklch(0.7_0.1_304/42.86%)] -> oklch 뿐만 아니라 rgba 등 hsl도 작동은 하나 띄어쓰기 없어야 하고 필요할 경우 tailwind 에서 인식하도록 _ 처리
     },
     size: {
-      default: { thumb: 'size-4', customVal: 'size-4' },
-      small: { thumb: 'size-2.5', customVal: 'size-2.5' },
-      medium: { thumb: 'size-5', customVal: 'size-5' },
-      large: { thumb: 'size-7', customVal: 'size-7' },
+      default: { thumb: 'size-4' },
+      small: { thumb: 'size-2.5' },
+      medium: { thumb: 'size-5' },
+      large: { thumb: 'size-7' },
       custom: { thumb: '' },
     },
     orientation: {
-      horizontal: { root: '', track: 'w-full', range: 'h-full' },
+      horizontal: { root: '' },
       vertical: {
-        root: 'flex-col w-auto h-full',
-        track: 'h-full',
-        range: 'w-full',
+        root: 'flex-col ',
       },
     },
     disabled: {
       true: 'opacity-50 data-[disabled]:opacity-50 pointer-events-none cursor-not-allowed',
-      false: '',
     },
   },
   compoundVariants: [
