@@ -9,7 +9,7 @@ export const sliderVariants = tv({
       'data-[orientation=vertical]:w-max data-[orientation=vertical]:h-full',
     ],
     track: [
-      'relative grow',
+      'relative grow overflow-hidden',
       'bg-[color-mix(in_srgb,_var(--slider-color),_transparent_60%)]',
       'rounded-full inset-shadow-xs',
       'data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full',
