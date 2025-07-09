@@ -15,7 +15,7 @@ export const sliderVariants = tv({
       'data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full',
     ],
     range: [
-      'absolute rounded-md',
+      'absolute',
       'bg-[color-mix(in_srgb,_var(--slider-color),_transparent_0%)]',
       'data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full',
     ],
