@@ -51,7 +51,7 @@ export default function SliderPage() {
                   <span className={cn(blueTitleClass, 'text-base')}>Integer - default [6, 11]</span>
                   <div className={cn(flexRowBoxGap4)}>
                     <div
-                      className={cn('relative flex flex-col', 'w-100 mb-5')}
+                      className={cn('relative flex flex-col gap-15', 'w-100 mb-5')}
                       // Slider 의 부모에서 가로 길이 지정 필요.
                     >
                       <Slider
@@ -87,7 +87,7 @@ export default function SliderPage() {
                       />
                     </div>
                     <div
-                      className={cn('relative flex flex-row', 'h-100 mb-5')}
+                      className={cn('relative flex flex-row gap-10', 'h-100 mb-5')}
                       // Slider 의 부모에서 가로 길이 지정 필요.
                     >
                       <Slider
@@ -125,7 +125,7 @@ export default function SliderPage() {
                   </div>
                   <span className={cn(blueTitleClass, 'text-base')}>Integer - default [15, 30]</span>
                   <div
-                    className={cn(flexRowBoxGap4, 'w-80 h-100 mb-5')}
+                    className={cn(flexRowBoxGap4, 'w-80 h-100 mb-5 gap-0')}
                     // Slider 의 부모에서 가로 길이 지정 필요.
                   >
                     <Slider
@@ -136,7 +136,17 @@ export default function SliderPage() {
                       step={tempMax1}
                       orientation={'vertical'}
                       showValueLabel={'auto'}
-                      defaultValue={[15, tempDefaultVal1]}
+                      defaultValue={[10, tempDefaultVal1]}
+                    />
+                    <Slider
+                      variant={'primary'}
+                      size={'large'}
+                      min={tempStd}
+                      max={tempMax3}
+                      step={tempMax1}
+                      orientation={'vertical'}
+                      showValueLabel={'auto'}
+                      defaultValue={[tempDefaultVal1, 60]}
                     />
                   </div>
                   <span className={cn(blueTitleClass, 'text-base')}>Integer - default [10, 30]</span>

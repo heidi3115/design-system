@@ -173,7 +173,9 @@ function Slider({
           ? isHorizontal
             ? { marginTop: `${thumbSize / 2 - trackSize / 2 + LABEL_GAP}px` }
             : { marginLeft: `${thumbSize / 2 - trackSize / 2 + LABEL_GAP}px` }
-          : {}),
+          : isHorizontal
+            ? { height: `${thumbSize / 2 + trackSize}px`, marginTop: `${thumbSize / 2}px` }
+            : { width: `${thumbSize / 2 + trackSize}px`, marginLeft: `${thumbSize / 2}px` }),
       }}>
       <div className={cn('absolute', isHorizontal ? 'w-full top-0' : 'h-full left-0')}>
         <SliderRoot

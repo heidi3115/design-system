@@ -281,7 +281,8 @@ export const Variants: Story = {
       {variantOptions.map((variant) => (
         <div key={variant} className={cn(flexCol, args.orientation === 'vertical' && allCenter, 'size-full gap-4')}>
           <h3 className={cn(subTitTxt)}>{variant}</h3>
-          <div className={cn(args.orientation === 'vertical' ? `${flexRow} ${allCenter}` : flexCol, 'size-full gap-4')}>
+          <div
+            className={cn(args.orientation === 'vertical' ? `${flexRow} ${allCenter}` : flexCol, 'size-full gap-10')}>
             <Slider {...args} variant={variant} defaultValue={[INT_DEFAULT_VALUE_ARR[0]]} />
             <Slider {...args} variant={variant} defaultValue={INT_DEFAULT_VALUE_ARR} />
           </div>
@@ -312,7 +313,8 @@ export const Sizes: Story = {
       {sizeOptions.map((size) => (
         <div key={size} className={cn(flexCol, args.orientation === 'vertical' && allCenter, 'size-full gap-4')}>
           <h3 className={cn(subTitTxt)}>{size}</h3>
-          <div className={cn(args.orientation === 'vertical' ? `${flexRow} ${allCenter}` : flexCol, 'size-full gap-4')}>
+          <div
+            className={cn(args.orientation === 'vertical' ? `${flexRow} ${allCenter}` : flexCol, 'size-full gap-10')}>
             <Slider {...args} size={size} defaultValue={[INT_DEFAULT_VALUE_ARR[0]]} />
             <Slider {...args} size={size} defaultValue={INT_DEFAULT_VALUE_ARR} />
           </div>
@@ -505,7 +507,7 @@ export const StepsAndMarks: Story = {
         <div className={cn(flexRow, 'gap-20 size-full')}>
           <div className={cn(flexCol, 'gap-10 size-full')}>
             <h2 className={cn(blueTxt, titTxt)}>Horizontal</h2>
-            <div className={cn(flexCol, 'size-full gap-10')}>
+            <div className={cn(flexCol, 'size-full gap-6')}>
               <div className={cn(flexCol, 'size-full')}>
                 <h3 className={cn(subTitTxt, 'mb-5')}>Integer Step (step: 10)</h3>
                 <Slider {...args} step={10} defaultValue={[20, 60]} />
