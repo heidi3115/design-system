@@ -12,6 +12,6 @@ export {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
-} from './DropdownMenupartsTemp';
+} from './DropdownMenuParts';
 
 export { default as DropdownMenu } from './DropdownMenu';
