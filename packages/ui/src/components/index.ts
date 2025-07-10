@@ -206,6 +206,22 @@ export {
 } from './Sidebar';
 
 export {
+  Slider,
+  type SliderProps,
+  type SliderMark,
+  sliderVariants,
+  SliderDefault,
+  SliderRoot,
+  SliderTrack,
+  SliderRange,
+  SliderThumb,
+  type SliderRootProps,
+  type SliderTrackProps,
+  type SliderRangeProps,
+  type SliderThumbProps,
+} from './Slider';
+
+export {
   DropdownMenu,
   DropdownMenuRoot,
   DropdownMenuPortal,
