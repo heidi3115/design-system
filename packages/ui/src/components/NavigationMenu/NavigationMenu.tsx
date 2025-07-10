@@ -10,7 +10,7 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   navigationMenuTriggerStyle,
-} from './NavigaionMenuParts';
+} from './NavigationMenuParts';
 
 import { cn } from '../../lib/utils';
 
