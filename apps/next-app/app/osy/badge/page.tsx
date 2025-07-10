@@ -1,13 +1,23 @@
 'use client';
 
 import { useState } from 'react';
-import { badgeVariants, Button, ScoringBadge } from '@common/ui';
-import { AlertCircleIcon, AlertTriangleFilledIcon, CalendarIcon, CornerDownLeftIcon } from '@common/ui/icons';
+import {
+  badgeVariants,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbWrapper,
+  ScoringBadge,
+} from '@common/ui';
+import { AlertCircleIcon, AlertTriangleFilledIcon, CalendarIcon } from '@common/ui/icons';
 import Link from 'next/link';
-import ThemeToggle from '../../../components/ThemeToggle';
 import { Badge, CountBadge, StateBadge } from '@common/ui/components/Badge';
 import GradeBadge from '@common/ui/src/components/Badge/GradeBadge';
 import TextBadge from '@common/ui/src/components/Badge/TextBadge';
+import { cn } from '@common/ui/lib/utils';
 
 const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '80%', height: '2px' }} />;
 
@@ -29,12 +39,23 @@ export default function BadgePage() {
   return (
     <section>
       <div>
-        <Button asChild variant={'transparent'} size={'large'}>
-          <Link href="/" title={'to main'}>
-            <CornerDownLeftIcon size={'small'} /> to main
-          </Link>
-        </Button>
-        <ThemeToggle />
+        <BreadcrumbWrapper className={cn('flex flex-row gap-4 items-center')}>
+          <BreadcrumbList className={cn('flex flex-row gap-4 items-center justify-center')}>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/osy/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbEllipsis />
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/osy/badge">Badge</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>CurrentPage</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </BreadcrumbWrapper>
       </div>
       <div className={'flex flex-col gap-4 items-center justify-center w-full'}>
         <h2 className={'text-juiText-blue text-4xl font-bold'}>Badges - 기본과 컴포넌트 별 분리</h2>
