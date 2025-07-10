@@ -237,3 +237,15 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 } from './DropdownMenu';
+
+export {
+  NavigationMenu,
+  NavigationMenuRoot,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuContent,
+  NavigationMenuTrigger,
+  NavigationMenuLink,
+  NavigationMenuIndicator,
+  navigationMenuTriggerStyle,
+} from './NavigationMenu';
