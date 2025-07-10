@@ -42,6 +42,10 @@ const meta: Meta<typeof DropdownMenu> = {
       options: ['small', 'default', 'large'],
       description: '드롭다운 아이템의 높이를 설정합니다.',
     },
+    trigger: {
+      control: false,
+      description: 'DropdownMenu를 열고 닫는 트리거 요소이며, 컨트롤러에서 조작할 수 없습니다.',
+    },
   },
 };
 
