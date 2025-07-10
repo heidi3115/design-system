@@ -147,7 +147,7 @@ export const ItemHeight: Story = {
     <div className="flex flex-col gap-4">
       <div>
         <p className="text-sm font-bold mb-2">아이템 높이 small 28px</p>
-        <DropdownMenu {...args} itemHeight="samll" />
+        <DropdownMenu {...args} itemHeight="small" />
       </div>
 
       <div>

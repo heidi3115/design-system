@@ -22,7 +22,7 @@ import { tv, type VariantProps } from 'tailwind-variants';
 const dropdownMenuItemVariants = tv({
   base: '',
   variants: {
-    itemHeight: { samll: 'h-7', default: 'h-8', large: 'h-9' },
+    itemHeight: { small: 'h-7', default: 'h-8', large: 'h-9' },
   },
   defaultVariants: {
     itemHeight: 'default',
@@ -171,7 +171,7 @@ function renderOption({ option, onItemSelect, keyPrefix = '', itemHeight, classN
         onSelect={() => !item.disabled && onItemSelect?.(item)}
         checked={item.checked}
         disabled={item.disabled}
-        onCheckedChange={(checked) => {
+        onCheckedChange={(checked: boolean) => {
           if (!item.disabled) {
             onItemSelect?.({ ...item, checked });
           }
