@@ -349,16 +349,7 @@ const AppSidebar = () => (
           extendType="plus"
           key={item.title}
           defaultOpen={index === 1}
-          collasibleTitle={
-            index === 1 ? (
-              <div className="flex gap-2">
-                <MenuIcon />
-                {item.title}
-              </div>
-            ) : (
-              item.title
-            )
-          }>
+          collasibleTitle={item.title}>
           {item.items?.length ? (
             <SidebarGroupContent>
               <SidebarMenuSub isFloat={item.float}>
