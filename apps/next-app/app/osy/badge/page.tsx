@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import {
   badgeVariants,
+  Breadcrumb,
   BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -12,7 +13,7 @@ import {
   BreadcrumbWrapper,
   ScoringBadge,
 } from '@common/ui';
-import { AlertCircleIcon, AlertTriangleFilledIcon, CalendarIcon } from '@common/ui/icons';
+import { AlertCircleIcon, AlertTriangleFilledIcon, CalendarIcon, FolderFilledIcon, FolderIcon } from '@common/ui/icons';
 import Link from 'next/link';
 import { Badge, CountBadge, StateBadge } from '@common/ui/components/Badge';
 import GradeBadge from '@common/ui/src/components/Badge/GradeBadge';
@@ -38,6 +39,34 @@ export default function BadgePage() {
 
   return (
     <section>
+      <div>
+        <Breadcrumb
+          maxItems={5}
+          items={[
+            {
+              value: '0',
+              itemType: 'link',
+              label: 'Root',
+              href: '/',
+              className: 'text-red-500',
+              icon: <FolderFilledIcon />,
+              iconPosition: 'right',
+            },
+            {
+              value: '1',
+              itemType: 'link',
+              label: 'Home',
+              href: '/',
+              icon: <FolderIcon />,
+              className: 'text-blue-500',
+            },
+            { itemType: 'page', label: 'Electronics', value: 'electronics', href: '' },
+            { itemType: 'page', label: 'Clothing', value: 'clothing', href: '' },
+            { itemType: 'page', label: 'linkGroup', value: '', href: '' },
+            { itemType: 'page', value: '', label: 'Current Category', href: '' },
+          ]}
+        />
+      </div>
       <div>
         <BreadcrumbWrapper className={cn('flex flex-row gap-4 items-center')}>
           <BreadcrumbList className={cn('flex flex-row gap-4 items-center justify-center')}>
