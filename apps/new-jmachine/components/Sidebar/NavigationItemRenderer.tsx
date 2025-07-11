@@ -27,7 +27,7 @@ export function NavigationItemRenderer({
   const path = usePathname();
 
   return (
-    <div className={cn(depth > 1 && 'bg-juiBackground-input/20')}>
+    <>
       {items.map((item) =>
         item.children?.length ? (
           <SidebarCollasibleGroup
@@ -56,7 +56,8 @@ export function NavigationItemRenderer({
               depth > 0 && 'h-9 pl-5 text-juiText-secondary hover:text-juiText-primary',
               isHover && 'pl-5 pr-2',
             )}>
-            <SidebarGroupContent className={cn('bg-juiGrey-100', depth > 0 && 'bg-transparent')}>
+            <SidebarGroupContent
+              className={cn('bg-juiGrey-50', depth > 0 && (isHover ? 'bg-juiBackground-input/20' : 'bg-juiGrey-100'))}>
               <SidebarMenuSub isFloat className={cn('p-0 m-0')}>
                 <NavigationItemRenderer items={item.children} depth={depth + 1} isHover={isHover} />
               </SidebarMenuSub>
@@ -85,6 +86,6 @@ export function NavigationItemRenderer({
           </SidebarMenuSubItem>
         ),
       )}
-    </div>
+    </>
   );
 }
