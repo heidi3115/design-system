@@ -8,11 +8,14 @@ import tabsTriggerVariants from './tabsTriggerVariants';
 import { useTabIndicator } from './hooks/useTabIndicator';
 import { cn } from '../../lib/utils';
 
+const DEFAULT_REST_HEIGHT = 120 as const;
+
 type TabItemBaseType = {
   value: string;
   label: ReactNode;
   disabled?: boolean;
   hidden?: boolean;
+  isFullHeight?: boolean;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,7 +50,7 @@ function Tabs<T extends TabItemType>({
   className,
   shape = 'underline',
   size = 'default',
-  restScreenHeight = 120,
+  restScreenHeight = DEFAULT_REST_HEIGHT,
   onValueChange,
 }: TabsProps<T>) {
   const { content, underline, tabsAlign, list, firstForderTab } = tabsTriggerVariants({
@@ -126,8 +129,10 @@ function Tabs<T extends TabItemType>({
 
       {tabs
         .filter(({ hidden = false }) => !hidden)
-        .map(({ value, component: Component, props, content: tabContent }) => {
+        .map(({ value, component: Component, props, content: tabContent, isFullHeight }) => {
           if (!Component && !tabContent) return null;
+
+          const contents = Component ? <Component {...props} /> : (tabContent ?? null);
 
           return (
             <TabsContent
@@ -135,7 +140,13 @@ function Tabs<T extends TabItemType>({
               value={value}
               style={{ maxHeight: `calc(100svh - ${restScreenHeight}px)` }}
               className={cn(`overflow-auto`)}>
-              {Component ? <Component {...props} /> : (tabContent ?? null)}
+              {isFullHeight ? (
+                <div className="bg-juiBackground-paper" style={{ minHeight: `calc(100svh - ${120}px)` }}>
+                  {contents}
+                </div>
+              ) : (
+                contents
+              )}
             </TabsContent>
           );
         })}

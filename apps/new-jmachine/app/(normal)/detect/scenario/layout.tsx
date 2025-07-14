@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function ScenarioLayout({ children }: { children: ReactNode }) {
-  return <MainContent contentType="box">{children}</MainContent>;
+  return <MainContent contentType="tabs">{children}</MainContent>;
 }

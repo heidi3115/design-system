@@ -21,7 +21,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
     });
 
     if (res?.ok) {
-      window.location.href = '/detect/scenario';
+      window.location.href = '/main';
     } else {
       toast.error('로그인 실패', {
         richColors: true,
