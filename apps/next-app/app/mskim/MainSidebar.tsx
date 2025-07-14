@@ -17,20 +17,14 @@ import {
   SidebarMenuSubButton,
   SidebarMenuAction,
   SidebarSeparator,
-  // SidebarMenuBadge,
-  // SidebarMenuSkeleton,
-  // SidebarCollasibleGroup,
 } from '@common/ui';
-import { EditIcon, HomeIcon, ListIcon, MenuIcon, PlusIcon } from '@common/ui/icons';
+import { HomeIcon, ListIcon, MenuIcon, PlusIcon } from '@common/ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
-// import { usePathname } from 'next/navigation';
 import { MouseIcon, TableIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 export function MainSidebar() {
-  // const path = usePathname();
-
   const items = [
     {
       title: 'Home',
@@ -52,79 +46,102 @@ export function MainSidebar() {
   const subData = {
     navMain: [
       {
-        title: 'Getting Started',
-        url: '#',
-        float: false,
-        items: [
-          {
-            title: 'Installation',
-            url: '#',
-          },
-          {
-            title: 'Project Structure',
-            url: '#',
-          },
-        ],
-      },
-      {
-        title: 'Float Sub Menu',
+        title: '시작하기',
         url: '#',
         float: true,
         items: [
           {
-            title: 'Routing',
+            title: '웹 사이트에 React 추가하기',
             url: '#',
           },
           {
-            title: 'Data Fetching',
-            url: '#',
-            isActive: true,
-          },
-          {
-            title: 'Rendering',
-            url: '#',
-          },
-          {
-            title: 'Caching',
-            url: '#',
-          },
-          {
-            title: 'Styling',
-            url: '#',
-            icon: <EditIcon />,
-          },
-        ],
-      },
-      {
-        title: 'API Reference',
-        url: '#',
-        float: false,
-        items: [
-          {
-            title: 'Components',
-            url: '#',
-          },
-          {
-            title: 'File Conventions',
-            url: '#',
-          },
-          {
-            title: 'Edge Runtime',
+            title: '새로운 React 앱 만들기',
             url: '#',
           },
         ],
       },
       {
-        title: 'Architecture',
+        title: '주요 개념',
+        url: '#',
+        float: true,
+        items: [
+          {
+            title: 'Hello world',
+            url: '#',
+          },
+          {
+            title: 'JSX 소개',
+            url: '#',
+            isActive: false,
+          },
+          {
+            title: '엘리먼트 렌더링',
+            url: '#',
+          },
+          {
+            title: 'Component와 Props',
+            url: '#',
+          },
+          {
+            title: 'State와 생명주기',
+            url: '#',
+          },
+        ],
+      },
+      {
+        title: '고급 안내서',
+        url: '#',
+        float: true,
+        items: [
+          {
+            title: '접근성',
+            url: '#',
+          },
+          {
+            title: '코드 분할',
+            url: '#',
+          },
+          {
+            title: 'Context',
+            url: '#',
+          },
+        ],
+      },
+      {
+        title: 'HOOK',
         url: '#',
         float: false,
         items: [
           {
-            title: 'Accessibility',
+            title: 'Hook 소개',
             url: '#',
           },
           {
-            title: 'Fast Refresh',
+            title: 'Hook 개요',
+            url: '#',
+          },
+          {
+            title: 'State Hook 사용하기',
+            url: '#',
+          },
+          {
+            title: 'Effect Hook 사용하기',
+            url: '#',
+          },
+          {
+            title: 'Hook 규칙',
+            url: '#',
+          },
+          {
+            title: '자신만의 Hook 만들기',
+            url: '#',
+          },
+          {
+            title: 'Hook API 참고서',
+            url: '#',
+          },
+          {
+            title: 'Hook 자주 묻는 질문',
             url: '#',
           },
         ],
@@ -145,7 +162,7 @@ export function MainSidebar() {
           </SidebarMenu>
         </SidebarHeader>
         <SidebarGroup>
-          <SidebarGroupLabel>사이드바</SidebarGroupLabel>
+          <SidebarGroupLabel>브로콜리</SidebarGroupLabel>
           <SidebarGroupAction
             title="Add Project"
             onClick={() =>
@@ -175,7 +192,7 @@ export function MainSidebar() {
         </SidebarGroup>
         <SidebarSeparator />
         <SidebarGroup>
-          <SidebarGroupLabel>사이드바2</SidebarGroupLabel>
+          <SidebarGroupLabel>React 문서</SidebarGroupLabel>
           <SidebarMenu>
             {subData.navMain.map((item) => (
               <SidebarMenuItem key={item.title}>
@@ -194,7 +211,6 @@ export function MainSidebar() {
                           size={item.float ? 'sm' : undefined}
                           isActive={'isActive' in sub && sub.isActive}>
                           <Link data-slot="button" href={sub.url}>
-                            {'icon' in sub && sub.icon}
                             <span>{sub.title}</span>
                           </Link>
                         </SidebarMenuSubButton>
