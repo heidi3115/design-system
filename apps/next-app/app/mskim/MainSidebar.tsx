@@ -5,24 +5,23 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  // SidebarHeader,
   SidebarGroupLabel,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  // SidebarMenuAction,
   SidebarGroupAction,
   SidebarHeader,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+  SidebarMenuAction,
+  SidebarSeparator,
   // SidebarMenuBadge,
   // SidebarMenuSkeleton,
-  // SidebarMenuSub,
-  // SidebarMenuSubItem,
-  // SidebarMenuSubButton,
-  // SidebarSeparator,
   // SidebarCollasibleGroup,
 } from '@common/ui';
-import { HomeIcon, PlusIcon } from '@common/ui/icons';
+import { EditIcon, HomeIcon, ListIcon, MenuIcon, PlusIcon } from '@common/ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 // import { usePathname } from 'next/navigation';
@@ -50,88 +49,88 @@ export function MainSidebar() {
     },
   ];
 
-  // const subData = {
-  //   navMain: [
-  //     {
-  //       title: 'Getting Started',
-  //       url: '#',
-  //       float: false,
-  //       items: [
-  //         {
-  //           title: 'Installation',
-  //           url: '#',
-  //         },
-  //         {
-  //           title: 'Project Structure',
-  //           url: '#',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       title: 'Float Sub Menu',
-  //       url: '#',
-  //       float: true,
-  //       items: [
-  //         {
-  //           title: 'Routing',
-  //           url: '#',
-  //         },
-  //         {
-  //           title: 'Data Fetching',
-  //           url: '#',
-  //           isActive: true,
-  //         },
-  //         {
-  //           title: 'Rendering',
-  //           url: '#',
-  //         },
-  //         {
-  //           title: 'Caching',
-  //           url: '#',
-  //         },
-  //         {
-  //           title: 'Styling',
-  //           url: '#',
-  //           icon: <EditIcon />,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       title: 'API Reference',
-  //       url: '#',
-  //       float: false,
-  //       items: [
-  //         {
-  //           title: 'Components',
-  //           url: '#',
-  //         },
-  //         {
-  //           title: 'File Conventions',
-  //           url: '#',
-  //         },
-  //         {
-  //           title: 'Edge Runtime',
-  //           url: '#',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       title: 'Architecture',
-  //       url: '#',
-  //       float: false,
-  //       items: [
-  //         {
-  //           title: 'Accessibility',
-  //           url: '#',
-  //         },
-  //         {
-  //           title: 'Fast Refresh',
-  //           url: '#',
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // };
+  const subData = {
+    navMain: [
+      {
+        title: 'Getting Started',
+        url: '#',
+        float: false,
+        items: [
+          {
+            title: 'Installation',
+            url: '#',
+          },
+          {
+            title: 'Project Structure',
+            url: '#',
+          },
+        ],
+      },
+      {
+        title: 'Float Sub Menu',
+        url: '#',
+        float: true,
+        items: [
+          {
+            title: 'Routing',
+            url: '#',
+          },
+          {
+            title: 'Data Fetching',
+            url: '#',
+            isActive: true,
+          },
+          {
+            title: 'Rendering',
+            url: '#',
+          },
+          {
+            title: 'Caching',
+            url: '#',
+          },
+          {
+            title: 'Styling',
+            url: '#',
+            icon: <EditIcon />,
+          },
+        ],
+      },
+      {
+        title: 'API Reference',
+        url: '#',
+        float: false,
+        items: [
+          {
+            title: 'Components',
+            url: '#',
+          },
+          {
+            title: 'File Conventions',
+            url: '#',
+          },
+          {
+            title: 'Edge Runtime',
+            url: '#',
+          },
+        ],
+      },
+      {
+        title: 'Architecture',
+        url: '#',
+        float: false,
+        items: [
+          {
+            title: 'Accessibility',
+            url: '#',
+          },
+          {
+            title: 'Fast Refresh',
+            url: '#',
+          },
+        ],
+      },
+    ],
+  };
 
   return (
     <SidebarRoot>
@@ -166,13 +165,46 @@ export function MainSidebar() {
                       <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>
+                  <SidebarMenuAction>
+                    <ListIcon /> <span className="sr-only">Add Project</span>
+                  </SidebarMenuAction>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarSeparator />
         <SidebarGroup>
           <SidebarGroupLabel>사이드바2</SidebarGroupLabel>
+          <SidebarMenu>
+            {subData.navMain.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild>
+                  <Link data-slot="button" href={item.url}>
+                    {!item.float && <MenuIcon />}
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+                {item.items?.length ? (
+                  <SidebarMenuSub isFloat={item.float}>
+                    {item.items.map((sub) => (
+                      <SidebarMenuSubItem key={sub.title}>
+                        <SidebarMenuSubButton
+                          asChild
+                          size={item.float ? 'sm' : undefined}
+                          isActive={'isActive' in sub && sub.isActive}>
+                          <Link data-slot="button" href={sub.url}>
+                            {'icon' in sub && sub.icon}
+                            <span>{sub.title}</span>
+                          </Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))}
+                  </SidebarMenuSub>
+                ) : null}
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>

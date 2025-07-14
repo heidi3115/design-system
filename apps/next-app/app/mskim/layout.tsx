@@ -1,3 +1,5 @@
+'use client';
+
 import { ReactNode } from 'react';
 import { SidebarInset, SidebarProvider, SidebarTrigger, Toaster } from '@common/ui';
 // import ThemeToggle from '../../components/ThemeToggle';
