@@ -5,11 +5,11 @@ export type MenuItemType = {
   href: string;
   icon: string;
   title: string;
-  menuNm: string;
+  menuNm?: string;
   code: string;
-  menuCd: string;
+  menuCd?: string;
   type: string;
-  children: MenuItemType[];
+  children?: MenuItemType[];
 };
 
 type GetMenusRequest = {

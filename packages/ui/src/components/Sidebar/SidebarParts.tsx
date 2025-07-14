@@ -590,7 +590,8 @@ function SidebarMenuButton({
           <div
             className={cn(
               'group/card',
-              'flex items-center justify-center aspect-square',
+              'transition-all duration-300',
+              'flex items-center justify-center',
               'data-[state=open]:bg-juiPrimary',
               'data-[state=open]:light:bg-juiGrey-a200',
             )}>
@@ -805,8 +806,8 @@ function SidebarMenuSubButton({
 }
 
 function SidebarCollasibleGroup({
-  collasibleTitle,
-  collasibleIcon,
+  collapsibleTitle,
+  collapsibleIcon,
   groupTitle,
   customIcon,
   triggerClassName,
@@ -815,21 +816,23 @@ function SidebarCollasibleGroup({
   hoverCardContents,
   hoverCardProps,
   extendType = 'chev',
+  collapsibleVisible = false,
   depth = 0,
   ...props
 }: React.ComponentProps<typeof CollapsibleRoot> & {
-  collasibleTitle: string;
-  collasibleIcon?: React.ComponentType<IconProps>;
+  collapsibleTitle: string;
+  collapsibleIcon?: React.ComponentType<IconProps>;
   groupTitle?: string;
   triggerClassName?: string;
   extendType?: 'chev' | 'plus';
   depth?: number;
+  collapsibleVisible?: boolean;
   customIcon?: {
     open: React.ComponentType<IconProps>;
     close: React.ComponentType<IconProps>;
   };
 } & Pick<React.ComponentProps<typeof SidebarMenuButton>, 'tooltipContents' | 'hoverCardContents' | 'hoverCardProps'>) {
-  const CollasibleIcon = collasibleIcon;
+  const CollasibleIcon = collapsibleIcon;
   const OpenCustomIcon = customIcon?.open;
   const CloseCustomIcon = customIcon?.close;
 
@@ -841,12 +844,13 @@ function SidebarCollasibleGroup({
           <CollapsibleTrigger asChild>
             <SidebarMenuButton
               variant="collasible"
-              className={triggerClassName}
+              className={cn(triggerClassName, 'm-auto', !collapsibleVisible && 'group-data-[state=collapsed]:hidden')}
               tooltipContents={tooltipContents}
               hoverCardContents={hoverCardContents}
               hoverCardProps={hoverCardProps}>
               {CollasibleIcon && <CollasibleIcon />}
-              {collasibleTitle}
+              {!CollasibleIcon && `${collapsibleTitle[0]}...`}
+              <span>{collapsibleTitle}</span>
 
               {customIcon && OpenCustomIcon && CloseCustomIcon ? (
                 <>

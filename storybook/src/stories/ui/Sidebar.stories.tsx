@@ -312,7 +312,7 @@ const AppSidebar = () => (
 
       <SidebarSeparator />
       {/* Collapsible 그룹 */}
-      <SidebarCollasibleGroup collasibleTitle="Collapsible" groupTitle="Collasible 사이드바">
+      <SidebarCollasibleGroup collapsibleTitle="Collapsible" groupTitle="Collasible 사이드바">
         <SidebarGroupContent>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -349,7 +349,7 @@ const AppSidebar = () => (
           extendType="plus"
           key={item.title}
           defaultOpen={index === 1}
-          collasibleTitle={item.title}>
+          collapsibleTitle={item.title}>
           {item.items?.length ? (
             <SidebarGroupContent>
               <SidebarMenuSub isFloat={item.float}>
