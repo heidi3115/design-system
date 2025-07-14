@@ -28,7 +28,7 @@ export function AppSidebar({ menuData }: { menuData?: MenuItemType[] }) {
               size="lg"
               className="group-data-[state=expanded]:hidden flex m-auto group-hover/header:hidden"
               asChild>
-              <Link href="/">
+              <Link href="/main">
                 <Image src="/images/jason-logo.png" alt="main" className="shrink-0" width={32} height={32} />
               </Link>
             </SidebarMenuButton>
@@ -51,7 +51,7 @@ export function AppSidebar({ menuData }: { menuData?: MenuItemType[] }) {
             </SidebarMenuButton>
 
             <SidebarMenuButton size="lg" className="group-data-[state=collapsed]:hidden gap-1" asChild>
-              <Link href="/">
+              <Link href="/main">
                 <Image src="/images/jmachine-logo-login.png" alt="main" width={120} height={32} />
                 <Image
                   src="/images/overall-status.png"

@@ -4,6 +4,7 @@ import { Button, Input, Label } from '@common/ui';
 import { cn } from '@common/ui/lib/utils';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'form'>) {
   const [userId, setUserId] = useState('');
@@ -22,7 +23,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
     if (res?.ok) {
       window.location.href = '/detect/scenario';
     } else {
-      alert('로그인 실패');
+      toast.error('로그인 실패', {
+        richColors: true,
+      });
     }
   };
 

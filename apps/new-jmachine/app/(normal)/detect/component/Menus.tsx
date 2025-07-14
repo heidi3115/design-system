@@ -33,7 +33,7 @@ export default function Menus() {
       <Button onClick={() => setCrash(true)}>Error</Button>
       <Button
         onClick={() =>
-          toast('Event has been created', {
+          toast.error('Event has been created', {
             description: 'test',
             action: {
               label: 'test',

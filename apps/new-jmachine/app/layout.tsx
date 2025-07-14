@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="dark">
         <Providers>
           {children}
           <Toaster position="top-center" closeButton />
