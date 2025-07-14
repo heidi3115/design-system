@@ -257,11 +257,12 @@ function SidebarRoot({
   );
 }
 
-function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<typeof Button>) {
+function SidebarTrigger({ className, onClick, asChild, children, ...props }: React.ComponentProps<typeof Button>) {
+  const Comp = asChild ? Slot : Button;
   const { toggleSidebar, open } = useSidebar();
 
   return (
-    <Button
+    <Comp
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       className={cn(className)}
@@ -270,10 +271,16 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
         toggleSidebar();
       }}
       {...props}>
-      {open ? <ArrowLeftIcon size="small" /> : <ArrowRightIcon size="small" />}
+      {asChild ? (
+        children
+      ) : (
+        <>
+          {open ? <ArrowLeftIcon size="small" /> : <ArrowRightIcon size="small" />}
 
-      <span className="sr-only">Toggle Sidebar</span>
-    </Button>
+          <span className="sr-only">Toggle Sidebar</span>
+        </>
+      )}
+    </Comp>
   );
 }
 

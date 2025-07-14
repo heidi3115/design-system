@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { Providers } from '../components/providers';
 import '../styles/globals.css';
+import { Toaster } from '@common/ui';
 
 export const metadata: Metadata = {
   title: {
@@ -21,7 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Toaster position="top-center" closeButton />
+        </Providers>
       </body>
     </html>
   );

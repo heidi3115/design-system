@@ -1,7 +1,8 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 import { Button, Slider } from '@common/ui';
 import { getMenusClientFetch } from '../../../../services/common/getMenusFetch';
 
@@ -30,6 +31,19 @@ export default function Menus() {
       <span>{session?.user?.userNm}</span>
       <Button onClick={async () => await fetchData()}>call</Button>
       <Button onClick={() => setCrash(true)}>Error</Button>
+      <Button
+        onClick={() =>
+          toast('Event has been created', {
+            description: 'test',
+            action: {
+              label: 'test',
+              onClick: () => {},
+            },
+            richColors: true,
+          })
+        }>
+        Show Toast
+      </Button>
       <Slider />
 
       <h2 className="text-lg font-bold">클라이언트 패치 결과</h2>

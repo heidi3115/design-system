@@ -1,32 +1,35 @@
 import { ReactNode } from 'react';
-import { SidebarInset, SidebarProvider, SidebarTrigger, Toaster } from '@common/ui';
+import { SidebarInset, SidebarProvider } from '@common/ui';
 import { AppSidebar } from '../../components/Sidebar/AppSidebar';
 import { MainContent } from '../../components/MainContent';
-import ThemeToggle from '../../components/ThemeToggle';
-// import { signOut } from 'next-auth/react';
-import { getMenusServerFetch } from '../../services/common/getMenusFetch';
+import { getMenusServerFetch, MenuItemType } from '../../services/common/getMenusFetch';
+import { Header } from '../../components/Header';
+import { headers } from 'next/headers';
 
 export default async function SidebarLayout({ children }: { children: ReactNode }) {
   const menuData = await getMenusServerFetch({ menuDvn: 'JM' });
+
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') || '/';
+
+  const findCurrentMenuByPath = (menus: MenuItemType[], path: string): MenuItemType | null =>
+    menus.reduce<MenuItemType | null>((acc, menu) => {
+      if (acc) return acc;
+      if (menu.href === path) return menu;
+      if (menu.children) return findCurrentMenuByPath(menu.children, path);
+
+      return null;
+    }, null);
+
+  const currentPath = findCurrentMenuByPath(menuData, pathname)?.title;
 
   return (
     <SidebarProvider defaultOpen={false}>
       <AppSidebar menuData={menuData} />
       <SidebarInset>
-        <header className="sticky top-0 z-1 flex h-12 shrink-0 items-center gap-2 bg-juiBackground-input light:border-b light:border-b-juiBorder-primary p-2">
-          <SidebarTrigger variant="primary" className="aspect-square p-0 rounded-full" />
-          <h1 className="font-bold">header</h1>
-
-          <div className="flex gap-1 ml-auto">
-            {/* <Button variant="error" onClick={() => signOut({ callbackUrl: '/login' })}>
-              로그아웃
-            </Button> */}
-            <ThemeToggle />
-          </div>
-        </header>
+        <Header currentPath={currentPath} />
         <MainContent contentType="flex">{children}</MainContent>
       </SidebarInset>
-      <Toaster position="top-center" closeButton duration={Infinity} />
     </SidebarProvider>
   );
 }

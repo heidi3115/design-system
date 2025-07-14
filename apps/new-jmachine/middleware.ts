@@ -10,9 +10,20 @@ const PUBLIC_PATHS = ['/login', '/api/auth'];
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
+  // 커스텀 헤더 세팅
+  const requestHeaders = new Headers(req.headers);
+
+  requestHeaders.set('x-pathname', pathname);
+
+  const nextRequest = {
+    request: {
+      headers: requestHeaders,
+    },
+  };
+
   // 로그인 페이지 등은 제외
   if (PUBLIC_PATHS.some((path) => pathname.startsWith(path))) {
-    return NextResponse.next();
+    return NextResponse.next(nextRequest);
   }
 
   const token = await getToken({ req, secret: SECRET });
@@ -27,7 +38,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  return NextResponse.next();
+  return NextResponse.next(nextRequest);
 }
 
 export const config = {

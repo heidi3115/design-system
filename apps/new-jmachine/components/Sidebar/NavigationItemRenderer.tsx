@@ -87,7 +87,7 @@ function renderGroupItem({
             </SidebarGroupContent>
           </div>
         ),
-        hoverCardProps: { sideOffset: 0, closeDelay: 0, triggerClass: 'h-12' },
+        hoverCardProps: { sideOffset: 0, openDelay: 100, closeDelay: 0, triggerClass: 'h-12' },
       })}>
       <SidebarGroupContent
         className={cn('bg-juiGrey-50', depth > 0 && (isHover ? 'bg-juiBackground-input/20' : 'bg-juiGrey-100'))}>
