@@ -30,6 +30,26 @@ import {
   MultiSelect,
   useConfirmDialog,
   ConfirmAlertDialog,
+  DropdownMenuRoot,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuPortal,
+  DropdownMenuSubContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenu,
+  NavigationMenuItem,
+  NavigationMenuContent,
+  NavigationMenuTrigger,
+  NavigationMenuLink,
+  navigationMenuTriggerStyle,
+  NavigationMenu,
 } from '@common/ui';
 import {
   ArrowLeftIcon,
@@ -50,6 +70,7 @@ import {
 import { useController, useForm } from 'react-hook-form';
 import { useUpdateEffect } from '@common/utils';
 import { CalculatorIcon, SmileIcon, TvIcon } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Page() {
   const [value, setValue] = useState('');
@@ -162,8 +183,128 @@ export default function Page() {
   return (
     <form className="relative" onSubmit={handleSubmit(onValid)}>
       <div className="flex items-center justify-center min-h-svh" ref={wrapperRef}>
-        <div className="flex flex-col items-center justify-center gap-4 p-4">
+        <div className="flex flex-col items-center justify-center gap-4 p-4 bg-juiBackground-paper">
           <h1 className="text-4xl font-bold">FLEX LAYOUT</h1>
+
+          <NavigationMenu
+            menus={[
+              {
+                trigger: 'opt1',
+                items: [
+                  { label: 'A', href: '#', disabled: true },
+                  { label: <Button variant="gradient">grt</Button>, href: '#' },
+                  { label: 'B', href: '#' },
+                  { label: 'B', href: '#' },
+                  { label: 'B', href: '#' },
+                ],
+              },
+              {
+                trigger: 'opt1',
+                items: [
+                  { label: 'A', href: '#', disabled: true },
+                  { label: <Button variant="gradient">grt</Button>, href: '#' },
+                  { label: 'B', href: '#' },
+                  { label: 'B', href: '#' },
+                  { label: 'B', href: '#' },
+                ],
+              },
+              {
+                trigger: 'Docs',
+                link: '/ms/tabs',
+              },
+              {
+                trigger: 'opt3',
+                disabled: true,
+                items: [
+                  { label: 'A', href: '#' },
+                  { label: 'B', href: '#' },
+                ],
+              },
+            ]}
+          />
+
+          <NavigationMenu>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Link Default</NavigationMenuTrigger>
+              <NavigationMenuContent className="w-[300px]">
+                <ul className="grid gap-4">
+                  <li>
+                    <NavigationMenuLink asChild disabled>
+                      <Link href="#">Link One</Link>
+                    </NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#" disabled>
+                      Link One-1
+                    </NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#">Link One-2</NavigationMenuLink>
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                <div>
+                  <Link href="/docs">Docs</Link>
+                </div>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger disabled>Item Two</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[250px] gap-4">
+                  <NavigationMenuLink asChild>
+                    <Link href="#">Link 2</Link>
+                  </NavigationMenuLink>
+                  <li>
+                    <NavigationMenuLink href="#">Link 2</NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#">Link 2</NavigationMenuLink>
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Item Two</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[200px] gap-4">
+                  <li>
+                    <NavigationMenuLink asChild>
+                      <Link href="#">Link 2</Link>
+                    </NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#">Link 2</NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#">Link 2</NavigationMenuLink>
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Item Two</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[200px] gap-4">
+                  <li>
+                    <NavigationMenuLink asChild>
+                      <Link href="#">Link 2</Link>
+                    </NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#">Link 2</NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink href="#">Link 2</NavigationMenuLink>
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenu>
+
           <input type="datetime-local" />
           <Button
             onClick={() =>
@@ -650,6 +791,113 @@ export default function Page() {
               }}>
               Multi select 비제어
             </Button>
+
+            <DropdownMenuRoot>
+              <DropdownMenuTrigger asChild>
+                <Button variant="gradient">open</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>Account</DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem variant="destructive">
+                    Propfile
+                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Billing
+                    <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Settings
+                    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem disabled>Team</DropdownMenuItem>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Invite user</DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem>Email</DropdownMenuItem>
+                        <DropdownMenuItem>Message</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>More...</DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                  </DropdownMenuSub>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                {/* ✅ Checkbox 항목 */}
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>Preferences</DropdownMenuLabel>
+                  <DropdownMenuCheckboxItem checked>Show activity</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem>Marketing emails</DropdownMenuCheckboxItem>
+                </DropdownMenuGroup>
+
+                <DropdownMenuSeparator />
+              </DropdownMenuContent>
+            </DropdownMenuRoot>
+
+            <DropdownMenu
+              itemHeight="large"
+              onOpenChange={(open) => console.warn(open)}
+              align="end"
+              side="right"
+              options={[
+                { label: 'My Profile', value: 'profile' },
+                { type: 'check', label: 'check', value: 'ckeck', checked: true },
+                { type: 'separator' },
+                {
+                  type: 'group',
+                  label: 'Team',
+                  items: [
+                    { label: 'Team Settings', value: 'team-settings' },
+                    {
+                      type: 'sub',
+                      label: 'Invite Members',
+                      items: [
+                        { label: 'Email', value: 'invite-email' },
+                        { label: 'Slack', value: 'invite-slack', disabled: true },
+                        {
+                          type: 'sub',
+                          label: 'Invite Members',
+                          items: [
+                            { label: 'Email', value: 'invite-email' },
+                            { type: 'check', label: 'Email Check', value: 'invite-email-check' },
+                            { label: 'Slack', value: 'invite-slack', disabled: true },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'sub',
+                  label: 'Appearance',
+                  items: [
+                    { label: 'Light', value: 'light' },
+                    { label: 'Dark', value: 'dark' },
+                  ],
+                },
+              ]}
+              trigger={<Button variant="gradient">Menu</Button>}
+              onItemSelect={(item) => {
+                console.warn('Selected:', item);
+              }}
+            />
+
+            <DropdownMenu trigger={<Button>열기</Button>} size={500}>
+              <DropdownMenuItem>Custom</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>More</DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem>Sub A</DropdownMenuItem>
+                  <DropdownMenuItem>Sub B</DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+            </DropdownMenu>
 
             <Input
               {...register('email', { required: '이메일은 필수입니다' })}
