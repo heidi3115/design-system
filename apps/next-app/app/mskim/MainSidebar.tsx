@@ -17,14 +17,17 @@ import {
   SidebarMenuSubButton,
   SidebarMenuAction,
   SidebarSeparator,
+  SidebarCollasibleGroup,
 } from '@common/ui';
 import { HomeIcon, ListIcon, MenuIcon, PlusIcon } from '@common/ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { MouseIcon, TableIcon } from 'lucide-react';
 import { toast } from 'sonner';
+import { usePathname } from 'next/navigation';
 
 export function MainSidebar() {
+  const path = usePathname();
   const items = [
     {
       title: 'Home',
@@ -40,6 +43,7 @@ export function MainSidebar() {
       title: 'Table',
       url: '/mskim/table',
       icon: <TableIcon />,
+      disabled: true,
     },
   ];
 
@@ -190,6 +194,26 @@ export function MainSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarSeparator />
+        <SidebarCollasibleGroup collasibleTitle="side bar" groupTitle="사이드바">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild tooltipContents={item.title} isActive={item.url === path}>
+                    <Link data-slot="button" href={item.url} aria-disabled={item.disabled}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                  <SidebarMenuAction showOnHover>
+                    <ListIcon /> <span className="sr-only">Add Project</span>
+                  </SidebarMenuAction>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarCollasibleGroup>
         <SidebarSeparator />
         <SidebarGroup>
           <SidebarGroupLabel>React 문서</SidebarGroupLabel>
