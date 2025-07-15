@@ -34,6 +34,7 @@ export default async function ScenarioPage() {
       value: 'complex',
       label: '복합 시나리오',
       content: <ScenarioList scenarioType="Complex" scenariosData={complexScenariosData} />,
+      isFullHeight: true,
     },
   ];
 

@@ -258,7 +258,7 @@ function SidebarRoot({
 }
 
 function SidebarTrigger({ className, onClick, asChild, children, ...props }: React.ComponentProps<typeof Button>) {
-  const Comp = asChild ? Slot : Button;
+  const Comp = asChild ? 'button' : Button;
   const { toggleSidebar, open } = useSidebar();
 
   return (

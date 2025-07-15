@@ -45,7 +45,7 @@ export function AppSidebar({ menuData }: { menuData?: MenuItemType[] }) {
               )}
               tooltipContents="펼치기"
               asChild>
-              <SidebarTrigger className="m-auto" asChild>
+              <SidebarTrigger className="m-auto cursor-e-resize!" asChild>
                 <SideBarIcon size="medium" />
               </SidebarTrigger>
             </SidebarMenuButton>
@@ -55,7 +55,7 @@ export function AppSidebar({ menuData }: { menuData?: MenuItemType[] }) {
                 <Image src="/images/jmachine-logo-login.png" alt="main" width={120} height={32} />
                 <Image
                   src="/images/overall-status.png"
-                  alt="main"
+                  alt="overall"
                   className=" mt-auto mx-0 mb-1.5"
                   width={75}
                   height={10}
@@ -69,7 +69,7 @@ export function AppSidebar({ menuData }: { menuData?: MenuItemType[] }) {
                   'hidden',
                   'group-data-[state=collapsed]:hidden',
                   'group-hover/header:flex',
-                  'cursor-w-resize',
+                  'cursor-w-resize!',
                   'mx-2',
                   'my-auto',
                   'hover:text-juiText-blue',
