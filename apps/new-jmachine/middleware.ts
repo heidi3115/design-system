@@ -42,5 +42,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next|favicon.ico|images|fonts|api/public).*)'], // 보호할 경로 설정
+  matcher: ['/((?!_next|favicon.ico|images|videos|fonts|api/public).*)'], // 보호할 경로 설정
 };

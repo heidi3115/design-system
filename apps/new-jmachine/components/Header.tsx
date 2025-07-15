@@ -7,32 +7,33 @@ import { UserRoundXIcon } from 'lucide-react';
 import { cn } from '@common/ui/lib/utils';
 import { usePathname } from 'next/navigation';
 import { MenuItemType } from '../services/common/getMenusFetch';
-import { useMemo } from 'react';
+import { use, useMemo } from 'react';
 
 type HeaderProps = {
-  menuData?: MenuItemType[];
+  menuData?: Promise<MenuItemType[]>;
 };
 
-export function Header({ menuData }: HeaderProps) {
+export function Header({ menuData: promiseMenuData = Promise.resolve<MenuItemType[]>([]) }: HeaderProps) {
   const { data, status } = useSession();
   const { userNm, loginDt } = data?.user ?? { userNm: '-', loginDt: '-' };
 
+  const menuData = use(promiseMenuData);
+
   const pathname = usePathname();
 
-  const currentPath = useMemo(() => {
-    const findCurrentMenuByPath = (menus: MenuItemType[], path: string): MenuItemType | null =>
-      menus.reduce<MenuItemType | null>((acc, menu) => {
-        if (acc) return acc;
-        if (menu.href === path) return menu;
-        if (menu.children) return findCurrentMenuByPath(menu.children, path);
+  const currentPath =
+    useMemo(() => {
+      const findCurrentMenuByPath = (menus: MenuItemType[], path: string): MenuItemType | null =>
+        menus.reduce<MenuItemType | null>((acc, menu) => {
+          if (acc) return acc;
+          if (menu.href === path) return menu;
+          if (menu.children) return findCurrentMenuByPath(menu.children, path);
 
-        return null;
-      }, null);
+          return null;
+        }, null);
 
-    if (!menuData) return null;
-
-    return findCurrentMenuByPath(menuData, pathname)?.title ?? null;
-  }, [pathname, menuData]);
+      return findCurrentMenuByPath(menuData, pathname)?.title ?? null;
+    }, [pathname, menuData]) ?? '';
 
   return (
     <header

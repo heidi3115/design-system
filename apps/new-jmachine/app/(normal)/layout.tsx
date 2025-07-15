@@ -4,8 +4,8 @@ import { AppSidebar } from '../../components/Sidebar/AppSidebar';
 import { getMenusServerFetch } from '../../services/common/getMenusFetch';
 import { Header } from '../../components/Header';
 
-export default async function SidebarLayout({ children }: { children: ReactNode }) {
-  const menuData = await getMenusServerFetch({ menuDvn: 'JM' });
+export default function SidebarLayout({ children }: { children: ReactNode }) {
+  const menuData = getMenusServerFetch({ menuDvn: 'JM' });
 
   return (
     <SidebarProvider defaultOpen={false}>

@@ -17,8 +17,13 @@ import { MenuItemType } from '../../services/common/getMenusFetch';
 import { NavigationItemRenderer } from './NavigationItemRenderer';
 import { SideBarIcon } from '@common/ui/icons';
 import { cn } from '@common/ui/lib/utils';
+import { use } from 'react';
 
-export function AppSidebar({ menuData }: { menuData?: MenuItemType[] }) {
+export function AppSidebar({ menuData: promiseMenuData }: { menuData?: Promise<MenuItemType[]> }) {
+  if (!promiseMenuData) return null;
+
+  const menuData = use(promiseMenuData);
+
   return (
     <SidebarRoot collapsible="icon">
       <SidebarHeader className="group/header items-center h-12 p-0 bg-juiBackground-input light:bg-juiGrey-900/30">

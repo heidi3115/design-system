@@ -1,6 +1,5 @@
 import { getServerSession } from 'next-auth';
 import { LoginForm } from './componet/LoginForm';
-import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { authOptions } from '../../../lib/auth/authOptions';
 
@@ -21,13 +20,10 @@ export default async function LoginPage() {
         </div>
       </div>
       <div className="bg-juiPrimary/10 relative hidden lg:block">
-        <Image
-          src="/images/jason-logo.png"
-          width={100}
-          height={100}
-          alt="Image"
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 inset-0 object-cover dark:brightness-[0.2] dark:grayscale"
-        />
+        <video autoPlay muted loop className="video absolute top-0 left-0 w-screen h-screen object-fill">
+          <source src="/videos/bg-login.mp4" type="video/mp4" />
+          브라우저가 video 태그를 지원하지 않습니다.
+        </video>
       </div>
     </div>
   );
