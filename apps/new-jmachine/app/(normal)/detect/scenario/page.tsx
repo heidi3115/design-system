@@ -1,4 +1,4 @@
-import { Tabs } from '@common/ui';
+import { TabItemType, Tabs } from '@common/ui';
 import { ScenarioList } from '../component/ScenarioList';
 import { getScenariosServerFetch } from '../../../../services/scenario/getScenarios';
 
@@ -28,15 +28,21 @@ export default async function ScenarioPage() {
       value: 'scenario',
       label: '시나리오 관리',
       content: <ScenarioList scenarioType="Normal" scenariosData={scenariosData} />,
-      isFullHeight: true,
+      contentBoxType: 'inBox',
+      boxClassName: 'p-8',
     },
     {
       value: 'complex',
       label: '복합 시나리오',
-      content: <ScenarioList scenarioType="Complex" scenariosData={complexScenariosData} />,
-      isFullHeight: true,
+      content: <ScenarioList className="p-4" scenarioType="Complex" scenariosData={complexScenariosData} />,
+      contentBoxType: 'box',
     },
-  ];
+    {
+      value: 'complex2',
+      label: '복합 시나리오2',
+      content: <div>aa</div>,
+    },
+  ] satisfies TabItemType;
 
   return <Tabs tabs={tabs} className="px-7" />;
 }

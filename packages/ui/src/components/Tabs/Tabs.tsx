@@ -15,7 +15,8 @@ type TabItemBaseType = {
   label: ReactNode;
   disabled?: boolean;
   hidden?: boolean;
-  isFullHeight?: boolean;
+  contentBoxType?: 'flex' | 'box' | 'inBox';
+  boxClassName?: string;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -129,7 +130,7 @@ function Tabs<T extends TabItemType>({
 
       {tabs
         .filter(({ hidden = false }) => !hidden)
-        .map(({ value, component: Component, props, content: tabContent, isFullHeight }) => {
+        .map(({ value, component: Component, props, content: tabContent, contentBoxType = 'flex', boxClassName }) => {
           if (!Component && !tabContent) return null;
 
           const contents = Component ? <Component {...props} /> : (tabContent ?? null);
@@ -140,12 +141,20 @@ function Tabs<T extends TabItemType>({
               value={value}
               style={{ maxHeight: `calc(100svh - ${restScreenHeight}px)` }}
               className={cn(`overflow-auto`)}>
-              {isFullHeight ? (
-                <div className="bg-juiBackground-paper" style={{ minHeight: `calc(100svh - ${120}px)` }}>
+              {contentBoxType === 'flex' && contents}
+              {contentBoxType === 'box' && (
+                <div
+                  className={cn('bg-juiBackground-paper', boxClassName)}
+                  style={{ minHeight: `calc(100svh - ${120}px)` }}>
                   {contents}
                 </div>
-              ) : (
-                contents
+              )}
+              {contentBoxType === 'inBox' && (
+                <div
+                  className={cn('overflow-hidden bg-juiBackground-paper p-4', boxClassName)}
+                  style={{ height: `calc(100svh - ${120}px)` }}>
+                  <div className="h-full overflow-auto">{contents}</div>
+                </div>
               )}
             </TabsContent>
           );
