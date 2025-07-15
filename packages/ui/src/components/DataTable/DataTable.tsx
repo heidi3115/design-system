@@ -111,7 +111,6 @@ export function DataTableDemo() {
 
   return (
     <div>
-      <div>테스트 div</div>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
