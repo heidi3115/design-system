@@ -839,6 +839,8 @@ function SidebarCollasibleGroup({
     close: React.ComponentType<IconProps>;
   };
 } & Pick<React.ComponentProps<typeof SidebarMenuButton>, 'tooltipContents' | 'hoverCardContents' | 'hoverCardProps'>) {
+  const { state } = useSidebar();
+
   const CollasibleIcon = collapsibleIcon;
   const OpenCustomIcon = customIcon?.open;
   const CloseCustomIcon = customIcon?.close;
@@ -856,7 +858,7 @@ function SidebarCollasibleGroup({
               hoverCardContents={hoverCardContents}
               hoverCardProps={hoverCardProps}>
               {CollasibleIcon && <CollasibleIcon />}
-              {!CollasibleIcon && `${collapsibleTitle[0]}...`}
+              {!CollasibleIcon && state === 'collapsed' && `${collapsibleTitle[0]}...`}
               <span>{collapsibleTitle}</span>
 
               {customIcon && OpenCustomIcon && CloseCustomIcon ? (

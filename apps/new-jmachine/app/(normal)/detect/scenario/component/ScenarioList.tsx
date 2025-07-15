@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react';
-import { ScenariosType } from '../../../../services/scenario/getScenarios';
+import { ScenariosType } from '../../../../../services/scenario/getScenarios';
 
 type ScenarioListProps = {
   scenarioType: string;

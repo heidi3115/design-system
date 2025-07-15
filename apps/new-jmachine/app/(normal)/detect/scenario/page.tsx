@@ -1,5 +1,5 @@
 import { TabItemType, Tabs } from '@common/ui';
-import { ScenarioList } from '../component/ScenarioList';
+import { ScenarioList } from './component/ScenarioList';
 import { getScenariosServerFetch } from '../../../../services/scenario/getScenarios';
 
 export default async function ScenarioPage() {
@@ -40,7 +40,7 @@ export default async function ScenarioPage() {
     {
       value: 'complex2',
       label: '복합 시나리오2',
-      content: <div>aa</div>,
+      content: <ScenarioList className="p-4" scenarioType="Complex" scenariosData={complexScenariosData} />,
     },
   ] satisfies TabItemType;
 
