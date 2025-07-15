@@ -43,7 +43,7 @@ export function AppSidebar({ menuData }: { menuData?: MenuItemType[] }) {
                 'group-data-[state=collapsed]:[&>svg]:size-5',
                 'group-data-[state=collapsed]:p-1.5!',
               )}
-              tooltipContents="펼치기"
+              tooltipContents="사이드바 열기"
               asChild>
               <SidebarTrigger className="m-auto cursor-e-resize!" asChild>
                 <SideBarIcon size="medium" />
@@ -63,7 +63,7 @@ export function AppSidebar({ menuData }: { menuData?: MenuItemType[] }) {
               </Link>
             </SidebarMenuButton>
 
-            <Tooltip contents="닫기" side="right" sideOffset={2}>
+            <Tooltip contents="사이드바 닫기" side="right" sideOffset={2}>
               <SidebarTrigger
                 className={cn(
                   'hidden',

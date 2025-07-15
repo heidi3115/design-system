@@ -135,7 +135,13 @@ function renderRootItem({
           <span>{item.title}</span>
         </Link>
       </SidebarMenuButton>
-      <SidebarMenuAction className="top-3.5!" showOnHover>
+      <SidebarMenuAction
+        className="top-3.5!"
+        showOnHover
+        onClick={(e) => {
+          e.stopPropagation();
+          window.open(item.href, '_blank');
+        }}>
         <ExternalLinkIcon />
         <span className="sr-only">External</span>
       </SidebarMenuAction>
@@ -172,7 +178,12 @@ function renderSubItem({
           <span>{item.title}</span>
         </Link>
       </SidebarMenuSubButton>
-      <SidebarMenuAction showOnHover>
+      <SidebarMenuAction
+        showOnHover
+        onClick={(e) => {
+          e.stopPropagation();
+          window.open(item.href, '_blank');
+        }}>
         <ExternalLinkIcon />
         <span className="sr-only">External</span>
       </SidebarMenuAction>
