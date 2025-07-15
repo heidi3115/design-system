@@ -6,17 +6,19 @@ export const breadcrumbVariants = tv({
     wrapper: 'text-juiText-primary',
     list: 'flex flex-row flex-wrap items-center break-words',
     listItem: 'flex flex-row items-center size-max',
-    link: 'inline-flex flex-row items-center size-max transition-colors',
-    page: 'inline-flex flex-row items-center size-max',
+    link: ['inline-flex flex-row items-center size-max transition-colors', 'has-[svg]:gap-1'],
+    page: 'inline-flex flex-row items-center size-max has-[svg]:gap-1',
     separator: 'inline-flex items-center justify-center',
-    ellipsis: 'inline-flex items-center justify-center',
+    ellipsis: ['inline-flex items-center justify-center'],
   },
   variants: {
     variant: {
-      default: '',
-      ghost: '',
-      card: '',
-      custom: '',
+      primary: '[--breadcrumb-color:var(--juiPrimary)]',
+      secondary: '[--breadcrumb-color:var(--juiSecondary)]',
+      error: '[--breadcrumb-color:var(--juiError)]',
+      default: '[--breadcrumb-color:var(--juiGrey-a700)]',
+      // 커스텀을 위한 슬롯으로 variant 가 custom 일 때는 className에 필수로
+      custom: '', // [--breadcrumb-color:색상지정] 해야 함.
     },
     // text size, icon size, etc.
     size: {
@@ -62,11 +64,11 @@ export const breadcrumbVariants = tv({
       },
     },
     disabled: {
-      true: 'pointer-events-none cursor-not-allowed opacity-60',
+      true: { base: 'pointer-events-none cursor-not-allowed opacity-60' },
       false: '',
     },
     isTrigger: {
-      true: 'hover:text-lime-500',
+      true: { link: 'hover:text-[var(--breadcrumb-color)]', ellipsis: 'hover:text-[var(--breadcrumb-color)]' },
       false: '',
     },
   },

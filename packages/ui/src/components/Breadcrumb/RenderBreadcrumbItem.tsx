@@ -1,226 +1,205 @@
 'use client';
 
-import { Fragment, type ReactElement } from 'react';
-import { BreadcrumbItem } from './BreadcrumbParts';
-import { breadcrumbVariants } from './breadcrumbVariants';
-import { type BreadcrumbItemType, type EllipsisBreadcrumbItemType } from './Breadcrumb';
-//
-// import {
-//   type BreadcrumbItemType,
-//   type DropdownBreadcrumbItemType,
-//   type DropDownItemType,
-//   EllipsisBreadcrumbItemType,
-// } from './Breadcrumb';
-// import { Fragment, type ReactElement, type ReactNode } from 'react';
-// import { cn } from '@common/ui/lib/utils';
-// import { BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbSeparator, breadcrumbVariants, DropdownMenu } from '@common/ui';
-// import { type OptionItem } from '@common/ui/components/DropdownMenu/DropdownMenu';
-//
+import type { MouseEvent, ReactElement } from 'react';
+import { cn } from '@common/ui/lib/utils';
+import {
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  breadcrumbVariants,
+  DropdownMenu,
+} from '@common/ui';
+import type { BreadcrumbCondensedType, DropdownItemType } from './Breadcrumb';
+import type { OptionItem } from '@common/ui/components/DropdownMenu/DropdownMenu';
+
 type RenderProps = {
-  item: BreadcrumbItemType | EllipsisBreadcrumbItemType;
+  item: BreadcrumbCondensedType;
+  isLast: boolean;
+  disabled: boolean;
   variant: keyof typeof breadcrumbVariants.variants.variant;
   size: keyof typeof breadcrumbVariants.variants.size;
-  isLast: boolean;
-  disabledClass: string;
   separatorIcon?: ReactElement;
 };
-//
-// type Renderer = (props: RenderProps) => ReactNode;
-// //
-// // const renderers: Record<'string', Renderer> = {
-// //   page: renderPage,
-// //   link: renderLink,
-// //   ellipsis: renderEllipsis,
-// // };
-// //
-// // function renderPage({ item, variant, size, isLast, disabledClass, separatorIcon }: RenderProps) {
-// //   if (!item.isPage) return;
-// //   const { base, listItem, page, separator } = breadcrumbVariants({
-// //     variant,
-// //     size,
-// //   });
-// //
-// //   return (
-// //     <Fragment key={item.value}>
-// //       <BreadcrumbItem className={cn(listItem())}>
-// //         <BreadcrumbPage
-// //           aria-current={item.isCurrent ? 'page' : undefined}
-// //           className={cn(page(), item.className, disabledClass)}>
-// //           {item?.iconPosition === 'left' ? (
-// //             <>
-// //               {item?.icon}
-// //               {item?.label}
-// //             </>
-// //           ) : (
-// //             <>
-// //               {item?.label}
-// //               {item?.icon}
-// //             </>
-// //           )}
-// //         </BreadcrumbPage>
-// //       </BreadcrumbItem>
-// //       {!isLast && <BreadcrumbSeparator icon={separatorIcon} className={cn(separator())} />}
-// //     </Fragment>
-// //   );
-// // }
-// //
-// // function renderLink({ item, variant, size, isLast, disabledClass, separatorIcon }: RenderProps) {
-// //   if (item.isPage) return;
-// //   const { base, listItem, link, separator } = breadcrumbVariants({
-// //     variant,
-// //     size,
-// //   });
-// //
-// //   return (
-// //     <Fragment key={item.value}>
-// //       <BreadcrumbItem className={cn(listItem())}>
-// //         <BreadcrumbLink
-// //           href={item.href}
-// //           target={item?.target || '_self'}
-// //           // onClick={}
-// //           className={cn(link(), item.className, disabledClass)}>
-// //           {item?.icon}
-// //           {item?.label}
-// //         </BreadcrumbLink>
-// //       </BreadcrumbItem>
-// //       {!isLast && <BreadcrumbSeparator icon={separatorIcon} className={cn(separator())} />}
-// //     </Fragment>
-// //   );
-// // }
-// //
-// // function renderEllipsis({ item, variant, size, isLast, disabledClass, separatorIcon }: RenderProps) {
-// //   if (item.itemType !== 'ellipsis') return;
-// //
-// //   const { listItem, ellipsis, separator } = breadcrumbVariants({
-// //     variant,
-// //     size,
-// //     isTrigger: item.isTrigger,
-// //   });
-// //
-// //   console.log('item.isTrigger :', item.isTrigger);
-// //
-// //   // target={item?.target || '_self'}
-// //   return item.isTrigger ? (
-// //     <Fragment key={item.value}>
-// //       <BreadcrumbItem className={cn(listItem())}>
-// //         <DropdownMenu
-// //           options={
-// //             item?.hiddenItems
-// //               ? item.hiddenItems.map(
-// //                   (h: DropdownBreadcrumbItemType): DropDownItemType => ({
-// //                     type: 'item',
-// //                     value: h.value,
-// //                     label: h.label,
-// //                     disabled: h.disabled,
-// //                   }),
-// //                 )
-// //               : []
-// //           }
-// //           trigger={
-// //             <BreadcrumbEllipsis icon={item?.icon || null} className={cn(ellipsis(), item.className, disabledClass)} />
-// //           }
-// //           onItemSelect={(option: OptionItem) => {
-// //             const target = (item?.hiddenItems || []).find((h) => h.value === option.value);
-// //
-// //             if (target && item?.onClick) {
-// //               item.onClick([target], undefined);
-// //             }
-// //           }}
-// //         />
-// //       </BreadcrumbItem>
-// //       {!isLast && <BreadcrumbSeparator icon={separatorIcon} className={cn(separator())} />}
-// //     </Fragment>
-// //   ) : (
-// //     <Fragment key={item.value}>
-// //       <BreadcrumbItem className={cn(listItem())}>
-// //         <BreadcrumbEllipsis icon={item.icon} className={cn(ellipsis(), item.className, disabledClass)} />{' '}
-// //       </BreadcrumbItem>
-// //       {!isLast && <BreadcrumbSeparator icon={separatorIcon} className={cn(separator())} />}
-// //     </Fragment>
-// //   );
-// // }
-//
 
-function RenderBreadcrumbItem({ item, isLast, variant, size, separatorIcon, disabledClass }: RenderProps) {
-  if (!item) return null;
+const handleItemSelect = (hiddenItems: BreadcrumbCondensedType[], option: OptionItem) => {
+  const matchedItem = (hiddenItems || []).find((h) => h.value === option.value && h.label === option.label);
 
-  console.warn('isLast :', isLast);
-  console.warn('variant :', variant);
-  console.warn('size :', size);
-  console.warn('separatorIcon :', separatorIcon);
-  console.warn('disabledClass :', disabledClass);
+  if (matchedItem?.href) {
+    if (matchedItem?.target) {
+      window.open(matchedItem.href, matchedItem.target);
+    }
 
-  //   // const renderer = renderers[item.itemType as keyof typeof renderers];
-  //   // return renderer ? renderer({ item, isLast, variant, size, separatorIcon, disabledClass }) : null;
-  //
-  //   const { listItem, ellipsis, link, page, separator } = breadcrumbVariants({
-  //     variant,
-  //     size,
-  //   });
-  //   const TriggeerClass = '';
-  //
-  //   if (item?.isTrigger) {
-  //     const { base } = breadcrumbVariants({ isTrigger: item.isTrigger });
-  //
-  //     triggerClass = base();
-  //   }
-  //
-  //   if (item.itemType === 'ellipsis') {
-  //     return item?.isTrigger ? (
-  //       <Fragment key={item.value}>
-  //         <BreadcrumbItem className={cn(listItem())}>
-  //           <DropdownMenu
-  //             options={
-  //               item?.hiddenItems
-  //                 ? item.hiddenItems.map(
-  //                     (h: DropdownBreadcrumbItemType): DropDownItemType => ({
-  //                       type: 'item',
-  //                       value: h.value,
-  //                       label: h.label,
-  //                       disabled: h.disabled,
-  //                     }),
-  //                   )
-  //                 : []
-  //             }
-  //             trigger={
-  //               <BreadcrumbEllipsis
-  //                 icon={item?.icon || null}
-  //                 className={cn(ellipsis(), triggerClass, item.className, disabledClass)}
-  //               />
-  //             }
-  //             onItemSelect={(option: OptionItem) => {
-  //               const target = (item?.hiddenItems || []).find((h) => h.value === option.value);
-  //
-  //               if (target && item?.onClick) {
-  //                 item.onClick([target], undefined); // TODO : BreadcrumbLink 처럼 이동할 수 있도록 추가 필요
-  //               }
-  //             }}
-  //           />
-  //         </BreadcrumbItem>
-  //         {!isLast && <BreadcrumbSeparator icon={separatorIcon} className={cn(separator())} />}
-  //       </Fragment>
-  //     ) : (
-  //       <Fragment key={item.value}>
-  //         <BreadcrumbItem className={cn(listItem())}>
-  //           <BreadcrumbEllipsis icon={item.icon} className={cn(ellipsis(), item.className, disabledClass)} />
-  //         </BreadcrumbItem>
-  //         {!isLast && <BreadcrumbSeparator icon={separatorIcon} className={cn(separator())} />}
-  //       </Fragment>
-  //     );
-  //   } else if (item.itemType === 'link' || !isPage) {
-  //     const { base } = breadcrumbVariants({ isTrigger: item.isTrigger });
-  //
-  //     return;
-  //   }
-  //
-  return (
-    <Fragment key={item.value}>
-      <BreadcrumbItem
-      // className={cn(listItem())}
-      ></BreadcrumbItem>
-    </Fragment>
+    window.location.href = matchedItem.href;
+  }
+};
+
+function renderIconPosition(item: BreadcrumbCondensedType) {
+  return item?.iconPosition === 'right' ? (
+    <>
+      <span>{item?.label}</span>
+      {item?.icon}
+    </>
+  ) : (
+    <>
+      {item?.icon}
+      <span>{item?.label}</span>
+    </>
   );
 }
 
-//
+function renderPage({ item, variant, size, isLast, disabled, separatorIcon }: RenderProps) {
+  if (!item.isPage) return;
+  const { base, listItem, page, separator } = breadcrumbVariants({
+    variant,
+    size,
+    disabled: disabled || item?.disabled,
+    isTrigger: false,
+  });
+  const disabledClass = base();
+
+  return (
+    <>
+      <BreadcrumbItem className={cn(listItem(), item.className, disabledClass)}>
+        <BreadcrumbPage aria-current={isLast ? 'page' : undefined} className={cn(page(), disabledClass)}>
+          {renderIconPosition(item)}
+        </BreadcrumbPage>
+      </BreadcrumbItem>
+      {!isLast && <BreadcrumbSeparator icon={separatorIcon} className={cn(separator())} />}
+    </>
+  );
+}
+
+function renderLink({ item, variant, size, isLast, disabled, separatorIcon }: RenderProps) {
+  if (item.isPage || item.itemType !== 'link') return;
+  const disabledVal = disabled || item?.disabled;
+  const { base, listItem, link, separator } = breadcrumbVariants({
+    variant,
+    size,
+    disabled: disabledVal,
+    isTrigger: item.isTrigger,
+  });
+  const disabledClass = base();
+  const linkProps = {
+    'aria-current': isLast ? ('page' as const) : undefined,
+    'aria-disabled': disabledVal,
+    tabIndex: disabledVal ? -1 : 0,
+    href: item.href,
+    target: item?.target || '_self',
+    className: cn(link(), disabledClass),
+  };
+
+  return (
+    <>
+      <BreadcrumbItem className={cn(listItem(), item.className, disabledClass)}>
+        {item.isTrigger ? (
+          <DropdownMenu
+            {...item?.dropdownProps}
+            options={
+              item?.dropdownOptions
+                ? item.dropdownOptions.map(
+                    (h: DropdownItemType): OptionItem => ({
+                      type: 'item',
+                      value: h.value,
+                      label: h.label,
+                      disabled: h.disabled,
+                    }),
+                  )
+                : []
+            }
+            trigger={
+              <BreadcrumbLink
+                {...linkProps}
+                onClick={(e: MouseEvent) => {
+                  e.stopPropagation();
+                }}>
+                {renderIconPosition(item)}
+              </BreadcrumbLink>
+            }
+            onItemSelect={(option: OptionItem) => handleItemSelect(item.hiddenItems ?? [], option)}
+            className={disabledClass}
+          />
+        ) : (
+          <BreadcrumbLink {...linkProps}>{renderIconPosition(item)}</BreadcrumbLink>
+        )}
+      </BreadcrumbItem>
+      {!isLast && <BreadcrumbSeparator icon={separatorIcon} className={cn(separator())} />}
+    </>
+  );
+}
+
+function renderEllipsis({ item, variant, size, isLast, disabled, separatorIcon }: RenderProps) {
+  if (item.itemType !== 'ellipsis') return;
+
+  const { base, listItem, ellipsis, separator } = breadcrumbVariants({
+    variant,
+    size,
+    disabled: disabled || item?.disabled,
+    isTrigger: item.isTrigger,
+  });
+  const disabledClass = base();
+
+  return item.isTrigger ? (
+    <>
+      <BreadcrumbItem className={cn(listItem(), item.className, disabledClass)}>
+        <DropdownMenu
+          {...item?.dropdownProps}
+          options={
+            item?.dropdownOptions
+              ? item.dropdownOptions.map(
+                  (h): OptionItem => ({
+                    type: 'item',
+                    value: h.value,
+                    label: h.label,
+                    disabled: h.disabled,
+                  }),
+                )
+              : []
+          }
+          trigger={
+            <BreadcrumbEllipsis
+              data-slot={'breadcrumb-ellipsis'}
+              data-role={'dropdown-menu-trigger'}
+              icon={item?.icon || null}
+              className={cn(ellipsis(), item.className, disabledClass)}
+            />
+          }
+          onItemSelect={(option: OptionItem) => handleItemSelect(item?.hiddenItems ?? [], option)}
+          className={cn(item?.dropdownProps?.className, disabledClass)}
+        />
+      </BreadcrumbItem>
+      {!isLast && <BreadcrumbSeparator icon={separatorIcon} className={cn(separator())} />}
+    </>
+  ) : (
+    <>
+      <BreadcrumbItem className={cn(listItem(), item.className, disabledClass)}>
+        <BreadcrumbEllipsis icon={item.icon} className={cn(ellipsis(), disabledClass)} />{' '}
+      </BreadcrumbItem>
+      {!isLast && <BreadcrumbSeparator icon={separatorIcon} className={cn(separator())} />}
+    </>
+  );
+}
+
+function RenderBreadcrumbItem({ item, variant, size, isLast, disabled, separatorIcon }: RenderProps) {
+  if (!item) return null;
+
+  if (isLast && item.isPage) {
+    return renderPage({
+      item: { ...item, itemType: 'page' },
+      variant,
+      size,
+      isLast,
+      disabled,
+      separatorIcon,
+    });
+  } else if (item.itemType === 'link') {
+    return renderLink({ item, variant, size, isLast, disabled, separatorIcon });
+  } else if (item.itemType === 'ellipsis') {
+    return renderEllipsis({ item, variant, size, isLast, disabled, separatorIcon });
+  } else {
+    return renderPage({ item, variant, size, isLast, disabled, separatorIcon });
+  }
+}
+
 export default RenderBreadcrumbItem;

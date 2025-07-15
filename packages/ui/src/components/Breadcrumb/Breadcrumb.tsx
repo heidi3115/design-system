@@ -1,66 +1,95 @@
 'use client';
 
-import { type ComponentProps, Fragment, type MouseEvent, type ReactElement, type ReactNode } from 'react';
+import { type ComponentProps, Fragment, type ReactElement, type ReactNode } from 'react';
 import type { VariantProps } from 'tailwind-variants';
 import { cn } from '@common/ui/lib/utils';
 import { BreadcrumbList, breadcrumbVariants, BreadcrumbWrapper, DropdownMenuContent } from '@common/ui';
-import { ChevronRightIcon } from '@common/ui/icons';
-import useBreadcrumbEllipsis from './hooks/UseBreadcrumbEllipsisResult';
-import RenderBreadcrumbItem from './RenderBreadcrumbItem';
+import { ChevronRightIcon, MoreHorizontalFilledIcon } from '@common/ui/icons';
 import { type OptionItem } from '../DropdownMenu/DropdownMenu';
+import RenderBreadcrumbItem from './RenderBreadcrumbItem';
+import useBreadcrumbEllipsis from '@common/ui/components/Breadcrumb/hooks/UseBreadcrumbEllipsisResult';
 
-type BreadcrumbItemBase = {
+export type BreadcrumbItemBaseType = {
+  /**
+   * value: BreadcrumbItem 별 key 입니다.
+   */
   value: string;
+  /**
+   * label: BreadcrumbItem 으로서 보여질 내용입니다.
+   */
   label: string;
+  /**
+   * href: BreadcrumbItem 으로서 경로입니다.
+   */
   href: string;
-  target?: '_blank' | '_self' | '_parent' | '_top';
+  /**
+   * icon: BreadcrumbItem 의 label과 같이 쓸 icon 으로써 ReactElement 으로 가능합니다.
+   */
   icon?: ReactNode;
-  iconPosition?: 'left' | 'right';
+  /**
+   * iconPosition: BreadcrumbItem 의 label과 같이 쓸 icon 의 위치입니다.
+   * left | right 중 가능하며, 기본값을 left 입니다.
+   */
+  iconPosition?: string;
+  /**
+   * target: href의 옵션 부분 처리를 위함. '_blank' | '_self' | '_parent' | '_top' 중에서 가능하며,
+   * 기본값은 '_blank' 으로 하고 있습니다.
+   */
+  target?: string;
+  /**
+   * className: BreadcrumbItem 에 적용할 tailwindCSS 의 클래스 부분입니다.
+   */
   className?: string;
+  /**
+   * disabled: Breadcrumb의 전체 비활성화 여부입니다.
+   */
   disabled?: boolean;
+  /**
+   * isPage : 경로의 표기만을 위함 및 Breadcrumb의 item의 itemType 분기를 위함. 혹은 별도로 이동하지 않도록 하기 위한 부분으로
+   * isPage: true -> BreadcrumbPage 가 되거나, false 로 BreadcrumbLink 처리 가능.
+   */
   isPage?: boolean;
+  /**
+   * children : Ellipsis로 압축하는 것 뿐만 아니라, 경로 하나하나 별도로 자식이 있고 해당의 경로로 이동을 해야하는 경우(ex. JS 대시보드 경로)
+   */
+  children?: BreadcrumbItemBaseType[];
 };
 
-export type DropDownItemType = Omit<OptionItem, 'type'> & { type: 'item' };
-
-export type DropdownBreadcrumbItemType = {
-  dropdownOptions: DropDownItemType[];
-  onItemSelect?: (item: DropDownItemType) => void;
-  dropDownProps?: {
+export type DropdownPropsType = {
+  dropdownProps?: {
     className?: string;
-    itemClassName?: string;
     size?: number;
-  } & Pick<ComponentProps<typeof DropdownMenuContent>, 'align' | 'side' | 'sideOffset' | 'alignOffset'>;
+    align?: ComponentProps<typeof DropdownMenuContent>['align'];
+    alignOffset?: ComponentProps<typeof DropdownMenuContent>['alignOffset'];
+    side?: ComponentProps<typeof DropdownMenuContent>['side'];
+    sideOffset?: ComponentProps<typeof DropdownMenuContent>['sideOffset'];
+  };
 };
 
-type EllipsisBreadcrumbItemBase = BreadcrumbItemBase & {
+export type DropdownItemType = Omit<OptionItem, 'type'> & { type: 'item' };
+
+export type DropdownListType = {
+  hiddenItems?: BreadcrumbCondensedType[];
+  dropdownOptions?: DropdownItemType[];
+  onItemSelect?: (item: OptionItem) => void;
+} & DropdownPropsType;
+
+export type EllipsisBreadcrumbItemType = BreadcrumbItemBaseType & {
   itemType: 'ellipsis';
-  icon?: ReactNode;
-  hiddenItems?: DropdownBreadcrumbItemType[];
-  onClick?: (
-    hiddenItems: DropdownBreadcrumbItemType[],
-    event: MouseEvent<HTMLSpanElement | undefined> | undefined,
-  ) => void;
+  isTrigger: boolean;
+} & DropdownListType;
+
+export type LinkBreadcrumbItemType = BreadcrumbItemBaseType & {
+  itemType: 'link';
+  isTrigger: boolean;
+} & DropdownListType;
+
+export type PageBreadcrumbItemType = BreadcrumbItemBaseType & {
+  itemType: 'page';
+  isTrigger: boolean;
 };
 
-export type EllipsisBreadcrumbItemType =
-  | ({ isTrigger: true } & DropdownBreadcrumbItemType & EllipsisBreadcrumbItemBase)
-  | ({ isTrigger: false } & EllipsisBreadcrumbItemBase);
-
-export type LinkBreadcrumbItemType =
-  | ({ itemType: 'link'; isTrigger: true } & DropdownBreadcrumbItemType & BreadcrumbItemBase)
-  | ({
-      itemType: 'link';
-      isTrigger: false;
-    } & BreadcrumbItemBase);
-
-export type PageBreadcrumbItemType = { itemType: 'page' } & BreadcrumbItemBase;
-
-export type BreadcrumbItemType =
-  | BreadcrumbItemBase
-  | EllipsisBreadcrumbItemType
-  | LinkBreadcrumbItemType
-  | PageBreadcrumbItemType;
+export type BreadcrumbCondensedType = PageBreadcrumbItemType | LinkBreadcrumbItemType | EllipsisBreadcrumbItemType;
 
 /**
  * EllipsisPositionType 의 예시
@@ -73,17 +102,17 @@ export type EllipsisPositionType = 'start' | 'center' | 'end';
 export type BreadcrumbProps = ComponentProps<'nav'> &
   VariantProps<typeof breadcrumbVariants> & {
     /**
-     * items: BreadcrumbIt록em 목록
+     * items: BreadcrumbItem 목록입니다.
      */
-    items: BreadcrumbItemType[];
+    items: BreadcrumbItemBaseType[];
     /**
      * disabled: 비활성화 여부
      */
     disabled?: boolean;
-    // /**
-    //  * responsive: 반응형 여부
-    //  */
-    // responsive?: boolean;
+    /**
+     * enableDropdown: Ellipsis 처리가 된 이후에 Ellipsis로 숨겨진 경로를 보도록 하거나 children이 있는 Link의 자식 경로들을 DropdownMenu 비활성화 할 것인지 여부.
+     */
+    enableDropdown?: boolean;
     /**
      * maxItems: 최대 표시 아이템 수로서 화면상에 보여줄 아이템의 숫자입니다.
      */
@@ -106,43 +135,43 @@ export type BreadcrumbProps = ComponentProps<'nav'> &
      * separatorIcon :
      */
     separatorIcon?: ReactElement;
-  };
+  } & DropdownPropsType;
 
 export const DEFAULT_MAX_ITEM = 3;
 
 function Breadcrumb({
-  items,
-  variant = 'default',
-  size = 'medium',
+  items = [],
+  variant = 'primary',
+  size = 'small',
   disabled = false,
-  // responsive = false,
+  enableDropdown = true,
   maxItems = DEFAULT_MAX_ITEM,
   ellipsisPosition = 'center',
-  // ellipsisIcon = <MoreHorizontalIcon />,
+  ellipsisIcon = <MoreHorizontalFilledIcon />,
   separatorIcon = <ChevronRightIcon />,
+  dropdownProps,
 }: BreadcrumbProps) {
-  const { wrapper, list } = breadcrumbVariants({
-    // link, page, separator, ellipsis
+  const { base, wrapper, list } = breadcrumbVariants({
     variant,
     size,
+    disabled,
   });
-  const { base } = breadcrumbVariants({ disabled });
-  const disabledClass = base() || '';
 
-  // const { visibleItems, ellipsisItem } = useBreadcrumbEllipsis(items, maxItems, ellipsisPosition);
-  const { visibleItems } = useBreadcrumbEllipsis(items, maxItems, ellipsisPosition); // ellipsisIcon
+  const { visibleItems } = useBreadcrumbEllipsis(items, maxItems, enableDropdown, ellipsisIcon, ellipsisPosition, {
+    dropdownProps,
+  });
 
   return (
-    <BreadcrumbWrapper className={cn(wrapper())}>
-      <BreadcrumbList className={cn(list())}>
-        {visibleItems.map((item: BreadcrumbItemType, idx: number) => (
+    <BreadcrumbWrapper className={cn(wrapper(), base())}>
+      <BreadcrumbList className={cn(list(), base())}>
+        {visibleItems.map((item, idx) => (
           <Fragment key={`${idx}-${item.label}`}>
             <RenderBreadcrumbItem
               item={item}
               isLast={idx === visibleItems?.length - 1}
               variant={variant}
               size={size}
-              disabledClass={disabledClass}
+              disabled={disabled}
               separatorIcon={separatorIcon}
             />
           </Fragment>

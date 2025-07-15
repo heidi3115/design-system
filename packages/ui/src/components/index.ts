@@ -260,5 +260,6 @@ export {
   BreadcrumbEllipsis,
   Breadcrumb,
   type BreadcrumbProps,
+  type BreadcrumbItemBaseType,
   breadcrumbVariants,
 } from './Breadcrumb';

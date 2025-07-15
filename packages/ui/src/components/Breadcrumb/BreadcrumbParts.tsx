@@ -5,6 +5,7 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { ChevronRight } from 'lucide-react';
 import { cn } from '@common/ui/lib/utils';
+import { MoreHorizontalFilledIcon } from '@common/ui/icons';
 
 function BreadcrumbWrapper({ ...props }: ComponentProps<'nav'>) {
   return <nav aria-label="breadcrumb" data-slot="breadcrumb" {...props} />;
@@ -46,7 +47,7 @@ export type BreadcrumbEllipsisProps = React.ComponentProps<'span'> & { icon?: Re
 function BreadcrumbEllipsis({ className, icon, label, ...props }: BreadcrumbEllipsisProps) {
   return (
     <span data-slot="breadcrumb-ellipsis" role="presentation" aria-hidden="true" className={cn(className)} {...props}>
-      {icon}
+      {icon || <MoreHorizontalFilledIcon />}
       <span className="sr-only">{label || 'More'}</span>
     </span>
   );

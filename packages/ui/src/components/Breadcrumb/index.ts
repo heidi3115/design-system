@@ -10,7 +10,8 @@ export {
 export {
   default as Breadcrumb,
   type BreadcrumbProps,
-  type BreadcrumbItemType,
+  type BreadcrumbItemBaseType,
+  type BreadcrumbCondensedType,
   type EllipsisPositionType,
 } from './Breadcrumb';
 export { breadcrumbVariants } from './breadcrumbVariants';
