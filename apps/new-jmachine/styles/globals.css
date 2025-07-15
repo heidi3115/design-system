@@ -1,0 +1,6 @@
+@import '@common/ui/src/styles/globals.css';
+@import '@common/ui/src/styles/fonts/defaultFonts.css';
+
+.layout-min-width {
+  min-width: 1300px;
+}
