@@ -4,52 +4,100 @@ import { DataTable } from '@common/ui/components/DataTable/DataTable';
 import { ColumnDef } from '@tanstack/react-table';
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@common/ui';
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: 'pending' | 'processing' | 'success' | 'failed';
-  email: string;
-  test: string;
+export type Scenario = {
+  scnrIdx: string;
+  scnrDttIdx: string;
+  scnrCd: string;
+  scnrNm: string;
+  scnrCls: string;
+  dttTrgTyp: string;
+  dngrGrd: string;
+  dttTyp: string;
+  respMode: string;
+  oprStt: string;
+  msrCycl: string;
+  explnUseYn: string;
+  modUser: string;
+  modUserNm: string;
+  modDt: string;
+  regUser: string;
+  regUserNm: string;
+  regDt: string;
+  alrmYn: string;
 };
 
 export default function Page() {
-  const data: Payment[] = [
-    { id: 'm5gr84i9', amount: 316, status: 'success', email: 'ken99@example.com', test: '테스트' },
-    { id: '3u1reuv4', amount: 242, status: 'success', email: 'Abe45@example.com', test: '테스트' },
-    { id: 'derv1ws0', amount: 837, status: 'processing', email: 'Monserrat44@example.com', test: '테스트' },
-    { id: '5kma53ae', amount: 874, status: 'success', email: 'Silas22@example.com', test: '테스트12' },
-    { id: 'bhqecj4p', amount: 721, status: 'failed', email: 'carmella@example.com', test: '이름' },
+  const data: Scenario[] = [
+    {
+      scnrIdx: 'gLxtmTtq1nzgQXiM8TT5jw==',
+      scnrDttIdx: 'AYb4MDUINNoV4IrJh4UxIg==',
+      scnrCd: '212',
+      scnrNm: '[QA-3560] 테스트 시나리오',
+      scnrCls: 'QA',
+      dttTrgTyp: '011001',
+      dngrGrd: '012001',
+      dttTyp: '016001',
+      respMode: '013001',
+      oprStt: '014001',
+      msrCycl: '41 16 * * * ',
+      explnUseYn: 'N',
+      modUser: 'admin',
+      modUserNm: '관리자',
+      modDt: '2025-07-14 16:57:23',
+      regUser: 'hycho',
+      regUserNm: '조홍연',
+      regDt: '2025-03-26 15:48:46',
+      alrmYn: 'N',
+    },
+    {
+      scnrIdx: 'i5DeKy0RP3wcBpK/CPAudg==',
+      scnrDttIdx: 'HGvQI8mqXT36LndysbGm8Q==',
+      scnrCd: '177',
+      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
+      scnrCls: 'QA|E-Mail|Works',
+      dttTrgTyp: '011001',
+      dngrGrd: '012003',
+      dttTyp: '016009',
+      respMode: '013001',
+      oprStt: '014001',
+      msrCycl: '27 12 * * *',
+      explnUseYn: 'N',
+      modUser: 'admin',
+      modUserNm: '관리자',
+      modDt: '2025-07-08 15:41:19',
+      regUser: 'admin',
+      regUserNm: '관리자',
+      regDt: '2024-11-28 10:38:05',
+      alrmYn: 'N',
+    },
   ];
-  const columns: ColumnDef<Payment>[] = [
-    {
-      accessorKey: 'status',
-      header: 'Status',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('status')}</div>,
-    },
-    {
-      accessorKey: 'email',
-      header: 'Email',
-      cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
-    },
-    {
-      accessorKey: 'amount',
-      header: 'Amount',
-      cell: ({ row }) => {
-        const amount = parseFloat(row.getValue('amount'));
-        const formatted = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
-        return <div className="text-right font-medium">{formatted}</div>;
-      },
+  const columns: ColumnDef<Scenario, string>[] = [
+    {
+      accessorKey: 'scnrNm',
+      header: 'scnrNm',
     },
     {
-      accessorKey: 'test',
-      header: 'Test',
+      accessorKey: 'regUser',
+      header: 'regUser',
+      cell: ({ row }) => <div className="capitalize">{row.getValue('regUser')}</div>,
+    },
+    {
+      accessorKey: 'regUserNm',
+      header: 'regUserNm',
+    },
+    {
+      accessorKey: 'regDt',
+      header: 'regDt',
     },
   ];
+
+  const testData: Scenario[] = [];
 
   return (
     <section className="flex gap-30 items-center justify-center w-full min-h-svh">
       <DataTable data={data} columns={columns} />
+      <DataTable data={testData} columns={columns} />
       <div>
         <span className="mt-10 text-2xl">브로콜리 입고정리표</span>
         <Table orientation="horizontal">

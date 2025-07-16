@@ -14,14 +14,11 @@ import {
 } from '@tanstack/react-table';
 
 import { TableHeader, Table, TableRow, TableHead, TableCell, TableBody } from '@common/ui';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
-type DataTableProps<T> = {
-  data: T[];
-  columns: ColumnDef<T>[];
-};
+type DataTableProps<T, V> = { data: T[]; columns: ColumnDef<T, V>[]; emptyState?: ReactNode };
 
-export function DataTable<T>({ data, columns }: DataTableProps<T>) {
+export function DataTable<T, V = unknown>({ data, columns, emptyState }: DataTableProps<T, V>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -74,7 +71,7 @@ export function DataTable<T>({ data, columns }: DataTableProps<T>) {
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                {emptyState ?? '데이터가 없습니다.'}
               </TableCell>
             </TableRow>
           )}
