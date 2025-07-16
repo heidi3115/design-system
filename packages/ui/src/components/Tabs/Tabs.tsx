@@ -8,11 +8,15 @@ import tabsTriggerVariants from './tabsTriggerVariants';
 import { useTabIndicator } from './hooks/useTabIndicator';
 import { cn } from '../../lib/utils';
 
+const DEFAULT_REST_HEIGHT = 120 as const;
+
 type TabItemBaseType = {
   value: string;
   label: ReactNode;
   disabled?: boolean;
   hidden?: boolean;
+  contentBoxType?: 'flex' | 'box' | 'inBox';
+  boxClassName?: string;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,7 +51,7 @@ function Tabs<T extends TabItemType>({
   className,
   shape = 'underline',
   size = 'default',
-  restScreenHeight = 120,
+  restScreenHeight = DEFAULT_REST_HEIGHT,
   onValueChange,
 }: TabsProps<T>) {
   const { content, underline, tabsAlign, list, firstForderTab } = tabsTriggerVariants({
@@ -126,8 +130,10 @@ function Tabs<T extends TabItemType>({
 
       {tabs
         .filter(({ hidden = false }) => !hidden)
-        .map(({ value, component: Component, props, content: tabContent }) => {
+        .map(({ value, component: Component, props, content: tabContent, contentBoxType = 'flex', boxClassName }) => {
           if (!Component && !tabContent) return null;
+
+          const contents = Component ? <Component {...props} /> : (tabContent ?? null);
 
           return (
             <TabsContent
@@ -135,7 +141,21 @@ function Tabs<T extends TabItemType>({
               value={value}
               style={{ maxHeight: `calc(100svh - ${restScreenHeight}px)` }}
               className={cn(`overflow-auto`)}>
-              {Component ? <Component {...props} /> : (tabContent ?? null)}
+              {contentBoxType === 'flex' && contents}
+              {contentBoxType === 'box' && (
+                <div
+                  className={cn('bg-juiBackground-paper', boxClassName)}
+                  style={{ minHeight: `calc(100svh - ${120}px)` }}>
+                  {contents}
+                </div>
+              )}
+              {contentBoxType === 'inBox' && (
+                <div
+                  className={cn('overflow-hidden bg-juiBackground-paper p-4', boxClassName)}
+                  style={{ height: `calc(100svh - ${120}px)` }}>
+                  <div className="h-full overflow-auto">{contents}</div>
+                </div>
+              )}
             </TabsContent>
           );
         })}

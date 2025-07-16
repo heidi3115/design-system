@@ -28,7 +28,6 @@ import { cn } from '../../lib/utils';
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = '16rem';
-// const SIDEBAR_WIDTH_MOBILE = '18rem';
 const SIDEBAR_WIDTH_ICON = '3rem';
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b';
 
@@ -161,6 +160,27 @@ function SidebarRoot({
     setMode(collapsible);
   }, [collapsible, setMode]);
 
+  if (collapsible === 'sheet') {
+    return (
+      <SheetRoot open={state === 'expanded'} onOpenChange={setOpen} {...props}>
+        <SheetContent
+          data-sidebar="sidebar"
+          data-slot="sidebar"
+          className="bg-juiBackground-solidPaper w-[var(--sidebar-width)] p-0 [&>button]:hidden"
+          style={{ '--sidebar-width': '16rem' } as React.CSSProperties}
+          side={side}>
+          <SheetHeader className="sr-only">
+            <SheetTitle>sidebar</SheetTitle>
+            <SheetDescription>Sidebar content</SheetDescription>
+          </SheetHeader>
+          <div className="group peer flex h-full w-full flex-col" data-collapsible="sheet">
+            {children}
+          </div>
+        </SheetContent>
+      </SheetRoot>
+    );
+  }
+
   if (collapsible === 'none') {
     return (
       <div
@@ -174,31 +194,6 @@ function SidebarRoot({
         {...props}>
         {children}
       </div>
-    );
-  }
-
-  if (collapsible === 'sheet') {
-    return (
-      <SheetRoot open={state === 'expanded'} onOpenChange={setOpen} {...props}>
-        <SheetContent
-          data-sidebar="sidebar"
-          data-slot="sidebar"
-          className="bg-juiBackground-solidPaper w-(--sidebar-width) p-0 [&>button]:hidden"
-          style={
-            {
-              '--sidebar-width': SIDEBAR_WIDTH,
-            } as React.CSSProperties
-          }
-          side={side}>
-          <SheetHeader className="sr-only">
-            <SheetTitle>sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-          </SheetHeader>
-          <div className="group peer flex h-full w-full flex-col" data-collapsible="sheet">
-            {children}
-          </div>
-        </SheetContent>
-      </SheetRoot>
     );
   }
 
@@ -262,11 +257,12 @@ function SidebarRoot({
   );
 }
 
-function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<typeof Button>) {
+function SidebarTrigger({ className, onClick, asChild, children, ...props }: React.ComponentProps<typeof Button>) {
+  const Comp = asChild ? 'button' : Button;
   const { toggleSidebar, open } = useSidebar();
 
   return (
-    <Button
+    <Comp
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       className={cn(className)}
@@ -275,10 +271,16 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
         toggleSidebar();
       }}
       {...props}>
-      {open ? <ArrowLeftIcon size="small" /> : <ArrowRightIcon size="small" />}
+      {asChild ? (
+        children
+      ) : (
+        <>
+          {open ? <ArrowLeftIcon size="small" /> : <ArrowRightIcon size="small" />}
 
-      <span className="sr-only">Toggle Sidebar</span>
-    </Button>
+          <span className="sr-only">Toggle Sidebar</span>
+        </>
+      )}
+    </Comp>
   );
 }
 
@@ -516,6 +518,16 @@ const sidebarMenuButtonVariants = tv({
         hover:text-juiText-secondary
         hover:shadow-[0_0_0_1px_var(--juiText-disabled)]
       `,
+      collasible: `
+        data-[active=true]:bg-transparent 
+        active:bg-transparent
+        hover:font-bold
+        data-[state=open]:hover:bg-transparent 
+        data-[state=open]:hover:text-juiText-primary
+        group-data-[state=collapsed]:[&>svg]:size-5
+        group-data-[state=collapsed]:p-1.5!
+        group-data-[state=collapsed]:pointer-events-none
+      `,
     },
     size: {
       default: 'h-8 text-sm',
@@ -539,6 +551,7 @@ function SidebarMenuButton({
   size = 'default',
   tooltipContents,
   hoverCardContents,
+  hoverCardProps,
   className,
   ...props
 }: React.ComponentProps<'button'> & {
@@ -546,6 +559,7 @@ function SidebarMenuButton({
   isActive?: boolean;
   tooltipContents?: string;
   hoverCardContents?: React.ReactNode;
+  hoverCardProps?: Partial<React.ComponentProps<typeof HoverCard>>;
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot : 'button';
 
@@ -578,7 +592,25 @@ function SidebarMenuButton({
 
   if (hoverCardContents && state === 'collapsed') {
     return (
-      <HoverCard trigger={button} openDelay={0} side="right" align="start" sideOffset={8} contentClass="p-0">
+      <HoverCard
+        trigger={
+          <div
+            className={cn(
+              'group/card',
+              'transition-all duration-300',
+              'flex items-center justify-center',
+              'data-[state=open]:bg-juiPrimary',
+              'data-[state=open]:light:bg-juiGrey-a200',
+            )}>
+            {button}
+          </div>
+        }
+        openDelay={0}
+        side="right"
+        align="start"
+        sideOffset={8}
+        contentClass="p-0"
+        {...hoverCardProps}>
         {hoverCardContents}
       </HoverCard>
     );
@@ -608,7 +640,7 @@ function SidebarMenuAction({
         // 기본 스타일
         'text-juiText-primary ring-juiBorder-primary hover:bg-current/10 hover:text-juiText-primary/80',
         'peer-hover/menu-button:text-juiText-primary',
-        'absolute top-1.5 right-1 flex aspect-square w-5 items-center justify-center',
+        'absolute top-1.5 right-1.5 flex aspect-square w-5 items-center justify-center',
         'rounded-md p-0 outline-hidden transition-transform',
         'focus-visible:ring-2',
         '[&>svg]:size-4 [&>svg]:shrink-0',
@@ -626,8 +658,10 @@ function SidebarMenuAction({
 
         // showOnHover가 true일 때만 적용
         showOnHover && 'peer-data-[active=true]/menu-button:text-juiText-primary',
-        showOnHover && 'group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100',
+        showOnHover &&
+          'group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-50 group-hover/menu-sub-item:opacity-50',
         showOnHover && 'data-[state=open]:opacity-100 opacity-0',
+        'hover:opacity-100',
 
         // 외부에서 넘겨받은 className
         className,
@@ -705,7 +739,7 @@ function SidebarMenuSub({
       className={cn(
         'border-juiBorder-primary mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l px-2.5 py-0.5',
         'group-data-[collapsible=icon]:hidden',
-        isFloat && 'ml-0 border-l-0 px-1.5',
+        isFloat && 'ml-0 border-l-0 translate-x-0 px-1.5',
         className,
       )}
       {...props}
@@ -779,51 +813,106 @@ function SidebarMenuSubButton({
 }
 
 function SidebarCollasibleGroup({
-  collasibleTitle,
+  collapsibleTitle,
+  collapsibleIcon,
   groupTitle,
-  extendType = 'chev',
   customIcon,
+  triggerClassName,
   children,
+  tooltipContents,
+  hoverCardContents,
+  hoverCardProps,
+  extendType = 'chev',
+  collapsibleVisible = false,
+  depth = 0,
   ...props
 }: React.ComponentProps<typeof CollapsibleRoot> & {
-  collasibleTitle: React.ReactNode;
+  collapsibleTitle: string;
+  collapsibleIcon?: React.ComponentType<IconProps>;
   groupTitle?: string;
+  triggerClassName?: string;
   extendType?: 'chev' | 'plus';
+  depth?: number;
+  collapsibleVisible?: boolean;
   customIcon?: {
     open: React.ComponentType<IconProps>;
     close: React.ComponentType<IconProps>;
   };
-}) {
+} & Pick<React.ComponentProps<typeof SidebarMenuButton>, 'tooltipContents' | 'hoverCardContents' | 'hoverCardProps'>) {
+  const { state } = useSidebar();
+
+  const CollasibleIcon = collapsibleIcon;
   const OpenCustomIcon = customIcon?.open;
   const CloseCustomIcon = customIcon?.close;
 
   return (
-    <CollapsibleRoot className="group/collapsible" {...props}>
-      <SidebarGroup className="py-0">
-        {groupTitle && <SidebarGroupLabel className="py-0">{groupTitle}</SidebarGroupLabel>}
-        <SidebarGroupLabel asChild className="group/label text-juiText-primary hover:bg-current/10 text-sm">
-          <CollapsibleTrigger>
-            {collasibleTitle}
-            {customIcon && OpenCustomIcon && CloseCustomIcon ? (
-              <>
-                <OpenCustomIcon className="ml-auto group-data-[state=open]/collapsible:hidden" />
-                <CloseCustomIcon className="ml-auto group-data-[state=closed]/collapsible:hidden" />
-              </>
-            ) : (
-              extendType === 'chev' && (
-                <ChevronDownIcon className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-              )
-            )}
-            {extendType === 'plus' && (
-              <>
-                <PlusIcon className="ml-auto group-data-[state=open]/collapsible:hidden" />
-                <MinusIcon className="ml-auto group-data-[state=closed]/collapsible:hidden" />
-              </>
-            )}
+    <CollapsibleRoot className={`group/collapsible-${depth}`} {...props}>
+      {groupTitle && <SidebarGroupLabel className="py-0">{groupTitle}</SidebarGroupLabel>}
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <CollapsibleTrigger asChild>
+            <SidebarMenuButton
+              variant="collasible"
+              className={cn(triggerClassName, 'm-auto', !collapsibleVisible && 'group-data-[state=collapsed]:hidden')}
+              tooltipContents={tooltipContents}
+              hoverCardContents={hoverCardContents}
+              hoverCardProps={hoverCardProps}>
+              {CollasibleIcon && <CollasibleIcon />}
+              {!CollasibleIcon && state === 'collapsed' && `${collapsibleTitle[0]}...`}
+              <span>{collapsibleTitle}</span>
+
+              {customIcon && OpenCustomIcon && CloseCustomIcon ? (
+                <>
+                  <OpenCustomIcon
+                    className={cn('ml-auto', {
+                      'group-data-[state=open]/collapsible-0:hidden': depth === 0,
+                      'group-data-[state=open]/collapsible-1:hidden': depth === 1,
+                      'group-data-[state=open]/collapsible-2:hidden': depth === 2,
+                    })}
+                  />
+                  <CloseCustomIcon
+                    className={cn('ml-auto', {
+                      'group-data-[state=closed]/collapsible-0:hidden': depth === 0,
+                      'group-data-[state=closed]/collapsible-1:hidden': depth === 1,
+                      'group-data-[state=closed]/collapsible-2:hidden': depth === 2,
+                    })}
+                  />
+                </>
+              ) : (
+                extendType === 'chev' && (
+                  <ChevronDownIcon
+                    className={cn('ml-auto transition-transform', {
+                      'group-data-[state=open]/collapsible-0:rotate-180': depth === 0,
+                      'group-data-[state=open]/collapsible-1:rotate-180': depth === 1,
+                      'group-data-[state=open]/collapsible-2:rotate-180': depth === 2,
+                    })}
+                  />
+                )
+              )}
+
+              {extendType === 'plus' && (
+                <>
+                  <PlusIcon
+                    className={cn('ml-auto', {
+                      'group-data-[state=open]/collapsible-0:hidden': depth === 0,
+                      'group-data-[state=open]/collapsible-1:hidden': depth === 1,
+                      'group-data-[state=open]/collapsible-2:hidden': depth === 2,
+                    })}
+                  />
+                  <MinusIcon
+                    className={cn('ml-auto', {
+                      'group-data-[state=closed]/collapsible-0:hidden': depth === 0,
+                      'group-data-[state=closed]/collapsible-1:hidden': depth === 1,
+                      'group-data-[state=closed]/collapsible-2:hidden': depth === 2,
+                    })}
+                  />
+                </>
+              )}
+            </SidebarMenuButton>
           </CollapsibleTrigger>
-        </SidebarGroupLabel>
-        <CollapsibleContent>{children}</CollapsibleContent>
-      </SidebarGroup>
+        </SidebarMenuItem>
+      </SidebarMenu>
+      <CollapsibleContent>{children}</CollapsibleContent>
     </CollapsibleRoot>
   );
 }
