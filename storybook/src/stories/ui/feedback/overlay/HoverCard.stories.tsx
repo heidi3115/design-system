@@ -17,6 +17,7 @@ import {
 } from '@common/ui';
 import { AlertCircleIcon, AlertTriangleFilledIcon, InfoIcon } from '@common/ui/icons';
 
+// 공통 상수
 const titleCommonClass = 'text-juiText-primary font-bold';
 const subTitleCommonClass = 'text-juiText-primary font-semibold';
 const normalTxtClass = 'text-juiText-primary font-normal';
@@ -90,7 +91,7 @@ const sideOptions: ComponentProps<typeof HoverCard>['side'][] = ['top', 'left', 
 const alignOptions: ComponentProps<typeof HoverCard>['align'][] = ['start', 'center', 'end'] as const;
 
 const meta: Meta<typeof HoverCard> = {
-  title: 'UI/Feedback/Overlay/HoverCard',
+  title: 'UI/HoverCard',
   component: HoverCard,
   args: {
     size: 'small',
@@ -119,9 +120,9 @@ const meta: Meta<typeof HoverCard> = {
         defaultValue: { summary: `${sizeOptions[0]}` },
       },
       description: [
-        `HoverCard 의 크기 prop 입니다.`,
-        'padding의 차등을 통한 크기 조절로서 처리하고 있습니다. custom 은 사용자의 커스텀을 할 수 있으므로, 따로 추가된 내역이 없으니 주의 바랍니다.',
-        `현재 기본값은 ${sizeOptions[0]} 로 처리하고 있습니다.`,
+        'HoverCard 컴포넌트의 크기를 설정합니다.',
+        'padding의 차등을 통한 크기 조절로 처리되며, custom은 사용자가 직접 스타일을 지정할 수 있습니다.',
+        `기본값은 ${sizeOptions[0]}입니다.`,
       ].join('<br/>'),
     },
     variant: {
@@ -131,7 +132,7 @@ const meta: Meta<typeof HoverCard> = {
         type: { summary: `${variantOptions.join(', ')}` },
         defaultValue: { summary: `${variantOptions[0]}` },
       },
-      description: [`HoverCard 의 색상 prop 입니다.`, `현재 기본값은 ${variantOptions[0]} 로 처리하고 있습니다.`].join(
+      description: ['HoverCard 컴포넌트의 시각적 변형을 설정합니다.', `기본값은 ${variantOptions[0]}입니다.`].join(
         '<br/>',
       ),
     },
@@ -142,21 +143,7 @@ const meta: Meta<typeof HoverCard> = {
         type: { summary: `${sideOptions.join(', ')}` },
         defaultValue: { summary: `${sideOptions[0]}` },
       },
-      description: [
-        `HoverCard 의 위치를 조절할 수 있는 prop 입니다.`,
-        `현재 기본값은 ${sideOptions[0]} 로 처리하고 있습니다.`,
-      ].join('<br/>'),
-    },
-    sideOffset: {
-      control: 'number',
-      table: {
-        type: { summary: `${DEFAULT_SIDE_OFFSET}` },
-        defaultValue: { summary: `${DEFAULT_SIDE_OFFSET}` },
-      },
-      description: [
-        `HoverCard 의 위치의 간격을 조절할 수 있는 prop 입니다.`,
-        `현재 기본값은 ${DEFAULT_SIDE_OFFSET} 로 처리하고 있습니다.`,
-      ].join('<br/>'),
+      description: ['HoverCard가 표시될 위치를 설정합니다.', `기본값은 ${sideOptions[0]}입니다.`].join('<br/>'),
     },
     align: {
       control: 'select',
@@ -165,9 +152,17 @@ const meta: Meta<typeof HoverCard> = {
         type: { summary: `${alignOptions.join(', ')}` },
         defaultValue: { summary: `${alignOptions[1]}` },
       },
+      description: ['HoverCard의 정렬 방식을 설정합니다.', `기본값은 ${alignOptions[1]}입니다.`].join('<br/>'),
+    },
+    sideOffset: {
+      control: 'number',
+      table: {
+        type: { summary: `${DEFAULT_SIDE_OFFSET}` },
+        defaultValue: { summary: `${DEFAULT_SIDE_OFFSET}` },
+      },
       description: [
-        `HoverCard 의 위치에서의 정렬을 조절할 수 있는 prop 입니다.`,
-        `현재 기본값은 ${alignOptions[1]} 로 처리하고 있습니다.`,
+        'HoverCard와 trigger 요소 사이의 거리를 설정합니다.',
+        `기본값은 ${DEFAULT_SIDE_OFFSET}입니다.`,
       ].join('<br/>'),
     },
     alignOffset: {
@@ -176,10 +171,9 @@ const meta: Meta<typeof HoverCard> = {
         type: { summary: `${DEFAULT_ALIGN_OFFSET}` },
         defaultValue: { summary: `${DEFAULT_ALIGN_OFFSET}` },
       },
-      description: [
-        `HoverCard 의 정렬의 간격을 조절할 수 있는 prop 입니다.`,
-        `현재 기본값은 ${DEFAULT_ALIGN_OFFSET} 로 처리하고 있습니다.`,
-      ].join('<br/>'),
+      description: ['HoverCard의 정렬 위치 오프셋을 설정합니다.', `기본값은 ${DEFAULT_ALIGN_OFFSET}입니다.`].join(
+        '<br/>',
+      ),
     },
     openDelay: {
       control: 'number',
@@ -188,9 +182,8 @@ const meta: Meta<typeof HoverCard> = {
         defaultValue: { summary: `${DEFAULT_OPEN_DELAY_MS}` },
       },
       description: [
-        'openDelay 는 마우스를 올린 후 HoverCard 의 내용이 보이기까지의 지연 시간(ms) 입니다.',
-        `HoverCard 의 내용이 보여지는 간격을 조절할 수 있는 prop 입니다.`,
-        `현재 기본값은 ${DEFAULT_OPEN_DELAY_MS} 로 처리하고 있습니다.`,
+        '마우스 호버 후 HoverCard가 열리기까지의 지연 시간(ms)을 설정합니다.',
+        `기본값은 ${DEFAULT_OPEN_DELAY_MS}ms입니다.`,
       ].join('<br/>'),
     },
     closeDelay: {
@@ -200,9 +193,8 @@ const meta: Meta<typeof HoverCard> = {
         defaultValue: { summary: `${DEFAULT_CLOSE_DELAY_MS}` },
       },
       description: [
-        'closeDelay 는 마우스를 올린 후 HoverCard 의 내용이 닫히기까지의 지연 시간(ms) 입니다.',
-        `HoverCard 의 내용이 보여지는 간격을 조절할 수 있는 prop 입니다.`,
-        `현재 기본값은 ${DEFAULT_CLOSE_DELAY_MS} 로 처리하고 있습니다.`,
+        '마우스가 벗어난 후 HoverCard가 닫히기까지의 지연 시간(ms)을 설정합니다.',
+        `기본값은 ${DEFAULT_CLOSE_DELAY_MS}ms입니다.`,
       ].join('<br/>'),
     },
     defaultOpen: {
@@ -212,24 +204,26 @@ const meta: Meta<typeof HoverCard> = {
         defaultValue: { summary: `${false}` },
       },
       description: [
-        'HoverCard 의 초기 열림 상태입니다. 내부적으로 상태를 관리할 때 사용합니다(Uncontrolled).',
-        `현재 기본값은 ${false} 로 처리하고 있습니다.`,
+        'HoverCard의 초기 열림 상태를 설정합니다.',
+        '내부적으로 상태를 관리하는 비제어 모드에서 사용됩니다.',
+        `기본값은 ${false}입니다.`,
       ].join('<br/>'),
     },
     open: {
       control: 'boolean',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: `${undefined}` } },
       description: [
-        'HoverCard 의 열림 상태를 제어하는 prop 으로써 외부에서 상태를 직접 관리할 때 사용합니다(Controlled).',
+        'HoverCard의 열림 상태를 외부에서 제어할 때 사용됩니다.',
+        'onOpenChange와 함께 사용하여 제어 모드로 동작합니다.',
       ].join('<br/>'),
     },
     onOpenChange: {
       control: false,
       action: 'onOpenChange',
       description: [
-        'HoverCard 의 열림/닫힘 상태가 변경될 때 호출되는 콜백 함수입니다.',
-        'open prop과 함께 사용하여 상태를 외부에서 제어할 때 활용합니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        'HoverCard의 열림/닫힘 상태가 변경될 때 호출되는 콜백 함수입니다.',
+        'open prop과 함께 사용하여 제어 모드로 동작할 수 있습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     trigger: {
@@ -238,8 +232,9 @@ const meta: Meta<typeof HoverCard> = {
         type: { summary: `ReactNode | ComponentType` },
       },
       description: [
-        'HoverCard를 열기 위해 사용되는 트리거 요소입니다. ReactNode 또는 ComponentType 을 받을 수 있습니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        'HoverCard를 열기 위한 트리거 요소입니다.',
+        'ReactNode 또는 ComponentType을 받을 수 있습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     triggerClass: {
@@ -248,12 +243,18 @@ const meta: Meta<typeof HoverCard> = {
         type: { summary: `string` },
         defaultValue: { summary: '' },
       },
+      description: ['HoverCard 트리거 요소에 적용할 CSS 클래스를 설정합니다.'].join('<br/>'),
     },
     children: {
       control: false,
       table: {
         type: { summary: `ReactNode | ComponentType` },
       },
+      description: [
+        'HoverCard에 표시될 내용을 설정합니다.',
+        'ReactNode로 표현 가능한 모든 요소를 사용할 수 있습니다.',
+        '스토리에서는 제어할 수 없습니다.',
+      ].join('<br/>'),
     },
     contentClass: {
       control: 'text',
@@ -261,12 +262,14 @@ const meta: Meta<typeof HoverCard> = {
         type: { summary: `string` },
         defaultValue: { summary: '' },
       },
+      description: ['HoverCard 콘텐츠 영역에 적용할 CSS 클래스를 설정합니다.'].join('<br/>'),
     },
     openStatusRef: {
       control: false,
       description: [
-        'HoverCard 의 열림 상태를 외부에서 참조할 수 있도록 하는 Ref 객체입니다. 참조 타입은 boolean 으로 합니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        'HoverCard의 열림 상태를 외부에서 참조할 수 있는 Ref 객체입니다.',
+        '참조 타입은 boolean입니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
   },
@@ -274,10 +277,10 @@ const meta: Meta<typeof HoverCard> = {
     docs: {
       description: {
         component: [
-          'HoverCard 컴포넌트의 문서입니다. HoverCard 컴포넌트란, 사용자가 특정 요소 위에 마우스를 올렸을 때 부가 정보를 표시하는 UI 요소 입니다.',
-          '불필요한 UI 를 숨기고 필요할 때만 추가 정보를 제공하여 깔끔한 인터페이스를 구성할 때 유용합니다.',
-          '트리거(trigger) 요소 및 내용(children) 요소를 자유롭게 커스터마이즈할 수 있습니다.',
-          'trigger 요소 및 open 상태를 제어하거나 비제어 방식으로 사용할 수 있으며, 다양한 예시를 아래에서 확인할 수 있습니다.',
+          'HoverCard 컴포넌트는 사용자가 특정 요소 위에 마우스를 올렸을 때 부가 정보를 표시하는 UI 요소입니다.',
+          '불필요한 UI를 숨기고 필요할 때만 추가 정보를 제공하여 깔끔한 인터페이스를 구성할 수 있습니다.',
+          '트리거 요소와 내용을 자유롭게 커스터마이즈할 수 있으며, 제어 및 비제어 모드를 모두 지원합니다.',
+          '다양한 위치 설정과 지연 시간 조절이 가능하여 사용자 경험을 최적화할 수 있습니다.',
         ].join('<br/>'),
       },
     },
@@ -292,7 +295,10 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: ['기본 HoverCard 컴포넌트를 렌더링한 예시입니다.'].join('<br/>'),
+        story: [
+          'HoverCard 컴포넌트의 기본 사용 예시입니다.',
+          '트리거 요소에 마우스를 올리면 설정된 지연 시간 후 내용이 표시됩니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -322,8 +328,8 @@ export const Variants: Story = {
     docs: {
       description: {
         story: [
-          'HoverCard 의 색상(variant)별 예시입니다.',
-          'variant prop을 통해 HoverCard의 배경색과 스타일을 변경할 수 있습니다.',
+          'HoverCard 컴포넌트의 variant별 스타일을 보여주는 예시입니다.',
+          'variant prop을 통해 HoverCard의 배경색과 테마를 변경할 수 있습니다.',
         ].join('<br/>'),
       },
     },
@@ -361,8 +367,8 @@ export const Sizes: Story = {
     docs: {
       description: {
         story: [
-          'HoverCard 의 사이즈별 예시입니다.',
-          'size prop을 통해 HoverCard 의 콘텐츠 영역 크기(padding)를 조절할 수 있습니다.',
+          'HoverCard 컴포넌트의 size별 크기를 보여주는 예시입니다.',
+          'size prop을 통해 HoverCard의 콘텐츠 영역 padding을 조절할 수 있습니다.',
         ].join('<br/>'),
       },
     },

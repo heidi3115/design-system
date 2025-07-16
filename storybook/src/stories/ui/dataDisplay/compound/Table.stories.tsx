@@ -20,27 +20,47 @@ type TableStoryArgs = {
 
 const meta: Meta<TableStoryArgs> = {
   title: 'UI/DataDisplay/Compound/Table',
-  argTypes: {
-    orientation: {
-      control: { disable: true },
-      description:
-        'table의 방향에 따른 스타일을 적용할 수 있다. vertical과 horizontal로 구분하며, border 및 padding이 차이가 난다. 기본값은 horizontal이다.',
-    },
-    showCaption: {
-      control: 'boolean',
-      description:
-        '표의 설명(캡션)을 추가할 수 있다. showCaption은 스토리북에서 사용하기 위해 추가하였으며, 실제로는 &lt;TableCaption&gt;태그를 추가하거나 생략하여 사용한다.',
-    },
-    showFooter: {
-      control: 'boolean',
-      description:
-        '표의 하단(footer)을 추가할 수 있다. showFooter는 스토리북에서 사용하기 위해 추가하였으며, 실제로는 &lt;TableFooter&gt;태그를 추가하거나 생략하여 사용한다.',
-    },
-  },
   args: {
     orientation: 'horizontal',
     showFooter: true,
     showCaption: true,
+  },
+  argTypes: {
+    orientation: {
+      control: { disable: true },
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'horizontal' } },
+      description: [
+        'Table의 방향에 따른 스타일을 적용할 수 있습니다.',
+        'vertical과 horizontal로 구분하며, border 및 padding이 차이가 납니다.',
+        '기본값은 horizontal입니다.',
+      ].join('<br/>'),
+    },
+    showCaption: {
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
+      description: [
+        '표의 설명(캡션)을 추가할 수 있습니다.',
+        'showCaption은 스토리북에서 사용하기 위해 추가하였으며, 실제로는 &lt;TableCaption&gt;태그를 추가하거나 생략하여 사용합니다.',
+      ].join('<br/>'),
+    },
+    showFooter: {
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
+      description: [
+        '표의 하단(footer)을 추가할 수 있습니다.',
+        'showFooter는 스토리북에서 사용하기 위해 추가하였으며, 실제로는 &lt;TableFooter&gt;태그를 추가하거나 생략하여 사용합니다.',
+      ].join('<br/>'),
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          'Table 컴포넌트의 문서입니다.',
+          '표 형태의 데이터를 표시하는 데 사용되며, horizontal과 vertical 방향으로 구성할 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
   },
 };
 
@@ -76,16 +96,25 @@ const Template = (args: TableStoryArgs) => {
 };
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Table 컴포넌트의 기본 사용 예시입니다.',
+      },
+    },
+  },
   render: Template,
 };
 
 export const Orientation: Story = {
-  ...Default,
   parameters: {
     docs: {
       description: {
-        story:
-          'Horizontal Table과 Vertical Table의 style이 상이하여 horizontal과 vertical로 구분한다. Table에 orientation 값을 추가하여 사용할 수 있다. 추가하지 않을 경우에는 horizontal 스타일이 적용된다.',
+        story: [
+          'Horizontal Table과 Vertical Table의 스타일이 상이하여 horizontal과 vertical로 구분합니다.',
+          'Table에 orientation 값을 추가하여 사용할 수 있습니다.',
+          '추가하지 않을 경우에는 horizontal 스타일이 적용됩니다.',
+        ].join('<br/>'),
       },
     },
   },

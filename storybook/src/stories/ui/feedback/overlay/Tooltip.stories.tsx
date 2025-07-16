@@ -63,105 +63,171 @@ const meta: Meta<typeof Tooltip> = {
     delayDuration: {
       control: 'number',
       table: { type: { summary: 'number' }, defaultValue: { summary: `${DEFAULT_DELAY_DURATION}` } },
+      description: [
+        '모든 Tooltip의 기본 지연 시간(ms, 기본 700)으로써, Tooltip이 보여지기 전 대기 시간(밀리초 단위)입니다.',
+        '사용자가 트리거에 마우스를 올렸을 때 Tooltip이 등장하기까지의 지연 시간을 설정할 수 있습니다.',
+        '기본값은 700입니다.',
+      ].join('<br/>'),
     },
     open: {
       control: 'boolean',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: `${undefined}` } },
+      description: [
+        'Tooltip의 열림 상태를 제어하는 prop으로써 외부에서 상태를 직접 관리할 때 사용합니다(Controlled).',
+        'undefined일 경우 내부적으로 상태를 관리합니다.',
+      ].join('<br/>'),
     },
-    defaultOpen: { control: 'boolean' },
+    defaultOpen: {
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: [
+        'Tooltip의 초기 열림 상태입니다.',
+        '내부적으로 상태를 관리할 때 사용합니다(Uncontrolled).',
+        '기본값은 false입니다.',
+      ].join('<br/>'),
+    },
     onOpenChange: {
       control: false,
       action: 'onOpenChange',
+      table: { type: { summary: 'function' } },
+      description: [
+        'Tooltip의 열림/닫힘 상태가 변경될 때 호출되는 콜백 함수입니다.',
+        'open prop과 함께 사용하여 상태를 외부에서 제어할 때 활용합니다.',
+      ].join('<br/>'),
     },
     openStatusRef: {
       control: false,
+      table: { type: { summary: 'ref' } },
+      description: [
+        'Tooltip의 열림 상태를 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
+        '참조 타입은 boolean으로 합니다.',
+      ].join('<br/>'),
     },
     fadeOut: {
       control: 'boolean',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: `${false}` } },
+      description: [
+        'Tooltip이 닫힐 때 fade-out 애니메이션을 적용할지 여부입니다.',
+        'Tooltip이 닫힐 때 해당 시간만큼 자연스럽게 사라지는 애니메이션이 적용됩니다.',
+        '기본값은 false이며, true 시 700(ms/밀리초 단위)이 적용됩니다.',
+      ].join('<br/>'),
     },
     isArrow: {
       control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
+      description: [
+        'Tooltip의 화살표(arrow) 표시 여부입니다.',
+        'true로 설정 시 Tooltip에 화살표가 나타나며, 기본값은 true입니다.',
+      ].join('<br/>'),
     },
     variant: {
       control: 'select',
       options: variantOptions,
-      table: {
-        type: { summary: `${variantOptions.join(', ')}` },
-        defaultValue: { summary: `${variantOptions[0]}` },
-      },
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'default' } },
+      description: [
+        'Tooltip의 색상을 설정합니다.',
+        "'default', 'primary', 'secondary', 'error', 'transparent', 'custom' 중 하나를 선택할 수 있습니다.",
+        "기본값은 'default'이며, 'custom'은 크기 별도 지정이 필요할 경우입니다.",
+        'custom 선택 시 bg-*로 시작하는 TailwindCSS 클래스를 className에 꼭 추가해야 합니다.',
+      ].join('<br/>'),
     },
     size: {
       control: 'select',
       options: sizeOptions,
-      table: {
-        type: { summary: `${sizeOptions.join(', ')}` },
-        defaultValue: { summary: `${sizeOptions[1]}` },
-      },
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'default' } },
+      description: [
+        'Tooltip의 content 크기를 지정합니다.',
+        "'small', 'medium', 'large', 'custom' 등의 형태가 있습니다.",
+        "기본값은 'medium'이고, 'custom'은 크기 별도 지정이 필요할 경우입니다.",
+        'custom 선택 시 bg-*로 시작하는 TailwindCSS 클래스를 className에 꼭 추가해야 합니다.',
+      ].join('<br/>'),
     },
     side: {
       control: 'select',
       options: sideOptions,
-      table: {
-        type: { summary: `${sideOptions.join(', ')}` },
-        defaultValue: { summary: `${sideOptions[0]}` },
-      },
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'top' } },
+      description: [
+        'Tooltip이 표시될 방향을 지정합니다.',
+        "'top', 'bottom', 'left', 'right' 중 하나를 선택할 수 있습니다.",
+        "기본값은 'top'입니다.",
+      ].join('<br/>'),
     },
     sideOffset: {
       control: 'number',
-      table: {
-        defaultValue: { summary: `${DEFAULT_SIDE_OFFSET}` },
-      },
+      table: { type: { summary: 'number' }, defaultValue: { summary: `${DEFAULT_SIDE_OFFSET}` } },
+      description: [
+        'Tooltip이 트리거로부터 얼마나 떨어져서 표시될지(픽셀 단위) 지정합니다.',
+        `기본값은 ${DEFAULT_SIDE_OFFSET}입니다.`,
+      ].join('<br/>'),
     },
     align: {
       control: 'select',
       options: alignOptions,
-      table: {
-        type: { summary: `${alignOptions.join(', ')}` },
-        defaultValue: { summary: `${alignOptions[1]}` },
-      },
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'center' } },
+      description: [
+        'Tooltip의 정렬 기준을 지정합니다.',
+        "'start', 'center', 'end' 중 하나를 선택할 수 있습니다.",
+        "기본값은 'center'입니다.",
+      ].join('<br/>'),
     },
     alignOffset: {
       control: 'number',
-      table: {
-        defaultValue: { summary: `${DEFAULT_ALIGN_OFFSET}` },
-      },
+      table: { type: { summary: 'number' }, defaultValue: { summary: `${DEFAULT_ALIGN_OFFSET}` } },
+      description: [
+        'Tooltip의 정렬 상태 기준에서 추가로 얼마나 이동할지(픽셀 단위) 지정합니다.',
+        `기본값은 ${DEFAULT_ALIGN_OFFSET}입니다.`,
+      ].join('<br/>'),
     },
     textAlign: {
       control: 'select',
       options: textAlignOptions,
-      table: {
-        type: { summary: `${textAlignOptions.join(', ')}` },
-        defaultValue: { summary: `${textAlignOptions[0]}` },
-      },
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'left' } },
+      description: [
+        'Tooltip 내부 텍스트의 정렬 방식을 지정합니다.',
+        "'left', 'center', 'right' 중 하나를 선택할 수 있습니다.",
+        "기본값은 'left'입니다.",
+      ].join('<br/>'),
     },
     contents: {
       control: 'text',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Tooltip Contents' },
-      },
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'Tooltip Contents' } },
+      description: [
+        'Tooltip에 표시할 내용입니다.',
+        '기본적으로 간단한 문자열을 받는 것을 기준으로 하고 있습니다.',
+      ].join('<br/>'),
     },
     children: {
       control: false,
+      table: { type: { summary: 'ReactNode' } },
+      description: ['Tooltip의 트리거 요소입니다.', 'children 또는 trigger 중 하나를 반드시 제공해야 합니다.'].join(
+        '<br/>',
+      ),
     },
     className: {
       control: 'text',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '' },
-      },
+      table: { type: { summary: 'string' }, defaultValue: { summary: '' } },
+      description: [
+        'Tooltip의 추가적인 CSS 클래스(Tailwind CSS 클래스 가능)를 지정할 수 있습니다.',
+        'variant나 size를 custom으로 설정할 때 필수로 사용됩니다.',
+      ].join('<br/>'),
     },
     disabled: {
       control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: [
+        'Tooltip을 비활성화할지 여부입니다.',
+        'true로 설정하면 Tooltip이 표시되지 않습니다.',
+        '기본값은 false입니다.',
+      ].join('<br/>'),
     },
   },
   parameters: {
     docs: {
       description: {
         component: [
-          'Tooltip 컴포넌트의 문서입니다. Tooltip 이란, 사용자가 UI 요소(버튼, 아이콘 등)에 마우스를 올리거나 포커스할 때 추가적인 정보를 간결하게 보여주는 오버레이 UI 입니다.',
-          '주로 버튼의 기능 설명, 약어 해석, 경고 메시지 등 즉각적이고 보조적인 안내가 필요한 상황에서 사용됩니다',
+          'Tooltip 컴포넌트의 문서입니다.',
+          'Tooltip이란, 사용자가 UI 요소(버튼, 아이콘 등)에 마우스를 올리거나 포커스할 때 추가적인 정보를 간결하게 보여주는 오버레이 UI입니다.',
+          '주로 버튼의 기능 설명, 약어 해석, 경고 메시지 등 즉각적이고 보조적인 안내가 필요한 상황에서 사용됩니다.',
           'Tooltip과 다른 비슷한 컴포넌트와의 차이점이라면 Tooltip의 경우 문자로만 이루어진 내용들에 대해서 내용을 제공합니다.',
         ].join('<br/>'),
       },
@@ -213,7 +279,7 @@ export const Variants: Story = {
   parameters: {
     docs: {
       description: {
-        story: ['Tooltip의 다양한 Variant 별 예시를 확인하실 수 있습니다.'].join('\n'),
+        story: ['Tooltip의 다양한 Variant별 예시를 확인하실 수 있습니다.'].join('<br/>'),
       },
     },
   },
@@ -259,7 +325,7 @@ export const Sizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: ['Tooltip의 다양한 Size 별 예시를 확인하실 수 있습니다.'].join('\n'),
+        story: ['Tooltip의 다양한 Size별 예시를 확인하실 수 있습니다.'].join('<br/>'),
       },
     },
   },
@@ -377,10 +443,10 @@ export const Durations: Story = {
     docs: {
       description: {
         story: [
-          'Durations 스토리는 Tooltip 이 보여질 때와 사라질 때의 다양한 예시를 보여주는 스토리입니다.',
-          'DelayDuration 은 Tooltip 이 보여지기 전 대기 시간(밀리초/ms 단위)을 다양한 예시로 보여드리는 스토리입니다.',
+          'Durations 스토리는 Tooltip이 보여질 때와 사라질 때의 다양한 예시를 보여주는 스토리입니다.',
+          'DelayDuration은 Tooltip이 보여지기 전 대기 시간(밀리초/ms 단위)을 다양한 예시로 보여드리는 스토리입니다.',
           'delayDuration prop은 사용자가 트리거에 마우스를 올렸을 때 Tooltip이 등장하기까지의 지연 시간을 설정할 수 있습니다.',
-          'fadeOut은 Tooltip이 사라지기까지의 fade-out 애니메이션이 적용되는 props 입니다.',
+          'fadeOut은 Tooltip이 사라지기까지의 fade-out 애니메이션이 적용되는 props입니다.',
         ].join('<br/>'),
       },
     },
@@ -552,9 +618,9 @@ export const OpenControl: Story = {
     docs: {
       description: {
         story: [
-          'OpenControl 은 Tooltip의 open, defaultOpen, onOpenChange, openStatusRef를 모두 활용하는 스토리 예시입니다.',
-          '제어(Controlled)와 비제어(Uncontrolled)의 예시를 확인하실 수 있으며 open 의 상태를 확인하실 수 있도록 임의로 만든 예시입니다.',
-          '비제어일 경우 Tooltip 은 한 화면에 하나만 보여지도록 기본적으로 처리가 되어있습니다.',
+          'OpenControl은 Tooltip의 open, defaultOpen, onOpenChange, openStatusRef를 모두 활용하는 스토리 예시입니다.',
+          '제어(Controlled)와 비제어(Uncontrolled)의 예시를 확인하실 수 있으며 open의 상태를 확인하실 수 있도록 임의로 만든 예시입니다.',
+          '비제어일 경우 Tooltip은 한 화면에 하나만 보여지도록 기본적으로 처리가 되어있습니다.',
         ].join('<br/>'),
       },
     },
@@ -636,8 +702,8 @@ export const TooltipPosition: Story = {
     docs: {
       description: {
         story: [
-          'TooltipPosition 은 Tooltip의 위치 정보를 확인하실 수 있는 스토리 입니다.',
-          '마우스 hover 시 각 위치를 확인하실 수 있으며, props에 따라서 sideOffset 과 alignOffset 을 조절하여 거리나 위치감을 확인해보실 수 있습니다.',
+          'TooltipPosition은 Tooltip의 위치 정보를 확인하실 수 있는 스토리입니다.',
+          '마우스 hover 시 각 위치를 확인하실 수 있으며, props에 따라서 sideOffset과 alignOffset을 조절하여 거리나 위치감을 확인해보실 수 있습니다.',
         ].join('<br/>'),
       },
     },

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { badgeVariants, ScoringBadge } from '@common/ui/components/Badge';
 import { AlertCircleIcon, DownloadIcon } from '@common/ui/icons';
 
-const scoreKeys = Object.keys(badgeVariants.variants.score) as (keyof typeof badgeVariants.variants.score)[];
+const scoreArr = Object.keys(badgeVariants.variants.score) as (keyof typeof badgeVariants.variants.score)[];
 
 const meta: Meta<typeof ScoringBadge> = {
   title: 'UI/DataDisplay/Common/Badge/ScoringBadge',
@@ -18,57 +18,73 @@ const meta: Meta<typeof ScoringBadge> = {
   argTypes: {
     isBtn: {
       control: 'boolean',
-      table: { defaultValue: { summary: 'false' } },
-      description:
-        'isBtn 활성화 시, 버튼처럼 hover:, active:, focus:의 이벤트 상태 시 변화가 추가되며, cursor 및 pointer events 관련 css가 추가됩니다.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: [
+        'isBtn 활성화 시 버튼처럼 hover, active, focus 이벤트 상태 시 변화가 추가되며,',
+        'cursor 및 pointer events 관련 CSS가 추가됩니다.',
+      ].join('<br/>'),
     },
     score: {
       control: 'select',
-      options: scoreKeys,
-      table: { defaultValue: { summary: 'normal' } },
-      description:
-        '필수값. score 스타일 (veryLow, low, normal, high, veryHigh, extra, practice, scoreAlert) 중에서 선택해야 합니다.',
+      options: scoreArr,
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'normal' } },
+      description: [
+        'ScoringBadge의 점수 스타일을 지정하는 필수 props입니다.',
+        'veryLow, low, normal, high, veryHigh, extra, practice, scoreAlert 중에서 선택해야 합니다.',
+      ].join('<br/>'),
     },
     scoreVal: {
       control: 'number',
-      table: { defaultValue: { summary: '20' } },
-      description:
-        '필수값. 숫자를 입력해야 합니다. 현재로서는 음수, 소수점도 허용되고는 있습니다. 해당의 defaultValue는 storybook 전용으로 설정한 값입니다.',
+      table: { type: { summary: 'number' }, defaultValue: { summary: '20' } },
+      description: [
+        'Badge 내부에 표시할 점수값을 지정하는 필수 props입니다.',
+        '숫자를 입력해야 하며, 현재로서는 음수, 소수점도 허용됩니다. 현재의 defaultValue는 storybook 전용으로 설정한 값입니다.',
+      ].join('<br/>'),
     },
     maxVal: {
       control: 'number',
-      table: { defaultValue: { summary: '0' } },
-      description:
-        '옵션값. 기본적으로 0이며, 0 이상의 숫자일 경우, 해당 maxVal 보다 값이 크거나 같으면 maxVal+의 형태로 표기됩니다. 해당의 defaultValue는 storybook 전용으로 설정한 값입니다.',
+      table: { type: { summary: 'number' }, defaultValue: { summary: '0' } },
+      description: [
+        '최대값을 지정하는 옵션 props입니다.',
+        '기본적으로 0이며, 0 이상의 숫자일 경우 scoreVal이 maxVal보다 크거나 같으면 maxVal+의 형태로 표기됩니다.',
+        '현재의 defaultValue는 storybook 전용으로 설정한 값입니다.',
+      ].join('<br/>'),
     },
     icon: {
       control: false,
       table: { type: { summary: 'ReactNode' }, defaultValue: { summary: 'null' } },
-      description: 'Badge 내부에 표시할 아이콘(ReactNode) 입니다.',
+      description: 'Badge 내부에 표시할 아이콘을 지정하는 옵션 props입니다.',
     },
     iconPosition: {
       control: { type: 'radio' },
       options: ['left', 'right'],
       table: { type: { summary: "'left' | 'right'" }, defaultValue: { summary: 'left' } },
-      description: "아이콘 위치. 'left'(기본값) 또는 'right' 선택",
+      description: "아이콘의 위치를 지정하는 props입니다. 'left'(기본값) 또는 'right' 중에서 선택할 수 있습니다.",
     },
     children: {
       control: 'text',
-      table: { defaultValue: { summary: 'ScoringBadge' } },
-      description:
-        'ScoringBadge 내부에 들어갈 내용으로서 일반적으로 scoreVal에 따른 등급 레벨을 표기합니다. 문자열만 가능합니다.',
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'ScoringBadge' } },
+      description: [
+        'ScoringBadge 내부에 들어갈 내용을 지정하는 필수 props입니다.',
+        '일반적으로 scoreVal에 따른 등급 레벨을 표기하며, 문자열만 가능합니다.',
+      ].join('<br/>'),
     },
     className: {
       control: 'text',
-      table: { defaultValue: { summary: '' } },
-      description: '추가적으로 적용할 Tailwind CSS 클래스',
+      table: { type: { summary: 'string' }, defaultValue: { summary: '' } },
+      description: '추가적으로 적용할 Tailwind CSS 클래스명입니다.',
     },
   },
   parameters: {
     docs: {
       description: {
-        component:
-          'ScoringBadge 컴포넌트의 문서입니다. ScoringBadge 의 경우 기본 Badge 에서 variant는 "scoring" 를 고정한 컴포넌트로서, ScoringBadge 는 score, scoreVal, children 등을 필수값으로, maxVal, icon, iconPosition 을 옵션값으로 받습니다.<br/>기본적인 스타일은 Badge를 따르되 ScoringBadge 별도 스타일이 고정되어 있어서, children 은 문자열만 받고 있습니다.<br/>props 들의 예시와 isBtn 대한 내역은 아래 스토리에서 확인해주세요. 다만, asChild는 기본 Badge 컴포넌트에서만 가능하다는 것을 유의해주세요.',
+        component: [
+          'ScoringBadge 컴포넌트의 문서입니다. ScoringBadge는 기본 Badge에서 variant를 "scoring"으로 고정한 컴포넌트입니다.',
+          'score, scoreVal, children을 필수값으로, maxVal, icon, iconPosition을 옵션값으로 받습니다.',
+          '기본적인 스타일은 Badge를 따르되, ScoringBadge 별도 스타일이 고정되어 있어서 children은 문자열만 받습니다.',
+          'props 들의 예시와 isBtn 대한 내역은 아래 스토리에서 확인해주세요.',
+          'asChild는 기본 Badge 컴포넌트에서만 가능하다는 것을 유의해주세요.',
+        ].join('<br/>'),
       },
     },
   },
@@ -104,7 +120,7 @@ export const Score: ScoringStory = {
     },
     score: {
       control: 'select',
-      options: scoreKeys,
+      options: scoreArr,
       table: { disable: true },
     },
     icon: {
@@ -114,8 +130,10 @@ export const Score: ScoringStory = {
   parameters: {
     docs: {
       description: {
-        story:
-          'ScoringBadge 에서 쓰이는 모든 `score` 의 종류와 다양한 예시들을 확인하실 수 있습니다.<br/>ScoringBadge 의 경우 `score`의 기본값은 `info` 로 처리되고 있습니다.',
+        story: [
+          'ScoringBadge에서 사용되는 모든 score 종류와 다양한 예시들을 확인하실 수 있습니다.',
+          'ScoringBadge 의 경우 `score`의 기본값은 `info` 로 처리되고 있습니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -124,10 +142,10 @@ export const Score: ScoringStory = {
       <div className={'flex flex-col gap-3'}>
         <span className="text-sm font-bold">Default</span>
         <div className="flex flex-wrap gap-4 p-5">
-          {scoreKeys.map((score) => (
+          {scoreArr.map((score) => (
             <div className={'flex flex-col gap-0.5 text-center'} key={score}>
               <span className="text-xs text-juiText-blue">{score}</span>
-              <ScoringBadge {...args} score={score} icon={null} />
+              <ScoringBadge {...args} score={score as keyof typeof badgeVariants.variants.score} icon={null} />
             </div>
           ))}
         </div>
@@ -136,10 +154,10 @@ export const Score: ScoringStory = {
       <div className={'flex flex-col gap-3'}>
         <span className="text-sm font-bold">With Icon</span>
         <div className="flex flex-wrap gap-4 p-5">
-          {scoreKeys.map((score) => (
+          {scoreArr.map((score) => (
             <div className={'flex flex-col gap-0.5 text-center'} key={score}>
               <span className="text-xs text-juiText-blue">{`score : ${score} | iconPosition: ${args.iconPosition}`}</span>
-              <ScoringBadge {...args} score={score} />
+              <ScoringBadge {...args} score={score as keyof typeof badgeVariants.variants.score} />
             </div>
           ))}
         </div>
@@ -167,7 +185,7 @@ export const IsBtn: ScoringStory = {
     },
     score: {
       control: 'select',
-      options: scoreKeys,
+      options: scoreArr,
       table: { disable: false },
     },
     icon: {
@@ -177,8 +195,10 @@ export const IsBtn: ScoringStory = {
   parameters: {
     docs: {
       description: {
-        story:
-          'isBtn 는 boolean 으로서 true 시 button 처럼 hover:, active:, focus:의 이벤트 적인 내역들에 대한 이펙트가 추가됩니다. 기본적으로는 false 입니다.',
+        story: [
+          'isBtn은 boolean 값으로서 true 시 button처럼 hover, active, focus 이벤트에 대한 이펙트가 추가됩니다.',
+          '기본값은 false 입니다.',
+        ].join('<br/>'),
       },
     },
   },

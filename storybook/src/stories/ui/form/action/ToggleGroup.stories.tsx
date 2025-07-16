@@ -7,58 +7,137 @@ import { MinusIcon, PlusIcon } from '@common/ui/icons';
 import MultipleToggleGroup from '@common/ui/components/ToggleGroup/MultipleToggleGroup.tsx';
 import SingleToggleGroup from '@common/ui/components/ToggleGroup/SingleToggleGroup.tsx';
 
+// 공통 상수
+const typeOptions = ['single', 'multiple'] as const;
+const sizeOptions = ['small', 'medium', 'large'] as const;
+
+const defaultOptions = [
+  { label: 'OR', value: 'or' },
+  { label: 'AND', value: 'and' },
+];
+
+const iconOptions = [
+  { label: 'OR', value: 'or', icon: PlusIcon },
+  { label: 'AND', value: 'and', icon: MinusIcon },
+];
+
 const meta: Meta<typeof ToggleGroup> = {
   title: 'UI/Form/Action/ToggleGroup',
   component: ToggleGroup,
+  args: {
+    type: 'single',
+    options: defaultOptions,
+    size: 'small',
+    disabled: false,
+    defaultValue: undefined,
+    value: undefined,
+    onValueChange: undefined,
+    valueRef: undefined,
+    className: undefined,
+    itemClassName: undefined,
+  },
   argTypes: {
     type: {
-      control: 'radio',
-      description: 'Toggle Group의 type을 설정할 수 있다. single, multiple로 구분된다.',
+      control: 'select',
+      options: typeOptions,
+      table: {
+        type: { summary: typeOptions.join(' | ') },
+        defaultValue: { summary: 'single' },
+      },
+      description: ['ToggleGroup의 type을 설정합니다.', 'single: 하나만 선택 가능, multiple: 여러 개 선택 가능'].join(
+        '<br/>',
+      ),
     },
     options: {
       control: 'object',
-      description:
-        'Toggle Group의 각 항목은 label과 value로 구성되고, 필요에 따라 icon을 추가할 수 있다. icon은 JSX가 아닌 React 컴포넌트 그 자체 (ElementType)로 추가한다.',
+      table: {
+        type: { summary: 'Array<{label?: string; value: string; icon?: ElementType}>' },
+        defaultValue: { summary: '[]' },
+      },
+      description: [
+        'ToggleGroup의 각 항목을 정의합니다.',
+        '각 항목은 label: 표시할 텍스트, value: 값, icon: 아이콘 컴포넌트 로 구성되어 있습니다.',
+        '필요에 따라 icon을 추가할 수 있으며, icon은 JSX가 아닌 React 컴포넌트 타입(ElementType)으로 전달해야 합니다.',
+      ].join('<br/>'),
     },
-    defaultValue: {
-      control: 'text',
-      description: '초기 선택값(uncontrolled).',
+    size: {
+      control: 'select',
+      options: sizeOptions,
+      table: {
+        type: { summary: sizeOptions.join(' | ') },
+        defaultValue: { summary: 'small' },
+      },
+      description: ['ToggleGroup의 전체 크기를 설정합니다.', 'small, medium, large 중에서 선택할 수 있습니다.'].join(
+        '<br/>',
+      ),
     },
     disabled: {
       control: 'boolean',
-      description: 'Toggle Group 활성화 여부',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: 'ToggleGroup의 비활성화 상태를 설정합니다.',
+    },
+    defaultValue: {
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: '비제어형(uncontrolled) ToggleGroup의 초기 선택값 입니다.',
     },
     value: {
       control: 'text',
-      description: '선택된 값(controlled).',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '제어형(controlled) ToggleGroup의 선택된 값 입니다.',
+        'onValueChange와 함께 사용하여 상태를 외부에서 제어할 수 있습니다.',
+      ].join('<br/>'),
     },
     onValueChange: {
-      description: '값이 변경될 때 호출되는 콜백함수',
-      table: { disable: true },
-    },
-    size: {
-      description: 'Toggle의 전체 크기를 선택할 수 있다.',
-    },
-    className: {
-      control: {
-        type: 'text',
-        disable: true,
+      control: false,
+      table: {
+        type: { summary: '(value: string) => void' },
+        defaultValue: { summary: 'undefined' },
       },
-      description: '전체 className 설정',
-    },
-    itemClassName: {
-      control: {
-        type: 'text',
-        disable: true,
-      },
-      description: 'Toggle Group의 하위 아이템 className 설정',
+      description: '값이 변경될 때 호출되는 콜백 함수입니다.',
     },
     valueRef: {
       table: { disable: true },
+      description: '비제어형 ToggleGroup의 현재 값을 참조할 수 있는 ref입니다.',
+    },
+    className: {
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: 'ToggleGroup 전체에 적용할 CSS 클래스명입니다.',
+    },
+    itemClassName: {
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: 'ToggleGroup의 각 항목에 적용할 CSS 클래스명입니다.',
     },
   },
-  args: {
-    disabled: false,
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          'ToggleGroup 컴포넌트는 여러 개의 Toggle 버튼을 그룹화하여 관리하는 컴포넌트입니다.',
+          'single 타입은 하나의 항목만 선택 가능하고, multiple 타입은 여러 항목을 선택할 수 있습니다.',
+          '각 항목은 텍스트와 아이콘을 조합하여 표시할 수 있습니다.',
+          '제어형과 비제어형 모두 지원합니다.',
+        ].join('<br/>'),
+      },
+    },
   },
 };
 
@@ -67,63 +146,40 @@ export default meta;
 type Story = StoryObj<typeof ToggleGroup>;
 
 export const Default: Story = {
-  args: {
-    options: [
-      { label: 'OR', value: 'or' },
-      { label: 'AND', value: 'and' },
-    ],
-    size: 'small',
-    type: 'single',
-  },
   parameters: {
     docs: {
       description: {
-        story: '기본 Toggle Group 예시',
+        story: ['기본 ToggleGroup 컴포넌트의 예시입니다.'].join('<br/>'),
       },
     },
   },
 };
 export const Type: Story = {
+  argTypes: {
+    type: { table: { disable: true } },
+    size: { table: { disable: true } },
+    className: { table: { disable: true } },
+    itemClassName: { table: { disable: true } },
+  },
   parameters: {
     docs: {
       description: {
-        story: 'single, multiple 중 타입을 선택할 수 있다.',
+        story: [
+          'ToggleGroup의 타입별 예시입니다.',
+          'single 타입은 하나만 선택 가능하고, multiple 타입은 여러 개 선택 가능합니다.',
+        ].join('<br/>'),
       },
     },
-  },
-  args: {
-    options: [
-      { label: 'OR', value: 'or' },
-      { label: 'AND', value: 'and' },
-    ],
-    size: 'small',
-    type: 'single',
-  },
-  argTypes: {
-    type: { table: { disable: true }, control: false },
-    size: { table: { disable: true }, control: false },
-    className: { table: { disable: true }, control: false },
-    itemClassName: { table: { disable: true }, control: false },
   },
   render: () => (
     <div className="flex gap-3">
       <div className="p-2 flex flex-col gap-2">
-        <span>Multiple</span>
-        <MultipleToggleGroup
-          options={[
-            { label: 'OR', value: 'or', icon: PlusIcon },
-            { label: 'AND', value: 'and', icon: MinusIcon },
-          ]}
-        />
+        <span>Single Type</span>
+        <SingleToggleGroup options={iconOptions} />
       </div>
       <div className="p-2 flex flex-col gap-2">
-        <span>Single</span>
-        <SingleToggleGroup
-          options={[
-            { label: 'OR', value: 'or', icon: PlusIcon },
-            { label: 'AND', value: 'and', icon: MinusIcon },
-          ]}
-        />
+        <span>Multiple Type</span>
+        <MultipleToggleGroup options={iconOptions} />
       </div>
     </div>
   ),
@@ -131,68 +187,65 @@ export const Type: Story = {
 
 export const WithIcon: Story = {
   args: {
-    options: [
-      { label: 'OR', value: 'or', icon: PlusIcon },
-      { label: 'AND', value: 'and', icon: MinusIcon },
-    ],
-    size: 'small',
-    type: 'single',
+    options: iconOptions,
   },
   argTypes: {
-    options: {
-      control: false,
+    options: { control: false },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'ToggleGroup에 아이콘을 추가한 예시입니다.',
+          '각 항목에 icon 속성을 추가하여 아이콘을 표시할 수 있습니다.',
+        ].join('<br/>'),
+      },
     },
   },
 };
 
 export const Size: Story = {
-  args: {
-    options: [
-      { label: 'OR', value: 'or' },
-      { label: 'AND', value: 'and' },
-    ],
-    size: 'small',
-    type: 'single',
+  argTypes: {
+    size: { table: { disable: true } },
   },
   parameters: {
     docs: {
       description: {
-        story: '사이즈 별 예시를 확인하고 선택할 수 있다.',
+        story: ['ToggleGroup의 다양한 크기별 예시입니다.', 'small, medium, large 크기를 선택할 수 있습니다.'].join(
+          '<br/>',
+        ),
       },
     },
   },
+  render: (args) => (
+    <div className="flex flex-col gap-4">
+      {sizeOptions.map((size) => (
+        <div key={size} className="flex flex-col gap-2">
+          <span className="text-sm font-bold">{size}</span>
+          <ToggleGroup {...args} size={size} />
+        </div>
+      ))}
+    </div>
+  ),
 };
 
 export const CustomClass: Story = {
   args: {
-    options: [
-      { label: 'OR', value: 'or' },
-      { label: 'AND', value: 'and' },
-    ],
     defaultValue: 'or',
-    size: 'small',
-    type: 'single',
     className: 'flex gap-2',
     itemClassName: 'data-[state=checked]:border-juiPrimary bg-juiPrimary rounded-none',
   },
   argTypes: {
-    itemClassName: {
-      control: {
-        type: 'text',
-        disable: false,
-      },
-    },
-    className: {
-      control: {
-        type: 'text',
-        disable: false,
-      },
-    },
+    className: { control: { type: 'text', disable: false } },
+    itemClassName: { control: { type: 'text', disable: false } },
   },
   parameters: {
     docs: {
       description: {
-        story: '외부 className 스타일 적용 예시',
+        story: [
+          'ToggleGroup에 커스텀 CSS 클래스를 적용한 예시입니다.',
+          'className으로 전체 스타일을, itemClassName으로 각 항목의 스타일을 변경할 수 있습니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -249,9 +302,12 @@ export const Controlled: Story = {
   parameters: {
     docs: {
       description: {
-        story: '제어형은 값을 직접 관리하고, 비제어형은 외부에서 값을 받아 처리한다.',
+        story: [
+          '제어형과 비제어형 ToggleGroup 사용 예시입니다.',
+          '제어형은 value와 onValueChange를 사용하여 상태를 외부에서 직접 관리합니다.',
+          '비제어형은 valueRef를 사용하여 현재 값을 참조해서 외부에서 값을 받아 처리할 수 있습니다.',
+        ].join('<br/>'),
       },
-      disable: true,
     },
   },
   render: (args) => <ControlComp {...args} />,

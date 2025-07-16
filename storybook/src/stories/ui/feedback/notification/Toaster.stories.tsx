@@ -34,8 +34,10 @@ const meta: Meta<typeof Toaster> = {
     controls: { disable: true },
     docs: {
       description: {
-        component:
-          'Toaster 컴포넌트는 Sonner 라이브러리를 기반합니다. 자세한 사용법은 https://sonner.emilkowal.ski/ 참고 하여 사용 합니다.',
+        component: [
+          'Toaster 컴포넌트는 Sonner 라이브러리를 기반으로 합니다.',
+          '자세한 사용법은 https://sonner.emilkowal.ski/ 를 참고하여 사용합니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -46,6 +48,13 @@ export default meta;
 type Story = StoryObj<typeof Toaster>;
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '기본 토스트 메시지를 보여주는 예제입니다.',
+      },
+    },
+  },
   render: () => (
     <div className="p-4 flex flex-col items-start gap-4">
       <Button onClick={() => toast('기본 토스트 메시지입니다.')}>기본 토스트 띄우기</Button>
@@ -90,6 +99,13 @@ export const Default: Story = {
 };
 
 export const RichColorDefault: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'richColors 옵션을 적용한 토스트 메시지입니다.',
+      },
+    },
+  },
   render: () => (
     <div className="p-4 flex flex-col items-start gap-4">
       <Button onClick={() => toast('기본 토스트 메시지입니다.', { richColors: true })}>기본 토스트 띄우기</Button>
@@ -136,6 +152,13 @@ export const RichColorDefault: Story = {
 const positions = ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'] as const;
 
 export const PositionExample: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '다양한 위치에 토스트를 표시하는 예제입니다.',
+      },
+    },
+  },
   render: () => (
     <div className="p-4 grid grid-cols-3 gap-16 items-start">
       {positions.map((position, i) => {
@@ -158,6 +181,13 @@ export const PositionExample: Story = {
 };
 
 export const CloseButtonToast: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '닫기 버튼이 있는 토스트 메시지입니다.',
+      },
+    },
+  },
   render: () => (
     <div className="p-4 flex flex-col items-start gap-4">
       <Button onClick={() => toast('닫기 버튼이 없는 토스트입니다.')}>토스트 띄우기</Button>
@@ -177,6 +207,13 @@ export const CloseButtonToast: Story = {
 };
 
 export const actionButtonToast: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '액션 버튼이 있는 토스트 메시지입니다.',
+      },
+    },
+  },
   render: () => (
     <div className="p-4 flex flex-col items-start gap-4">
       <Button
@@ -212,6 +249,13 @@ export const actionButtonToast: Story = {
 };
 
 export const DurationOptionsToast: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '토스트의 지속 시간을 설정하는 예제입니다.',
+      },
+    },
+  },
   render: () => {
     const showToast = (duration: number | 'infinity') => {
       toast(`${duration === 'infinity' ? '무한 지속' : `${duration / 1000}초 지속`} 토스트`, {
@@ -239,7 +283,8 @@ export const VisibleToasts1: Story = {
     visibleToasts: 1,
     docs: {
       description: {
-        story: '전역 토스트 컴포넌트에 visibleToasts propsfh 설정 토스트가 보여지는 갯수를 1개로 제한 (기본: 3개)',
+        story:
+          '전역 토스트 컴포넌트에 visibleToasts props 로 설정 토스트가 보여지는 갯수를 1개로 제한할 수 있습니다. (기본: 3개)',
       },
     },
   },
@@ -256,7 +301,7 @@ export const VisibleToasts5: Story = {
     visibleToasts: 5,
     docs: {
       description: {
-        story: '전역 토스트 컴포넌트에 visibleToasts propsfh 설정 토스트가 보여지는 갯수를 5개로 제한 (기본: 3개)',
+        story: '전역 토스트 컴포넌트에 visibleToasts props로 설정 토스트가 보여지는 갯수를 5개로 제한 (기본: 3개)',
       },
     },
   },
@@ -272,7 +317,8 @@ export const VisibleToasts10: Story = {
     visibleToasts: 10,
     docs: {
       description: {
-        story: '전역 토스트 컴포넌트에 visibleToasts propsfh 설정 토스트가 보여지는 갯수를 10개로 제한 (기본: 3개)',
+        story:
+          '전역 토스트 컴포넌트에 visibleToasts props로 설정 토스트가 보여지는 갯수를 10개로 제한할 수 있습니다. (기본: 3개)',
       },
     },
   },
@@ -284,6 +330,13 @@ export const VisibleToasts10: Story = {
 };
 
 export const Dismiss: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'toast.dismiss() 함수를 사용하여 모든 토스트를 일괄적으로 닫는 기능을 보여주는 예제입니다.',
+      },
+    },
+  },
   render: () => (
     <div className="p-4 flex flex-col items-start gap-4">
       <Button onClick={() => toast('닫기 버튼이 없는 토스트입니다.')}>토스트 띄우기</Button>

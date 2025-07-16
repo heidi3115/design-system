@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { badgeVariants, StateBadge } from '@common/ui/components/Badge';
 import { BookmarkIcon, CheckIcon } from '@common/ui/icons';
 
+const statusArr = Object.keys(badgeVariants.variants.status);
+
 const meta: Meta<typeof StateBadge> = {
   title: 'UI/DataDisplay/Common/Badge/StateBadge',
   component: StateBadge,
@@ -13,33 +15,36 @@ const meta: Meta<typeof StateBadge> = {
   argTypes: {
     isBtn: {
       control: 'boolean',
-      table: { defaultValue: { summary: 'false' } },
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
       description:
-        'isBtn 활성화 시, 버튼처럼 hover:, active:, focus:의 이벤트 상태 시 변화가 추가되며, cursor 및 pointer events 관련 css가 추가됩니다.',
+        'isBtn 활성화 시 버튼처럼 hover, active, focus 이벤트 상태 시 변화가 추가되며, cursor 및 pointer events 관련 CSS가 추가됩니다.',
     },
     status: {
       control: 'select',
-      options: Object.keys(badgeVariants.variants.status),
-      table: { defaultValue: { summary: 'default' } },
+      options: statusArr,
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'default' } },
       description:
-        ' 필수값. status 스타일 (default, primary, secondary, progress, complete, failed, info, boundary, alert, critical, urgency) 중에서 선택해야 합니다.',
+        'StateBadge의 상태를 지정하는 필수 props로서 default, primary, secondary, progress, complete, failed, info, boundary, alert, critical, urgency 중에서 선택해야 합니다.',
     },
     children: {
       control: 'text',
-      table: { defaultValue: { summary: 'StateBadge' } },
-      description: 'Badge 내부에 들어갈 내용',
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'StateBadge' } },
+      description: 'Badge 내부에 들어갈 내용입니다.',
     },
     className: {
       control: 'text',
-      table: { defaultValue: { summary: '' } },
-      description: '추가적으로 적용할 Tailwind CSS 클래스',
+      table: { type: { summary: 'string' }, defaultValue: { summary: '' } },
+      description: '추가적으로 적용할 Tailwind CSS 클래스명입니다.',
     },
   },
   parameters: {
     docs: {
       description: {
-        component:
-          'StateBadge 컴포넌트의 문서입니다. StateBadge 는 레이블이나 태그 등 상태 태그를 위한 컴포넌트입니다.<br/>StateBadge 의 경우 기본 Badge 에서 variant는 "state" 를 고정한 컴포넌트로서, StateBadge 는 `status` 를 필수값으로, `isBtn`을 옵션값으로 받습니다.<br/>children에 대해서 따로 제한이 있지는 않습니다. <br/>status 와 isBtn 대한 내역은 아래 스토리에서 확인해주세요. 다만, asChild는 기본 Badge 컴포넌트에서만 가능하다는 것을 유의해주세요.<br/>기본적인 스타일은 Badge 를 따르고 있습니다.',
+        component: [
+          'StateBadge 컴포넌트의 문서입니다. StateBadge는 레이블이나 태그 등 상태 표시를 위한 컴포넌트입니다.',
+          'StateBadge는 기본 Badge에서 variant를 "state"로 고정한 컴포넌트로서, status를 필수값으로, isBtn을 옵션값으로 받습니다.',
+          'children에 대해서는 따로 제한이 없으며, asChild는 기본 Badge 컴포넌트에서만 가능합니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -78,15 +83,17 @@ export const Status: StateStory = {
     },
     status: {
       control: 'select',
-      options: Object.keys(badgeVariants.variants.status),
+      options: statusArr,
       table: { disable: true },
     },
   },
   parameters: {
     docs: {
       description: {
-        story:
-          'StateBadge 에서 쓰이는 모든 `status`의 종류와 다양한 예시들을 확인하실 수 있습니다.<br/>StateBadge 의 경우 children에 따로 제한이 되어있지는 않습니다만 기본은 Badge 에서 가져왔으니 해당에 유의해주세요.',
+        story: [
+          'StateBadge에서 사용되는 모든 status 종류와 다양한 예시들을 확인하실 수 있습니다.',
+          'StateBadge 의 경우 children에 따로 제한이 되어있지는 않습니다만 기본은 Badge 에서 가져왔으니 해당에 유의해주세요.',
+        ].join('<br/>'),
       },
     },
   },
@@ -95,49 +102,43 @@ export const Status: StateStory = {
       <div className={'flex flex-col gap-3'}>
         <span className="text-sm font-bold">Text</span>
         <div className="flex flex-wrap gap-4 p-5 items-center justify-center">
-          {(Object.keys(badgeVariants.variants.status) as (keyof typeof badgeVariants.variants.status)[]).map(
-            (status) => (
-              <div className={'flex flex-col gap-0.5 items-center'} key={status}>
-                <span className="text-xs text-juiText-blue">{status}</span>
-                <StateBadge {...args} status={status}>
-                  {status}
-                </StateBadge>
-              </div>
-            ),
-          )}
+          {statusArr.map((status) => (
+            <div className={'flex flex-col gap-0.5 items-center'} key={status}>
+              <span className="text-xs text-juiText-blue">{status}</span>
+              <StateBadge {...args} status={status as keyof typeof badgeVariants.variants.status}>
+                {status}
+              </StateBadge>
+            </div>
+          ))}
         </div>
       </div>
       <hr />
       <div className={'flex flex-col gap-3'}>
         <span className="text-sm font-bold">With Icon</span>
         <div className="flex flex-wrap gap-4 p-5 items-center justify-center">
-          {(Object.keys(badgeVariants.variants.status) as (keyof typeof badgeVariants.variants.status)[]).map(
-            (status) => (
-              <div className={'flex flex-col gap-0.5 items-center'} key={status}>
-                <span className="text-xs text-juiText-blue">{status}</span>
-                <StateBadge {...args} status={status}>
-                  <CheckIcon size={'small'} />
-                  {status}
-                </StateBadge>
-              </div>
-            ),
-          )}
+          {statusArr.map((status) => (
+            <div className={'flex flex-col gap-0.5 items-center'} key={status}>
+              <span className="text-xs text-juiText-blue">{status}</span>
+              <StateBadge {...args} status={status as keyof typeof badgeVariants.variants.status}>
+                <CheckIcon size={'small'} />
+                {status}
+              </StateBadge>
+            </div>
+          ))}
         </div>
       </div>
       <hr />
       <div className={'flex flex-col gap-3'}>
         <span className="text-sm font-bold">Only Icon</span>
         <div className="flex flex-wrap gap-4 p-5 items-center justify-center">
-          {(Object.keys(badgeVariants.variants.status) as (keyof typeof badgeVariants.variants.status)[]).map(
-            (status) => (
-              <div className={'flex flex-col gap-0.5 items-center'} key={status}>
-                <span className="text-xs text-juiText-blue">{status}</span>
-                <StateBadge {...args} status={status}>
-                  <BookmarkIcon size={'small'} />
-                </StateBadge>
-              </div>
-            ),
-          )}
+          {statusArr.map((status) => (
+            <div className={'flex flex-col gap-0.5 items-center'} key={status}>
+              <span className="text-xs text-juiText-blue">{status}</span>
+              <StateBadge {...args} status={status as keyof typeof badgeVariants.variants.status}>
+                <BookmarkIcon size={'small'} />
+              </StateBadge>
+            </div>
+          ))}
         </div>
       </div>
     </div>

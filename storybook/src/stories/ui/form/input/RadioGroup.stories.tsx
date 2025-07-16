@@ -4,56 +4,109 @@ import { action } from '@storybook/addon-actions';
 import { RadioGroup, Button } from '@common/ui';
 import { useRef, useState, type ComponentProps } from 'react';
 
+// 공통 상수
+const directionOptions = ['vertical', 'horizontal'] as const;
+const defaultOptions = [
+  { label: '옵션 A', value: 'A' },
+  { label: '옵션 B', value: 'B' },
+  { label: '옵션 C', value: 'C' },
+];
+
 const meta: Meta<typeof RadioGroup> = {
   title: 'UI/Form/Input/RadioGroup',
   component: RadioGroup,
+  args: {
+    options: defaultOptions,
+    direction: 'vertical',
+    defaultValue: undefined,
+    value: undefined,
+    onValueChange: undefined,
+    className: undefined,
+    itemClassName: undefined,
+    labelClassName: undefined,
+    valueRef: undefined,
+  },
   argTypes: {
     options: {
       control: 'object',
-      description: '라디오 버튼 항목 배열입니다. 각 항목은 label과 value로 구성됩니다.',
+      table: {
+        type: { summary: 'Array<{ label: string; value: string }>' },
+      },
+      description: ['라디오 버튼 항목 배열입니다.', '각 항목은 label과 value로 구성됩니다.'].join('<br/>'),
     },
     direction: {
-      control: {
-        type: 'inline-radio',
-        options: ['vertical', 'horizontal'],
+      control: 'inline-radio',
+      options: directionOptions,
+      table: {
+        type: { summary: directionOptions.join(' | ') },
+        defaultValue: { summary: 'vertical' },
       },
-      description: '라디오 버튼의 배치 방향입니다.',
+      description: ['라디오 버튼의 배치 방향을 설정합니다.', 'vertical: 세로 정렬, horizontal: 가로 정렬'].join(
+        '<br/>',
+      ),
     },
     defaultValue: {
       control: 'text',
-      description: '초기 선택값입니다 (uncontrolled).',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: '비제어형 RadioGroup의 초기 선택값입니다.',
     },
     value: {
       control: 'text',
-      description: '선택된 값입니다 (controlled).',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '제어형 RadioGroup의 현재 선택값입니다.',
+        'onValueChange와 함께 사용하여 상태를 외부에서 제어할 수 있습니다.',
+      ].join('<br/>'),
     },
     onValueChange: {
-      description: '값이 변경될 때 호출되는 콜백입니다.',
       table: { disable: true },
+      description: '값이 변경될 때 호출되는 콜백 함수입니다.',
     },
     className: {
-      control: {
-        type: 'text',
-        disable: true,
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
       },
-      description: 'radio group 전체의 클래스네임을 설정할 수 있습니다.',
+      description: 'RadioGroup 전체에 적용할 CSS 클래스를 설정합니다.',
     },
     itemClassName: {
-      control: {
-        type: 'text',
-        disable: true,
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
       },
-      description: 'indecator의 클래스네임을 설정할 수 있습니다.',
+      description: '개별 라디오 버튼 indicator에 적용할 CSS 클래스를 설정합니다.',
     },
     labelClassName: {
-      control: {
-        type: 'text',
-        disable: true,
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
       },
-      description: 'label의 클래스네임을 설정할 수 있습니다.',
+      description: '라디오 버튼 라벨에 적용할 CSS 클래스를 설정합니다.',
     },
     valueRef: {
       table: { disable: true },
+      description: '비제어형 RadioGroup의 현재 값을 참조할 수 있는 ref입니다.',
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          'RadioGroup 컴포넌트는 여러 옵션 중 하나를 선택할 수 있는 라디오 버튼 그룹입니다.',
+          '세로 또는 가로 방향으로 배치할 수 있으며, 제어형과 비제어형 모두 지원합니다.',
+          '각 라디오 버튼과 라벨의 스타일링을 개별적으로 커스터마이징할 수 있습니다.',
+          'Radix UI의 RadioGroup 컴포넌트를 기반으로 구현되었습니다.',
+        ].join('<br/>'),
+      },
     },
   },
 };

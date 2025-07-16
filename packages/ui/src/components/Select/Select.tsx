@@ -61,7 +61,7 @@ type SelectProps = ComponentProps<typeof SelectRoot> &
     size?: 'small' | 'default' | 'large';
     width?: VariantProps<typeof selectVariaints>['width'] | number;
     isSelectIndicator?: boolean;
-    isContentfitTriggerWidth?: boolean;
+    isContentFitTriggerWidth?: boolean;
     selectRef?: Ref<string>;
     error?: boolean;
     helperText?: ReactNode;
@@ -74,7 +74,7 @@ function Select({
   width,
   placeholder,
   isSelectIndicator = false,
-  isContentfitTriggerWidth = false,
+  isContentFitTriggerWidth = false,
   value: controlledValue,
   onValueChange,
   selectRef,
@@ -122,7 +122,7 @@ function Select({
         )}
       </div>
 
-      <SelectContent isContentfitTriggerWidth={isContentfitTriggerWidth}>
+      <SelectContent isContentFitTriggerWidth={isContentFitTriggerWidth}>
         {options.map((opt, idx) => {
           // 그룹일 경우
           if ('type' in opt && opt.type === 'group') {

@@ -5,71 +5,130 @@ import { EyeIcon, EyeOffIcon, PrinterIcon } from '@common/ui/icons';
 const meta: Meta<typeof Checkbox> = {
   title: 'UI/Form/Input/Checkbox',
   component: Checkbox,
-  argTypes: {
-    label: {
-      control: 'text',
-      description: '체크박스 오른쪽에 표시될 라벨입니다.',
-    },
-    disabled: {
-      control: 'boolean',
-      description: '비활성화 여부입니다.',
-      table: {
-        defaultValue: { summary: 'false' },
-      },
-    },
-    defaultChecked: {
-      control: 'boolean',
-      description: '기본 체크 여부입니다.',
-      table: {
-        disable: true,
-      },
-    },
-
-    className: {
-      control: 'text',
-      description: 'Checkbox에 추가할 Tailwind 클래스',
-    },
-    labelClassName: {
-      control: 'text',
-      description: '라벨에 추가할 Tailwind 클래스',
-    },
-    boxClassName: {
-      control: 'text',
-      description: 'isBox 가 true 일때, wrpper를 변형할 Tailwind 클래스',
-    },
-    isBox: {
-      control: 'boolean',
-      description: '박스형 스타일 여부',
-      table: {
-        defaultValue: { summary: 'false' },
-      },
-    },
-    customIcon: {
-      table: {
-        disable: true,
-      },
-    },
-  },
   args: {
-    label: '체크박스 라벨',
+    label: 'Checkbox label',
     disabled: false,
     defaultChecked: false,
     isBox: false,
+    className: undefined,
+    labelClassName: undefined,
+    boxClassName: undefined,
+    customIcon: undefined,
   },
-};
-
-export default meta;
-
-type Story = StoryObj<typeof Checkbox>;
-
-export const Default: Story = {
-  args: {
-    label: '기본 체크박스',
+  argTypes: {
+    label: {
+      control: 'text',
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: 'Checkbox label' },
+      },
+      description: ['Checkbox 오른쪽에 표시될 label입니다.', '문자열 또는 React 컴포넌트를 사용할 수 있습니다.'].join(
+        '<br/>',
+      ),
+    },
+    disabled: {
+      control: 'boolean',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: 'Checkbox의 비활성화 상태를 설정합니다.',
+    },
+    defaultChecked: {
+      control: 'boolean',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: '비제어형 Checkbox의 초기 체크 상태입니다.',
+    },
+    checked: {
+      control: 'boolean',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '제어형 Checkbox의 현재 체크 상태입니다.',
+        'onCheckedChange와 함께 사용하여 상태를 외부에서 제어할 수 있습니다.',
+      ].join('<br/>'),
+    },
+    isBox: {
+      control: 'boolean',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: ['박스형 스타일 여부를 설정합니다.', 'true일 때 Checkbox가 박스 형태로 표시됩니다.'].join('<br/>'),
+    },
+    className: {
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: 'Checkbox 요소에 적용할 CSS 클래스명입니다.',
+    },
+    labelClassName: {
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: 'label 요소에 적용할 CSS 클래스명입니다.',
+    },
+    boxClassName: {
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        'isBox가 true일 때 wrapper 요소에 적용할 CSS 클래스명입니다.',
+        '박스 형태 스타일을 커스터마이징할 때 사용합니다.',
+      ].join('<br/>'),
+    },
+    customIcon: {
+      table: { disable: true },
+      description: [
+        '커스텀 아이콘을 사용할 때 설정합니다.',
+        'CheckedIcon과 UnCheckedIcon을 포함한 객체를 전달합니다.',
+      ].join('<br/>'),
+    },
+    onCheckedChange: {
+      table: { disable: true },
+      description: '체크 상태가 변경될 때 호출되는 콜백 함수입니다.',
+    },
+    id: {
+      table: { disable: true },
+      description: 'Checkbox의 HTML id 속성입니다.',
+    },
   },
   parameters: {
     docs: {
       description: {
-        story: '기본 Checkbox 컴포넌트를 렌더링한 예시입니다.',
+        component: [
+          'Checkbox 컴포넌트는 사용자가 선택/해제할 수 있는 Checkbox UI 요소입니다.',
+          '기본 Checkbox, 박스형 Checkbox, 커스텀 아이콘 Checkbox 등 다양한 형태를 지원합니다.',
+          '제어형과 비제어형 모두 지원하며, label과 함께 사용할 수 있습니다.',
+          'Radix UI의 Checkbox 컴포넌트를 기반으로 구현되었습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof Checkbox>;
+
+export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          '기본 Checkbox 컴포넌트의 예시입니다.',
+          'label과 함께 표시되며, 클릭하여 체크 상태를 변경할 수 있습니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -80,6 +139,25 @@ export const Checked: Story = {
     label: '체크된 상태',
     defaultChecked: true,
   },
+  argTypes: {
+    label: { table: { disable: true } },
+    disabled: { table: { disable: true } },
+    defaultChecked: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: ['Checkbox의 체크된 상태를 보여주는 예시입니다.'].join('<br/>'),
+      },
+    },
+  },
+  render: (args) => (
+    <div className="flex flex-col gap-4">
+      <div className="flex gap-4">
+        <Checkbox {...args} />
+      </div>
+    </div>
+  ),
 };
 
 export const Disabled: Story = {
@@ -88,9 +166,40 @@ export const Disabled: Story = {
     disabled: true,
   },
   argTypes: {
-    disabled: {
-      table: {
-        disable: true,
+    disabled: { table: { disable: true } },
+    label: { table: { disable: true } },
+    defaultChecked: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: ['Checkbox의 비활성 상태를 보여주는 예시입니다.'].join('<br/>'),
+      },
+    },
+  },
+  render: (args) => (
+    <div className="flex flex-col gap-4">
+      <div className="flex gap-4">
+        <Checkbox {...args} />
+      </div>
+    </div>
+  ),
+};
+
+export const WithoutLabel: Story = {
+  args: {
+    label: undefined,
+  },
+  argTypes: {
+    label: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'label 없이 사용하는 Checkbox 예시입니다.',
+          '테이블이나 목록에서 선택 기능으로 사용할 때 유용합니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -103,9 +212,14 @@ export const Box: Story = {
     defaultChecked: true,
   },
   argTypes: {
-    isBox: {
-      table: {
-        disable: true,
+    isBox: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: ['박스형 스타일의 Checkbox 예시입니다.', 'Checkbox와 label이 박스 형태로 묶여서 표시됩니다.'].join(
+          '<br/>',
+        ),
       },
     },
   },
@@ -120,16 +234,15 @@ export const ElementLabel: Story = {
     ),
   },
   argTypes: {
-    label: {
-      table: {
-        disable: true,
-      },
-    },
+    label: { table: { disable: true } },
   },
   parameters: {
     docs: {
       description: {
-        story: 'label에 컴포넌트를 넣어서 label을 만들 수 있습니다.',
+        story: [
+          'label에 React 컴포넌트를 사용하는 예시입니다.',
+          '아이콘과 텍스트를 조합하여 더 풍부한 label을 만들 수 있습니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -144,7 +257,10 @@ export const CustomStyle: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'className 과 labelClassName 으로 스타일 커스텀을 보여줍니다.',
+        story: [
+          '커스텀 스타일을 적용한 Checkbox 예시입니다.',
+          'className과 labelClassName을 사용하여 스타일을 커스터마이징할 수 있습니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -152,23 +268,22 @@ export const CustomStyle: Story = {
 
 export const CustomIcon: Story = {
   args: {
-    label: '커스텀 아이콘 체크박스',
+    label: '커스텀 아이콘 Checkbox',
     customIcon: {
       CheckedIcon: EyeIcon,
       UnCheckedIcon: EyeOffIcon,
     },
   },
   argTypes: {
-    label: {
-      table: {
-        disable: true,
-      },
-    },
+    label: { table: { disable: true } },
   },
   parameters: {
     docs: {
       description: {
-        story: 'CustomIcon에 아이콘을 두가지 넣으면 특정 아이콘으로 체크박스를 대체합니다.',
+        story: [
+          '커스텀 아이콘을 사용하는 Checkbox 예시입니다.',
+          'CustomIcon에 2가지 아이콘을 설정하여 기본 체크 마크 대신 특정 아이콘을 사용하여 Checkbox를 대체합니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -179,26 +294,17 @@ export const showcaseOverview: Story = {
     label: '',
   },
   argTypes: {
-    label: {
-      table: {
-        disable: true,
-      },
-    },
-    disabled: {
-      table: {
-        disable: true,
-      },
-    },
-    isBox: {
-      table: {
-        disable: true,
-      },
-    },
+    label: { table: { disable: true } },
+    disabled: { table: { disable: true } },
+    isBox: { table: { disable: true } },
   },
   parameters: {
     docs: {
       description: {
-        story: 'label이 있는 상태와 없는 상태의 Checkbox를 구분해서 보여줍니다.',
+        story: [
+          'Checkbox의 다양한 예시들 입니다.',
+          'Checkbox의 label이 있는 상태와 없는 상태의 Checkbox를 구분해서 확인할 수 있습니다.',
+        ].join('<br/>'),
       },
     },
   },

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { badgeVariants, GradeBadge } from '@common/ui/components/Badge';
 
-const gradeKeys = Object.keys(badgeVariants.variants.grade) as (keyof typeof badgeVariants.variants.grade)[];
+const gradeArr = Object.keys(badgeVariants.variants.grade) as (keyof typeof badgeVariants.variants.grade)[];
 
 const meta: Meta<typeof GradeBadge> = {
   title: 'UI/DataDisplay/Common/Badge/GradeBadge',
@@ -14,32 +14,45 @@ const meta: Meta<typeof GradeBadge> = {
   argTypes: {
     isBtn: {
       control: 'boolean',
-      table: { defaultValue: { summary: 'false' } },
-      description:
-        'isBtn 활성화 시, 버튼처럼 hover:, active:, focus:의 이벤트 상태 시 변화가 추가되며, cursor 및 pointer events 관련 css가 추가됩니다.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: [
+        'isBtn 활성화 시 버튼처럼 hover, active, focus 이벤트 상태 시 변화가 추가되며,',
+        'cursor 및 pointer events 관련 CSS가 추가됩니다.',
+      ].join('<br/>'),
     },
     grade: {
       control: 'select',
-      options: Object.keys(badgeVariants.variants.grade),
-      table: { defaultValue: { summary: 'info' } },
-      description: '필수값. grade 스타일 (info, boundary, alert, critical, urgency) 중에서 선택해야 합니다.',
+      options: gradeArr,
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'info' } },
+      description: [
+        'GradeBadge의 등급 스타일을 지정하는 필수 props입니다.',
+        'info, boundary, alert, critical, urgency 중에서 선택해야 합니다.',
+      ].join('<br/>'),
     },
     children: {
       control: 'text',
-      table: { defaultValue: { summary: 'GradeBadge' } },
-      description: 'GradeBadge 내부에 들어갈 내용을 표기합니다. `string` 만 받을 수 있습니다.',
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'GradeBadge' } },
+      description: [
+        'GradeBadge 내부에 들어갈 내용을 지정하는 필수 props입니다.',
+        'string 타입만 받을 수 있습니다.',
+      ].join('<br/>'),
     },
     className: {
       control: 'text',
-      table: { defaultValue: { summary: '' } },
-      description: '추가적으로 적용할 Tailwind CSS 클래스',
+      table: { type: { summary: 'string' }, defaultValue: { summary: '' } },
+      description: '추가적으로 적용할 Tailwind CSS 클래스명입니다.',
     },
   },
   parameters: {
     docs: {
       description: {
-        component:
-          'GradeBadge 컴포넌트의 문서입니다. GradeBadge 는 등급에 대한 표기를 전문으로 하는 Badge 로서 각 grade별 아이콘이 지정되어 있습니다.<br/>GradeBadge 의 경우 기본 Badge 에서 variant는 "grading" 를 고정한 컴포넌트입니다.<br/>GradeBadge 는 grade, children가 필수값이며 이들만 받을 수 있습니다. grade 별 아이콘이 고정되어 있고 children는 `string` 으로만 받을 수 있습니다.<br/>기본적인 스타일은 Badge를 따르되 GradeBadge 별도 스타일이 고정되어 있습니다.<br/>props 들의 예시와 isBtn 대한 내역은 아래 스토리에서 확인해주세요. 다만, asChild는 기본 Badge 컴포넌트에서만 가능하다는 것을 유의해주세요.',
+        component: [
+          'GradeBadge 컴포넌트의 문서입니다. GradeBadge는 등급에 대한 표기를 전문으로 하는 Badge로서 각 grade별 아이콘이 지정되어 있습니다.',
+          'GradeBadge는 기본 Badge에서 variant를 "grading"으로 고정한 컴포넌트입니다.',
+          'grade, children이 필수값이며, grade별 아이콘이 고정되어 있고 children는 string 타입으로만 받을 수 있습니다.',
+          '기본적인 스타일은 Badge를 따르되 GradeBadge 별도 스타일이 고정되어 있습니다.',
+          'asChild는 기본 Badge 컴포넌트에서만 가능합니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -126,7 +139,7 @@ export const IsBtn: GradeStory = {
     },
     grade: {
       control: 'select',
-      options: gradeKeys,
+      options: gradeArr,
       table: { disable: true },
     },
   },
@@ -147,7 +160,7 @@ export const IsBtn: GradeStory = {
         </span>
       </span>
       <div className="flex flex-row flex-wrap gap-4 p-5">
-        {gradeKeys.map((grade) => (
+        {gradeArr.map((grade) => (
           <div className={'flex flex-col gap-1 text-center'} key={grade}>
             <span className="text-xs text-juiText-blue">{`grage: ${grade} | isBtn: ${args.isBtn}`}</span>
             <GradeBadge {...args} grade={grade} />

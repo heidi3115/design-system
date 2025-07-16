@@ -4,9 +4,9 @@ import { AlertCircleIcon, BookmarkIcon } from '@common/ui/icons';
 
 const DEFAULT_VAL = 20;
 const MAX_VAL = 0;
-const colorKeys = Object.keys(badgeVariants.variants.status) as (keyof typeof badgeVariants.variants.status)[];
-const scoreKeys = Object.keys(badgeVariants.variants.score) as (keyof typeof badgeVariants.variants.score)[];
-const combinedKeys = [...colorKeys, ...scoreKeys] as (
+const statusArr = Object.keys(badgeVariants.variants.status) as (keyof typeof badgeVariants.variants.status)[];
+const scoreArr = Object.keys(badgeVariants.variants.score) as (keyof typeof badgeVariants.variants.score)[];
+const combinedArr = [...statusArr, ...scoreArr] as (
   | keyof typeof badgeVariants.variants.status
   | keyof typeof badgeVariants.variants.score
 )[];
@@ -25,49 +25,63 @@ const meta: Meta<typeof CountBadge> = {
   argTypes: {
     isBtn: {
       control: 'boolean',
-      table: { defaultValue: { summary: 'false' } },
-      description:
-        'isBtn 활성화 시, 버튼처럼 hover:, active:, focus:의 이벤트 상태 시 변화가 추가되며, cursor 및 pointer events 관련 css가 추가됩니다.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: [
+        'isBtn 활성화 시 버튼처럼 hover, active, focus 이벤트 상태 시 변화가 추가되며,',
+        'cursor 및 pointer events 관련 CSS가 추가됩니다.',
+      ].join('<br/>'),
     },
     color: {
       control: 'select',
-      options: combinedKeys,
-      table: { defaultValue: { summary: 'default' } },
-      description:
-        ' 필수값. color 스타일로서 기존의 color, score 의 선택지 중에서 선택하거나 tailwind CSS의 bg-* 스타일로서 커스텀이 가능합니다..',
+      options: combinedArr,
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'default' } },
+      description: [
+        'CountBadge의 색상 스타일을 지정하는 필수 props입니다.',
+        '기존의 status, score 선택지 중에서 선택하거나 tailwind CSS의 bg-* 스타일로서 커스텀이 가능합니다.',
+      ].join('<br/>'),
     },
     scoreVal: {
       control: 'number',
-      table: { defaultValue: { summary: `${DEFAULT_VAL}` } },
-      description: '필수값. 숫자를 입력해야 합니다. 현재로서는 음수, 소수점도 허용되고는 있습니다. ',
+      table: { type: { summary: 'number' }, defaultValue: { summary: `${DEFAULT_VAL}` } },
+      description: [
+        'Badge 내부에 표시할 점수값을 지정하는 필수 props입니다.',
+        '숫자를 입력해야 하며, 현재로서는 음수, 소수점도 허용됩니다.',
+      ].join('<br/>'),
     },
     maxVal: {
       control: 'number',
-      table: { defaultValue: { summary: `${MAX_VAL}` } },
-      description: `옵션값. 기본적으로 0이며, 0 이상의 숫자일 경우, 해당 maxVal 보다 값이 크거나 같으면 maxVal+의 형태로 표기됩니다.`,
+      table: { type: { summary: 'number' }, defaultValue: { summary: `${MAX_VAL}` } },
+      description: [
+        '최대값을 지정하는 옵션 props입니다.',
+        '기본적으로 0이며, 0 이상의 숫자일 경우 scoreVal이 maxVal보다 크거나 같으면 maxVal+의 형태로 표기됩니다.',
+      ].join('<br/>'),
     },
     icon: {
       control: false,
       table: { type: { summary: 'ReactNode' }, defaultValue: { summary: 'null' } },
-      description: 'Badge 내부에 표시할 아이콘(ReactNode) 입니다.',
+      description: 'Badge 내부에 표시할 아이콘을 지정하는 옵션 props입니다.',
     },
     iconPosition: {
       control: { type: 'radio' },
       options: ['left', 'right'],
       table: { type: { summary: "'left' | 'right'" }, defaultValue: { summary: 'left' } },
-      description: "아이콘 위치. 'left'(기본값) 또는 'right' 선택",
+      description: "아이콘의 위치를 지정하는 props입니다. 'left'(기본값) 또는 'right' 중에서 선택할 수 있습니다.",
     },
     className: {
       control: 'text',
-      table: { defaultValue: { summary: '' } },
-      description: '추가적으로 적용할 Tailwind CSS 클래스',
+      table: { type: { summary: 'string' }, defaultValue: { summary: '' } },
+      description: '추가적으로 적용할 Tailwind CSS 클래스명입니다.',
     },
   },
   parameters: {
     docs: {
       description: {
-        component:
-          'CountBadge 컴포넌트의 문서입니다. CountBadge 는 알람의 수나 count 된 값에 대한 부분 표시를 위한 Badge 입니다.<br/>CountBadge 의 경우 기본 Badge 에서 variant는 "count" 를 고정한 컴포넌트로서, CountBadge 는 color, scoreVal 등을 필수값으로 maxVal, icon, iconPosition 을 옵션값으로 받습니다.<br/>CountBadge 의 경우 children을 받지 않음에 유의해야 합니다. 기본적인 스타일은 Badge를 따르되 CountBadge 별도 스타일이 고정되어 있습니다.<br/>props 들의 예시와 isBtn 대한 내역은 아래 스토리에서 확인해주세요. 다만, asChild는 기본 Badge 컴포넌트에서만 가능하다는 것을 유의해주세요.',
+        component: [
+          'CountBadge 컴포넌트의 문서입니다. CountBadge는 알람의 수나 count된 값에 대한 부분 표시를 위한 Badge입니다.',
+          'CountBadge는 기본 Badge에서 variant를 "count"로 고정한 컴포넌트로서, color, scoreVal을 필수값으로 받습니다.',
+          'maxVal, icon, iconPosition을 옵션값으로 받으며, children을 받지 않음에 유의해야 합니다.',
+          'asChild는 기본 Badge 컴포넌트에서만 가능합니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -102,7 +116,7 @@ export const Color: CountStory = {
     },
     color: {
       control: 'select',
-      options: combinedKeys,
+      options: combinedArr,
       table: { disable: true },
     },
     icon: {
@@ -125,7 +139,7 @@ export const Color: CountStory = {
       <div className={'flex flex-col gap-3'}>
         <span className="text-sm font-bold">scoreVal Only</span>
         <div className="flex flex-wrap gap-4 p-5">
-          {combinedKeys.map((color) => (
+          {combinedArr.map((color) => (
             <div className={'flex flex-col gap-0.5 text-center'} key={color}>
               <span className="text-xs text-juiText-blue">{color}</span>
               <CountBadge {...args} color={color} maxVal={MAX_VAL} />
@@ -137,7 +151,7 @@ export const Color: CountStory = {
       <div className={'flex flex-col gap-3'}>
         <span className="text-sm font-bold">With maxVal</span>
         <div className="flex flex-wrap gap-4 p-5">
-          {combinedKeys.map((color) => (
+          {combinedArr.map((color) => (
             <div className={'flex flex-col gap-0.5 text-center'} key={color}>
               <span className="text-xs text-juiText-blue">{color}</span>
               <CountBadge {...args} color={color} />
@@ -152,7 +166,7 @@ export const Color: CountStory = {
           <span className={'block text-xs'}>CountBadge의 경우 IconPosition 의 기본값은 &#39;left&#39; 입니다니다.</span>
         </span>
         <div className="grid grid-cols-4 gap-4 p-5 items-center justify-center">
-          {combinedKeys.map((color) => (
+          {combinedArr.map((color) => (
             <div className={'flex flex-col gap-0.5 items-center'} key={color}>
               <span className="text-xs text-juiText-blue">{`color: ${color} | iconPosition: ${args.iconPosition}`}</span>
               <CountBadge {...args} color={color} icon={<BookmarkIcon size={'small'} />} />
@@ -176,7 +190,7 @@ export const IsBtn: CountStory = {
     },
     color: {
       control: 'select',
-      options: combinedKeys,
+      options: combinedArr,
       table: { disable: false },
     },
     icon: {

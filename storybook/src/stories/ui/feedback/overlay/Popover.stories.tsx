@@ -6,61 +6,83 @@ import { Button, Input, Popover } from '@common/ui';
 
 const sideOptions: ComponentProps<typeof Popover>['side'][] = ['top', 'left', 'bottom', 'right'] as const;
 const alignOptions: ComponentProps<typeof Popover>['align'][] = ['start', 'center', 'end'] as const;
+const variantOptions = ['default', 'primary', 'secondary', 'error'] as const;
+const sizeOptions = ['small', 'basic', 'medium', 'large'] as const;
 
 const meta: Meta<typeof Popover> = {
   title: 'UI/Feedback/Overlay/Popover',
   component: Popover,
-  tags: ['autodocs'],
+  args: {
+    side: 'bottom',
+    align: 'center',
+    variant: 'default',
+    size: 'basic',
+    isCloseIcon: false,
+    isArrow: false,
+    trigger: <Button>Open Popover</Button>,
+    children: <div>This is Popover content</div>,
+  },
   argTypes: {
     side: {
-      control: 'select',
-      options: ['top', 'right', 'bottom', 'left'],
-      table: { defaultValue: { summary: 'bottom' } },
-      description: '팝오버가 기준 요소에 붙는 위치를 설정합니다. 기본값은 "bottom"입니다.',
+      control: { type: 'select' },
+      options: sideOptions,
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'bottom' } },
+      description: 'Popover가 기준 요소에 붙는 위치를 설정합니다.',
     },
     align: {
-      control: 'select',
-      options: ['start', 'center', 'end'],
-      table: { defaultValue: { summary: 'center' } },
-      description: '팝오버가 기준 요소에 수평 또는 수직 정렬되는 방식을 지정합니다. 기본값은 "center"입니다.',
+      control: { type: 'select' },
+      options: alignOptions,
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'center' } },
+      description: 'Popover가 기준 요소에 수평 또는 수직 정렬되는 방식을 지정합니다.',
     },
     variant: {
-      control: 'select',
-      options: ['default', 'primary', 'secondary', 'error'],
-      table: { defaultValue: { summary: 'default' } },
-      description: '팝오버의 스타일 변형을 선택합니다. 기본값은 "default"입니다.',
+      control: { type: 'select' },
+      options: variantOptions,
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'default' } },
+      description: 'Popover의 스타일 변형을 선택합니다.',
     },
     size: {
-      control: 'select',
-      options: ['small', 'basic', 'medium', 'large'],
-      table: { defaultValue: { summary: 'basic' } },
-      description: '팝오버 최소 크기(높이/너비 등)를 설정합니다. 기본값은 "basic"입니다.',
+      control: { type: 'select' },
+      options: sizeOptions,
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'basic' } },
+      description: 'Popover 최소 크기(높이/너비 등)를 설정합니다.',
     },
     isCloseIcon: {
-      control: 'boolean',
-      table: { defaultValue: { summary: 'false' } },
-      description: '팝오버에 닫기 아이콘 표시 여부를 설정합니다. 기본값은 false입니다.',
+      control: { type: 'boolean' },
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: 'Popover에 닫기 아이콘 표시 여부를 설정합니다.',
     },
     isArrow: {
-      control: 'boolean',
-      table: { defaultValue: { summary: 'false' } },
-      description: '팝오버에 화살표(꼬리표) 표시 여부를 설정합니다. 기본값은 false입니다.',
+      control: { type: 'boolean' },
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: 'Popover에 화살표(꼬리표) 표시 여부를 설정합니다.',
     },
     trigger: {
-      control: false,
-      description: '팝오버를 열고 닫는 트리거 요소이며, 컨트롤러에서 조작할 수 없습니다.',
+      control: { disable: true },
+      table: { type: { summary: 'ReactNode' } },
+      description: 'Popover를 열고 닫는 트리거 요소입니다. storybook의 control에서 조작할 수 없습니다.',
     },
     children: {
-      control: false,
-      description: '팝오버 내부에 렌더링되는 콘텐츠입니다. 컨트롤러 조작은 비활성화되어 있습니다.',
+      control: { disable: true },
+      table: { type: { summary: 'ReactNode' } },
+      description: 'Popover 내부에 렌더링되는 콘텐츠입니다. storybook의 control에서의 조작이 비활성화 되어있습니다.',
     },
     portalContainer: {
+      control: { disable: true },
       table: { disable: true },
-      description: '팝오버를 렌더링할 포털 컨테이너 DOM 요소입니다. 문서에서 숨겨져 있습니다.',
+      description: 'Popover를 렌더링할 포털 컨테이너 DOM 요소입니다. storybook에서 숨겨져 있습니다.',
     },
     anchorRef: {
+      control: { disable: true },
       table: { disable: true },
-      description: '팝오버가 기준으로 삼는 요소의 참조입니다. 문서에서 숨겨져 있습니다.',
+      description: 'Popover가 기준으로 삼는 요소의 참조입니다. storybook에서 숨겨져 있습니다.',
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        component: '기본 Popover 컴포넌트 문서',
+      },
     },
   },
 };
@@ -70,14 +92,10 @@ export default meta;
 type Story = StoryObj<typeof Popover>;
 
 export const Default: Story = {
-  args: {
-    trigger: <Button>Open Popover</Button>,
-    children: <div>This is Popover content</div>,
-  },
   parameters: {
     docs: {
       description: {
-        story: 'Popover 기본 컴포넌트',
+        story: 'Popover 기본 컴포넌트입니다.',
       },
     },
   },
@@ -92,20 +110,20 @@ export const Arrows: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Popover 꼬리표 유무',
+        story: 'Popover 꼬리표 유무를 보여주는 예제입니다.',
       },
     },
   },
   render: (args) => (
-    <div style={{ display: 'flex', gap: '40px', justifyContent: 'center', padding: '100px' }}>
+    <div className="flex gap-10 justify-center p-25">
       {/* isArrow: true */}
       <Popover {...args} isArrow={true} trigger={<Button variant="gradient">Arrow 있음</Button>}>
-        <div style={{ padding: '8px' }}>Popover with Arrow</div>
+        <div className="p-2">Popover with Arrow</div>
       </Popover>
 
       {/* isArrow: false */}
       <Popover {...args} isArrow={false} trigger={<Button variant="gradient">Arrow 없음</Button>}>
-        <div style={{ padding: '8px' }}>Popover without Arrow</div>
+        <div className="p-2">Popover without Arrow</div>
       </Popover>
     </div>
   ),
@@ -120,18 +138,18 @@ export const CloseIcon: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Popover 컨텐츠의 닫기버튼 유무',
+        story: 'Popover 닫기 버튼 유무를 보여주는 예제입니다.',
       },
     },
   },
   render: (args) => (
-    <div style={{ display: 'flex', gap: '40px', justifyContent: 'center', padding: '100px' }}>
+    <div className="flex gap-10 justify-center p-25">
       <Popover {...args} isCloseIcon={true} trigger={<Button variant="gradient">Close Icon 있음</Button>}>
-        <div style={{ padding: '8px' }}>With Close Icon</div>
+        <div className="p-2">With Close Icon</div>
       </Popover>
 
       <Popover {...args} isCloseIcon={false} trigger={<Button variant="gradient">Close Icon 없음</Button>}>
-        <div style={{ padding: '8px' }}>Without Close Icon</div>
+        <div className="p-2">Without Close Icon</div>
       </Popover>
     </div>
   ),
@@ -146,7 +164,7 @@ export const Sizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Popover 컨텐츠의 사이즈',
+        story: 'Popover 사이즈 옵션을 보여주는 예제입니다.',
       },
     },
   },
@@ -174,7 +192,7 @@ export const Variants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Popover 컨텐츠의 색상',
+        story: 'Popover 색상 변형을 보여주는 예제입니다.',
       },
     },
   },
@@ -205,7 +223,7 @@ export const PopoverPositon: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Popover 12가지 방향',
+        story: 'Popover의 12가지 방향을 보여주는 예제입니다.',
       },
     },
   },
@@ -277,7 +295,7 @@ const AnchorRefComp = ({ ...args }) => {
       </div>
 
       <Popover {...args} anchorRef={anchorRef} trigger={<Button>Anchor</Button>}>
-        AnchorRef로 오픈
+        AnchorRef로 Open
       </Popover>
     </div>
   );
@@ -289,7 +307,7 @@ export const AnchorRef: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: 'Popover의 트리거로 다른 컴포넌트에 컨텐츠 보여주기',
+        story: 'Popover의 trigger로 다른 컴포넌트에 콘텐츠를 보여주는 예제입니다.',
       },
     },
   },
@@ -325,7 +343,7 @@ export const WithPortalContainer: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Popover 기본 document.body 대신 커스텀 portal 적용',
+        story: 'Popover를 document.body 대신 커스텀 포털에 렌더링하는 예제입니다.',
       },
     },
   },
@@ -352,7 +370,7 @@ function OffsetComp(args: ComponentProps<typeof Popover>) {
 
       {/* Popover Example */}
       <Popover open sideOffset={sideOffset} alignOffset={alignOffset} className="p-6" {...args}>
-        <div>Offset 조정 가능한 Popover입니다.</div>
+        <div>Offset 조정 가능한 Popover 입니다.</div>
       </Popover>
     </div>
   );
@@ -374,7 +392,7 @@ export const OffsetController: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Popover sideOffset 과 alignOffset 조절',
+        story: 'Popover의 sideOffset과 alignOffset을 조절하는 예제입니다.',
       },
     },
   },

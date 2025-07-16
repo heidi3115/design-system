@@ -4,52 +4,161 @@ import { AutoComplete, Button } from '@common/ui';
 import { useRef, useState, type ComponentProps } from 'react';
 import { action } from '@storybook/addon-actions';
 
+// 공통 상수
+const sizeOptions = ['small', 'default', 'large'] as const;
+const widthOptions = ['full'] as const;
+
 const meta: Meta<typeof AutoComplete> = {
   title: 'UI/Form/Selection/AutoComplete',
   component: AutoComplete,
+  args: {
+    size: 'default',
+    width: 'full',
+    disabled: false,
+    placeholder: '선택해주세요',
+    emptyText: 'No Options',
+    isSelectIndicator: false,
+    isContentFitTriggerWidth: false,
+    isLeaveClose: false,
+    error: false,
+    helperText: '',
+  },
   argTypes: {
     size: {
       control: 'select',
-      options: ['small', 'default', 'large'],
-      table: { defaultValue: { summary: 'default' } },
-      description: 'AutoComplete 크기',
+      options: sizeOptions,
+      table: {
+        type: { summary: sizeOptions.join(', ') },
+        defaultValue: { summary: 'default' },
+      },
+      description: ['AutoComplete 컴포넌트의 크기를 설정합니다.', '기본값은 default입니다.'].join('<br/>'),
     },
     width: {
       control: 'select',
-      options: ['full'],
-      table: { defaultValue: { summary: 'full' } },
-      description: 'AutoComplete 너비(input의 특성상 fit하게 조절할 수 없음)',
+      options: widthOptions,
+      table: {
+        type: { summary: widthOptions.join(', ') + ' | number' },
+        defaultValue: { summary: 'full' },
+      },
+      description: [
+        'AutoComplete 컴포넌트의 너비를 설정합니다.',
+        'input의 특성상 fit하게 조절할 수 없습니다.',
+        '기본값은 full입니다.',
+      ].join('<br/>'),
     },
     disabled: {
       control: 'boolean',
-      table: { defaultValue: { summary: 'false' } },
-      description: 'AutoComplete 비활성화',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: ['AutoComplete 컴포넌트의 비활성화 상태를 설정합니다.', '기본값은 false입니다.'].join('<br/>'),
     },
     emptyText: {
-      description: 'AutoComplete options 없을때, 대체 문구',
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'No Options' },
+      },
+      description: ['AutoComplete options가 없을 때 표시되는 대체 문구입니다.', '기본값은 "No Options"입니다.'].join(
+        '<br/>',
+      ),
     },
     isSelectIndicator: {
       control: 'boolean',
-      description: '선택 시 우측 체크 아이콘 표시 여부',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: ['선택 시 우측 체크 아이콘 표시 여부를 설정합니다.', '기본값은 false입니다.'].join('<br/>'),
     },
-    isContentfitTriggerWidth: {
+    isContentFitTriggerWidth: {
       control: 'boolean',
-      description: '선택된 항목 길이에 따라 trigger 버튼의 너비 조절',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: ['선택된 항목 길이에 따라 trigger 버튼의 너비를 조절합니다.', '기본값은 false입니다.'].join('<br/>'),
     },
     isLeaveClose: {
-      description: '마우스가 벗어나면 리스트가 닫힘 여부',
+      control: 'boolean',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: ['마우스가 벗어나면 리스트가 닫히는 여부를 설정합니다.', '기본값은 false입니다.'].join('<br/>'),
     },
     error: {
-      description: 'form 에러 여부',
+      control: 'boolean',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: ['form 에러 여부를 설정합니다.', '기본값은 false입니다.'].join('<br/>'),
     },
     helperText: {
-      description: 'AutoComplete 아래 문구',
+      control: 'text',
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: '' },
+      },
+      description: ['AutoComplete 아래에 표시되는 도움말 문구입니다.'].join('<br/>'),
     },
-    selectRef: { table: { disable: true } },
-    ref: { table: { disable: true } },
-    value: { table: { disable: true } },
-    defaultValue: { table: { disable: true } },
-    onValueChange: { table: { disable: true } },
+    selectRef: {
+      control: false,
+      table: {
+        type: { summary: 'Ref<string>' },
+        disable: true,
+      },
+      description: [
+        '비제어 모드에서 선택된 값을 참조할 수 있는 Ref 객체입니다.',
+        '스토리에서는 제어할 수 없습니다.',
+      ].join('<br/>'),
+    },
+    ref: {
+      control: false,
+      table: {
+        type: { summary: 'RefCallback<HTMLElement>' },
+        disable: true,
+      },
+      description: ['AutoComplete DOM 요소에 대한 참조입니다.', '스토리에서는 제어할 수 없습니다.'].join('<br/>'),
+    },
+    value: {
+      control: false,
+      table: {
+        type: { summary: 'string' },
+        disable: true,
+      },
+      description: ['제어 모드에서 현재 선택된 값입니다.', '스토리에서는 제어할 수 없습니다.'].join('<br/>'),
+    },
+    defaultValue: {
+      control: false,
+      table: {
+        type: { summary: 'string' },
+        disable: true,
+      },
+      description: ['비제어 모드에서 초기 선택값입니다.', '스토리에서는 제어할 수 없습니다.'].join('<br/>'),
+    },
+    onValueChange: {
+      control: false,
+      action: 'onValueChange',
+      table: {
+        disable: true,
+      },
+      description: ['값이 변경될 때 호출되는 콜백 함수입니다.', '스토리에서는 제어할 수 없습니다.'].join('<br/>'),
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          'AutoComplete 컴포넌트는 사용자가 입력하면서 실시간으로 옵션을 필터링하고 선택할 수 있는 입력 필드입니다.',
+          '검색 기능과 드롭다운 메뉴를 결합하여 사용자 경험을 향상시킵니다.',
+          '제어 및 비제어 모드를 모두 지원하며, 그룹화된 옵션과 구분선을 사용할 수 있습니다.',
+          '다양한 크기와 옵션을 제공하여 다양한 상황에 적응할 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
   },
 };
 
@@ -63,6 +172,16 @@ const baseOptions = [
 ];
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'AutoComplete 컴포넌트의 기본 사용 예시입니다.',
+          '입력 필드에 텍스트를 입력하면 실시간으로 옵션이 필터링됩니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   args: {
     options: baseOptions,
     placeholder: '선택해주세요.',
@@ -70,6 +189,16 @@ export const Default: Story = {
 };
 
 export const WithGroupsAndSeparators: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'AutoComplete 컴포넌트에서 옵션을 그룹으로 묶고 구분선을 사용하는 예시입니다.',
+          '그룹 라벨과 구분선으로 옵션을 체계적으로 분류할 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   args: {
     options: [
       {
@@ -97,6 +226,16 @@ export const WithGroupsAndSeparators: Story = {
 };
 
 export const FixedWidth: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'AutoComplete 컴포넌트의 고정 너비 설정 예시입니다.',
+          '숫자 값을 사용하여 px 단위로 고정 너비를 설정할 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   render: (args) => (
     <div className="flex flex-col gap-4 w-60">
       <p className="font-bold text-sm">고정 너비 200px</p>
@@ -120,6 +259,16 @@ export const FixedWidth: Story = {
 };
 
 export const ResponsiveWidths: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'AutoComplete 컴포넌트의 반응형 너비 설정 예시입니다.',
+          'width="full" 옵션을 사용하여 부모 컨테이너의 전체 너비를 차지합니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   render: (args) => (
     <div className="flex flex-col gap-4">
       <p className="font-bold text-sm">반응형 너비: full </p>
@@ -137,6 +286,16 @@ export const ResponsiveWidths: Story = {
 };
 
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'AutoComplete 컴포넌트의 다양한 크기 옵션을 보여주는 예시입니다.',
+          'small, default, large 세 가지 크기를 제공합니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   render: (args) => (
     <div className="flex flex-col gap-4 w-60">
       <p className="font-bold text-sm">Size: small(height: 28px)</p>
@@ -160,6 +319,16 @@ export const Sizes: Story = {
 };
 
 export const WithSelectIndicator: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'AutoComplete 컴포넌트에서 선택 표시기를 사용하는 예시입니다.',
+          'isSelectIndicator가 true일 때 선택된 항목에 체크 아이콘이 표시됩니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   args: {
     ...Default.args,
     defaultValue: 'a',
@@ -185,6 +354,16 @@ const longBaseOptions = Array.from({ length: 100 }, (_, i) => ({
 }));
 
 export const ScrollItems: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'AutoComplete 컴포넌트에서 많은 옵션을 스크롤로 표시하는 예시입니다.',
+          '옵션이 많을 때 스크롤을 통해 모든 옵션을 탐색할 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   args: {
     options: longBaseOptions,
     open: true,
@@ -203,13 +382,23 @@ const longLabelOptions = [
 ];
 
 export const WithContentfitTriggerWidth: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'AutoComplete 컴포넌트의 트리거 너비 적응 기능을 보여주는 예시입니다.',
+          'isContentFitTriggerWidth 옵션을 사용하여 드롭다운 콘텐츠의 너비를 조절할 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   args: {
     options: longLabelOptions,
   },
   render: (args) => (
     <div className="flex flex-col gap-4">
       <p className="font-bold text-sm">선택상자 부모(trigger) 넓이 고정</p>
-      <AutoComplete {...args} width={300} isContentfitTriggerWidth placeholder="Trigger 고정" />
+      <AutoComplete {...args} width={300} isContentFitTriggerWidth placeholder="Trigger 고정" />
       <p className="font-bold text-sm">선택상자 옵션들의 최대길이에 맞춤(Default)</p>
       <AutoComplete {...args} width={300} placeholder="옵션 길이 고정" />
     </div>
@@ -217,6 +406,16 @@ export const WithContentfitTriggerWidth: Story = {
 };
 
 export const WithErrorAndHelperText: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'AutoComplete 컴포넌트에서 오류 상태와 도움말 텍스트를 사용하는 예시입니다.',
+          'error와 helperText 속성을 통해 사용자에게 피드백을 제공할 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   args: {
     options: baseOptions,
     placeholder: '옵션을 선택하세요',
@@ -231,6 +430,16 @@ export const WithErrorAndHelperText: Story = {
 };
 
 export const WithIsLeaveClose: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'AutoComplete 컴포넌트의 마우스 leave 시 닫힘 기능을 보여주는 예시입니다.',
+          'isLeaveClose 옵션을 통해 마우스가 영역을 벗어날 때 자동으로 닫히는 기능을 제어할 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   args: {
     options: baseOptions,
     placeholder: '마우스를 벗어나면 닫힘 여부',
@@ -299,18 +508,21 @@ const ControllComp = ({ onValueChange, ...args }: ComponentProps<typeof AutoComp
 };
 
 export const ControlledAndUncontrolled: Story = {
-  args: {
-    placeholder: 'Select an option',
-  },
-  render: (args) => <ControllComp {...args} />,
   parameters: {
     controls: {
       disable: true,
     },
     docs: {
       description: {
-        story: '제어형과 비제어형 AutoComplete를 비교하는 스토리입니다.',
+        story: [
+          'AutoComplete 컴포넌트의 제어형과 비제어형 사용법을 비교하는 예시입니다.',
+          '제어형은 value와 onValueChange를 사용하고, 비제어형은 selectRef를 사용합니다.',
+        ].join('<br/>'),
       },
     },
   },
+  args: {
+    placeholder: 'Select an option',
+  },
+  render: (args) => <ControllComp {...args} />,
 };

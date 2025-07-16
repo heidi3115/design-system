@@ -23,25 +23,33 @@ const meta: Meta<typeof TextBadge> = {
   argTypes: {
     isBtn: {
       control: 'boolean',
-      table: { defaultValue: { summary: 'false' } },
-      description:
-        'isBtn 활성화 시, 버튼처럼 hover:, active:, focus:의 이벤트 상태 시 변화가 추가되며, cursor 및 pointer events 관련 css가 추가됩니다.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: [
+        'isBtn 활성화 시 버튼처럼 hover, active, focus 이벤트 상태 시 변화가 추가되며,',
+        'cursor 및 pointer events 관련 CSS가 추가됩니다.',
+      ].join('<br/>'),
     },
     textOnly: {
       control: 'boolean',
-      table: { defaultValue: { summary: 'false' } },
-      description:
-        '옵션값. 텍스트 태그만으로서 사용을 원할 시 true로 전환하면 TextBadge 내부의 삭제 버튼이 비활성화 & 보이지 않게 됩니다. 또한, textOnly가 true가 되면 텍스트를 감싸는 부모가 inline-block이 되면서 overflow-hidden text-ellipsis whitespace-nowrap 이 적용됩니다. 하여 width를 지정하게 되어 넘어가게 되면 자동 말줄임표가 가능해지기도 합니다.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: [
+        '텍스트 태그만으로서 사용을 원할 시 true로 전환하면 TextBadge 내부의 삭제 버튼이 비활성화되고 보이지 않게 됩니다.',
+        'textOnly가 true가 되면 텍스트를 감싸는 부모가 inline-block이 되면서 overflow-hidden text-ellipsis whitespace-nowrap이 적용됩니다.',
+        'width를 지정하게 되어 넘어가게 되면 자동 말줄임표가 가능해집니다.',
+      ].join('<br/>'),
     },
     children: {
       control: 'text',
-      table: { defaultValue: { summary: 'TextBadge' } },
-      description: 'TextBadge 내부에 들어갈 내용을 표기합니다. `string` 만 받을 수 있습니다.',
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'TextBadge' } },
+      description: [
+        'TextBadge 내부에 들어갈 내용을 지정하는 필수 props입니다.',
+        'string 타입만 받을 수 있습니다.',
+      ].join('<br/>'),
     },
     className: {
       control: 'text',
-      table: { defaultValue: { summary: '' } },
-      description: '추가적으로 적용할 Tailwind CSS 클래스',
+      table: { type: { summary: 'string' }, defaultValue: { summary: '' } },
+      description: '추가적으로 적용할 Tailwind CSS 클래스명입니다.',
     },
     onClick: {
       control: false,
@@ -50,14 +58,19 @@ const meta: Meta<typeof TextBadge> = {
         type: { summary: '(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void' },
         defaultValue: { summary: '현재로서는 클릭 시 공통으로 alert가 활성화 됩니다.' },
       },
-      description: '삭제 버튼 클릭 시 호출되는 이벤트 핸들러입니다. (textOnly=false 일 때만 활성화 됩니다)',
+      description: '삭제 버튼 클릭 시 호출되는 이벤트 핸들러입니다. (textOnly=false일 때만 활성화됩니다.)',
     },
   },
   parameters: {
     docs: {
       description: {
-        component:
-          'TextBadge 컴포넌트의 문서입니다. TextBadge 는 텍스트 태그를 기반으로 하는 Badge 로서 형태가 고정되어 있습니다.<br/>TextBadge 의 경우 기본 Badge 에서 variant는 "text" 를 고정한 컴포넌트로서, TextBadge 는 children 이 필수값이며 textOnly, onClick 을 옵션값으로 받습니다.<br/>children는 `string` 으로만 받을 수 있으며 textOnly 활성화 시, onClick은 버튼이 없어지므로 비활성화 됩니다.<br/>기본적인 스타일은 Badge를 따르되 TextBadge의 별도 스타일이 고정되어 있습니다.<br/>또한 TextBadge의 경우 textOnly 옵션에 따라 children을 감싼 내부 부모의 스타일이 바뀌는 부분이 있으니 유의해야 합니다.<br/>props 들의 예시와 isBtn 대한 내역은 아래 스토리에서 확인해주세요. 다만, asChild는 기본 Badge 컴포넌트에서만 가능하다는 것을 유의해주세요.',
+        component: [
+          'TextBadge 컴포넌트의 문서입니다. TextBadge는 텍스트 태그를 기반으로 하는 Badge로서 형태가 고정되어 있습니다.',
+          'TextBadge는 기본 Badge에서 variant를 "text"로 고정한 컴포넌트로서, children이 필수값이며 textOnly, onClick을 옵션값으로 받습니다.',
+          'children은 string으로만 받을 수 있으며 textOnly 활성화 시, onClick은 버튼이 없어지므로 비활성화됩니다.',
+          'textOnly 옵션에 따라 children을 감싼 내부 부모의 스타일이 바뀌는 부분이 있으니 유의해야 합니다.',
+          'asChild는 기본 Badge 컴포넌트에서만 가능합니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -283,8 +296,10 @@ export const IsBtn: TextStory = {
   parameters: {
     docs: {
       description: {
-        story:
-          'isBtn 는 boolean 으로서 true 시 button 처럼 hover:, active:, focus:의 이벤트 적인 내역들에 대한 이펙트가 추가됩니다. 기본적으로는 false 입니다.<br/>TextBadge 의 경우 isBtn 활성화 시의 이펙트가 조금 다르게 처리됩니다. 또한 TextBadge 자체에 대한 이벤트 처리와 내부 버튼에 대한 내역이 다르니 유의해주세요.',
+        story: [
+          'isBtn 는 boolean 으로서 true 시 button 처럼 hover:, active:, focus:의 이벤트 적인 내역들에 대한 이펙트가 추가됩니다. 기본적으로는 false 입니다.',
+          'TextBadge 의 경우 isBtn 활성화 시의 이펙트가 조금 다르게 처리됩니다. 또한 TextBadge 자체에 대한 이벤트 처리와 내부 버튼에 대한 내역이 다르니 유의해주세요.',
+        ].join('<br/>'),
       },
     },
   },
