@@ -1,5 +1,6 @@
 import { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { SessionDataType } from '../../types/sessionDataType';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL!;
 // eslint-disable-next-line turbo/no-undeclared-env-vars
@@ -46,7 +47,7 @@ export const authOptions: AuthOptions = {
     },
     async session({ session, token }) {
       // user 정보는 그대로 넣고
-      session.user = token.data;
+      session.user = token.data as SessionDataType;
 
       // accessToken은 클라이언트에서 바로 쓰지 말라고 숨김 필드로 넣기
       Object.defineProperty(session, 'accessToken', {
