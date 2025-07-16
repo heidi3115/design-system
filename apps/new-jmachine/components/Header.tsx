@@ -3,11 +3,11 @@
 import ThemeToggle from './ThemeToggle';
 import { signOut, useSession } from 'next-auth/react';
 import { Skeleton, Tooltip } from '@common/ui';
-import { UserRoundXIcon } from 'lucide-react';
 import { cn } from '@common/ui/lib/utils';
 import { usePathname } from 'next/navigation';
 import { MenuItemType } from '../services/common/getMenusFetch';
 import { use, useMemo } from 'react';
+import { UserXIcon } from '@common/ui/icons';
 
 type HeaderProps = {
   menuData?: Promise<MenuItemType[]>;
@@ -66,12 +66,14 @@ export function Header({ menuData: promiseMenuData = Promise.resolve<MenuItemTyp
           </div>
         )}
 
-        <Tooltip contents={'Logout'}>
-          <div className="cursor-pointer hover:text-juiText-secondary">
-            <UserRoundXIcon onClick={() => signOut({ callbackUrl: '/login' })} />
-          </div>
-        </Tooltip>
-        <ThemeToggle />
+        <div className="flex gap-1">
+          <Tooltip contents={'Logout'}>
+            <div className="cursor-pointer p-2 rounded-full hover:bg-juiPrimary/50">
+              <UserXIcon onClick={() => signOut({ callbackUrl: '/login' })} />
+            </div>
+          </Tooltip>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
