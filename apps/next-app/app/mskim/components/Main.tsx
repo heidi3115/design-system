@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Button, ConfirmAlertDialog } from '@common/ui';
-import useToggle from '../customHook/useToggle';
+import useToggle from '../../../hooks/useToggle';
 import { toast } from 'sonner';
 
 const Main = () => {

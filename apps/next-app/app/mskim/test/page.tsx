@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import useToggle from '../customHook/useToggle';
+import useToggle from '../../../hooks/useToggle';
 import { Toggle } from '@common/ui';
 import Image from 'next/image';
 
