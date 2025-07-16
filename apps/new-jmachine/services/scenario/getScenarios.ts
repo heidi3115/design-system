@@ -40,12 +40,12 @@ export const getScenariosServerFetch = async (params: GetScenariosRequest) => {
   if (response.code === '000000') return response.data;
 
   // 렌더 중 throw 되면 error.tsx 진입
-  throw new Error(`Menu fetch failed: ${response.message}`);
+  throw new Error(`${__filename} fetch failed: ${response.message}`);
 };
 
 export const getScenariosClientFetch = async (params: GetScenariosRequest) => {
   const response = await fetchClientApi<ScenariosResponse, GetScenariosRequest>(`/get/scenarios`, params);
   if (response.code === '000000') return response.data;
 
-  throw new Error(`Menu fetch failed: ${response.message}`);
+  throw new Error(`${__filename} fetch failed: ${response.message}`);
 };

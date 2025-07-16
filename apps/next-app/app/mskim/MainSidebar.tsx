@@ -195,7 +195,7 @@ export function MainSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarSeparator />
-        <SidebarCollasibleGroup collasibleTitle="side bar" groupTitle="사이드바">
+        <SidebarCollasibleGroup collapsibleTitle="side bar" groupTitle="사이드바">
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
