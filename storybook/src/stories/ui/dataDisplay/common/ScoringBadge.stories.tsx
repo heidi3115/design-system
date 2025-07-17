@@ -29,7 +29,7 @@ const meta: Meta<typeof ScoringBadge> = {
       options: scoreArr,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'normal' } },
       description: [
-        'ScoringBadge의 점수 스타일을 지정하는 필수 props입니다.',
+        'ScoringBadge의 점수 스타일을 지정하는 필수 props 입니다.',
         'veryLow, low, normal, high, veryHigh, extra, practice, scoreAlert 중에서 선택해야 합니다.',
       ].join('<br/>'),
     },
@@ -37,15 +37,15 @@ const meta: Meta<typeof ScoringBadge> = {
       control: 'number',
       table: { type: { summary: 'number' }, defaultValue: { summary: '20' } },
       description: [
-        'Badge 내부에 표시할 점수값을 지정하는 필수 props입니다.',
-        '숫자를 입력해야 하며, 현재로서는 음수, 소수점도 허용됩니다. 현재의 defaultValue는 storybook 전용으로 설정한 값입니다.',
+        'Badge 내부에 표시할 점수값을 지정하는 필수 props 입니다.',
+        '숫자를 입력해야 하며, 현재로는 음수, 소수점도 허용됩니다. 현재의 defaultValue는 storybook 전용으로 설정한 값입니다.',
       ].join('<br/>'),
     },
     maxVal: {
       control: 'number',
       table: { type: { summary: 'number' }, defaultValue: { summary: '0' } },
       description: [
-        '최대값을 지정하는 옵션 props입니다.',
+        '최대값을 지정하는 옵션 props 입니다.',
         '기본적으로 0이며, 0 이상의 숫자일 경우 scoreVal이 maxVal보다 크거나 같으면 maxVal+의 형태로 표기됩니다.',
         '현재의 defaultValue는 storybook 전용으로 설정한 값입니다.',
       ].join('<br/>'),
@@ -53,19 +53,19 @@ const meta: Meta<typeof ScoringBadge> = {
     icon: {
       control: false,
       table: { type: { summary: 'ReactNode' }, defaultValue: { summary: 'null' } },
-      description: 'Badge 내부에 표시할 아이콘을 지정하는 옵션 props입니다.',
+      description: 'Badge 내부에 표시할 아이콘을 지정하는 옵션 props 입니다.',
     },
     iconPosition: {
       control: { type: 'radio' },
       options: ['left', 'right'],
       table: { type: { summary: "'left' | 'right'" }, defaultValue: { summary: 'left' } },
-      description: "아이콘의 위치를 지정하는 props입니다. 'left'(기본값) 또는 'right' 중에서 선택할 수 있습니다.",
+      description: "아이콘의 위치를 지정하는 props 입니다. 'left'(기본값) 또는 'right' 중에서 선택할 수 있습니다.",
     },
     children: {
       control: 'text',
       table: { type: { summary: 'string' }, defaultValue: { summary: 'ScoringBadge' } },
       description: [
-        'ScoringBadge 내부에 들어갈 내용을 지정하는 필수 props입니다.',
+        'ScoringBadge 내부에 들어갈 내용을 지정하는 필수 props 입니다.',
         '일반적으로 scoreVal에 따른 등급 레벨을 표기하며, 문자열만 가능합니다.',
       ].join('<br/>'),
     },
@@ -196,7 +196,7 @@ export const IsBtn: ScoringStory = {
     docs: {
       description: {
         story: [
-          'isBtn은 boolean 값으로서 true 시 button처럼 hover, active, focus 이벤트에 대한 이펙트가 추가됩니다.',
+          'isBtn은 boolean 값으로 true 시 button 처럼 hover, active, focus 이벤트에 대한 이펙트가 추가됩니다.',
           '기본값은 false 입니다.',
         ].join('<br/>'),
       },

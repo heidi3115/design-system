@@ -30,7 +30,7 @@ const meta: Meta<SeparatorStorybookType> = {
         defaultValue: { summary: 'primary' },
       },
       description:
-        'Separator 의 색을 지정할 수 있는 variant 로서 primary, secondary, disabled, blue, purple 에서 선택할 수 있습니다. 기본값은 primary 입니다.',
+        'Separator 의 색을 지정할 수 있는 variant 로 primary, secondary, disabled, blue, purple 에서 선택할 수 있습니다. 기본값은 primary 입니다.',
     },
     size: {
       control: 'select',
@@ -69,7 +69,7 @@ const meta: Meta<SeparatorStorybookType> = {
         component: [
           'Separator 컴포넌트의 문서입니다. Separator 컴포넌트는 기본적으로 data-slot="separator-root" 으로 분류됩니다.',
           'div 태그를 기본으로 하며 Separator의 경우 props 선택에 따라 방향, 굵기, 색깔이 바뀌게 되니 유의 바랍니다.',
-          '공통적으로 적용되는 Separator의 스타일의 경우 기본적으로 방향에 따라 w/h-full을 기본으로 한다는 것을 고려해주시고, 상세 내역은 하단 혹은 각 스토리를 참조해주세요.',
+          '공통적으로 적용되는 Separator의 스타일의 경우 기본적으로 방향에 따라 w/h-full을 기본으로 한다는 것을 고려해주시고, 상세 내역은 하단 혹은 각 Story 를 참조해주세요.',
         ].join('<br/>'),
       },
     },

@@ -74,7 +74,7 @@ const meta: Meta<AccordionStorybookType> = {
         defaultValue: { summary: `${AccordionTypeArr[0]}` },
       },
       description: [
-        `type: Accordion 의 type 으로써, ${AccordionTypeArr.join(' 과 ')} 중 선택해야 합니다.`,
+        `type: Accordion 의 type 으로, ${AccordionTypeArr.join(' 과 ')} 중 선택해야 합니다.`,
         'single 일 경우, 한 번에 하나의 Item 만 열 수 있고 defaultValue 는 하나만 지정 가능합니다.',
         'multiple 일 경우, 여러 개의 Item 을 동시에 열 수 있고 defaultValue 를 여러 개 지정 가능합니다.',
         'Accordion 은 defaultValue가 지정되어있지 않으면, 닫힌 상태가 됩니다.',
@@ -298,7 +298,7 @@ const meta: Meta<AccordionStorybookType> = {
           'Accordion 컴포넌트의 문서입니다. Accordion 이란, 여러 개의 섹션(패널) 중에서 한 번에 하나 또는 여러 개를 펼치거나 닫을 수 있는 UI 컴포넌트입니다.',
           '각 섹션은 제목(Trigger)과 내용(Content)으로 구성되며, FAQ, 설정 그룹, 네비게이션 등에서 자주 사용됩니다.',
           'Accordion 컴포넌트의 크기는 부모의 크기를 따르므로 Accordion 컴포넌트의 크기 제한은 부모를 통해 할 수 있습니다.',
-          '현재 스토리는 FAQ 느낌으로 된 예시로써 준비하였습니다.',
+          '현재 Story는 FAQ 느낌으로 된 예시로 준비하였습니다.',
         ].join('<br/>'),
       },
     },
@@ -553,7 +553,7 @@ export const OrientationsWithIcon: Story = {
             <h2 className={cn(subTitleCommonClass, 'text-sm')}>
               {orientation}
               <span className={cn(blueTxtClass, 'block mt-2 text-xs')}>
-                {orientation === 'horizontal' ? '가로' : '세로'} 방향으로써 적용이 됩니다.{' '}
+                {orientation === 'horizontal' ? '가로' : '세로'} 방향으로 적용이 됩니다.{' '}
               </span>
             </h2>
             <AccordionRender {...args} orientation={orientation} />
@@ -574,7 +574,7 @@ export const OrientationsWithIcon: Story = {
             <h2 className={cn(subTitleCommonClass, 'text-sm')}>
               {orientation}
               <span className={cn(blueTxtClass, 'block mt-2 text-xs')}>
-                {orientation === 'horizontal' ? '가로' : '세로'} 방향으로써 적용이 됩니다.{' '}
+                {orientation === 'horizontal' ? '가로' : '세로'} 방향으로 적용이 됩니다.{' '}
               </span>
             </h2>
             <AccordionRender {...args} orientation={orientation} isIcon={false} />
@@ -974,7 +974,7 @@ export const ControlledTypeWithCollapsibleAndDefaultValue: Story = {
     docs: {
       description: {
         story: [
-          'Accordion 을 외부(부모 컨테이너) 상태로 제어(Controlled)하는 다양한 실무 예시입니다. 비교로서 비제어(Uncontrolled)는 기존의 storybook 에서 처리하고 있으므로 간략하게 보여드립니다.',
+          'Accordion 을 외부(부모 컨테이너) 상태로 제어(Controlled)하는 다양한 실무 예시입니다. 비교로 비제어(Uncontrolled)는 기존의 storybook 에서 처리하고 있으므로 간략하게 보여드립니다.',
           'type 별로도 확인할 수 있으며, defaultValue, value 와 type이 "single"일 때의 collapsible 조합의 다양한 예시를 보실 수 있습니다.',
           '버튼으로 전부 열거나 닫기, 특정 아이템만 열기, 동적으로 상태를 변경하는 등 실제 서비스에서 자주 쓰는 패턴을 확인할 수 있습니다.',
         ].join('<br/>'),

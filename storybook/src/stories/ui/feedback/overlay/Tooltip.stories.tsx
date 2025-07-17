@@ -64,7 +64,7 @@ const meta: Meta<typeof Tooltip> = {
       control: 'number',
       table: { type: { summary: 'number' }, defaultValue: { summary: `${DEFAULT_DELAY_DURATION}` } },
       description: [
-        '모든 Tooltip의 기본 지연 시간(ms, 기본 700)으로써, Tooltip이 보여지기 전 대기 시간(밀리초 단위)입니다.',
+        '모든 Tooltip의 기본 지연 시간(ms, 기본 700)으로, Tooltip이 보여지기 전 대기 시간(밀리초 단위)입니다.',
         '사용자가 trigger 에 마우스를 올렸을 때 Tooltip이 등장하기까지의 지연 시간을 설정할 수 있습니다.',
         '기본값은 700입니다.',
       ].join('<br/>'),
@@ -378,7 +378,7 @@ function TooltipDelayDuration({ ...args }: Omit<TooltipProps, 'trigger'>) {
         <h3 className={cn(titleCommonClass, 'mb-8 w-full text-center')}>
           FadeOut 예시
           <span className={'block mt-2 text-sm font-normal text-left'}>
-            fadeOut을 설정해서 사라지는 시간을 조절할 거라면 제어(Controlled)로서 처리할 수 있습니다.
+            fadeOut을 설정해서 사라지는 시간을 조절할 거라면 제어(Controlled)로 처리할 수 있습니다.
             <br />
             비제어 일 때에는 Radix가 내부적으로 open/close 상태와 애니메이션 타이밍을 관리하기 때문에 설정이
             불가능합니다.
@@ -443,8 +443,8 @@ export const Durations: Story = {
     docs: {
       description: {
         story: [
-          'Durations 스토리는 Tooltip이 보여질 때와 사라질 때의 다양한 예시를 보여주는 스토리입니다.',
-          'DelayDuration은 Tooltip이 보여지기 전 대기 시간(밀리초/ms 단위)을 다양한 예시로 보여드리는 스토리입니다.',
+          'Durations Storybook 는 Tooltip이 보여질 때와 사라질 때의 다양한 예시를 보여주는 Storybook 입니다.',
+          'DelayDuration은 Tooltip이 보여지기 전 대기 시간(밀리초/ms 단위)을 다양한 예시로 보여드리는 Storybook 입니다.',
           'delayDuration prop은 사용자가 trigger 에 마우스를 올렸을 때 Tooltip이 등장하기까지의 지연 시간을 설정할 수 있습니다.',
           'fadeOut은 Tooltip이 사라지기까지의 fade-out 애니메이션이 적용되는 props 입니다.',
         ].join('<br/>'),
@@ -618,7 +618,7 @@ export const OpenControl: Story = {
     docs: {
       description: {
         story: [
-          'OpenControl은 Tooltip의 open, defaultOpen, onOpenChange, openStatusRef를 모두 활용하는 스토리 예시입니다.',
+          'OpenControl은 Tooltip의 open, defaultOpen, onOpenChange, openStatusRef를 모두 활용하는 Storybook예 시입니다.',
           '제어(Controlled)와 비제어(Uncontrolled)의 예시를 확인할 수 있으며 open의 상태를 확인할 수 있도록 임의로 만든 예시입니다.',
           '비제어일 경우 Tooltip은 한 화면에 하나만 보여지도록 기본적으로 처리가 되어있습니다.',
         ].join('<br/>'),
@@ -636,7 +636,7 @@ function TooltipPositionControl({ ...args }: Omit<TooltipProps, 'trigger'>) {
         <div className={cn(flexColBoxGap4, commonBoxClass, 'relative w-full')}>
           <h4>
             <span className={cn(subTitleCommonClass, blueTxtClass, 'text-left block mb-1')}>
-              side와 align의 모든 조합으로서 각 버튼 hover 시 위치가 확인이 됩니다. <br />
+              side와 align의 모든 조합으로 각 버튼 hover 시 위치가 확인이 됩니다. <br />
             </span>
           </h4>
           <div className={cn(commonBoxClass)}></div>
@@ -702,7 +702,7 @@ export const TooltipPosition: Story = {
     docs: {
       description: {
         story: [
-          'TooltipPosition은 Tooltip의 위치 정보를 확인할 수 있는 스토리입니다.',
+          'TooltipPosition은 Tooltip의 위치 정보를 확인할 수 있는 Storybook 입니다.',
           '마우스 hover 시 각 위치를 확인할 수 있으며, props에 따라서 sideOffset과 alignOffset을 조절하여 거리나 위치감을 확인할 수 있습니다.',
         ].join('<br/>'),
       },

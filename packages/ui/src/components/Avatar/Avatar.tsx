@@ -122,7 +122,7 @@ function AvatarFallback({ className, asChild = false, size, alt, delayMs, ...pro
 
 type AvatarBaseProps = {
   /**
-   * src : 아바타로 사용할 이미지의 경로 로써, img 태그가 받을 수 있는 내역은 그대로 받습니다.
+   * src : 아바타로 사용할 이미지의 경로로, img 태그가 받을 수 있는 내역은 그대로 받습니다.
    */
   src: string;
   /**
@@ -130,15 +130,15 @@ type AvatarBaseProps = {
    */
   alt?: string;
   /**
-   * fallback : 이미지가 없거나 로딩 실패 시 보여줄 대체 UI(텍스트, 아이콘 등)로서 fallback 미지정 시 기본 아이콘(UserFilledIcon)이 표시되고, fallback 지정 시 해당 텍스트가 표기됩니다.
+   * fallback : 이미지가 없거나 로딩 실패 시 보여줄 대체 UI(텍스트, 아이콘 등)로 fallback 미지정 시 기본 아이콘(UserFilledIcon)이 표시되고, fallback 지정 시 해당 텍스트가 표기됩니다.
    */
   fallback?: string;
   /**
-   * delayMs : fallback이 나타나기까지 기다리는 시간(ms)으로서 fallback(대체 UI)이 너무 빨리 깜빡이며 나타나는 현상(플래시)을 방지하기 위해 UX 개선 목적으로 사용합니다. 참조 : https://www.radix-ui.com/primitives/docs/components/avatar#image
+   * delayMs : fallback이 나타나기까지 기다리는 시간(ms)으로 fallback(대체 UI)이 너무 빨리 깜빡이며 나타나는 현상(플래시)을 방지하기 위해 UX 개선 목적으로 사용합니다. 참조 : https://www.radix-ui.com/primitives/docs/components/avatar#image
    */
   delayMs?: number;
   /**
-   * onLoadingStatusChange : 이미지 로딩 상태 변화 시 호출되는 콜백으로서 상태에 따라 콜백 처리 가능합니다. 참조 : 참조 : https://www.radix-ui.com/primitives/docs/components/avatar#image
+   * onLoadingStatusChange : 이미지 로딩 상태 변화 시 호출되는 콜백으로 상태에 따라 콜백 처리 가능합니다. 참조 : 참조 : https://www.radix-ui.com/primitives/docs/components/avatar#image
    */
   onLoadingStatusChange?: (status: AvatarLoadingStatus) => void;
 };

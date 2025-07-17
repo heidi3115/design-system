@@ -48,7 +48,7 @@ const meta: Meta<typeof Badge> = {
       options: variantArr,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'state' } },
       description:
-        'Badge의 타입을 지정하는 props 로서 state, scoring, grading, count, text 중에서 선택할 수 있습니다. 각 variant에 따라 해당 컴포넌트가 변경되고 필수 속성들이 달라지므로 상세 내역은 각 스토리를 참조해주세요.',
+        'Badge의 타입을 지정하는 props 로 state, scoring, grading, count, text 중에서 선택할 수 있습니다. 각 variant에 따라 해당 컴포넌트가 변경되고 필수 속성들이 달라지므로 상세 내역은 각 Story를 참조해주세요.',
     },
     status: {
       control: 'select',
@@ -56,7 +56,7 @@ const meta: Meta<typeof Badge> = {
       if: { arg: 'variant', eq: 'state' },
       table: { type: { summary: 'string' }, defaultValue: { summary: 'default' } },
       description:
-        'Badge의 상태를 지정하는 props 로서 variant가 state인 경우에 사용됩니다. 상세 내역은 State 스토리를 참조해주세요.',
+        'Badge의 상태를 지정하는 props 로 variant가 state인 경우에 사용됩니다. 상세 내역은 State Story를 참조해주세요.',
     },
     score: {
       control: 'select',
@@ -64,7 +64,7 @@ const meta: Meta<typeof Badge> = {
       if: { arg: 'variant', eq: 'scoring' },
       table: { type: { summary: 'string' }, defaultValue: { summary: 'normal' } },
       description:
-        'Badge의 점수 스타일을 지정하는 props 로서 variant가 scoring인 경우에 사용됩니다. 상세 내역은 Scoring 스토리를 참조해주세요.',
+        'Badge의 점수 스타일을 지정하는 props 로 variant가 scoring인 경우에 사용됩니다. 상세 내역은 Scoring Story를 참조해주세요.',
     },
     grade: {
       control: 'select',
@@ -72,7 +72,7 @@ const meta: Meta<typeof Badge> = {
       if: { arg: 'variant', eq: 'grading' },
       table: { type: { summary: 'string' }, defaultValue: { summary: 'info' } },
       description:
-        'Badge의 등급 스타일을 지정하는 props 로서 variant가 grading인 경우에 사용됩니다. 상세 내역은 Grade 스토리를 참조해주세요.',
+        'Badge의 등급 스타일을 지정하는 props 로 variant가 grading인 경우에 사용됩니다. 상세 내역은 Grade Story를 참조해주세요.',
     },
     className: {
       control: 'text',
@@ -86,7 +86,7 @@ const meta: Meta<typeof Badge> = {
         component: [
           'Badge 컴포넌트의 문서입니다. Badge는 레이블이나 태그 등으로 사용되는 UI 요소로, 다양한 variant를 통해 용도에 맞게 사용할 수 있습니다.',
           'Badge의 경우 variant 선택에 따라 필수값 등이 달라지므로 유의하시기 바랍니다.',
-          '공통적으로 적용되는 Badge의 스타일은 inline-flex 로서 size-fit을 기본으로 합니다.',
+          '공통적으로 적용되는 Badge의 스타일은 inline-flex 로 size-fit을 기본으로 합니다.',
         ].join('<br/>'),
       },
     },

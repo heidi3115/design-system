@@ -104,7 +104,7 @@ const meta: Meta<typeof Avatar> = {
       },
       description: [
         '아바타로 사용할 이미지의 경로(URL, 상대경로, base64 등)입니다.',
-        '스토리북에서는 임의로 기본값을 "/images/avatar-jira.png"로 처리했습니다.',
+        'storybook 에서는 임의로 기본값을 "/images/avatar-jira.png"로 처리했습니다.',
       ].join('<br/>'),
     },
     alt: {

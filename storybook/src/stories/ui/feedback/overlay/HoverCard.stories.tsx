@@ -502,7 +502,7 @@ export const Position: Story = {
         <div className={cn(flexColBoxGap4, commonBoxClass, 'relative w-full')}>
           <h4>
             <span className={cn(subTitleCommonClass, blueTxtClass, 'text-left block mb-1')}>
-              side와 align의 모든 조합으로서 각 버튼 hover 시 위치가 확인이 됩니다. <br />
+              side와 align의 모든 조합으로 각 버튼 hover 시 위치가 확인이 됩니다. <br />
             </span>
           </h4>
           <div className={cn(commonBoxClass)}></div>

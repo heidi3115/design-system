@@ -24,7 +24,7 @@ const meta: Meta<typeof StateBadge> = {
       options: statusArr,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'default' } },
       description:
-        'StateBadge의 상태를 지정하는 필수 props 로서 default, primary, secondary, progress, complete, failed, info, boundary, alert, critical, urgency 중에서 선택해야 합니다.',
+        'StateBadge의 상태를 지정하는 필수 props 로 default, primary, secondary, progress, complete, failed, info, boundary, alert, critical, urgency 중에서 선택해야 합니다.',
     },
     children: {
       control: 'text',
@@ -42,7 +42,7 @@ const meta: Meta<typeof StateBadge> = {
       description: {
         component: [
           'StateBadge 컴포넌트의 문서입니다. StateBadge는 레이블이나 태그 등 상태 표시를 위한 컴포넌트입니다.',
-          'StateBadge는 기본 Badge 에서 variant를 "state"로 고정한 컴포넌트로서, status를 필수값으로, isBtn을 옵션값으로 받습니다.',
+          'StateBadge는 기본 Badge 에서 variant를 "state"로 고정한 컴포넌트로, status를 필수값으로, isBtn을 옵션값으로 받습니다.',
           'children에 대해서는 따로 제한이 없으며, asChild는 기본 Badge 컴포넌트에서만 가능합니다.',
         ].join('<br/>'),
       },
@@ -169,7 +169,7 @@ export const IsBtn: StateStory = {
     docs: {
       description: {
         story:
-          'isBtn 는 boolean 으로서 true 시 button 처럼 hover:, active:, focus:의 이벤트 적인 내역들에 대한 이펙트가 추가됩니다. 기본적으로는 false 입니다.',
+          'isBtn 는 boolean 으로 true 시 button 처럼 hover:, active:, focus:의 이벤트 적인 내역들에 대한 이펙트가 추가됩니다. 기본적으로는 false 입니다.',
       },
     },
   },

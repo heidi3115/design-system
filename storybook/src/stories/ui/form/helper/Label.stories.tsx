@@ -29,7 +29,7 @@ const meta: Meta<Args> = {
         defaultValue: { summary: 'checkbox' },
       },
       description: [
-        '스토리북에서 Label과 연결할 컴포넌트를 선택합니다.',
+        'Storybook 에서 Label과 연결할 컴포넌트를 선택합니다.',
         'Label 연결 컴포넌트의 예시로, 실제 개발에서는 이 prop을 사용하지 않습니다.',
       ].join('<br/>'),
     },

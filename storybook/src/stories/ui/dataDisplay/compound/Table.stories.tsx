@@ -40,7 +40,7 @@ const meta: Meta<TableStoryArgs> = {
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
       description: [
         '표의 설명(캡션)을 추가할 수 있습니다.',
-        'showCaption은 스토리북에서 사용하기 위해 추가하였으며, 실제로는 &lt;TableCaption&gt;태그를 추가하거나 생략하여 사용합니다.',
+        'showCaption은 storybook 에서 사용하기 위해 추가하였으며, 실제로는 &lt;TableCaption&gt;태그를 추가하거나 생략하여 사용합니다.',
       ].join('<br/>'),
     },
     showFooter: {
@@ -48,7 +48,7 @@ const meta: Meta<TableStoryArgs> = {
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
       description: [
         '표의 하단(footer)을 추가할 수 있습니다.',
-        'showFooter는 스토리북에서 사용하기 위해 추가하였으며, 실제로는 &lt;TableFooter&gt;태그를 추가하거나 생략하여 사용합니다.',
+        'showFooter는 storybook 에서 사용하기 위해 추가하였으며, 실제로는 &lt;TableFooter&gt;태그를 추가하거나 생략하여 사용합니다.',
       ].join('<br/>'),
     },
   },

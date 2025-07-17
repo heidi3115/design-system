@@ -47,7 +47,7 @@ const meta: Meta<typeof GradeBadge> = {
     docs: {
       description: {
         component: [
-          'GradeBadge 컴포넌트의 문서입니다. GradeBadge는 등급에 대한 표기를 전문으로 하는 Badge 로서 각 grade별 아이콘이 지정되어 있습니다.',
+          'GradeBadge 컴포넌트의 문서입니다. GradeBadge는 등급에 대한 표기를 전문으로 하는 Badge 로 각 grade별 아이콘이 지정되어 있습니다.',
           'GradeBadge는 기본 Badge 에서 variant를 "grading"으로 고정한 컴포넌트입니다.',
           'grade, children이 필수값이며, grade별 아이콘이 고정되어 있고 children는 string 타입으로만 받을 수 있습니다.',
           '기본적인 스타일은 Badge를 따르되 GradeBadge 별도 스타일이 고정되어 있습니다.',
@@ -147,7 +147,7 @@ export const IsBtn: GradeStory = {
     docs: {
       description: {
         story:
-          'isBtn 는 boolean 으로서 true 시 button 처럼 hover:, active:, focus:의 이벤트 적인 내역들에 대한 이펙트가 추가됩니다. 기본적으로는 false 입니다.<br/>GradeBadge 의 경우 border 나 배경색의 변화 보다는 isBtn 활성화 시의 이펙트가 조금 다르게 처리됩니다.',
+          'isBtn 는 boolean 으로 true 시 button 처럼 hover:, active:, focus:의 이벤트 적인 내역들에 대한 이펙트가 추가됩니다. 기본적으로는 false 입니다.<br/>GradeBadge 의 경우 border 나 배경색의 변화 보다는 isBtn 활성화 시의 이펙트가 조금 다르게 처리됩니다.',
       },
     },
   },

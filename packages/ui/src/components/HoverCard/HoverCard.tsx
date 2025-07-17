@@ -61,7 +61,7 @@ export type HoverCardBaseProps = {
    */
   contentClass?: string;
   /**
-   * children: 숨겨진 content 내용으로서, HoverCard 가 열렸을 때 표시되는 실제 콘텐츠입니다.
+   * children: 숨겨진 content 내용으로, HoverCard 가 열렸을 때 표시되는 실제 콘텐츠입니다.
    * HoverCard 가 닫혀 있을 때는 렌더링되지 않습니다.
    * ReactNode 로 표현 가능한 모든 요소를 넣을 수 있습니다.
    */

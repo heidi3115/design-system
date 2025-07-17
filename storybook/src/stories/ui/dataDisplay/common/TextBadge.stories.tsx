@@ -5,7 +5,7 @@ const textMap = {
   short: ['짧은 텍스트', 'text'],
   long: [
     '긴 텍스트',
-    '긴 텍스트 TextBadge는 텍스트 태그를 위함으로서 텍스트만 있는 textOnly와 삭제 버튼 활용이 가능한 2가지를 고려한 내역입니다. 내용이 긴 텍스트로서의 크기 제한은 별도로 width 지정으로 가능합니다.',
+    '긴 텍스트 TextBadge는 텍스트 태그를 위함으로 텍스트만 있는 textOnly와 삭제 버튼 활용이 가능한 2가지를 고려한 내역입니다. 내용이 긴 텍스트의 크기 제한은 별도로 width 지정으로 가능합니다.',
   ],
 };
 
@@ -33,7 +33,7 @@ const meta: Meta<typeof TextBadge> = {
       control: 'boolean',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
       description: [
-        '텍스트 태그만으로서 사용을 원할 시 true로 전환하면 TextBadge 내부의 삭제 버튼이 비활성화되고 보이지 않게 됩니다.',
+        '텍스트 태그만으로 사용을 원할 시 true로 전환하면 TextBadge 내부의 삭제 버튼이 비활성화되고 보이지 않게 됩니다.',
         'textOnly가 true가 되면 텍스트를 감싸는 부모가 inline-block이 되면서 overflow-hidden text-ellipsis whitespace-nowrap이 적용됩니다.',
         'width를 지정하게 되어 넘어가게 되면 자동 말줄임표가 가능해집니다.',
       ].join('<br/>'),
@@ -56,7 +56,7 @@ const meta: Meta<typeof TextBadge> = {
       action: 'clicked',
       table: {
         type: { summary: '(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void' },
-        defaultValue: { summary: '현재로서는 클릭 시 공통으로 alert가 활성화 됩니다.' },
+        defaultValue: { summary: '현재는 클릭 시 공통으로 alert가 활성화 됩니다.' },
       },
       description: '삭제 버튼 클릭 시 호출되는 이벤트 핸들러입니다. (textOnly=false일 때만 활성화됩니다.)',
     },
@@ -65,8 +65,8 @@ const meta: Meta<typeof TextBadge> = {
     docs: {
       description: {
         component: [
-          'TextBadge 컴포넌트의 문서입니다. TextBadge는 텍스트 태그를 기반으로 하는 Badge 로서 형태가 고정되어 있습니다.',
-          'TextBadge는 기본 Badge 에서 variant를 "text"로 고정한 컴포넌트로서, children이 필수값이며 textOnly, onClick을 옵션값으로 받습니다.',
+          'TextBadge 컴포넌트의 문서입니다. TextBadge는 텍스트 태그를 기반으로 하는 Badge 로 형태가 고정되어 있습니다.',
+          'TextBadge는 기본 Badge 에서 variant를 "text"로 고정한 컴포넌트로, children이 필수값이며 textOnly, onClick을 옵션값으로 받습니다.',
           'children은 string 으로만 받을 수 있으며 textOnly 활성화 시, onClick은 버튼이 없어지므로 비활성화됩니다.',
           'textOnly 옵션에 따라 children을 감싼 내부 부모의 스타일이 바뀌는 부분이 있으니 유의해야 합니다.',
           'asChild는 기본 Badge 컴포넌트에서만 가능합니다.',
@@ -175,7 +175,7 @@ export const TextOnly: TextStory = {
   parameters: {
     docs: {
       description: {
-        story: 'textOnly가 true일 경우에 대한 다양하나 예시들을 확인할 수 있습니다.',
+        story: 'textOnly가 true일 경우에 대한 다양한 예시들을 확인할 수 있습니다.',
       },
     },
   },
@@ -190,7 +190,7 @@ export const TextOnly: TextStory = {
             }
             <br />
             {
-              "또한 아이콘이 들어갈 것을 고려하여 '[&>svg]:basis-[1.4em]] [&>svg]:min-w-4' 스타일이 공통적으로 적용이 되어있습니다."
+              "또한 아이콘이 들어갈 것을 고려하여 '[&>svg]:basis-[1.4em]] [&>svg]:min-w-4' 스타일이 공통적으로 적용이 되어 있습니다."
             }
             <br />
             {
@@ -297,7 +297,7 @@ export const IsBtn: TextStory = {
     docs: {
       description: {
         story: [
-          'isBtn 는 boolean 으로서 true 시 button 처럼 hover:, active:, focus:의 이벤트 적인 내역들에 대한 이펙트가 추가됩니다. 기본적으로는 false 입니다.',
+          'isBtn 는 boolean 으로 true 시 button 처럼 hover:, active:, focus:의 이벤트 적인 내역들에 대한 이펙트가 추가됩니다. 기본적으로는 false 입니다.',
           'TextBadge 의 경우 isBtn 활성화 시의 이펙트가 조금 다르게 처리됩니다. 또한 TextBadge 자체에 대한 이벤트 처리와 내부 버튼에 대한 내역이 다르니 유의해주세요.',
         ].join('<br/>'),
       },

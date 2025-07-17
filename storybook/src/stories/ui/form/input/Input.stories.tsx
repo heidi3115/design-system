@@ -336,7 +336,7 @@ export const IconControl: StoryObj<InputStoryProps> = {
   parameters: {
     docs: {
       description: {
-        story: '스토리북 컨트롤을 통해 아이콘을 동적으로 변경하여 Input에 적용하는 예시입니다.',
+        story: 'Storybook 컨트롤을 통해 아이콘을 동적으로 변경하여 Input에 적용하는 예시입니다.',
       },
       disable: true,
     },

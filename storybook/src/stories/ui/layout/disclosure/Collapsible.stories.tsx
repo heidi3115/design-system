@@ -220,7 +220,7 @@ const meta: Meta<typeof Collapsible> = {
         type: { summary: 'ReactReactElement' },
       },
       description: [
-        'Collapsible 의 열고/닫을(toggle) trigger 요소(ReactElement)로서, ReactElement 로 표현 가능한 모든 요소를 넣을 수 있습니다.',
+        'Collapsible 의 열고/닫을(toggle) trigger 요소(ReactElement)로, ReactElement 로 표현 가능한 모든 요소를 넣을 수 있습니다.',
         'storybook 에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
@@ -242,7 +242,7 @@ const meta: Meta<typeof Collapsible> = {
         type: { summary: 'ReactReactElement' },
       },
       description: [
-        '숨겨진 콘텐츠 내용으로서, Collapsible 가 열렸을 때 표시되는 실제 콘텐츠입니다.',
+        '숨겨진 콘텐츠 내용으로, Collapsible 가 열렸을 때 표시되는 실제 콘텐츠입니다.',
         'ReactNode 타입으로, 원하는 내용을 자유롭게 넣을 수 있습니다.',
         'Collapsible 가 닫혀 있을 때는 렌더링되지 않거나, 접근성 목적의 aria 속성만 유지됩니다.',
         'storybook 에서는 제어할 수 없습니다.',
