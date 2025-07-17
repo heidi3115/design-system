@@ -13,38 +13,57 @@ import {
   VisibilityState,
 } from '@tanstack/react-table';
 
-import { TableHeader, Table, TableRow, TableHead, TableCell, TableBody } from '@common/ui';
+import { TableHeader, Table, TableRow, TableHead, TableCell, TableBody, Input } from '@common/ui';
 import { type ReactNode, useState } from 'react';
+import { useDebounce } from '@common/utils';
 
-type DataTableProps<T, V> = { data: T[]; columns: ColumnDef<T, V>[]; emptyState?: ReactNode };
+type DataTableProps<T, V> = {
+  data: T[];
+  columns: ColumnDef<T, V>[];
+  manualFiltering?: boolean;
+  globalFilter?: string;
+  onGlobalFilterChange?: (value: string) => void;
+  emptyState?: ReactNode;
+};
 
-export function DataTable<T, V = unknown>({ data, columns, emptyState }: DataTableProps<T, V>) {
+export function DataTable<T, V = unknown>({
+  data,
+  columns,
+  manualFiltering = false,
+  globalFilter: externalGlobalFilter,
+  onGlobalFilterChange,
+  emptyState,
+}: DataTableProps<T, V>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [internalGlobalFilter, setInternalGlobalFilter] = useState('');
+  const globalFilter = externalGlobalFilter ?? internalGlobalFilter;
+  const setGlobalFilter = onGlobalFilterChange ?? setInternalGlobalFilter;
 
   const table = useReactTable({
     data,
     columns,
+    manualFiltering,
+    getFilteredRowModel: manualFiltering ? undefined : getFilteredRowModel(),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
+    state: { sorting, columnFilters, columnVisibility, rowSelection, globalFilter },
+    onGlobalFilterChange: setGlobalFilter,
   });
+  const handleChange = useDebounce((event) => {
+    table.setGlobalFilter(event.target.value);
+  }, 500);
 
   return (
     <div>
+      <Input placeholder="검색" onChange={handleChange} className="max-w-sm" value={globalFilter} />
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -77,6 +96,10 @@ export function DataTable<T, V = unknown>({ data, columns, emptyState }: DataTab
           )}
         </TableBody>
       </Table>
+      {/*<Input*/} {/*  placeholder="검색"*/}
+      {/*  value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}*/}
+      {/*  onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}*/}
+      {/*  className="max-w-sm"*/} {/*/>*/}
     </div>
   );
 }
