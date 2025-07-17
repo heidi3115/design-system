@@ -4,13 +4,7 @@ import { Button, Input, Slider, type SliderMark, type SliderProps, sliderVariant
 import { useRef, useState } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@common/ui/icons';
 
-const flexCol = 'flex flex-col text-jui text-juiText-primary';
-const flexRow = 'flex flex-row';
-const allCenter = 'items-center justify-center';
-const blueTxt = 'text-juiText-blue';
-const titTxt = 'font-bold text-base';
-const subTitTxt = 'font-bold text-xs';
-
+// 공통 상수
 const variantOptions = Object.keys(sliderVariants.variants.variant) as (keyof typeof sliderVariants.variants.variant)[];
 const sizeOptions = Object.keys(sliderVariants.variants.size) as (keyof typeof sliderVariants.variants.size)[];
 const orientationOptions = Object.keys(
@@ -18,6 +12,15 @@ const orientationOptions = Object.keys(
 ) as (keyof typeof sliderVariants.variants.orientation)[];
 const showValueLabelOptions = ['always', 'auto', 'none'] as const;
 
+// 레이아웃 클래스
+const flexCol = 'flex flex-col text-jui text-juiText-primary';
+const flexRow = 'flex flex-row';
+const allCenter = 'items-center justify-center';
+const blueTxt = 'text-juiText-blue';
+const titTxt = 'font-bold text-base';
+const subTitTxt = 'font-bold text-xs';
+
+// 기본 값 상수
 const MIN_INT_VALUE = 0;
 const MAX_INT_VALUE = 100;
 const MIN_DECIMAL_VALUE = 0.01;
@@ -71,7 +74,7 @@ const meta: Meta<typeof Slider> = {
         defaultValue: { summary: "'primary'" },
       },
       description: [
-        "슬라이더의 색상 변형을 설정합니다. 'custom'으로 설정 시, CSS 변수 `--slider-color`를 직접 지정해야 합니다.",
+        "Slider의 색상 변형을 설정합니다. 'custom'으로 설정 시, CSS 변수 `--slider-color`를 직접 지정해야 합니다.",
       ].join('<br/>'),
     },
     size: {
@@ -81,7 +84,7 @@ const meta: Meta<typeof Slider> = {
         type: { summary: `${sizeOptions.map((d) => `'${d}'`).join(' | ')}` },
         defaultValue: { summary: "'default'" },
       },
-      description: ['슬라이더의 크기를 설정합니다.'].join('<br/>'),
+      description: ['Slider의 크기를 설정합니다.'].join('<br/>'),
     },
     orientation: {
       control: 'inline-radio',
@@ -90,7 +93,7 @@ const meta: Meta<typeof Slider> = {
         type: { summary: `${orientationOptions.map((d) => `'${d}'`).join(' | ')}` },
         defaultValue: { summary: "'horizontal'" },
       },
-      description: ['슬라이더의 방향을 수평 또는 수직으로 설정합니다.'].join('<br/>'),
+      description: ['Slider의 방향을 수평 또는 수직으로 설정합니다.'].join('<br/>'),
     },
     showValueLabel: {
       control: 'select',
@@ -118,7 +121,7 @@ const meta: Meta<typeof Slider> = {
         defaultValue: { summary: 'false' },
       },
       description: [
-        '슬라이더 트랙에 눈금을 표시할지 여부를 설정합니다. `true`일 경우 `step`에 따라 자동으로 눈금이 생성됩니다.',
+        'Slider 트랙에 눈금을 표시할지 여부를 설정합니다. `true`일 경우 `step`에 따라 자동으로 눈금이 생성됩니다.',
       ].join('<br/>'),
     },
     disabled: {
@@ -127,7 +130,7 @@ const meta: Meta<typeof Slider> = {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
-      description: ['슬라이더를 비활성화할지 여부를 설정합니다.'].join('<br/>'),
+      description: ['Slider를 비활성화할지 여부를 설정합니다.'].join('<br/>'),
     },
     inverted: {
       control: 'boolean',
@@ -135,7 +138,7 @@ const meta: Meta<typeof Slider> = {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
-      description: ['슬라이더의 값 방향을 반전시킵니다.'].join('<br/>'),
+      description: ['Slider의 값 방향을 반전시킵니다.'].join('<br/>'),
     },
     min: {
       control: { type: 'number' },
@@ -143,7 +146,7 @@ const meta: Meta<typeof Slider> = {
         type: { summary: 'number' },
         defaultValue: { summary: `${MIN_INT_VALUE}` },
       },
-      description: ['슬라이더의 최솟값을 설정합니다.'].join('<br/>'),
+      description: ['Slider의 최솟값을 설정합니다.'].join('<br/>'),
     },
     max: {
       control: { type: 'number' },
@@ -151,7 +154,7 @@ const meta: Meta<typeof Slider> = {
         type: { summary: 'number' },
         defaultValue: { summary: `${MAX_INT_VALUE}` },
       },
-      description: ['슬라이더의 최댓값을 설정합니다.'].join('<br/>'),
+      description: ['Slider의 최댓값을 설정합니다.'].join('<br/>'),
     },
     step: {
       control: { type: 'number', min: DEFAULT_STEP },
@@ -159,7 +162,7 @@ const meta: Meta<typeof Slider> = {
         type: { summary: 'number' },
         defaultValue: { summary: `${DEFAULT_STEP}` },
       },
-      description: ['슬라이더 값의 증가 단위를 설정합니다.'].join('<br/>'),
+      description: ['Slider 값의 증가 단위를 설정합니다.'].join('<br/>'),
     },
     minStepsBetweenThumbs: {
       control: { type: 'number' },
@@ -175,7 +178,7 @@ const meta: Meta<typeof Slider> = {
         type: { summary: 'number[]' },
         defaultValue: { summary: '[]' },
       },
-      description: ['슬라이더의 비제어 상태일 때의 초기값을 설정합니다.'].join('<br/>'),
+      description: ['Slider의 비제어 상태일 때의 초기값을 설정합니다.'].join('<br/>'),
     },
     value: {
       control: false,
@@ -184,7 +187,7 @@ const meta: Meta<typeof Slider> = {
         defaultValue: { summary: '[]' },
       },
       description: [
-        '슬라이더의 제어 상태일 때의 값을 설정합니다. 이 값을 사용하면 컴포넌트 외부에서 상태를 관리해야 합니다.',
+        'Slider의 제어 상태일 때의 값을 설정합니다. 이 값을 사용하면 컴포넌트 외부에서 상태를 관리해야 합니다.',
       ].join('<br/>'),
     },
     className: {
@@ -201,7 +204,7 @@ const meta: Meta<typeof Slider> = {
         type: { summary: '(value: number[]) => void' },
         defaultValue: { summary: 'undefined' },
       },
-      description: ['슬라이더 값이 변경될 때마다 호출되는 콜백 함수입니다.', '스토리에서는 제어하실 수 없습니다.'].join(
+      description: ['Slider 값이 변경될 때마다 호출되는 콜백 함수입니다.', '스토리에서는 제어하실 수 없습니다.'].join(
         '<br/>',
       ),
     },
@@ -236,7 +239,7 @@ const meta: Meta<typeof Slider> = {
         component: [
           'Slider 컴포넌트의 문서입니다.',
           '**Slider 컴포넌트**는 사용자가 지정된 범위 내에서 단일 값을 선택하거나 값의 범위를 지정할 수 있게 해주는 UI 컨트롤입니다.',
-          '단일 및 범위 선택이 가능하여, `defaultValue` 또는 `value` prop에 숫자 배열을 전달하여 단일 핸들(thumb) 슬라이더 또는 범위 슬라이더를 구현할 수 있습니다.',
+          '단일 및 범위 선택이 가능하여, `defaultValue` 또는 `value` prop에 숫자 배열을 전달하여 단일 핸들(thumb) Slider 또는 범위 Slider를 구현할 수 있습니다.',
         ].join('<br/>'),
       },
     },
@@ -251,7 +254,12 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: ['기본 Slider 컴포넌트의 예시입니다.'].join('<br/>'),
+        story: [
+          '기본 Slider 컴포넌트의 예시입니다.',
+          '사용자가 지정된 범위 내에서 값을 선택할 수 있는 UI 컨트롤입니다.',
+          '단일 값 선택 또는 범위 선택이 가능하며, 드래그하여 값을 조정할 수 있습니다.',
+          '`defaultValue`에 배열의 요소 개수에 따라 단일 Slider 또는 범위 Slider로 동작합니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -274,7 +282,16 @@ export const Variants: Story = {
     sliderRef: { table: { disable: true } },
   },
   parameters: {
-    docs: { description: { story: '다양한 `variant`(색상) 옵션을 보여주는 예시입니다.' } },
+    docs: {
+      description: {
+        story: [
+          '다양한 `variant`(색상) 옵션을 보여주는 예시입니다.',
+          '각 variant별로 단일 값 슬라이더와 범위 슬라이더를 모두 확인할 수 있습니다.',
+          '`custom` variant 사용 시에는 CSS 변수 `--slider-color`를 통해 원하는 색상을 지정할 수 있습니다.',
+          '브랜드 색상에 맞게 슬라이더를 커스터마이징할 때 활용하세요.',
+        ].join('<br/>'),
+      },
+    },
   },
   render: (args) => (
     <div className={cn('gap-10 size-full', args.orientation === 'vertical' ? `${flexRow} h-100` : flexCol)}>
@@ -304,7 +321,12 @@ export const Sizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: ['다양한 `size` 옵션을 보여주는 예시입니다.'].join('<br/>'),
+        story: [
+          '다양한 `size` 옵션을 보여주는 예시입니다.',
+          '슬라이더의 크기는 트랙의 두께와 핸들(thumb)의 크기에 영향을 미칩니다.',
+          '각 size별로 단일 값과 범위 슬라이더를 모두 확인할 수 있습니다.',
+          '사용자 인터페이스의 밀도와 중요도에 따라 적절한 크기를 선택하세요.',
+        ].join('<br/>'),
       },
     },
   },
@@ -333,7 +355,18 @@ export const Orientations: Story = {
     onValueCommit: { table: { disable: true } },
     sliderRef: { table: { disable: true } },
   },
-  parameters: { docs: { description: { story: '`orientation` 옵션에 따른 가로 및 세로 모드 예시입니다.' } } },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          '`orientation` 옵션에 따른 가로 및 세로 모드 예시입니다.',
+          '가로 모드(horizontal)는 일반적인 슬라이더 형태로, 좌우로 드래그하여 값을 조정합니다.',
+          '세로 모드(vertical)는 상하로 드래그하여 값을 조정하며, 공간이 제한적일 때 유용합니다.',
+          '각 방향별로 정수와 소수점 값을 모두 지원하며, 범위 선택도 가능합니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   render: (args) => (
     <div className={cn(flexRow, 'gap-16 w-full h-100')}>
       <div className={cn(flexCol, 'flex-1 gap-4')}>
@@ -393,7 +426,16 @@ export const Labels: Story = {
     sliderRef: { table: { disable: true } },
   },
   parameters: {
-    docs: { description: { story: '`showValueLabel`과 `unitLabel`을 활용한 레이블 표시의 다양한 예시입니다.' } },
+    docs: {
+      description: {
+        story: [
+          '`showValueLabel`과 `unitLabel`을 활용한 레이블 표시의 다양한 예시입니다.',
+          '`showValueLabel`은 값 표시 방식을 제어합니다: `always`(항상 표시), `auto`(호버/드래그 시), `none`(표시 안 함).',
+          '`unitLabel`을 통해 퍼센트(%), 픽셀(px), 온도(°C) 등의 단위를 값과 함께 표시할 수 있습니다.',
+          '사용자에게 현재 값과 단위를 명확히 알려주어 더 나은 사용자 경험을 제공합니다.',
+        ].join('<br/>'),
+      },
+    },
   },
   render: (args) => (
     <div className={cn(flexCol, 'w-full h-150')}>
@@ -690,7 +732,18 @@ export const Uncontrolled: Story = {
     onValueCommit: { table: { disable: true } },
     sliderRef: { table: { disable: true } },
   },
-  parameters: { docs: { description: { story: '`defaultValue`와 `sliderRef`를 이용한 비제어 컴포넌트 예시입니다.' } } },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          '`defaultValue`와 `sliderRef`를 이용한 비제어 컴포넌트 예시입니다.',
+          '비제어 모드에서는 컴포넌트가 자체적으로 상태를 관리하며, 초기값만 지정하면 됩니다.',
+          '`sliderRef`를 통해 외부에서 현재 값을 참조할 수 있으며, 값 변경 시 콜백을 받을 수 있습니다.',
+          '간단한 사용 사례나 초기값만 설정하면 되는 경우에 적합합니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   render: (args) => <UncontrolledStory {...args} />,
 };
 
@@ -761,7 +814,18 @@ export const Controlled: Story = {
     onValueCommit: { table: { disable: true } },
     sliderRef: { table: { disable: true } },
   },
-  parameters: { docs: { description: { story: '`value`와 `onValueChange`를 이용한 제어 컴포넌트 예시입니다.' } } },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          '`value`와 `onValueChange`를 이용한 제어 컴포넌트 예시입니다.',
+          '제어 모드에서는 외부 상태를 통해 슬라이더의 값을 완전히 제어할 수 있습니다.',
+          '`value` prop으로 현재 값을 설정하고, `onValueChange` 콜백으로 값 변경을 처리합니다.',
+          '복잡한 상태 관리가 필요하거나 다른 컴포넌트와 동기화가 필요한 경우에 적합합니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   render: (args) => <ControlledStory {...args} />,
 };
 
@@ -900,6 +964,18 @@ export const VariantExamples: Story = {
     onValueCommit: { table: { disable: true } },
     sliderRef: { table: { disable: true } },
   },
-  parameters: { docs: { description: { story: '다양한 예시를 이용한 Slider 모음입니다.' } } },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          '다양한 예시를 이용한 Slider 모음입니다.',
+          '실제 사용 시나리오를 가정한 복합적인 예시를 제공합니다.',
+          'Input 컴포넌트와 연동하여 숫자 입력으로 슬라이더 값을 조정하는 방법을 보여줍니다.',
+          '버튼을 통해 슬라이더 범위를 step 단위로 조정하는 인터랙션 예시도 포함되어 있습니다.',
+          '이러한 패턴들은 실제 애플리케이션에서 유용하게 활용할 수 있습니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   render: (args) => <VariantExamplesStory {...args} />,
 };

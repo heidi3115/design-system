@@ -54,6 +54,14 @@ const meta: Meta<typeof AutoComplete> = {
       },
       description: ['AutoComplete 컴포넌트의 비활성화 상태를 설정합니다.', '기본값은 false입니다.'].join('<br/>'),
     },
+    placeholder: {
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '선택해주세요' },
+      },
+      description: ['AutoComplete 입력 필드에 표시될 플레이스홀더 텍스트를 설정합니다.'].join('<br/>'),
+    },
     emptyText: {
       control: 'text',
       table: {
@@ -112,7 +120,7 @@ const meta: Meta<typeof AutoComplete> = {
       },
       description: [
         '비제어 모드에서 선택된 값을 참조할 수 있는 Ref 객체입니다.',
-        '스토리에서는 제어할 수 없습니다.',
+        'storybook에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     ref: {
@@ -121,7 +129,7 @@ const meta: Meta<typeof AutoComplete> = {
         type: { summary: 'RefCallback<HTMLElement>' },
         disable: true,
       },
-      description: ['AutoComplete DOM 요소에 대한 참조입니다.', '스토리에서는 제어할 수 없습니다.'].join('<br/>'),
+      description: ['AutoComplete DOM 요소에 대한 참조입니다.', 'storybook에서는 제어할 수 없습니다.'].join('<br/>'),
     },
     value: {
       control: false,
@@ -129,7 +137,7 @@ const meta: Meta<typeof AutoComplete> = {
         type: { summary: 'string' },
         disable: true,
       },
-      description: ['제어 모드에서 현재 선택된 값입니다.', '스토리에서는 제어할 수 없습니다.'].join('<br/>'),
+      description: ['제어 모드에서 현재 선택된 값입니다.', 'storybook에서는 제어할 수 없습니다.'].join('<br/>'),
     },
     defaultValue: {
       control: false,
@@ -137,7 +145,7 @@ const meta: Meta<typeof AutoComplete> = {
         type: { summary: 'string' },
         disable: true,
       },
-      description: ['비제어 모드에서 초기 선택값입니다.', '스토리에서는 제어할 수 없습니다.'].join('<br/>'),
+      description: ['비제어 모드에서 초기 선택값입니다.', 'storybook에서는 제어할 수 없습니다.'].join('<br/>'),
     },
     onValueChange: {
       control: false,
@@ -145,7 +153,7 @@ const meta: Meta<typeof AutoComplete> = {
       table: {
         disable: true,
       },
-      description: ['값이 변경될 때 호출되는 콜백 함수입니다.', '스토리에서는 제어할 수 없습니다.'].join('<br/>'),
+      description: ['값이 변경될 때 호출되는 콜백 함수입니다.', 'storybook에서는 제어할 수 없습니다.'].join('<br/>'),
     },
   },
   parameters: {
@@ -498,7 +506,7 @@ const ControllComp = ({ onValueChange, ...args }: ComponentProps<typeof AutoComp
         <span className="text-sm font-bold">비제어형 AutoComplete</span>
         <div className="w-3xs mt-2 flex gap-2 items-center">
           <AutoComplete {...args} selectRef={ref} options={controlledOptions} />
-          <Button onClick={handleUncontrolledCheck} style={{ fontSize: 12, padding: '4px 8px' }}>
+          <Button onClick={handleUncontrolledCheck} className="text-xs px-2 py-1">
             선택값 확인
           </Button>
         </div>

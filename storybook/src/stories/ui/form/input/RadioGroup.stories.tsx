@@ -125,7 +125,7 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: '기본 RadioGroup 예시입니다.',
+        story: ['기본 RadioGroup 컴포넌트의 예시입니다.'].join('<br/>'),
       },
     },
   },
@@ -142,7 +142,10 @@ export const Horizontal: Story = {
   parameters: {
     docs: {
       description: {
-        story: '가로 방향으로 배치된 라디오 그룹입니다.',
+        story: [
+          '라디오 버튼의 배치 방향을 보여주는 예시입니다.',
+          '가로 방향으로 배치된 RadioGroup을 확인하실 수 있습니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -160,29 +163,15 @@ export const CustomClass: Story = {
     labelClassName: 'peer-data-[state=checked]:text-juiError',
   },
   argTypes: {
-    itemClassName: {
-      control: {
-        type: 'text',
-        disable: false,
-      },
-    },
-    labelClassName: {
-      control: {
-        type: 'text',
-        disable: false,
-      },
-    },
-    className: {
-      control: {
-        type: 'text',
-        disable: false,
-      },
-    },
+    className: { control: 'text', disable: false },
+    itemClassName: { control: 'text', disable: false },
+    labelClassName: { control: 'text' },
+    options: { table: { disable: true } },
   },
   parameters: {
     docs: {
       description: {
-        story: 'className을 통해 외부 스타일을 적용한 예시입니다.',
+        story: ['CSS 클래스를 통해 외부 스타일을 적용한 예시입니다.'].join('<br/>'),
       },
     },
   },
@@ -234,13 +223,18 @@ export const Controlled: Story = {
     direction: { control: false, table: { disable: true } },
     defaultValue: { control: false, table: { disable: true } },
     value: { control: false, table: { disable: true } },
+    onValueChange: { table: { disable: true } },
+    valueRef: { table: { disable: true } },
   },
   parameters: {
     docs: {
       description: {
-        story: '제어형과 비제어형 라디오 그룹 예시입니다. 제어형은 상태를 통해 값을 직접 관리합니다.',
+        story: [
+          '제어형과 비제어형 RadioGroup 사용 예시입니다.',
+          '제어형은 value와 onValueChange를 사용하여 상태를 통해 값을 직접 외부에서 관리합니다.',
+          '비제어형은 valueRef를 사용하여 현재 값을 참조할 수 있습니다.',
+        ].join('<br/>'),
       },
-      disable: true,
     },
   },
   render: (args) => <ControlComp {...args} />,
