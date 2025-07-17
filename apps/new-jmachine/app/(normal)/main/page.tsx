@@ -1,24 +1,68 @@
-import { Suspense } from 'react';
-import { getStatsDailyEventScoreServerFetch } from '../../../services/stats/getStatsDailyEventScore';
-import { TopMain } from './component/TopMain';
-import { Skeleton } from '@common/ui';
+import { Suspense, use } from 'react';
 
-export default function MainPage() {
-  const dailyEventScore = getStatsDailyEventScoreServerFetch({
-    fromDttDt: '2025-07-10 00:00:00',
-    toDttDt: '2025-07-16 23:59:59',
-  });
+import { getStatsDailyEventScoreServerFetch } from '../../../services/stats/getStatsDailyEventScore';
+import { TopMain } from './component/TopSection/TopMain';
+import { LeftMain } from './component/LeftSection/LeftMain';
+import { RightMain } from './component/RightSection/RightMain';
+import { MainFallback } from './component/Fallback/MainFallback';
+import { PeriodToggle } from './component/TopSection/PeriodToggle';
+import { getStatsDangerGradeServerFetch } from '../../../services/stats/getStatsDangerGrade';
+import { getStatsDetailScoreUserServerFetch } from '../../../services/stats/getStatsDetailScoreUser';
+import { getDateRangeByPeriod } from './lib/getDateRangeByPeriod';
+
+export default function MainPage({ searchParams }: { searchParams: Promise<{ period: string }> }) {
+  const { period } = use(searchParams);
+
+  const periodDays = Number(period) || 7;
+  const { fromDttDt, toDttDt } = getDateRangeByPeriod(periodDays);
+
+  const dailyEventScore = getStatsDailyEventScoreServerFetch(
+    {
+      fromDttDt,
+      toDttDt,
+    },
+    { cache: 'force-cache' },
+  );
+
+  const dangerGrade = getStatsDangerGradeServerFetch(
+    {
+      fromDttDt,
+      toDttDt,
+    },
+    { cache: 'force-cache' },
+  );
+
+  const detailUser = getStatsDetailScoreUserServerFetch(
+    {
+      fromDttDt,
+      toDttDt,
+      ord: 'desc',
+      sort: 'tot_score',
+    },
+    { cache: 'force-cache' },
+  );
 
   return (
     <div className="h-full flex flex-col">
-      <div className="h-60 bg-juiPrimary overflow-auto">
-        <Suspense fallback={<Skeleton />}>
-          <TopMain data={dailyEventScore} />
-        </Suspense>
+      <div className="h-1/5 p-4 bg-juiPrimary/50 overflow-auto">
+        <div className="flex gap-4">
+          <PeriodToggle />
+          <Suspense key={period} fallback={<MainFallback />}>
+            <TopMain data={dailyEventScore} />
+          </Suspense>
+        </div>
       </div>
-      <div className="flex flex-1">
-        <div className="w-1/2 bg-juiSecondary">left</div>
-        <div className="w-1/2 bg-juiError">right</div>
+      <div className="flex flex-1 overflow-hidden">
+        <div className="w-1/2 p-4 bg-juiSecondary overflow-auto">
+          <Suspense key={period} fallback={<MainFallback />}>
+            <LeftMain dangerGradeData={dangerGrade} />
+          </Suspense>
+        </div>
+        <div className="w-1/2 p-4 bg-juiError/80 overflow-auto">
+          <Suspense key={period} fallback={<MainFallback />}>
+            <RightMain useScoreData={detailUser} />
+          </Suspense>
+        </div>
       </div>
     </div>
   );

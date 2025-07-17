@@ -1,4 +1,5 @@
 import { fetchClientApi } from '../../lib/fetch/clientApi';
+import { ServerFetchOptions } from '../../lib/fetch/commonApi';
 import { fetchServerApi } from '../../lib/fetch/serverApi';
 
 export type StatsDailyEventScoreType = {
@@ -14,10 +15,14 @@ export type GetStatsDailyEventScoreRequest = {
   toDttDt: string;
 };
 
-export const getStatsDailyEventScoreServerFetch = async (params: GetStatsDailyEventScoreRequest) => {
+export const getStatsDailyEventScoreServerFetch = async (
+  params: GetStatsDailyEventScoreRequest,
+  options?: ServerFetchOptions,
+) => {
   const response = await fetchServerApi<GetStatsDailyEventScoreRespone, GetStatsDailyEventScoreRequest>(
     '/get/stats/daily/event/score',
     params,
+    { ...options },
   );
 
   if (response.code === '000000') return response.data;

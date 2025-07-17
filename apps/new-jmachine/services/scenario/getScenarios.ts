@@ -1,4 +1,5 @@
 import { fetchClientApi } from '../../lib/fetch/clientApi';
+import { ServerFetchOptions } from '../../lib/fetch/commonApi';
 import { fetchServerApi } from '../../lib/fetch/serverApi';
 
 export type ScenariosType = {
@@ -35,8 +36,10 @@ export type GetScenariosRequest = {
   scnrTyp?: string;
 };
 
-export const getScenariosServerFetch = async (params: GetScenariosRequest) => {
-  const response = await fetchServerApi<ScenariosResponse, GetScenariosRequest>(`/get/scenarios`, params);
+export const getScenariosServerFetch = async (params: GetScenariosRequest, options?: ServerFetchOptions) => {
+  const response = await fetchServerApi<ScenariosResponse, GetScenariosRequest>(`/get/scenarios`, params, {
+    ...options,
+  });
   if (response.code === '000000') return response.data;
 
   // 렌더 중 throw 되면 error.tsx 진입

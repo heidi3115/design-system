@@ -1,4 +1,5 @@
 import { fetchClientApi } from '../../lib/fetch/clientApi';
+import { ServerFetchOptions } from '../../lib/fetch/commonApi';
 import { fetchServerApi } from '../../lib/fetch/serverApi';
 
 export type MenuItemType = {
@@ -18,8 +19,8 @@ type GetMenusRequest = {
 
 type GetMenusResponse = MenuItemType[];
 
-export const getMenusServerFetch = async (params: GetMenusRequest) => {
-  const response = await fetchServerApi<GetMenusResponse, GetMenusRequest>(`/get/menus`, params);
+export const getMenusServerFetch = async (params: GetMenusRequest, options?: ServerFetchOptions) => {
+  const response = await fetchServerApi<GetMenusResponse, GetMenusRequest>(`/get/menus`, params, { ...options });
   if (response.code === '000000') return response.data;
 
   // 렌더 중 throw 되면 error.tsx 진입

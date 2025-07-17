@@ -35,11 +35,8 @@ function MultipleToggleGroup(props: MultipleToggleGroupProps) {
   useImperativeHandle(valueRef, () => currentValue);
 
   const handleChange = (val: string[]) => {
-    if (isControlled) {
-      onValueChange?.(val);
-    } else {
-      setUncontrolledValue(val);
-    }
+    if (!isControlled) setUncontrolledValue(val);
+    onValueChange?.(val);
   };
 
   return (
