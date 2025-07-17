@@ -139,6 +139,16 @@ export const Default: Story = {
 };
 
 export const title: Story = {
+  argTypes: {
+    title: { table: { disable: true } },
+    onConfirm: { table: { disable: true } },
+    onCancel: { table: { disable: true } },
+    portalContainer: { table: { disable: true } },
+    footerType: {
+      control: { type: 'radio' },
+      options: ['confirm', 'update'],
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -151,24 +161,6 @@ export const title: Story = {
         code: null,
       },
     },
-    controls: {
-      exclude: ['title', 'onConfirm', 'onCancel', 'portalContainer'],
-    },
-  },
-  argTypes: {
-    footerType: {
-      control: { type: 'radio' },
-      options: ['confirm', 'update'],
-      description: '버튼 타입 선택',
-    },
-    description: {
-      control: { type: 'text' },
-      description: '내용 입력',
-    },
-  },
-  args: {
-    footerType: 'confirm',
-    description: '저장하시겠습니까?',
   },
   render: (args) => {
     return (
@@ -215,6 +207,20 @@ export const title: Story = {
 };
 
 export const ContentSize: Story = {
+  argTypes: {
+    title: {
+      control: { type: 'radio' },
+      options: [...Object.keys(ICON_MAP), '미설정'],
+    },
+    description: {
+      control: { type: 'text' },
+      description: '내용 입력',
+    },
+    onConfirm: { table: { disable: true } },
+    onCancel: { table: { disable: true } },
+    contentSize: { table: { disable: true } },
+    portalContainer: { table: { disable: true } },
+  },
   parameters: {
     docs: {
       description: {
@@ -224,24 +230,6 @@ export const ContentSize: Story = {
         code: null,
       },
     },
-    controls: {
-      exclude: ['contentSize', 'portalContainer', 'onConfirm', 'onCancel'],
-    },
-  },
-  argTypes: {
-    title: {
-      control: { type: 'radio' },
-      options: [...Object.keys(ICON_MAP), '미설정'],
-      description: '타이틀 아이콘 선택',
-    },
-    description: {
-      control: { type: 'text' },
-      description: '내용 입력',
-    },
-  },
-  args: {
-    footerType: 'confirm',
-    description: '저장하시겠습니까?',
   },
   render: (args) => {
     return (
@@ -294,6 +282,20 @@ export const ContentSize: Story = {
 };
 
 export const FooterType: Story = {
+  argTypes: {
+    title: {
+      control: { type: 'radio' },
+      options: [...Object.keys(ICON_MAP), '미설정'],
+      description: '타이틀 아이콘 선택',
+    },
+    description: {
+      description: '내용 입력',
+    },
+    onConfirm: { table: { disable: true } },
+    onCancel: { table: { disable: true } },
+    contentSize: { table: { disable: true } },
+    footerType: { table: { disable: true } },
+  },
   parameters: {
     docs: {
       description: {
@@ -306,24 +308,6 @@ export const FooterType: Story = {
         code: null,
       },
     },
-    controls: {
-      exclude: ['footerType', 'portalContainer', 'onConfirm', 'onCancel'],
-    },
-  },
-  argTypes: {
-    title: {
-      control: { type: 'radio' },
-      options: [...Object.keys(ICON_MAP), '미설정'],
-      description: '타이틀 아이콘 선택',
-    },
-    description: {
-      control: { type: 'text' },
-      description: '내용 입력',
-    },
-  },
-  args: {
-    footerType: 'confirm',
-    description: '저장하시겠습니까?',
   },
   render: (args) => {
     return (

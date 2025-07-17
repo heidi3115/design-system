@@ -98,8 +98,10 @@ export const Grade: GradeStory = {
   parameters: {
     docs: {
       description: {
-        story:
-          'GradeBadge 에서 쓰이는 모든 `grade`의 종류와 다양한 예시들을 확인할 수 있습니다.<br/>GradeBadge 의 경우, grade 별 아이콘이 고정되어 있고 기본값은 `info` 로 처리되고 있습니다.',
+        story: [
+          'GradeBadge 에서 쓰이는 모든 `grade`의 종류와 다양한 예시들을 확인할 수 있습니다.',
+          'GradeBadge 의 경우, grade 별 아이콘이 고정되어 있고 기본값은 `info` 로 처리되고 있습니다.',
+        ].join('<br/>'),
       },
     },
   },
@@ -146,8 +148,10 @@ export const IsBtn: GradeStory = {
   parameters: {
     docs: {
       description: {
-        story:
-          'isBtn 는 boolean 으로 true 시 button 처럼 hover:, active:, focus:의 이벤트 적인 내역들에 대한 이펙트가 추가됩니다. 기본적으로는 false 입니다.<br/>GradeBadge 의 경우 border 나 배경색의 변화 보다는 isBtn 활성화 시의 이펙트가 조금 다르게 처리됩니다.',
+        story: [
+          'isBtn 는 boolean 으로 true 시 button 처럼 hover:, active:, focus:의 이벤트 적인 내역들에 대한 이펙트가 추가됩니다. 기본적으로는 false 입니다.',
+          'GradeBadge 의 경우 border 나 배경색의 변화 보다는 isBtn 활성화 시의 이펙트가 조금 다르게 처리됩니다.',
+        ].join('<br/>'),
       },
     },
   },

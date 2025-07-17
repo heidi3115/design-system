@@ -206,6 +206,14 @@ export const Default: Story = {
 
 export const ContentSize: Story = {
   ...Default,
+  argTypes: {
+    titleIcon: { table: { disable: true } },
+    onSubmit: { table: { disable: true } },
+    portalContainer: { table: { disable: true } },
+    contentSize: { table: { disable: true } },
+    trigger: { table: { disable: true } },
+    className: { table: { disable: true } },
+  },
   parameters: {
     docs: {
       description: {
@@ -214,15 +222,6 @@ export const ContentSize: Story = {
           'height는 내부 children의 길이에 따라 변화하며, maxHeight로 최대 높이 조정이 가능합니다.',
         ].join('<br/>'),
       },
-    },
-    controls: {
-      exclude: ['className', 'trigger', 'contentSize', 'portalContainer', 'titleIcon', 'onSubmit'],
-    },
-  },
-  argTypes: {
-    contentSize: {
-      control: { type: 'radio' },
-      options: ['small', 'medium', 'large'],
     },
   },
   render: (args) => {
@@ -573,28 +572,8 @@ const ButtonsExample = (args: DialogStoryArgs) => {
 
 export const Buttons: Story = {
   ...Default,
-  parameters: {
-    docs: {
-      description: {
-        story: [
-          'Button의 text, icon, color 등을 설정하고 추가할 수 있습니다.',
-          '기본으로 제공되는 아이콘은 save, cancel, check 세가지가 있습니다.',
-          'custom 버튼은 객체 타입으로 children 안에 원하는 요소를 넣고 variant, type 혹은 onClick 콜백 함수를 넣어 원하는 동작을 처리합니다.',
-        ].join('<br/>'),
-      },
-    },
-    controls: {
-      exclude: ['buttons', 'contentSize', 'portalContainer', 'trigger', 'titleIcon'],
-    },
-  },
   args: {
-    title: 'Example Title',
-    showCloseButton: true,
-    titleIcon: <EditIcon />,
-    children: 'Example Children',
     maxHeight: 500,
-    contentSize: 'small',
-    footerLocate: 'center',
     buttons: [
       {
         children: (
@@ -621,7 +600,23 @@ export const Buttons: Story = {
       },
     ],
   },
-  argTypes: {},
-
+  argTypes: {
+    buttons: { table: { disable: true } },
+    contentSize: { table: { disable: true } },
+    portalContainer: { table: { disable: true } },
+    trigger: { table: { disable: true } },
+    titleIcon: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'Button의 text, icon, color 등을 설정하고 추가할 수 있습니다.',
+          '기본으로 제공되는 아이콘은 save, cancel, check 세 가지가 있습니다.',
+          'custom 버튼은 객체 타입으로 children 안에 원하는 요소를 넣고 variant, type 혹은 onClick 콜백 함수를 넣어 원하는 동작을 처리합니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
   render: ButtonsExample,
 };
