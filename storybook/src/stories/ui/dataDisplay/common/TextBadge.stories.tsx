@@ -115,7 +115,7 @@ export const Basic: TextStory = {
     docs: {
       description: {
         story:
-          'TextBadge 에서의 다양한 예시들을 확인하실 수 있습니다. 삭제 버튼의 경우 storybook 한정으로 임의로 alert이 뜨도록 설정하였습니다.',
+          'TextBadge 에서의 다양한 예시들을 확인할 수 있습니다. 삭제 버튼의 경우 storybook 한정으로 임의로 alert이 뜨도록 설정하였습니다.',
       },
     },
   },
@@ -175,7 +175,7 @@ export const TextOnly: TextStory = {
   parameters: {
     docs: {
       description: {
-        story: 'textOnly가 true일 경우에 대한 다양하나 예시들을 확인하실 수 있습니다.',
+        story: 'textOnly가 true일 경우에 대한 다양하나 예시들을 확인할 수 있습니다.',
       },
     },
   },

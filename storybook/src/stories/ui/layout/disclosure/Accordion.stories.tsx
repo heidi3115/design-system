@@ -182,7 +182,7 @@ const meta: Meta<AccordionStorybookType> = {
       description: [
         'onValueChange: Accordion이 제어(Controlled) 모드일 때, Accordion의 열림/닫힘 상태가 바뀔 때 호출되는 콜백 함수입니다.',
         '상태 변경을 반영하려면 반드시 이 콜백에서 상태를 업데이트 하거나, 부모 컴포넌트에서 value 와 함께 처리 해야 합니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     singleValueRef: {
@@ -197,7 +197,7 @@ const meta: Meta<AccordionStorybookType> = {
         'singleValueRef: ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템의 value 값을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
         '비제어(Uncontrolled)/제어(Controlled) 모드 모두에서 동작합니다.',
         'value가 없는 경우 undefined가 될 수 있습니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     // Storybook용 가상 prop들
@@ -245,7 +245,7 @@ const meta: Meta<AccordionStorybookType> = {
       description: [
         'onValueChange: Accordion이 제어(Controlled) 모드일 때, Accordion의 열림/닫힘 상태가 바뀔 때 호출되는 콜백 함수입니다.',
         '상태 변경을 반영하려면 반드시 이 콜백에서 상태를 업데이트 하거나, 부모 컴포넌트에서 value 와 함께 처리 해야 합니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     // multiple 모드에서만 value (string[]) 컨트롤 노출
@@ -260,7 +260,7 @@ const meta: Meta<AccordionStorybookType> = {
       description: [
         'singleValueRef: ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템들의 value 배열을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
         '비제어(Uncontrolled)/제어(Controlled) 모드 모두에서 동작합니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     items: {
@@ -539,7 +539,7 @@ export const OrientationsWithIcon: Story = {
           'Accordion 의 props 중 orientation 의 다양한 예시를 보실 수 있습니다.',
           'orientation prop은 **접근성(ARIA 속성)**에만 영향을 주기 때문에, 실질적으로도 보여지는 레이아웃으로도 적용이 되도록 별도 처리 하였습니다.',
           'vertical은 세로형, horizontal은 가로형입니다.',
-          '또한 isIcon의 여부에 따라 보여지는 부분의 차이를 확인하실 수 있습니다.',
+          '또한 isIcon의 여부에 따라 보여지는 부분의 차이를 확인할 수 있습니다.',
         ].join('<br/>'),
       },
     },
@@ -617,7 +617,7 @@ function SingleDemo(args: SingleDemoProps) {
         </p>
         {!controlled && (
           <p className={cn(blueTxtClass, 'text-xs')}>
-            {`collapsible 와 defaultValue, value 를 바꿔보시면 결과에 따른 변화를 확인하실 수 있습니다.`}
+            {`collapsible 와 defaultValue, value 를 바꿔보시면 결과에 따른 변화를 확인할 수 있습니다.`}
           </p>
         )}
       </h2>
@@ -697,7 +697,7 @@ function MultipleDemo(args: MultipleDemoProps) {
         </span>
         {!controlled && (
           <span className="text-juiText-blue text-xs">
-            defaultValue, values 를 바꿔보시면 결과에 따른 변화를 확인하실 수 있습니다.
+            defaultValue, values 를 바꿔보시면 결과에 따른 변화를 확인할 수 있습니다.
           </span>
         )}
       </h2>
@@ -830,7 +830,7 @@ export const UncontrolledTypeWithCollapsibleAndDefaultValue: Story = {
           'type 이 "single" 일 때: 한 번에 하나의 아이템만 펼칠 수 있습니다.',
           'type 이 "multiple" 일 때: 여러 개의 아이템을 펼칠 수 있습니다.',
           'collapsible prop은 type 이 "single" 일 때만 활성화 되며, 값(true, false)에 따라 "사용자가 Accordion 의 아이템을 모두 닫을 수 있냐"의 여부를 보여주는 예시입니다.',
-          'defaultValue 를 control 에서 선택하시면 위치가 바뀌는 것을 확인하실 수 있습니다.',
+          'defaultValue 를 control 에서 선택하시면 위치가 바뀌는 것을 확인할 수 있습니다.',
           'defaultValue 를 지정하지 않게 되면 collapsible 여부에 상관없이 Accordion 닫힙니다.',
         ].join('<br/>'),
       },
@@ -975,7 +975,7 @@ export const ControlledTypeWithCollapsibleAndDefaultValue: Story = {
       description: {
         story: [
           'Accordion 을 외부(부모 컨테이너) 상태로 제어(Controlled)하는 다양한 실무 예시입니다. 비교로서 비제어(Uncontrolled)는 기존의 스토리에서 처리하고 있으므로 간략하게 보여드립니다.',
-          'type 별로도 확인하실 수 있으며, defaultValue, value 와 type이 "single"일 때의 collapsible 조합의 다양한 예시를 보실 수 있습니다.',
+          'type 별로도 확인할 수 있으며, defaultValue, value 와 type이 "single"일 때의 collapsible 조합의 다양한 예시를 보실 수 있습니다.',
           '버튼으로 전부 열거나 닫기, 특정 아이템만 열기, 동적으로 상태를 변경하는 등 실제 서비스에서 자주 쓰는 패턴을 확인할 수 있습니다.',
         ].join('<br/>'),
       },

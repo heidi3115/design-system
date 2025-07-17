@@ -279,7 +279,7 @@ export const Variants: Story = {
   parameters: {
     docs: {
       description: {
-        story: ['Tooltip의 다양한 Variant별 예시를 확인하실 수 있습니다.'].join('<br/>'),
+        story: ['Tooltip의 다양한 Variant별 예시를 확인할 수 있습니다.'].join('<br/>'),
       },
     },
   },
@@ -325,7 +325,7 @@ export const Sizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: ['Tooltip의 다양한 Size별 예시를 확인하실 수 있습니다.'].join('<br/>'),
+        story: ['Tooltip의 다양한 Size별 예시를 확인할 수 있습니다.'].join('<br/>'),
       },
     },
   },
@@ -619,7 +619,7 @@ export const OpenControl: Story = {
       description: {
         story: [
           'OpenControl은 Tooltip의 open, defaultOpen, onOpenChange, openStatusRef를 모두 활용하는 스토리 예시입니다.',
-          '제어(Controlled)와 비제어(Uncontrolled)의 예시를 확인하실 수 있으며 open의 상태를 확인하실 수 있도록 임의로 만든 예시입니다.',
+          '제어(Controlled)와 비제어(Uncontrolled)의 예시를 확인할 수 있으며 open의 상태를 확인할 수 있도록 임의로 만든 예시입니다.',
           '비제어일 경우 Tooltip은 한 화면에 하나만 보여지도록 기본적으로 처리가 되어있습니다.',
         ].join('<br/>'),
       },
@@ -702,8 +702,8 @@ export const TooltipPosition: Story = {
     docs: {
       description: {
         story: [
-          'TooltipPosition은 Tooltip의 위치 정보를 확인하실 수 있는 스토리입니다.',
-          '마우스 hover 시 각 위치를 확인하실 수 있으며, props에 따라서 sideOffset과 alignOffset을 조절하여 거리나 위치감을 확인해보실 수 있습니다.',
+          'TooltipPosition은 Tooltip의 위치 정보를 확인할 수 있는 스토리입니다.',
+          '마우스 hover 시 각 위치를 확인할 수 있으며, props에 따라서 sideOffset과 alignOffset을 조절하여 거리나 위치감을 확인할 수 있습니다.',
         ].join('<br/>'),
       },
     },

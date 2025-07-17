@@ -99,7 +99,7 @@ export const Grade: GradeStory = {
     docs: {
       description: {
         story:
-          'GradeBadge 에서 쓰이는 모든 `grade`의 종류와 다양한 예시들을 확인하실 수 있습니다.<br/>GradeBadge 의 경우, grade 별 아이콘이 고정되어 있고 기본값은 `info` 로 처리되고 있습니다.',
+          'GradeBadge 에서 쓰이는 모든 `grade`의 종류와 다양한 예시들을 확인할 수 있습니다.<br/>GradeBadge 의 경우, grade 별 아이콘이 고정되어 있고 기본값은 `info` 로 처리되고 있습니다.',
       },
     },
   },

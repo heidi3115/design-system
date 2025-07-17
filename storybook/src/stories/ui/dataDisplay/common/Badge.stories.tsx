@@ -31,12 +31,12 @@ const meta: Meta<typeof Badge> = {
       control: 'boolean',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
       description:
-        'isBtn 활성화 시 버튼처럼 hover, active, focus 이벤트 상태 시 변화가 추가되며, cursor 및 pointer events 관련 CSS가 추가됩니다. `asChild`를 사용하는 것이 아니라 버튼 같은 이펙트만 필요하신 경우에 사용하실 수 있습니다.',
+        'isBtn 활성화 시 버튼처럼 hover, active, focus 이벤트 상태 시 변화가 추가되며, cursor 및 pointer events 관련 CSS가 추가됩니다. `asChild`를 사용하는 것이 아니라 버튼 같은 이펙트만 필요하신 경우에 사용할 수 있습니다.',
     },
     asChild: {
       control: 'boolean',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-      description: 'Slot을 통해 Badge 스타일을 다른 태그에 이식하여 Badge 스타일을 적용할 때 사용하실 수 있습니다.',
+      description: 'Slot을 통해 Badge 스타일을 다른 태그에 이식하여 Badge 스타일을 적용할 때 사용할 수 있습니다.',
     },
     children: {
       control: 'text',
@@ -48,7 +48,7 @@ const meta: Meta<typeof Badge> = {
       options: variantArr,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'state' } },
       description:
-        'Badge의 타입을 지정하는 props로서 state, scoring, grading, count, text 중에서 선택하실 수 있습니다. 각 variant에 따라 해당 컴포넌트가 변경되고 필수 속성들이 달라지므로 상세 내역은 각 스토리를 참조해주세요.',
+        'Badge의 타입을 지정하는 props로서 state, scoring, grading, count, text 중에서 선택할 수 있습니다. 각 variant에 따라 해당 컴포넌트가 변경되고 필수 속성들이 달라지므로 상세 내역은 각 스토리를 참조해주세요.',
     },
     status: {
       control: 'select',

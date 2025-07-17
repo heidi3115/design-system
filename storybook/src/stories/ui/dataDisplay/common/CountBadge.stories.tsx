@@ -129,8 +129,10 @@ export const Color: CountStory = {
   parameters: {
     docs: {
       description: {
-        story:
-          'CountBadge 에서 쓰이는 모든 `color`의 종류와 다양한 예시들을 확인하실 수 있습니다.<br/>CountBadge 의 경우 기본적으로 StateBadge 의 status 옵션, StateBadge 의 status 옵션, ScoringBadge의 score 옵션들의 색상을 배경색으로 처리 가능하며 그 이외에도 tailwindCSS 및 커스텀 된 색상이 있다면 `bg-*` 형태로 입력 가능합니다. 기본적으로는 "bg-juiGrey-a700"로 처리되고 있습니다.',
+        story: [
+          'CountBadge 에서 쓰이는 모든 `color`의 종류와 다양한 예시들을 확인할 수 있습니다.',
+          'CountBadge 의 경우 기본적으로 StateBadge 의 status 옵션, StateBadge 의 status 옵션, ScoringBadge의 score 옵션들의 색상을 배경색으로 처리 가능하며 그 이외에도 tailwindCSS 및 커스텀 된 색상이 있다면 `bg-*` 형태로 입력 가능합니다. 기본적으로는 "bg-juiGrey-a700"로 처리되고 있습니다.',
+        ].join('<br/>'),
       },
     },
   },

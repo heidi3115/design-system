@@ -204,7 +204,7 @@ const meta: Meta<typeof Slider> = {
         type: { summary: '(value: number[]) => void' },
         defaultValue: { summary: 'undefined' },
       },
-      description: ['Slider 값이 변경될 때마다 호출되는 콜백 함수입니다.', '스토리에서는 제어하실 수 없습니다.'].join(
+      description: ['Slider 값이 변경될 때마다 호출되는 콜백 함수입니다.', '스토리에서는 제어할 수 없습니다.'].join(
         '<br/>',
       ),
     },
@@ -216,7 +216,7 @@ const meta: Meta<typeof Slider> = {
       },
       description: [
         '사용자가 값 변경을 마쳤을 때(예: 마우스 놓기) 호출되는 콜백 함수입니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     sliderRef: {
@@ -229,7 +229,7 @@ const meta: Meta<typeof Slider> = {
         'ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템의 value 값을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
         '비제어(Uncontrolled)/제어(Controlled) 모드 모두에서 동작합니다.',
         'value가 없는 경우 undefined가 될 수 있습니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
   },

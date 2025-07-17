@@ -144,7 +144,7 @@ export const Horizontal: Story = {
       description: {
         story: [
           '라디오 버튼의 배치 방향을 보여주는 예시입니다.',
-          '가로 방향으로 배치된 RadioGroup을 확인하실 수 있습니다.',
+          '가로 방향으로 배치된 RadioGroup을 확인할 수 있습니다.',
         ].join('<br/>'),
       },
     },

@@ -290,7 +290,7 @@ export const Shape: Story = {
         <span
           className={
             'block text-[12px]'
-          }>{`"bg-juiText-primary/40" 를 추가하여 배경색으로 어떠한 형태인지 확인하실 수 있습니다.`}</span>
+          }>{`"bg-juiText-primary/40" 를 추가하여 배경색으로 어떠한 형태인지 확인할 수 있습니다.`}</span>
       </span>
       <div className={'flex flex-row gap-6'}>
         {shapeArr.map((shape) => (
@@ -455,7 +455,7 @@ function MockAvatar({
       <span className="text-sm font-bold">
         {`Default`}
         <span className="block mb-2 text-xs font-bold">
-          {`상태들의 종류별을 임의로(Mock) 만들어 아래에 상태별의 내역을 확인하실 수 있도록 하였습니다.`}
+          {`상태들의 종류별을 임의로(Mock) 만들어 아래에 상태별의 내역을 확인할 수 있도록 하였습니다.`}
           <br />
           {'alt 와 fallback 은 아래 예시를 제외하고 Avatar Mock 에서는 둘 다 미지정입니다.'}
         </span>

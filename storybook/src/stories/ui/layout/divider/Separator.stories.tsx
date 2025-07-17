@@ -40,7 +40,7 @@ const meta: Meta<SeparatorStorybookType> = {
         defaultValue: { summary: 'basic' },
       },
       description:
-        'Separator 의 굵기를 지정할 수 있습니다. small, basic, medium, large 에서 선택하실 수 있습니다. 기본값은 basic 입니다.',
+        'Separator 의 굵기를 지정할 수 있습니다. small, basic, medium, large 에서 선택할 수 있습니다. 기본값은 basic 입니다.',
     },
     orientation: {
       control: 'radio',
@@ -66,8 +66,11 @@ const meta: Meta<SeparatorStorybookType> = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Separator 컴포넌트의 문서입니다. Separator 컴포넌트는 기본적으로 data-slot="separator-root" 으로 분류됩니다. div 태그를 기본으로 하며 <br/>Separator의 경우 props 선택에 따라 방향, 굵기, 색깔이 바뀌게 되니 유의 바랍니다.<br/>공통적으로 적용되는 Separator의 스타일의 경우 기본적으로 방향에 따라 w/h-full을 기본으로 한다는 것을 고려해주시고, 상세 내역은 하단 혹은 각 스토리를 참조해주세요.',
+        component: [
+          'Separator 컴포넌트의 문서입니다. Separator 컴포넌트는 기본적으로 data-slot="separator-root" 으로 분류됩니다.',
+          'div 태그를 기본으로 하며 Separator의 경우 props 선택에 따라 방향, 굵기, 색깔이 바뀌게 되니 유의 바랍니다.',
+          '공통적으로 적용되는 Separator의 스타일의 경우 기본적으로 방향에 따라 w/h-full을 기본으로 한다는 것을 고려해주시고, 상세 내역은 하단 혹은 각 스토리를 참조해주세요.',
+        ].join('<br/>'),
       },
     },
   },
@@ -137,7 +140,7 @@ export const Variant: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Separator 의 variant 종류별 예시를 확인하실 수 있습니다.',
+        story: 'Separator 의 variant 종류별 예시를 확인할 수 있습니다.',
       },
     },
   },
@@ -189,7 +192,7 @@ export const Size: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Separator 의 size 종류별 예시를 확인하실 수 있습니다.',
+        story: 'Separator 의 size 종류별 예시를 확인할 수 있습니다.',
       },
     },
   },
@@ -253,7 +256,7 @@ export const Orientation: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Separator 의 orientation 종류별 예시를 확인하실 수 있습니다.',
+        story: 'Separator 의 orientation 종류별 예시를 확인할 수 있습니다.',
       },
     },
   },
@@ -328,8 +331,8 @@ export const Position: Story = {
     docs: {
       description: {
         story: [
-          'Separator 의 position 종류별 예시를 확인하실 수 있습니다.',
-          '부모의 예시와 함께 control 에서 orientation 의 변화에 따른 예시도 확인하실 수 있습니다.',
+          'Separator 의 position 종류별 예시를 확인할 수 있습니다.',
+          '부모의 예시와 함께 control 에서 orientation 의 변화에 따른 예시도 확인할 수 있습니다.',
         ].join('<br/>'),
       },
     },
@@ -340,7 +343,7 @@ export const Position: Story = {
         <h1 className={'p-4 text-juiText-primary text-left font-bold text-3xl'}>
           Position 별 예시
           <p className={'text-sm font-normal pt-2'}>
-            부모 컨테이너의 배경색 및 부모 컨테이너의 position 정보와 함께 확인하실 수 있습니다. 부모 컨테이너의 크기는
+            부모 컨테이너의 배경색 및 부모 컨테이너의 position 정보와 함께 확인할 수 있습니다. 부모 컨테이너의 크기는
             지정하지 않고 일부러 flex 등으로 처리하였습니다.
             <br />
             부모 컨테이너의 z-index는 지정하지 않았습니다.

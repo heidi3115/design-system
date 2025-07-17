@@ -91,7 +91,7 @@ export const Status: StateStory = {
     docs: {
       description: {
         story: [
-          'StateBadge에서 사용되는 모든 status 종류와 다양한 예시들을 확인하실 수 있습니다.',
+          'StateBadge에서 사용되는 모든 status 종류와 다양한 예시들을 확인할 수 있습니다.',
           'StateBadge 의 경우 children에 따로 제한이 되어있지는 않습니다만 기본은 Badge 에서 가져왔으니 해당에 유의해주세요.',
         ].join('<br/>'),
       },

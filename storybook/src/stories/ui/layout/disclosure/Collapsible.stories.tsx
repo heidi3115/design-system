@@ -211,7 +211,7 @@ const meta: Meta<typeof Collapsible> = {
       },
       description: [
         'onOpenChange: Collapsible 의 열림/닫힘 상태가 변경될 때 호출되는 콜백 함수입니다. open prop과 함께 사용하여 상태를 외부에서 제어할 때 활용합니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     trigger: {
@@ -221,7 +221,7 @@ const meta: Meta<typeof Collapsible> = {
       },
       description: [
         'Collapsible 의 열고/닫을(toggle) 트리거 요소(ReactElement)로서, ReactElement 로 표현 가능한 모든 요소를 넣을 수 있습니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     preview: {
@@ -233,7 +233,7 @@ const meta: Meta<typeof Collapsible> = {
         'Collapsible 가 닫혀 있을 때, 트리거 옆에 표시되는 미리보기(요약) 영역의 콘텐츠입니다.',
         'ReactNode 타입으로, 텍스트, 아이콘, 요약 정보 등 원하는 내용을 자유롭게 넣을 수 있습니다.',
         'showPreview가 false면 보여지지 않습니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     children: {
@@ -245,7 +245,7 @@ const meta: Meta<typeof Collapsible> = {
         '숨겨진 콘텐츠 내용으로서, Collapsible 가 열렸을 때 표시되는 실제 콘텐츠입니다.',
         'ReactNode 타입으로, 원하는 내용을 자유롭게 넣을 수 있습니다.',
         'Collapsible 가 닫혀 있을 때는 렌더링되지 않거나, 접근성 목적의 aria 속성만 유지됩니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     openStatusRef: {
@@ -253,7 +253,7 @@ const meta: Meta<typeof Collapsible> = {
       description: [
         'Collapsible 의 열림 상태를 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
         '참조 타입은 boolean 으로 합니다.',
-        '스토리에서는 제어하실 수 없습니다.',
+        '스토리에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
   },
@@ -370,7 +370,7 @@ export const Sizes: Story = {
         story: [
           'Collapsible 컴포넌트의 size prop에 따라 내부의 padding이 다르게 적용되는 예시입니다.',
           'size 옵션은 small, basic, medium, large, custom 이 있으며, 각 사이즈에 따라 내부 여백(padding)이 달라집니다.',
-          'custom 의 경우 원하는 내용으로 처리 가능하되, className 으로 조절하실 수 있습니다..',
+          'custom 의 경우 원하는 내용으로 처리 가능하되, className 으로 조절할 수 있습니다..',
         ].join('\n'),
       },
     },

@@ -131,7 +131,7 @@ export const Score: ScoringStory = {
     docs: {
       description: {
         story: [
-          'ScoringBadge에서 사용되는 모든 score 종류와 다양한 예시들을 확인하실 수 있습니다.',
+          'ScoringBadge에서 사용되는 모든 score 종류와 다양한 예시들을 확인할 수 있습니다.',
           'ScoringBadge 의 경우 `score`의 기본값은 `info` 로 처리되고 있습니다.',
         ].join('<br/>'),
       },

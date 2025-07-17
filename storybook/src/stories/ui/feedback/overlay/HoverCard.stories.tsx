@@ -489,8 +489,8 @@ export const Position: Story = {
     docs: {
       description: {
         story: [
-          'HoverCard 의 다양한 위치를 확인하실 수 있는 예시입니다.',
-          '마우스 hover 시 각 위치를 확인하실 수 있으며, props에 따라서 sideOffset 과 alignOffset 을 조절하여 거리나 위치감을 확인해보실 수 있습니다.',
+          'HoverCard 의 다양한 위치를 확인할 수 있는 예시입니다.',
+          '마우스 hover 시 각 위치를 확인할 수 있으며, props에 따라서 sideOffset 과 alignOffset 을 조절하여 거리나 위치감을 확인해보실 수 있습니다.',
         ].join('<br/>'),
       },
     },
@@ -675,7 +675,7 @@ export const Uncontrolled: Story = {
     docs: {
       description: {
         story: [
-          'HoverCard 의 defaultOpen, open, onOpenChange 를 이용한 비제어(Uncontrolled) 예시를 확인하실 수 있는 예시입니다.',
+          'HoverCard 의 defaultOpen, open, onOpenChange 를 이용한 비제어(Uncontrolled) 예시를 확인할 수 있는 예시입니다.',
           '비제어형은 내부 상태로 열림/닫힘을 관리하고 제어할 수 있습니다.',
           '아래 예시에서는 각각의 동작 방식을 확인할 수 있습니다.',
         ].join('<br/>'),
@@ -809,7 +809,7 @@ export const Controlled: Story = {
     docs: {
       description: {
         story: [
-          'HoverCard 의 defaultOpen, open, onOpenChange 를 이용한 제어(Controlled) 예시를 확인하실 수 있는 예시입니다.',
+          'HoverCard 의 defaultOpen, open, onOpenChange 를 이용한 제어(Controlled) 예시를 확인할 수 있는 예시입니다.',
           '제어형은 외부 상태로 완전히 제어할 수 있습니다.',
           '아래 예시에서는 각각의 동작 방식을 확인할 수 있습니다.',
         ].join('<br/>'),
