@@ -24,7 +24,7 @@ const meta: Meta<typeof StateBadge> = {
       options: statusArr,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'default' } },
       description:
-        'StateBadge의 상태를 지정하는 필수 props로서 default, primary, secondary, progress, complete, failed, info, boundary, alert, critical, urgency 중에서 선택해야 합니다.',
+        'StateBadge의 상태를 지정하는 필수 props 로서 default, primary, secondary, progress, complete, failed, info, boundary, alert, critical, urgency 중에서 선택해야 합니다.',
     },
     children: {
       control: 'text',
@@ -42,7 +42,7 @@ const meta: Meta<typeof StateBadge> = {
       description: {
         component: [
           'StateBadge 컴포넌트의 문서입니다. StateBadge는 레이블이나 태그 등 상태 표시를 위한 컴포넌트입니다.',
-          'StateBadge는 기본 Badge에서 variant를 "state"로 고정한 컴포넌트로서, status를 필수값으로, isBtn을 옵션값으로 받습니다.',
+          'StateBadge는 기본 Badge 에서 variant를 "state"로 고정한 컴포넌트로서, status를 필수값으로, isBtn을 옵션값으로 받습니다.',
           'children에 대해서는 따로 제한이 없으며, asChild는 기본 Badge 컴포넌트에서만 가능합니다.',
         ].join('<br/>'),
       },
@@ -91,7 +91,7 @@ export const Status: StateStory = {
     docs: {
       description: {
         story: [
-          'StateBadge에서 사용되는 모든 status 종류와 다양한 예시들을 확인할 수 있습니다.',
+          'StateBadge 에서 사용되는 모든 status 종류와 다양한 예시들을 확인할 수 있습니다.',
           'StateBadge 의 경우 children에 따로 제한이 되어있지는 않습니다만 기본은 Badge 에서 가져왔으니 해당에 유의해주세요.',
         ].join('<br/>'),
       },

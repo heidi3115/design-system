@@ -1,9 +1,9 @@
-import { useRef, useState, type ComponentProps, type ComponentType } from 'react';
+import { type ComponentProps, type ComponentType, useRef, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
 import { Input, inputVariants } from '@common/ui';
-import { CalendarIcon, LockIcon, type IconProps } from '@common/ui/icons';
+import { CalendarIcon, type IconProps, LockIcon } from '@common/ui/icons';
 
 const ICON_MAP: Record<string, ComponentType<IconProps> | undefined> = {
   none: undefined,
@@ -66,7 +66,7 @@ const meta: Meta<typeof Input> = {
     placeholder: {
       control: 'text',
       table: { type: { summary: 'string' }, defaultValue: { summary: '내용을 입력하세요' } },
-      description: 'Input placeholder입니다.',
+      description: 'Input placeholder 입니다.',
     },
     className: {
       control: 'text',
@@ -357,7 +357,7 @@ export const IconControl: StoryObj<InputStoryProps> = {
   },
 };
 
-const ControllComp = ({ value: initialValue, onChange, onBlur, ...args }: ComponentProps<typeof Input>) => {
+const ControlledComp = ({ value: initialValue, onChange, onBlur, ...args }: ComponentProps<typeof Input>) => {
   const [value, setValue] = useState(initialValue);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -424,5 +424,5 @@ export const Controlled: Story = {
       disable: true,
     },
   },
-  render: (args) => <ControllComp {...args} />,
+  render: (args) => <ControlledComp {...args} />,
 };

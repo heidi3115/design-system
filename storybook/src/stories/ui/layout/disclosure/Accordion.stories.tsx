@@ -142,7 +142,7 @@ const meta: Meta<AccordionStorybookType> = {
     defaultValue: {
       name: 'defaultValue',
       if: { arg: 'type', eq: 'single' },
-      // control: false, // meta 가 우선 순위를 가져서 control: false 하면 다른 스토리에서 아무리 바꿔도 false 고정.
+      // control: false, // meta 가 우선 순위를 가져서 control: false 하면 다른 storybook 에서 아무리 바꿔도 false 고정.
       control: { type: 'select', labels: sampleArr.reduce((acc, cur) => ({ ...acc, [cur.value]: cur.value }), {}) },
       options: sampleArr.map((d) => d.value),
       table: {
@@ -153,7 +153,7 @@ const meta: Meta<AccordionStorybookType> = {
         'defaultValue: Accordion 이 비제어(Uncontrolled) 모드일 때, Accordion 이 처음에 열려 있을 기본값인 아이템의 value 입니다.',
         'items 배열의 value 중 하나를 지정할 수 있고, 이 defaultValue 을 지정하면 Accordion 이 지정된 아이템을 자체적으로 내부에서 처음부터 열려있도록 상태를 내부에서 관리합니다.',
         'collapsible이 true/false와 무관하게, defaultValue 가 지정되어 있으면 해당 아이템이 기본적으로 열려 있습니다.',
-        `현재 스토리에서의 defaultValue 의 기본값은 items의 첫번째 요소의 value 인 ${sampleArr[0].value} 입니다.`,
+        `현재 storybook 에서의 defaultValue 의 기본값은 items의 첫번째 요소의 value 인 ${sampleArr[0].value} 입니다.`,
       ].join('<br/>'),
     },
     value: {
@@ -182,7 +182,7 @@ const meta: Meta<AccordionStorybookType> = {
       description: [
         'onValueChange: Accordion이 제어(Controlled) 모드일 때, Accordion의 열림/닫힘 상태가 바뀔 때 호출되는 콜백 함수입니다.',
         '상태 변경을 반영하려면 반드시 이 콜백에서 상태를 업데이트 하거나, 부모 컴포넌트에서 value 와 함께 처리 해야 합니다.',
-        '스토리에서는 제어할 수 없습니다.',
+        'storybook 에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     singleValueRef: {
@@ -197,7 +197,7 @@ const meta: Meta<AccordionStorybookType> = {
         'singleValueRef: ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템의 value 값을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
         '비제어(Uncontrolled)/제어(Controlled) 모드 모두에서 동작합니다.',
         'value가 없는 경우 undefined가 될 수 있습니다.',
-        '스토리에서는 제어할 수 없습니다.',
+        'storybook 에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     // Storybook용 가상 prop들
@@ -214,7 +214,7 @@ const meta: Meta<AccordionStorybookType> = {
       description: [
         'defaultValue: Accordion 이 비제어(Uncontrolled) 모드일 때, multiple 모드에서 Accordion 이 처음에 열려 있을 기본값인 아이템의 value 값 배열 입니다.',
         'items 배열의 value 중 일부 또는 전체를 지정할 수 있고, 이 defaultValue 들을 지정하면 Accordion 이 지정된 아이템을 자체적으로 내부에서 처음부터 동시에 열려있도록 상태를 내부에서 관리합니다.',
-        `현재 스토리에서의 defaultValue 의 기본값은 items의 첫번째 요소의 value 인 [${sampleArr[0].value}] 입니다.`,
+        `현재 storybook 에서의 defaultValue 의 기본값은 items의 첫번째 요소의 value 인 [${sampleArr[0].value}] 입니다.`,
       ].join('<br/>'),
     },
     // multiple 모드에서만 value (string[]) 컨트롤 노출
@@ -245,7 +245,7 @@ const meta: Meta<AccordionStorybookType> = {
       description: [
         'onValueChange: Accordion이 제어(Controlled) 모드일 때, Accordion의 열림/닫힘 상태가 바뀔 때 호출되는 콜백 함수입니다.',
         '상태 변경을 반영하려면 반드시 이 콜백에서 상태를 업데이트 하거나, 부모 컴포넌트에서 value 와 함께 처리 해야 합니다.',
-        '스토리에서는 제어할 수 없습니다.',
+        'storybook 에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     // multiple 모드에서만 value (string[]) 컨트롤 노출
@@ -260,7 +260,7 @@ const meta: Meta<AccordionStorybookType> = {
       description: [
         'singleValueRef: ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템들의 value 배열을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
         '비제어(Uncontrolled)/제어(Controlled) 모드 모두에서 동작합니다.',
-        '스토리에서는 제어할 수 없습니다.',
+        'storybook 에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     items: {
@@ -279,8 +279,8 @@ const meta: Meta<AccordionStorybookType> = {
       description: [
         'items: 각 Accordion 에 넣을 Items 들입니다.',
         'AccordionItemProps 의 각 아이템은 { value, trigger, content, disabled } 형태의 객체입니다.',
-        'AccordionItemProps 는 key 역할인 value, Accordion 을 열 수 있는 trigger, Accordion 의 내용인 content, 개별 Accordion 의 활성화 여부인 disabled로 이루어져 있습니다.',
-        '현재 스토리에서는 임의로 내용을 채워넣은 샘플 데이터 입니다.',
+        'AccordionItemProps 는 key 역할인 value, Accordion 을 열 수 있는 trigger, Accordion 의 내용인 content, 개별 Accordion 의 활성화 여부인 disabled 로 이루어져 있습니다.',
+        '현재 storybook 에서는 임의로 내용을 채워넣은 샘플 데이터 입니다.',
       ].join('<br/>'),
     },
     className: {
@@ -974,7 +974,7 @@ export const ControlledTypeWithCollapsibleAndDefaultValue: Story = {
     docs: {
       description: {
         story: [
-          'Accordion 을 외부(부모 컨테이너) 상태로 제어(Controlled)하는 다양한 실무 예시입니다. 비교로서 비제어(Uncontrolled)는 기존의 스토리에서 처리하고 있으므로 간략하게 보여드립니다.',
+          'Accordion 을 외부(부모 컨테이너) 상태로 제어(Controlled)하는 다양한 실무 예시입니다. 비교로서 비제어(Uncontrolled)는 기존의 storybook 에서 처리하고 있으므로 간략하게 보여드립니다.',
           'type 별로도 확인할 수 있으며, defaultValue, value 와 type이 "single"일 때의 collapsible 조합의 다양한 예시를 보실 수 있습니다.',
           '버튼으로 전부 열거나 닫기, 특정 아이템만 열기, 동적으로 상태를 변경하는 등 실제 서비스에서 자주 쓰는 패턴을 확인할 수 있습니다.',
         ].join('<br/>'),

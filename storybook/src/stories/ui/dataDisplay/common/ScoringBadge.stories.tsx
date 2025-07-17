@@ -82,7 +82,7 @@ const meta: Meta<typeof ScoringBadge> = {
           'ScoringBadge 컴포넌트의 문서입니다. ScoringBadge는 기본 Badge에서 variant를 "scoring"으로 고정한 컴포넌트입니다.',
           'score, scoreVal, children을 필수값으로, maxVal, icon, iconPosition을 옵션값으로 받습니다.',
           '기본적인 스타일은 Badge를 따르되, ScoringBadge 별도 스타일이 고정되어 있어서 children은 문자열만 받습니다.',
-          'props 들의 예시와 isBtn 대한 내역은 아래 스토리에서 확인해주세요.',
+          'props 들의 예시와 isBtn 대한 내역은 아래 storybook 에서 확인해주세요.',
           'asChild는 기본 Badge 컴포넌트에서만 가능하다는 것을 유의해주세요.',
         ].join('<br/>'),
       },

@@ -1,9 +1,9 @@
-import { Toggle, Button } from '@common/ui/components';
+import { Button, Toggle } from '@common/ui/components';
 import type { ToggleProps } from '@common/ui/components/Toggle/Toggle';
 import { EyeIcon, EyeOffIcon, type IconProps } from '@common/ui/icons';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
-import { useRef, useState, type ComponentProps, type ComponentType } from 'react';
+import { type ComponentProps, type ComponentType, useRef, useState } from 'react';
 
 // 공통 상수
 const sizeOptions = ['small', 'medium', 'large'] as const;
@@ -124,7 +124,7 @@ const meta: Meta<typeof Toggle> = {
     },
     pressedRef: {
       table: { disable: true },
-      description: '비제어형 Toggle의 현재 상태를 참조할 수 있는 ref입니다.',
+      description: '비제어형 Toggle의 현재 상태를 참조할 수 있는 Ref 입니다.',
     },
   },
   parameters: {
@@ -148,7 +148,7 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: ['기본 Toggle 컴포넌트의 예시입니다.', 'children으로 전달된 텍스트가 표시됩니다.'].join('<br/>'),
+        story: ['기본 Toggle 컴포넌트의 예시입니다.', 'children 으로 전달된 텍스트가 표시됩니다.'].join('<br/>'),
       },
     },
   },
@@ -164,7 +164,7 @@ export const Sizes: Story = {
       description: {
         story: [
           'Toggle 컴포넌트의 다양한 크기별 예시입니다.',
-          'small, medium, large 세 가지 크기를 제공하며, 기본값은 small입니다.',
+          'small, medium, large 세 가지 크기를 제공하며, 기본값은 small 입니다.',
         ].join('<br/>'),
       },
     },
@@ -205,7 +205,7 @@ export const IconAndText: StoryObj<IconStoryProps> = {
       description: {
         story: [
           'Toggle 컴포넌트에 아이콘과 텍스트를 함께 사용하는 예시입니다.',
-          'children으로 원하는 텍스트를 추가할 수 있습니다.',
+          'children 으로 원하는 텍스트를 추가할 수 있습니다.',
         ].join('<br/>'),
       },
     },
@@ -222,20 +222,20 @@ export const IconAndText: StoryObj<IconStoryProps> = {
   },
 };
 
-const ControllComp = ({ onPressedChange, ...args }: ToggleProps) => {
+const ControlledComp = ({ onPressedChange, ...args }: ToggleProps) => {
   const [isPress, setIsPress] = useState(false);
   const pressedRef = useRef(null);
 
   const logControlledChange = action('제어형 onChange 발생');
   const logUncontrolledConfirm = action('비제어형 확인');
 
-  const controlledhandleChange = (press: boolean) => {
+  const controlledHandleChange = (press: boolean) => {
     setIsPress(press);
     logControlledChange(press);
     onPressedChange?.(press); // 스토리북 action 로그용
   };
 
-  const unControlledhandleChange = () => {
+  const uncontrolledHandleChange = () => {
     logUncontrolledConfirm(pressedRef.current);
   };
 
@@ -244,7 +244,7 @@ const ControllComp = ({ onPressedChange, ...args }: ToggleProps) => {
       <div className="flex flex-col gap-2">
         <span className="text-sm font-bold">제어형 토글</span>
         <div className="w-3xs">
-          <Toggle {...args} pressed={isPress} onPressedChange={controlledhandleChange}>
+          <Toggle {...args} pressed={isPress} onPressedChange={controlledHandleChange}>
             제어
           </Toggle>
         </div>
@@ -256,7 +256,7 @@ const ControllComp = ({ onPressedChange, ...args }: ToggleProps) => {
           <Toggle {...args} pressedRef={pressedRef}>
             비제어
           </Toggle>
-          <Button onClick={unControlledhandleChange}>비제어 확인 Click</Button>
+          <Button onClick={uncontrolledHandleChange}>비제어 확인 Click</Button>
         </div>
       </div>
     </div>
@@ -284,5 +284,5 @@ export const Controlled: Story = {
       },
     },
   },
-  render: (args) => <ControllComp {...args} />,
+  render: (args) => <ControlledComp {...args} />,
 };

@@ -19,7 +19,7 @@ export type AccordionSingleItemProps = {
    */
   value: string;
   /**
-   * trigger: Accordion 각 아이템의 내용을 보여주게 하는 버튼(트리거) 이자 목차 내용입니다.
+   * trigger: Accordion 각 아이템의 내용을 보여주게 하는 버튼(trigger) 이자 목차 내용입니다.
    */
   trigger: React.ReactNode;
   /**

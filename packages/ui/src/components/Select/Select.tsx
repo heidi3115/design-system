@@ -1,6 +1,6 @@
 'use client';
 
-import { type Ref, useImperativeHandle, useState, type ComponentProps, type ReactNode, type RefCallback } from 'react';
+import { type ComponentProps, type ReactNode, type Ref, type RefCallback, useImperativeHandle, useState } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 import {
@@ -9,9 +9,9 @@ import {
   SelectItem,
   SelectLabel,
   SelectRoot,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
-  SelectSeparator,
 } from './SelectParts';
 import { cn } from '../../lib/utils';
 
@@ -83,10 +83,10 @@ function Select({
   ...props
 }: SelectProps) {
   const isNumberWidth = typeof width === 'number';
-  const [interanlValue, setInternalValue] = useState(props.defaultValue ?? '');
+  const [internalValue, setInternalValue] = useState(props.defaultValue ?? '');
 
   const isControlled = controlledValue !== undefined;
-  const currentValue = isControlled ? controlledValue : interanlValue;
+  const currentValue = isControlled ? controlledValue : internalValue;
 
   // 비제어 선택값
   useImperativeHandle(selectRef, () => currentValue);

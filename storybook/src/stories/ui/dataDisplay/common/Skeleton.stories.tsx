@@ -17,13 +17,13 @@ const meta: Meta<typeof Skeleton> = {
       control: 'radio',
       options: variantArr,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'default' } },
-      description: 'Skeleton 컴포넌트의 색상 스타일을 지정하는 props입니다.',
+      description: 'Skeleton 컴포넌트의 색상 스타일을 지정하는 props 입니다.',
     },
     size: {
       control: 'radio',
       options: sizeArr,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'basic' } },
-      description: 'Skeleton 컴포넌트의 크기를 지정하는 props입니다.',
+      description: 'Skeleton 컴포넌트의 크기를 지정하는 props 입니다.',
     },
     className: {
       control: 'text',

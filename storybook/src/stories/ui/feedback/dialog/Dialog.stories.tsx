@@ -81,7 +81,7 @@ const meta: Meta<DialogStoryArgs> = {
     trigger: {
       control: { disable: true },
       table: { type: { summary: 'ReactNode' } },
-      description: 'Dialog를 활성화하는 트리거 요소입니다.',
+      description: 'Dialog를 활성화하는 trigger 요소입니다.',
     },
     titleIcon: {
       control: { disable: true },
@@ -110,7 +110,7 @@ const meta: Meta<DialogStoryArgs> = {
       table: { type: { summary: 'string' }, defaultValue: { summary: 'medium' } },
       description: [
         'Dialog 컨텐츠 크기입니다.',
-        'small, medium, large로 구분되며, 그 외 크기는 className으로 직접 적용할 수 있습니다.',
+        'small, medium, large로 구분되며, 그 외 크기는 className 으로 직접 적용할 수 있습니다.',
       ].join('<br/>'),
     },
     footerLocate: {
@@ -124,7 +124,7 @@ const meta: Meta<DialogStoryArgs> = {
       table: { type: { summary: 'ButtonProps[]' } },
       description: [
         'Dialog에 표시될 버튼 목록입니다.',
-        'icon은 save, cancel, check 중에서 원하는 아이콘을 string으로 입력하면 됩니다.',
+        'icon은 save, cancel, check 중에서 원하는 아이콘을 string 으로 입력하면 됩니다.',
       ].join('<br/>'),
     },
     portalContainer: {
@@ -579,7 +579,7 @@ export const Buttons: Story = {
         story: [
           'Button의 text, icon, color 등을 설정하고 추가할 수 있습니다.',
           '기본으로 제공되는 아이콘은 save, cancel, check 세가지가 있습니다.',
-          'custom 버튼은 객체 타입으로 children안에 원하는 요소를 넣고 varaint, type 혹은 onClick 콜백 함수를 넣어 원하는 동작을 처리합니다.',
+          'custom 버튼은 객체 타입으로 children 안에 원하는 요소를 넣고 variant, type 혹은 onClick 콜백 함수를 넣어 원하는 동작을 처리합니다.',
         ].join('<br/>'),
       },
     },

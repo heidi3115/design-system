@@ -42,7 +42,7 @@ const meta: Meta<typeof TextBadge> = {
       control: 'text',
       table: { type: { summary: 'string' }, defaultValue: { summary: 'TextBadge' } },
       description: [
-        'TextBadge 내부에 들어갈 내용을 지정하는 필수 props입니다.',
+        'TextBadge 내부에 들어갈 내용을 지정하는 필수 props 입니다.',
         'string 타입만 받을 수 있습니다.',
       ].join('<br/>'),
     },
@@ -65,9 +65,9 @@ const meta: Meta<typeof TextBadge> = {
     docs: {
       description: {
         component: [
-          'TextBadge 컴포넌트의 문서입니다. TextBadge는 텍스트 태그를 기반으로 하는 Badge로서 형태가 고정되어 있습니다.',
-          'TextBadge는 기본 Badge에서 variant를 "text"로 고정한 컴포넌트로서, children이 필수값이며 textOnly, onClick을 옵션값으로 받습니다.',
-          'children은 string으로만 받을 수 있으며 textOnly 활성화 시, onClick은 버튼이 없어지므로 비활성화됩니다.',
+          'TextBadge 컴포넌트의 문서입니다. TextBadge는 텍스트 태그를 기반으로 하는 Badge 로서 형태가 고정되어 있습니다.',
+          'TextBadge는 기본 Badge 에서 variant를 "text"로 고정한 컴포넌트로서, children이 필수값이며 textOnly, onClick을 옵션값으로 받습니다.',
+          'children은 string 으로만 받을 수 있으며 textOnly 활성화 시, onClick은 버튼이 없어지므로 비활성화됩니다.',
           'textOnly 옵션에 따라 children을 감싼 내부 부모의 스타일이 바뀌는 부분이 있으니 유의해야 합니다.',
           'asChild는 기본 Badge 컴포넌트에서만 가능합니다.',
         ].join('<br/>'),

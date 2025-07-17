@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import {
   NavigationMenu,
-  NavigationMenuItem,
   NavigationMenuContent,
-  NavigationMenuTrigger,
+  NavigationMenuItem,
   NavigationMenuLink,
+  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@common/ui';
 
@@ -23,7 +23,7 @@ const meta: Meta<typeof NavigationMenu> = {
     orientation: {
       control: 'select',
       options: ['horizontal', 'vertical'],
-      description: 'NavigationMenu 리스트 방향을 설정합니다. 기본값은 horizontal입니다.',
+      description: 'NavigationMenu 리스트 방향을 설정합니다. 기본값은 horizontal 입니다.',
       table: { defaultValue: { summary: 'horizontal' } },
     },
     className: {
@@ -32,11 +32,11 @@ const meta: Meta<typeof NavigationMenu> = {
     },
     itemClassName: {
       control: 'text',
-      description: '각 `NavigationMenuItem`에 적용할 className입니다.',
+      description: '각 `NavigationMenuItem`에 적용할 className 입니다.',
     },
     linkClassName: {
       control: 'text',
-      description: '각 `NavigationMenuLink`에 적용할 className입니다.',
+      description: '각 `NavigationMenuLink`에 적용할 className 입니다.',
     },
     menus: {
       control: false,
@@ -173,7 +173,7 @@ export const DisabledTrigger: Story = {
   parameters: {
     docs: {
       description: {
-        story: '`disabled`를 설정하면 트리거가 비활성화되어 선택할 수 없습니다.',
+        story: '`disabled`를 설정하면 trigger가 비활성화되어 선택할 수 없습니다.',
       },
     },
   },

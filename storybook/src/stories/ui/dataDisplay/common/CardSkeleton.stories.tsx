@@ -18,24 +18,24 @@ const meta: Meta<typeof CardSkeleton> = {
       control: 'radio',
       options: variantArr,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'default' } },
-      description: 'CardSkeleton 컴포넌트의 색상 스타일을 지정하는 props입니다.',
+      description: 'CardSkeleton 컴포넌트의 색상 스타일을 지정하는 props 입니다.',
     },
     textSize: {
       control: 'radio',
       options: sizeArr,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'basic' } },
-      description: 'CardSkeleton의 텍스트 영역 크기를 지정하는 props입니다.',
+      description: 'CardSkeleton의 텍스트 영역 크기를 지정하는 props 입니다.',
     },
     cardSize: {
       control: 'radio',
       options: sizeArr,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'large' } },
-      description: ['CardSkeleton의 카드 영역 크기를 지정하는 props입니다.'].join('<br/>'),
+      description: ['CardSkeleton의 카드 영역 크기를 지정하는 props 입니다.'].join('<br/>'),
     },
     className: {
       control: 'text',
       table: { type: { summary: 'string' }, defaultValue: { summary: '' } },
-      description: 'CardSkeleton의 외곽 div에 적용할 Tailwind CSS 클래스명입니다.',
+      description: 'CardSkeleton의 외곽 div 에 적용할 Tailwind CSS 클래스명입니다.',
     },
   },
   parameters: {
@@ -55,17 +55,17 @@ export default meta;
 type SkeletonStory = StoryObj<typeof CardSkeleton>;
 
 export const Default: SkeletonStory = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Card형 Skeleton 컴포넌트 예시',
-      },
-    },
-  },
   args: {
     variant: 'default',
     textSize: 'basic',
     cardSize: 'large',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Card형 Skeleton 컴포넌트 예시입니다.',
+      },
+    },
   },
   render: (args) => {
     return <CardSkeleton {...args} />;

@@ -80,7 +80,7 @@ const meta: Meta<typeof Avatar> = {
         defaultValue: { summary: 'basic' },
       },
       description: [
-        '아바타의 크기를 지정하는 props입니다.',
+        '아바타의 크기를 지정하는 props 입니다.',
         'small, basic, medium, large, fit 중에서 선택할 수 있습니다.',
       ].join('<br/>'),
     },
@@ -92,7 +92,7 @@ const meta: Meta<typeof Avatar> = {
         defaultValue: { summary: 'round' },
       },
       description: [
-        '아바타의 모양을 지정하는 props입니다.',
+        '아바타의 모양을 지정하는 props 입니다.',
         'round(원형), square(사각형) 중에서 선택할 수 있습니다.',
       ].join('<br/>'),
     },
@@ -593,7 +593,7 @@ export const Status: Story = {
         story: [
           'delayMs 값에 따른 Avatar의 로딩 상태 변화에 대한 Mock 예시입니다.',
           'delayMs와 onLoadingStatusChange를 활용하여 Avatar의 이미지 로딩 상태 변화를 확인할 수 있습니다.',
-          'delayMs를 조정해보고, 각 src별로 상태 변화 로그를 확인해보실 수 있습니다.',
+          'delayMs를 조정해보고, 각 src 별로 상태 변화 로그를 확인해보실 수 있습니다.',
         ].join('<br/>'),
       },
     },
@@ -618,7 +618,7 @@ export const AsChild: Story = {
           'Avatar의 스타일을 다양한 태그와 컴포넌트에 이식하는 `asChild` prop의 활용 예시입니다.',
           '`asChild: false`일 때는 Avatar가 자체적으로 이미지/로딩/폴백 UI를 렌더링합니다.',
           '`asChild: true`일 때는 Avatar 스타일만 하위 엘리먼트에 이식하며, children이 있으면 해당 children이 Avatar의 루트로 렌더링됩니다.',
-          'children이 없으면 Avatar의 기본 이미지/로딩/폴백 UI(AvatarContents)가 자동으로 children으로 사용됩니다.',
+          'children이 없으면 Avatar의 기본 이미지/로딩/폴백 UI(AvatarContents)가 자동으로 children 으로 사용됩니다.',
           '아래 예시에서는 a 태그, button 태그, div 태그 등 다양한 엘리먼트에 Avatar 스타일을 Slot 패턴으로 이식하는 방법을 보여줍니다.',
           '',
           '**실제 사용 예시:**',

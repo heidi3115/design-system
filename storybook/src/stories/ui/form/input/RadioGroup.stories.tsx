@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
-import { RadioGroup, Button } from '@common/ui';
-import { useRef, useState, type ComponentProps } from 'react';
+import { Button, RadioGroup } from '@common/ui';
+import { type ComponentProps, useRef, useState } from 'react';
 
 // 공통 상수
 const directionOptions = ['vertical', 'horizontal'] as const;
@@ -94,7 +94,7 @@ const meta: Meta<typeof RadioGroup> = {
     },
     valueRef: {
       table: { disable: true },
-      description: '비제어형 RadioGroup의 현재 값을 참조할 수 있는 ref입니다.',
+      description: '비제어형 RadioGroup의 현재 값을 참조할 수 있는 Ref 입니다.',
     },
   },
   parameters: {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { MultiSelect, Button, useConfirmDialog } from '@common/ui';
-import { useRef, useState, type ComponentProps } from 'react';
+import { Button, MultiSelect, useConfirmDialog } from '@common/ui';
+import { type ComponentProps, useRef, useState } from 'react';
 import { action } from '@storybook/addon-actions';
 
 // 공통 상수
@@ -35,7 +35,7 @@ const meta: Meta<typeof MultiSelect> = {
         type: { summary: sizeOptions.join(', ') },
         defaultValue: { summary: 'default' },
       },
-      description: ['MultiSelect 컴포넌트의 크기를 설정합니다.', '기본값은 default입니다.'].join('<br/>'),
+      description: ['MultiSelect 컴포넌트의 크기를 설정합니다.', '기본값은 default 입니다.'].join('<br/>'),
     },
     width: {
       control: 'select',
@@ -47,7 +47,7 @@ const meta: Meta<typeof MultiSelect> = {
       description: [
         'MultiSelect 컴포넌트의 너비를 설정합니다.',
         'full(100% 너비) 또는 숫자(px 단위)를 사용할 수 있습니다.',
-        '기본값은 full입니다.',
+        '기본값은 full 입니다.',
       ].join('<br/>'),
     },
     disabled: {
@@ -90,7 +90,7 @@ const meta: Meta<typeof MultiSelect> = {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
-      description: '선택된 항목에 따라 트리거 너비를 자동으로 조절할지 설정합니다.',
+      description: '선택된 항목에 따라 trigger 너비를 자동으로 조절할지 설정합니다.',
     },
     isLeaveClose: {
       control: 'boolean',
@@ -440,7 +440,7 @@ const longLabelOptions = [
   { label: 'Option C', value: 'c' },
 ];
 
-export const WithContentfitTriggerWidth: Story = {
+export const WithContentFitTriggerWidth: Story = {
   args: {
     options: longLabelOptions,
   },
@@ -456,8 +456,8 @@ export const WithContentfitTriggerWidth: Story = {
     docs: {
       description: {
         story: [
-          'MultiSelect 컴포넌트의 트리거 너비 적응 기능을 보여주는 예시입니다.',
-          'isContentFitTriggerWidth 옵션을 사용하여 트리거 너비를 조절할 수 있습니다.',
+          'MultiSelect 컴포넌트의 trigger 너비 적응 기능을 보여주는 예시입니다.',
+          'isContentFitTriggerWidth 옵션을 사용하여 trigger 너비를 조절할 수 있습니다.',
         ].join('<br/>'),
       },
     },

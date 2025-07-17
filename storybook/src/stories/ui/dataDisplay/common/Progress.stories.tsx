@@ -19,14 +19,14 @@ const meta: Meta<typeof Progress> = {
       control: 'number',
       table: { type: { summary: 'number' }, defaultValue: { summary: 'undefined' } },
       description: [
-        'Progress bar의 진행률을 지정하는 props입니다. (단위: %)',
+        'Progress bar의 진행률을 지정하는 props 입니다. (단위: %)',
         'bar 의 길이를 조절할 수 있습니다.',
       ].join('<br/>'),
     },
     bgClassName: {
       control: 'text',
       table: { type: { summary: 'string' }, defaultValue: { summary: '' } },
-      description: 'Progress bar 배경의 스타일을 지정하는 props입니다.',
+      description: 'Progress bar 배경의 스타일을 지정하는 props 입니다.',
     },
   },
   parameters: {

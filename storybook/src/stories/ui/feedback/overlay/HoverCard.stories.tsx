@@ -183,7 +183,7 @@ const meta: Meta<typeof HoverCard> = {
       },
       description: [
         '마우스 호버 후 HoverCard가 열리기까지의 지연 시간(ms)을 설정합니다.',
-        `기본값은 ${DEFAULT_OPEN_DELAY_MS}ms입니다.`,
+        `기본값은 ${DEFAULT_OPEN_DELAY_MS}ms 입니다.`,
       ].join('<br/>'),
     },
     closeDelay: {
@@ -194,7 +194,7 @@ const meta: Meta<typeof HoverCard> = {
       },
       description: [
         '마우스가 벗어난 후 HoverCard가 닫히기까지의 지연 시간(ms)을 설정합니다.',
-        `기본값은 ${DEFAULT_CLOSE_DELAY_MS}ms입니다.`,
+        `기본값은 ${DEFAULT_CLOSE_DELAY_MS}ms 입니다.`,
       ].join('<br/>'),
     },
     defaultOpen: {
@@ -223,7 +223,7 @@ const meta: Meta<typeof HoverCard> = {
       description: [
         'HoverCard의 열림/닫힘 상태가 변경될 때 호출되는 콜백 함수입니다.',
         'open prop과 함께 사용하여 제어 모드로 동작할 수 있습니다.',
-        '스토리에서는 제어할 수 없습니다.',
+        'storybook 에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     trigger: {
@@ -232,9 +232,9 @@ const meta: Meta<typeof HoverCard> = {
         type: { summary: `ReactNode | ComponentType` },
       },
       description: [
-        'HoverCard를 열기 위한 트리거 요소입니다.',
+        'HoverCard를 열기 위한 trigger 요소입니다.',
         'ReactNode 또는 ComponentType을 받을 수 있습니다.',
-        '스토리에서는 제어할 수 없습니다.',
+        'storybook 에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     triggerClass: {
@@ -243,7 +243,7 @@ const meta: Meta<typeof HoverCard> = {
         type: { summary: `string` },
         defaultValue: { summary: '' },
       },
-      description: ['HoverCard 트리거 요소에 적용할 CSS 클래스를 설정합니다.'].join('<br/>'),
+      description: ['HoverCard trigger 요소에 적용할 CSS 클래스를 설정합니다.'].join('<br/>'),
     },
     children: {
       control: false,
@@ -253,7 +253,7 @@ const meta: Meta<typeof HoverCard> = {
       description: [
         'HoverCard에 표시될 내용을 설정합니다.',
         'ReactNode로 표현 가능한 모든 요소를 사용할 수 있습니다.',
-        '스토리에서는 제어할 수 없습니다.',
+        'storybook 에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     contentClass: {
@@ -268,8 +268,8 @@ const meta: Meta<typeof HoverCard> = {
       control: false,
       description: [
         'HoverCard의 열림 상태를 외부에서 참조할 수 있는 Ref 객체입니다.',
-        '참조 타입은 boolean입니다.',
-        '스토리에서는 제어할 수 없습니다.',
+        '참조 타입은 boolean 입니다.',
+        'storybook 에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
   },
@@ -279,8 +279,8 @@ const meta: Meta<typeof HoverCard> = {
         component: [
           'HoverCard 컴포넌트는 사용자가 특정 요소 위에 마우스를 올렸을 때 부가 정보를 표시하는 UI 요소입니다.',
           '불필요한 UI를 숨기고 필요할 때만 추가 정보를 제공하여 깔끔한 인터페이스를 구성할 수 있습니다.',
-          '트리거 요소와 내용을 자유롭게 커스터마이즈할 수 있으며, 제어 및 비제어 모드를 모두 지원합니다.',
-          '다양한 위치 설정과 지연 시간 조절이 가능하여 사용자 경험을 최적화할 수 있습니다.',
+          'trigger 요소와 내용을 자유롭게 커스터마이즈 할 수 있으며, 제어 및 비제어 모드를 모두 지원합니다.',
+          '다양한 위치 설정과 지연 시간 조절이 가능하여 사용자 경험을 최적화 할 수 있습니다.',
         ].join('<br/>'),
       },
     },
@@ -297,7 +297,7 @@ export const Default: Story = {
       description: {
         story: [
           'HoverCard 컴포넌트의 기본 사용 예시입니다.',
-          '트리거 요소에 마우스를 올리면 설정된 지연 시간 후 내용이 표시됩니다.',
+          'trigger 요소에 마우스를 올리면 설정된 지연 시간 후 내용이 표시됩니다.',
         ].join('<br/>'),
       },
     },
@@ -573,7 +573,7 @@ function returnOpenStatus({ openStat }: { openStat: boolean | undefined | null }
   );
 }
 
-function UncontrolDemos({ ...args }: HoverCardProps) {
+function UncontrolledDemos({ ...args }: HoverCardProps) {
   const {
     variant,
     size,
@@ -590,14 +590,14 @@ function UncontrolDemos({ ...args }: HoverCardProps) {
     children = childrenMap['profile'],
   } = args;
 
-  const unControlledRef = useRef<boolean | null>(null);
-  const [isUncontrolledOpen, setIsUncontrolledOpen] = useState(defaultOpen);
+  const uncontrolledRef = useRef<boolean | null>(null);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
 
   useEffect(() => {
-    setIsUncontrolledOpen(defaultOpen);
+    setUncontrolledOpen(defaultOpen);
   }, [defaultOpen]);
 
-  const unControlledKey = JSON.stringify({
+  const uncontrolledKey = JSON.stringify({
     variant,
     size,
     side,
@@ -617,7 +617,7 @@ function UncontrolDemos({ ...args }: HoverCardProps) {
       <div className={cn(flexRowBoxGap4, commonBoxClass, 'gap-10 w-9/10')}>
         <div className={cn(flexColBoxGap4, commonBoxClass, 'flex-1')}>
           <h2 className={cn(titleCommonClass, 'text-base')}>비제어(Uncontrolled)</h2>
-          <div className={cn(flexColBoxGap4, 'py-40')} key={unControlledKey}>
+          <div className={cn(flexColBoxGap4, 'py-40')} key={uncontrolledKey}>
             <HoverCard
               variant={variant}
               size={size}
@@ -627,13 +627,13 @@ function UncontrolDemos({ ...args }: HoverCardProps) {
               alignOffset={alignOffset}
               openDelay={openDelay}
               closeDelay={closeDelay}
-              defaultOpen={isUncontrolledOpen}
+              defaultOpen={uncontrolledOpen}
               open={undefined}
-              onOpenChange={(unControlledOpen) => {
-                setIsUncontrolledOpen(unControlledOpen);
-                unControlledRef.current = unControlledOpen;
+              onOpenChange={(open) => {
+                setUncontrolledOpen(open);
+                uncontrolledRef.current = open;
               }}
-              openStatusRef={unControlledRef}
+              openStatusRef={uncontrolledRef}
               trigger={trigger}
               triggerClass={triggerClass}
               contentClass={contentClass}>
@@ -643,7 +643,7 @@ function UncontrolDemos({ ...args }: HoverCardProps) {
           <div className={cn(flexColBoxGap4, 'gap-2')}>
             <p className={cn(flexRowBoxGap4, 'gap-2 text-sm')}>
               <span className={cn(titleCommonClass)}>defaultOpen :</span>
-              {returnOpenStatus({ openStat: isUncontrolledOpen })}
+              {returnOpenStatus({ openStat: uncontrolledOpen })}
             </p>
             <p className={cn(flexRowBoxGap4, 'gap-2 text-sm')}>
               <span className={cn(titleCommonClass)}>open :</span>
@@ -651,7 +651,7 @@ function UncontrolDemos({ ...args }: HoverCardProps) {
             </p>
             <p className={cn(flexRowBoxGap4, 'gap-2 text-sm')}>
               <span className={cn(titleCommonClass)}>현재 열림/닫힘 상태(openStatusRef) :</span>
-              {returnOpenStatus({ openStat: unControlledRef.current })}
+              {returnOpenStatus({ openStat: uncontrolledRef.current })}
             </p>
           </div>
         </div>
@@ -685,14 +685,14 @@ export const Uncontrolled: Story = {
   render: (args: HoverCardProps) => (
     <div>
       <p className={'invisible'}>
-        UncontrolDemos 의 경우, 제어와 비제어의 hook 등이 스토리에서 처리되지 않아 별도로 처리한 내역입니다.
+        UncontrolledDemos 의 경우, 제어와 비제어의 hook 등이 storybook 에서 처리되지 않아 별도로 처리한 내역입니다.
       </p>
-      <UncontrolDemos {...args} />
+      <UncontrolledDemos {...args} />
     </div>
   ),
 };
 
-function ControlDemos({ ...args }: HoverCardProps) {
+function ControlledDemos({ ...args }: HoverCardProps) {
   const {
     variant,
     size,
@@ -711,11 +711,11 @@ function ControlDemos({ ...args }: HoverCardProps) {
   } = args;
 
   const controlledRef = useRef<boolean | null>(null);
-  const [isUncontrolledOpen, setIsUncontrolledOpen] = useState(defaultOpen);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const [isControlledOpen, setIsControlledOpen] = useState(open || false);
 
   useEffect(() => {
-    setIsUncontrolledOpen(defaultOpen);
+    setUncontrolledOpen(defaultOpen);
   }, [defaultOpen]);
 
   const controlledKey = JSON.stringify({
@@ -746,7 +746,7 @@ function ControlDemos({ ...args }: HoverCardProps) {
               sideOffset={sideOffset}
               align={align}
               alignOffset={alignOffset}
-              defaultOpen={isUncontrolledOpen}
+              defaultOpen={uncontrolledOpen}
               openDelay={openDelay}
               closeDelay={closeDelay}
               open={isControlledOpen}
@@ -819,9 +819,9 @@ export const Controlled: Story = {
   render: (args: HoverCardProps) => (
     <div>
       <p className={'invisible'}>
-        ControlDemos 의 경우, 제어와 비제어의 hook 등이 스토리에서 처리되지 않아 별도로 처리한 내역입니다.
+        ControlledDemos 의 경우, 제어와 비제어의 hook 등이 storybook 에서 처리되지 않아 별도로 처리한 내역입니다.
       </p>
-      <ControlDemos {...args} />
+      <ControlledDemos {...args} />
     </div>
   ),
 };

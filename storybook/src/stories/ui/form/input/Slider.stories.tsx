@@ -74,7 +74,7 @@ const meta: Meta<typeof Slider> = {
         defaultValue: { summary: "'primary'" },
       },
       description: [
-        "Slider의 색상 변형을 설정합니다. 'custom'으로 설정 시, CSS 변수 `--slider-color`를 직접 지정해야 합니다.",
+        "Slider의 색상 변형을 설정합니다. 'custom' 으로 설정 시, CSS 변수 `--slider-color`를 직접 지정해야 합니다.",
       ].join('<br/>'),
     },
     size: {
@@ -204,7 +204,7 @@ const meta: Meta<typeof Slider> = {
         type: { summary: '(value: number[]) => void' },
         defaultValue: { summary: 'undefined' },
       },
-      description: ['Slider 값이 변경될 때마다 호출되는 콜백 함수입니다.', '스토리에서는 제어할 수 없습니다.'].join(
+      description: ['Slider 값이 변경될 때마다 호출되는 콜백 함수입니다.', 'storybook 에서는 제어할 수 없습니다.'].join(
         '<br/>',
       ),
     },
@@ -216,7 +216,7 @@ const meta: Meta<typeof Slider> = {
       },
       description: [
         '사용자가 값 변경을 마쳤을 때(예: 마우스 놓기) 호출되는 콜백 함수입니다.',
-        '스토리에서는 제어할 수 없습니다.',
+        'storybook 에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     sliderRef: {
@@ -229,7 +229,7 @@ const meta: Meta<typeof Slider> = {
         'ref.current를 통해 부모 컴포넌트에게 현재 열려 있는 아이템의 value 값을 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
         '비제어(Uncontrolled)/제어(Controlled) 모드 모두에서 동작합니다.',
         'value가 없는 경우 undefined가 될 수 있습니다.',
-        '스토리에서는 제어할 수 없습니다.',
+        'storybook 에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
   },
@@ -286,7 +286,7 @@ export const Variants: Story = {
       description: {
         story: [
           '다양한 `variant`(색상) 옵션을 보여주는 예시입니다.',
-          '각 variant별로 단일 값 슬라이더와 범위 슬라이더를 모두 확인할 수 있습니다.',
+          '각 variant 별로 단일 값 슬라이더와 범위 슬라이더를 모두 확인할 수 있습니다.',
           '`custom` variant 사용 시에는 CSS 변수 `--slider-color`를 통해 원하는 색상을 지정할 수 있습니다.',
           '브랜드 색상에 맞게 슬라이더를 커스터마이징할 때 활용하세요.',
         ].join('<br/>'),
@@ -324,7 +324,7 @@ export const Sizes: Story = {
         story: [
           '다양한 `size` 옵션을 보여주는 예시입니다.',
           '슬라이더의 크기는 트랙의 두께와 핸들(thumb)의 크기에 영향을 미칩니다.',
-          '각 size별로 단일 값과 범위 슬라이더를 모두 확인할 수 있습니다.',
+          '각 size 별로 단일 값과 범위 슬라이더를 모두 확인할 수 있습니다.',
           '사용자 인터페이스의 밀도와 중요도에 따라 적절한 크기를 선택하세요.',
         ].join('<br/>'),
       },
@@ -820,7 +820,7 @@ export const Controlled: Story = {
         story: [
           '`value`와 `onValueChange`를 이용한 제어 컴포넌트 예시입니다.',
           '제어 모드에서는 외부 상태를 통해 슬라이더의 값을 완전히 제어할 수 있습니다.',
-          '`value` prop으로 현재 값을 설정하고, `onValueChange` 콜백으로 값 변경을 처리합니다.',
+          '`value` prop 으로 현재 값을 설정하고, `onValueChange` 콜백으로 값 변경을 처리합니다.',
           '복잡한 상태 관리가 필요하거나 다른 컴포넌트와 동기화가 필요한 경우에 적합합니다.',
         ].join('<br/>'),
       },

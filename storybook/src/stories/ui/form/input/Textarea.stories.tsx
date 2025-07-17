@@ -1,4 +1,4 @@
-import { Textarea, Button, textareaVariaints } from '@common/ui';
+import { Button, Textarea, textareaVariaints } from '@common/ui';
 import { CopyIcon, FileIcon } from '@common/ui/icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -264,7 +264,7 @@ export const ErrorWithRightButton: Story = {
   parameters: {
     docs: {
       description: {
-        story: ['에러 상태와 오른쪽에 버튼이 추가된 Textarea입니다.'].join('<br/>'),
+        story: ['에러 상태와 오른쪽에 버튼이 추가된 Textarea 입니다.'].join('<br/>'),
       },
     },
   },

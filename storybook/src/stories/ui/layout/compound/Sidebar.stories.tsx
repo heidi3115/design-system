@@ -1,26 +1,26 @@
 import {
-  SidebarRoot,
+  SidebarCollapsibleGroup,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
+  SidebarGroupAction,
   SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
   SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuAction,
-  SidebarGroupAction,
-  SidebarMenuBadge,
   SidebarMenuSkeleton,
   SidebarMenuSub,
-  SidebarMenuSubItem,
   SidebarMenuSubButton,
-  SidebarSeparator,
-  SidebarCollasibleGroup,
+  SidebarMenuSubItem,
   SidebarProvider,
-  SidebarInset,
+  SidebarRoot,
+  SidebarSeparator,
   SidebarTrigger,
-  SidebarHeader,
 } from '@common/ui';
 import {
   BellIcon,
@@ -182,7 +182,7 @@ const subData = {
           url: '#',
         },
         {
-          title: 'Turbopack',
+          title: 'Turbo pack',
           url: '#',
         },
       ],
@@ -237,7 +237,7 @@ const AppSidebar = () => (
             <SidebarMenuItem>
               <SidebarMenuButton disabled>
                 <LockIcon />
-                normal Disalbed
+                normal Disabled
               </SidebarMenuButton>
               <SidebarMenuAction>
                 <ListIcon /> <span className="sr-only">Add Project</span>
@@ -312,7 +312,7 @@ const AppSidebar = () => (
 
       <SidebarSeparator />
       {/* Collapsible 그룹 */}
-      <SidebarCollasibleGroup collapsibleTitle="Collapsible" groupTitle="Collasible 사이드바">
+      <SidebarCollapsibleGroup collapsibleTitle="Collapsible" groupTitle="Collapsible 사이드바">
         <SidebarGroupContent>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -337,15 +337,15 @@ const AppSidebar = () => (
             ))}
           </SidebarMenu>
         </SidebarGroupContent>
-      </SidebarCollasibleGroup>
+      </SidebarCollapsibleGroup>
 
       <SidebarSeparator />
-      {/* collasible 서브 그룹 */}
+      {/* collapsible 서브 그룹 */}
       <SidebarGroup className="pb-0">
-        <SidebarGroupLabel>Collasible 서브 그룹 사이드바</SidebarGroupLabel>
+        <SidebarGroupLabel>Collapsible 서브 그룹 사이드바</SidebarGroupLabel>
       </SidebarGroup>
       {subData.navMain.map((item, index) => (
-        <SidebarCollasibleGroup
+        <SidebarCollapsibleGroup
           extendType="plus"
           key={item.title}
           defaultOpen={index === 1}
@@ -369,7 +369,7 @@ const AppSidebar = () => (
               </SidebarMenuSub>
             </SidebarGroupContent>
           ) : null}
-        </SidebarCollasibleGroup>
+        </SidebarCollapsibleGroup>
       ))}
     </SidebarContent>
     <SidebarFooter className="bg-juiGrey-a700 pointer-events-none">

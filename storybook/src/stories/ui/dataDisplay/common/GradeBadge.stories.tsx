@@ -25,7 +25,7 @@ const meta: Meta<typeof GradeBadge> = {
       options: gradeArr,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'info' } },
       description: [
-        'GradeBadge의 등급 스타일을 지정하는 필수 props입니다.',
+        'GradeBadge의 등급 스타일을 지정하는 필수 props 입니다.',
         'info, boundary, alert, critical, urgency 중에서 선택해야 합니다.',
       ].join('<br/>'),
     },
@@ -33,7 +33,7 @@ const meta: Meta<typeof GradeBadge> = {
       control: 'text',
       table: { type: { summary: 'string' }, defaultValue: { summary: 'GradeBadge' } },
       description: [
-        'GradeBadge 내부에 들어갈 내용을 지정하는 필수 props입니다.',
+        'GradeBadge 내부에 들어갈 내용을 지정하는 필수 props 입니다.',
         'string 타입만 받을 수 있습니다.',
       ].join('<br/>'),
     },
@@ -47,8 +47,8 @@ const meta: Meta<typeof GradeBadge> = {
     docs: {
       description: {
         component: [
-          'GradeBadge 컴포넌트의 문서입니다. GradeBadge는 등급에 대한 표기를 전문으로 하는 Badge로서 각 grade별 아이콘이 지정되어 있습니다.',
-          'GradeBadge는 기본 Badge에서 variant를 "grading"으로 고정한 컴포넌트입니다.',
+          'GradeBadge 컴포넌트의 문서입니다. GradeBadge는 등급에 대한 표기를 전문으로 하는 Badge 로서 각 grade별 아이콘이 지정되어 있습니다.',
+          'GradeBadge는 기본 Badge 에서 variant를 "grading"으로 고정한 컴포넌트입니다.',
           'grade, children이 필수값이며, grade별 아이콘이 고정되어 있고 children는 string 타입으로만 받을 수 있습니다.',
           '기본적인 스타일은 Badge를 따르되 GradeBadge 별도 스타일이 고정되어 있습니다.',
           'asChild는 기본 Badge 컴포넌트에서만 가능합니다.',
@@ -162,7 +162,7 @@ export const IsBtn: GradeStory = {
       <div className="flex flex-row flex-wrap gap-4 p-5">
         {gradeArr.map((grade) => (
           <div className={'flex flex-col gap-1 text-center'} key={grade}>
-            <span className="text-xs text-juiText-blue">{`grage: ${grade} | isBtn: ${args.isBtn}`}</span>
+            <span className="text-xs text-juiText-blue">{`grade: ${grade} | isBtn: ${args.isBtn}`}</span>
             <GradeBadge {...args} grade={grade} />
           </div>
         ))}

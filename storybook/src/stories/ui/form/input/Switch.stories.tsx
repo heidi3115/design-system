@@ -63,7 +63,7 @@ const meta: Meta<typeof Switch> = {
     },
     checkedRef: {
       table: { disable: true },
-      description: '비제어형 Switch의 현재 상태를 참조할 수 있는 ref입니다.',
+      description: '비제어형 Switch의 현재 상태를 참조할 수 있는 Ref 입니다.',
     },
   },
   parameters: {

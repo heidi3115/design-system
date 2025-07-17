@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button, Select } from '@common/ui';
-import { useRef, useState, type ComponentProps } from 'react';
+import { type ComponentProps, useRef, useState } from 'react';
 import { action } from '@storybook/addon-actions';
 
 // 공통 상수
@@ -29,7 +29,7 @@ const meta: Meta<typeof Select> = {
         type: { summary: sizeOptions.join(', ') },
         defaultValue: { summary: 'default' },
       },
-      description: ['Select 컴포넌트의 크기를 설정합니다.', '기본값은 default입니다.'].join('<br/>'),
+      description: ['Select 컴포넌트의 크기를 설정합니다.', '기본값은 default 입니다.'].join('<br/>'),
     },
     width: {
       control: 'select',
@@ -41,7 +41,7 @@ const meta: Meta<typeof Select> = {
       description: [
         'Select 컴포넌트의 너비를 설정합니다.',
         'full(부모 너비에 맞춤), fit(내용에 맞춤) 또는 숫자(px 단위)를 사용할 수 있습니다.',
-        '기본값은 full입니다.',
+        '기본값은 full 입니다.',
       ].join('<br/>'),
     },
     disabled: {
@@ -58,7 +58,7 @@ const meta: Meta<typeof Select> = {
         type: { summary: 'string' },
         defaultValue: { summary: '' },
       },
-      description: 'Select 트리거에 표시될 placeholder 텍스트를 설정합니다.',
+      description: 'Select 의 trigger 에 표시될 placeholder 텍스트를 설정합니다.',
     },
     isSelectIndicator: {
       control: 'boolean',
@@ -74,7 +74,7 @@ const meta: Meta<typeof Select> = {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
-      description: '선택된 항목의 길이에 따라 트리거 버튼의 너비를 조절할지 설정합니다.',
+      description: '선택된 항목의 길이에 따라 trigger 버튼의 너비를 조절할지 설정합니다.',
     },
     error: {
       control: 'boolean',
@@ -333,7 +333,7 @@ const longLabelOptions = [
   { label: 'Option C', value: 'c' },
 ];
 
-export const WithContentfitTriggerWidth: Story = {
+export const WithContentFitTriggerWidth: Story = {
   args: {
     options: longLabelOptions,
   },
@@ -370,7 +370,7 @@ const controlledOptions = [
   { label: 'Option F', value: 'f' },
 ];
 
-const ControllComp = ({ onValueChange, ...args }: ComponentProps<typeof Select>) => {
+const ControlledComp = ({ onValueChange, ...args }: ComponentProps<typeof Select>) => {
   const [value, setValue] = useState('');
   const ref = useRef<string | null>('2');
 
@@ -415,7 +415,7 @@ export const ControlledAndUncontrolled: Story = {
   args: {
     placeholder: 'Select an option',
   },
-  render: (args) => <ControllComp {...args} />,
+  render: (args) => <ControlledComp {...args} />,
   parameters: {
     controls: {
       disable: true,

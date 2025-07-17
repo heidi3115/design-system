@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Skeleton, Tabs } from '@common/ui';
-import { useState, type ComponentProps } from 'react';
+import { type ComponentProps, useState } from 'react';
 
 const meta: Meta<typeof Tabs> = {
   title: 'UI/Disclosure/Tabs',
@@ -229,7 +229,7 @@ export const Folder: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Tabs Folder 모양 탭 (align 과 variant 조절 불가능, 액티브 컬러는 classname으로 직접 설정)',
+        story: 'Tabs Folder 모양 탭 (align 과 variant 조절 불가능, Active color 는 className 으로 직접 설정)',
       },
     },
   },
@@ -273,7 +273,7 @@ export const Variants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Tabs Variants 색상변경',
+        story: 'Tabs Variants 색상 변경',
       },
     },
   },
@@ -325,7 +325,7 @@ export const Sizes: Story = {
   render: (args) => (
     <div className="flex flex-col gap-10">
       <div>
-        <div className="mb-2 text-lg font-semibold">Defalt</div>
+        <div className="mb-2 text-lg font-semibold">Default</div>
         <Tabs {...args} />
       </div>
       <div>

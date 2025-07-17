@@ -1,7 +1,7 @@
 // AutoComplete.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { AutoComplete, Button } from '@common/ui';
-import { useRef, useState, type ComponentProps } from 'react';
+import { type ComponentProps, useRef, useState } from 'react';
 import { action } from '@storybook/addon-actions';
 
 // 공통 상수
@@ -31,7 +31,7 @@ const meta: Meta<typeof AutoComplete> = {
         type: { summary: sizeOptions.join(', ') },
         defaultValue: { summary: 'default' },
       },
-      description: ['AutoComplete 컴포넌트의 크기를 설정합니다.', '기본값은 default입니다.'].join('<br/>'),
+      description: ['AutoComplete 컴포넌트의 크기를 설정합니다.', '기본값은 default 입니다.'].join('<br/>'),
     },
     width: {
       control: 'select',
@@ -42,8 +42,8 @@ const meta: Meta<typeof AutoComplete> = {
       },
       description: [
         'AutoComplete 컴포넌트의 너비를 설정합니다.',
-        'input의 특성상 fit하게 조절할 수 없습니다.',
-        '기본값은 full입니다.',
+        'input의 특성상 fit 하게 조절할 수 없습니다.',
+        '기본값은 full 입니다.',
       ].join('<br/>'),
     },
     disabled: {
@@ -52,7 +52,7 @@ const meta: Meta<typeof AutoComplete> = {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
-      description: ['AutoComplete 컴포넌트의 비활성화 상태를 설정합니다.', '기본값은 false입니다.'].join('<br/>'),
+      description: ['AutoComplete 컴포넌트의 비활성화 상태를 설정합니다.', '기본값은 false 입니다.'].join('<br/>'),
     },
     placeholder: {
       control: 'text',
@@ -78,7 +78,7 @@ const meta: Meta<typeof AutoComplete> = {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
-      description: ['선택 시 우측 체크 아이콘 표시 여부를 설정합니다.', '기본값은 false입니다.'].join('<br/>'),
+      description: ['선택 시 우측 체크 아이콘 표시 여부를 설정합니다.', '기본값은 false 입니다.'].join('<br/>'),
     },
     isContentFitTriggerWidth: {
       control: 'boolean',
@@ -86,7 +86,9 @@ const meta: Meta<typeof AutoComplete> = {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
-      description: ['선택된 항목 길이에 따라 trigger 버튼의 너비를 조절합니다.', '기본값은 false입니다.'].join('<br/>'),
+      description: ['선택된 항목 길이에 따라 trigger 버튼의 너비를 조절합니다.', '기본값은 false 입니다.'].join(
+        '<br/>',
+      ),
     },
     isLeaveClose: {
       control: 'boolean',
@@ -94,7 +96,7 @@ const meta: Meta<typeof AutoComplete> = {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
-      description: ['마우스가 벗어나면 리스트가 닫히는 여부를 설정합니다.', '기본값은 false입니다.'].join('<br/>'),
+      description: ['마우스가 벗어나면 리스트가 닫히는 여부를 설정합니다.', '기본값은 false 입니다.'].join('<br/>'),
     },
     error: {
       control: 'boolean',
@@ -102,7 +104,7 @@ const meta: Meta<typeof AutoComplete> = {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
-      description: ['form 에러 여부를 설정합니다.', '기본값은 false입니다.'].join('<br/>'),
+      description: ['form 에러 여부를 설정합니다.', '기본값은 false 입니다.'].join('<br/>'),
     },
     helperText: {
       control: 'text',
@@ -120,7 +122,7 @@ const meta: Meta<typeof AutoComplete> = {
       },
       description: [
         '비제어 모드에서 선택된 값을 참조할 수 있는 Ref 객체입니다.',
-        'storybook에서는 제어할 수 없습니다.',
+        'storybook 에서는 제어할 수 없습니다.',
       ].join('<br/>'),
     },
     ref: {
@@ -129,7 +131,7 @@ const meta: Meta<typeof AutoComplete> = {
         type: { summary: 'RefCallback<HTMLElement>' },
         disable: true,
       },
-      description: ['AutoComplete DOM 요소에 대한 참조입니다.', 'storybook에서는 제어할 수 없습니다.'].join('<br/>'),
+      description: ['AutoComplete DOM 요소에 대한 참조입니다.', 'storybook 에서는 제어할 수 없습니다.'].join('<br/>'),
     },
     value: {
       control: false,
@@ -137,7 +139,7 @@ const meta: Meta<typeof AutoComplete> = {
         type: { summary: 'string' },
         disable: true,
       },
-      description: ['제어 모드에서 현재 선택된 값입니다.', 'storybook에서는 제어할 수 없습니다.'].join('<br/>'),
+      description: ['제어 모드에서 현재 선택된 값입니다.', 'storybook 에서는 제어할 수 없습니다.'].join('<br/>'),
     },
     defaultValue: {
       control: false,
@@ -145,7 +147,7 @@ const meta: Meta<typeof AutoComplete> = {
         type: { summary: 'string' },
         disable: true,
       },
-      description: ['비제어 모드에서 초기 선택값입니다.', 'storybook에서는 제어할 수 없습니다.'].join('<br/>'),
+      description: ['비제어 모드에서 초기 선택값입니다.', 'storybook 에서는 제어할 수 없습니다.'].join('<br/>'),
     },
     onValueChange: {
       control: false,
@@ -153,7 +155,7 @@ const meta: Meta<typeof AutoComplete> = {
       table: {
         disable: true,
       },
-      description: ['값이 변경될 때 호출되는 콜백 함수입니다.', 'storybook에서는 제어할 수 없습니다.'].join('<br/>'),
+      description: ['값이 변경될 때 호출되는 콜백 함수입니다.', 'storybook 에서는 제어할 수 없습니다.'].join('<br/>'),
     },
   },
   parameters: {
@@ -389,12 +391,12 @@ const longLabelOptions = [
   { label: 'Option C', value: 'c' },
 ];
 
-export const WithContentfitTriggerWidth: Story = {
+export const WithContentFitTriggerWidth: Story = {
   parameters: {
     docs: {
       description: {
         story: [
-          'AutoComplete 컴포넌트의 트리거 너비 적응 기능을 보여주는 예시입니다.',
+          'AutoComplete 컴포넌트의 trigger 너비 적응 기능을 보여주는 예시입니다.',
           'isContentFitTriggerWidth 옵션을 사용하여 드롭다운 콘텐츠의 너비를 조절할 수 있습니다.',
         ].join('<br/>'),
       },
@@ -474,7 +476,7 @@ const controlledOptions = [
   { label: 'Option F', value: 'f' },
 ];
 
-const ControllComp = ({ onValueChange, ...args }: ComponentProps<typeof AutoComplete>) => {
+const ControlledComp = ({ onValueChange, ...args }: ComponentProps<typeof AutoComplete>) => {
   const [value, setValue] = useState('');
   const ref = useRef<string | null>(null);
 
@@ -532,5 +534,5 @@ export const ControlledAndUncontrolled: Story = {
   args: {
     placeholder: 'Select an option',
   },
-  render: (args) => <ControllComp {...args} />,
+  render: (args) => <ControlledComp {...args} />,
 };

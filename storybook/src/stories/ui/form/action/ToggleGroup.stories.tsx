@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
 import { Button, ToggleGroup } from '@common/ui';
-import { useRef, useState, type ComponentProps } from 'react';
+import { type ComponentProps, useRef, useState } from 'react';
 import { MinusIcon, PlusIcon } from '@common/ui/icons';
 import MultipleToggleGroup from '@common/ui/components/ToggleGroup/MultipleToggleGroup.tsx';
 import SingleToggleGroup from '@common/ui/components/ToggleGroup/SingleToggleGroup.tsx';
@@ -108,7 +108,7 @@ const meta: Meta<typeof ToggleGroup> = {
     },
     valueRef: {
       table: { disable: true },
-      description: '비제어형 ToggleGroup의 현재 값을 참조할 수 있는 ref입니다.',
+      description: '비제어형 ToggleGroup의 현재 값을 참조할 수 있는 Ref 입니다.',
     },
     className: {
       control: 'text',
@@ -244,7 +244,7 @@ export const CustomClass: Story = {
       description: {
         story: [
           'ToggleGroup에 커스텀 CSS 클래스를 적용한 예시입니다.',
-          'className으로 전체 스타일을, itemClassName으로 각 항목의 스타일을 변경할 수 있습니다.',
+          'className 으로 전체 스타일을, itemClassName 으로 각 항목의 스타일을 변경할 수 있습니다.',
         ].join('<br/>'),
       },
     },

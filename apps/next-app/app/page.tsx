@@ -86,9 +86,9 @@ export default function Page() {
           </Button>
         </div>
         <div className={'flex flex-col gap-4 items-center justify-center'}>
-          <h2 className={'text-juiText-blue'}>Collapsible Components(Accordion, Collasible)</h2>
+          <h2 className={'text-juiText-blue'}>Collapsible Components(Accordion, Collapsible)</h2>
           <Button asChild variant={'primary'} size={'large'}>
-            <Link href="/osy/collapsibles">to Collapsibles Gallery</Link>
+            <Link href="/osy/collapsibles">to Collapsible Gallery</Link>
           </Button>
         </div>
         <div className="flex justify-between items-center gap-5">

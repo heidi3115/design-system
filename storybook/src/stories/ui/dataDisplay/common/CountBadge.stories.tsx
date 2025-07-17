@@ -36,7 +36,7 @@ const meta: Meta<typeof CountBadge> = {
       options: combinedArr,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'default' } },
       description: [
-        'CountBadge의 색상 스타일을 지정하는 필수 props입니다.',
+        'CountBadge의 색상 스타일을 지정하는 필수 props 입니다.',
         '기존의 status, score 선택지 중에서 선택하거나 tailwind CSS의 bg-* 스타일로서 커스텀이 가능합니다.',
       ].join('<br/>'),
     },
@@ -44,7 +44,7 @@ const meta: Meta<typeof CountBadge> = {
       control: 'number',
       table: { type: { summary: 'number' }, defaultValue: { summary: `${DEFAULT_VAL}` } },
       description: [
-        'Badge 내부에 표시할 점수값을 지정하는 필수 props입니다.',
+        'Badge 내부에 표시할 점수값을 지정하는 필수 props 입니다.',
         '숫자를 입력해야 하며, 현재로서는 음수, 소수점도 허용됩니다.',
       ].join('<br/>'),
     },
@@ -52,20 +52,20 @@ const meta: Meta<typeof CountBadge> = {
       control: 'number',
       table: { type: { summary: 'number' }, defaultValue: { summary: `${MAX_VAL}` } },
       description: [
-        '최대값을 지정하는 옵션 props입니다.',
-        '기본적으로 0이며, 0 이상의 숫자일 경우 scoreVal이 maxVal보다 크거나 같으면 maxVal+의 형태로 표기됩니다.',
+        '최대값을 지정하는 옵션 props 입니다.',
+        '기본적으로 0이며, 0 이상의 숫자일 경우 scoreVal이 maxVal 보다 크거나 같으면 maxVal+의 형태로 표기됩니다.',
       ].join('<br/>'),
     },
     icon: {
       control: false,
       table: { type: { summary: 'ReactNode' }, defaultValue: { summary: 'null' } },
-      description: 'Badge 내부에 표시할 아이콘을 지정하는 옵션 props입니다.',
+      description: 'Badge 내부에 표시할 아이콘을 지정하는 옵션 props 입니다.',
     },
     iconPosition: {
       control: { type: 'radio' },
       options: ['left', 'right'],
       table: { type: { summary: "'left' | 'right'" }, defaultValue: { summary: 'left' } },
-      description: "아이콘의 위치를 지정하는 props입니다. 'left'(기본값) 또는 'right' 중에서 선택할 수 있습니다.",
+      description: "아이콘의 위치를 지정하는 props 입니다. 'left'(기본값) 또는 'right' 중에서 선택할 수 있습니다.",
     },
     className: {
       control: 'text',
@@ -77,8 +77,8 @@ const meta: Meta<typeof CountBadge> = {
     docs: {
       description: {
         component: [
-          'CountBadge 컴포넌트의 문서입니다. CountBadge는 알람의 수나 count된 값에 대한 부분 표시를 위한 Badge입니다.',
-          'CountBadge는 기본 Badge에서 variant를 "count"로 고정한 컴포넌트로서, color, scoreVal을 필수값으로 받습니다.',
+          'CountBadge 컴포넌트의 문서입니다. CountBadge는 알람의 수나 count된 값에 대한 부분 표시를 위한 Badge 입니다.',
+          'CountBadge는 기본 Badge 에서 variant를 "count"로 고정한 컴포넌트로서, color, scoreVal을 필수값으로 받습니다.',
           'maxVal, icon, iconPosition을 옵션값으로 받으며, children을 받지 않음에 유의해야 합니다.',
           'asChild는 기본 Badge 컴포넌트에서만 가능합니다.',
         ].join('<br/>'),

@@ -2,13 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import {
   Input,
   Switch,
+  Table,
   TableBody,
   TableCaption,
   TableCell,
   TableFooter,
   TableHead,
   TableHeader,
-  Table,
   TableRow,
 } from '@common/ui';
 
@@ -32,7 +32,7 @@ const meta: Meta<TableStoryArgs> = {
       description: [
         'Table의 방향에 따른 스타일을 적용할 수 있습니다.',
         'vertical과 horizontal로 구분하며, border 및 padding이 차이가 납니다.',
-        '기본값은 horizontal입니다.',
+        '기본값은 horizontal 입니다.',
       ].join('<br/>'),
     },
     showCaption: {

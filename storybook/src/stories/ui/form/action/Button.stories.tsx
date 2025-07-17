@@ -99,7 +99,7 @@ export const Variants: Story = {
     docs: {
       description: {
         story: [
-          'Button 컴포넌트 중 색상 스타일의 종류별로 렌더링한 variants입니다.',
+          'Button 컴포넌트 중 색상 스타일의 종류별로 렌더링한 variant 입니다.',
           '글씨만 있는 것, 아이콘과 글씨가 있는 것, 아이콘만 있는 것의 종류를 확인할 수 있습니다.',
         ].join('<br/>'),
       },
@@ -188,7 +188,7 @@ export const Sizes: Story = {
     docs: {
       description: {
         story: [
-          'Button 컴포넌트 중 크기 스타일의 종류별로 렌더링한 sizes입니다.',
+          'Button 컴포넌트 중 크기 스타일의 종류별로 렌더링한 size 입니다.',
           '글씨만 있는 것, 아이콘과 글씨가 있는 것, 아이콘만 있는 것의 종류를 확인할 수 있습니다.',
         ].join('<br/>'),
       },
@@ -273,10 +273,10 @@ export const AsChildDynamic: StoryAsChild = {
     docs: {
       description: {
         story: [
-          '버튼 컴포넌트의 "asChild" props를 활용하여 Button 컴포넌트를 현재 옵션으로 지정해놓은 `a`, `span`, `div` 등의 다양한 태그로 렌더링할 수 있는 예시입니다.',
+          '버튼 컴포넌트의 "asChild" props를 활용하여 Button 컴포넌트를 현재 옵션으로 지정해놓은 `a`, `span`, `div` 등의 다양한 태그로 렌더링 할 수 있는 예시입니다.',
           '이 방식은 버튼 역할을 하는 커스텀 태그(예: 링크, 커스텀 래퍼 등)에 버튼 스타일과 인터랙션을 그대로 적용하고 싶을 때 사용합니다.',
           'asChild={true}를 지정하면, children에 전달된 태그(a, span, div 등)가 실제 DOM에 렌더링되고, Button 컴포넌트의 스타일/속성이 해당 태그에 이식됩니다.',
-          '접근성이나 레이아웃 유연성이 필요한 복합 UI에서 유용하게 활용할 수 있습니다.',
+          '접근성이나 레이아웃 유연성이 필요한 복합 UI 에서 유용하게 활용할 수 있습니다.',
         ].join('<br/>'),
       },
     },

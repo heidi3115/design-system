@@ -22,7 +22,7 @@ const meta: Meta<typeof Checkbox> = {
         type: { summary: 'ReactNode' },
         defaultValue: { summary: 'Checkbox label' },
       },
-      description: ['Checkbox 오른쪽에 표시될 label입니다.', '문자열 또는 React 컴포넌트를 사용할 수 있습니다.'].join(
+      description: ['Checkbox 오른쪽에 표시될 label 입니다.', '문자열 또는 React 컴포넌트를 사용할 수 있습니다.'].join(
         '<br/>',
       ),
     },
@@ -435,7 +435,7 @@ export const showcaseOverview: Story = {
         <hr className="my-8" />
 
         {/* Custom Icon With Box*/}
-        <span className="text-sm font-bold">Custom Icon Widh Box</span>
+        <span className="text-sm font-bold">Custom Icon Width Box</span>
         <div className="flex flex-col gap-4 p-5">
           <div className="flex flex-wrap gap-8 items-center">
             <div className="flex flex-col gap-2.5 items-start">

@@ -1,7 +1,7 @@
 'use client';
 
 import type { Meta, StoryObj } from '@storybook/react';
-import { useEffect, useRef, useState, type ComponentProps } from 'react';
+import { type ComponentProps, useEffect, useRef, useState } from 'react';
 import { Button, Input, Popover } from '@common/ui';
 
 const sideOptions: ComponentProps<typeof Popover>['side'][] = ['top', 'left', 'bottom', 'right'] as const;
@@ -60,22 +60,22 @@ const meta: Meta<typeof Popover> = {
     trigger: {
       control: { disable: true },
       table: { type: { summary: 'ReactNode' } },
-      description: 'Popover를 열고 닫는 트리거 요소입니다. storybook의 control에서 조작할 수 없습니다.',
+      description: 'Popover를 열고 닫는 trigger 요소입니다. storybook의 control 에서 조작할 수 없습니다.',
     },
     children: {
       control: { disable: true },
       table: { type: { summary: 'ReactNode' } },
-      description: 'Popover 내부에 렌더링되는 콘텐츠입니다. storybook의 control에서의 조작이 비활성화 되어있습니다.',
+      description: 'Popover 내부에 렌더링되는 콘텐츠입니다. storybook의 control 에서의 조작이 비활성화 되어있습니다.',
     },
     portalContainer: {
       control: { disable: true },
       table: { disable: true },
-      description: 'Popover를 렌더링할 포털 컨테이너 DOM 요소입니다. storybook에서 숨겨져 있습니다.',
+      description: 'Popover를 렌더링할 포털 컨테이너 DOM 요소입니다. storybook 에서 숨겨져 있습니다.',
     },
     anchorRef: {
       control: { disable: true },
       table: { disable: true },
-      description: 'Popover가 기준으로 삼는 요소의 참조입니다. storybook에서 숨겨져 있습니다.',
+      description: 'Popover가 기준으로 삼는 요소의 참조입니다. storybook 에서 숨겨져 있습니다.',
     },
   },
   parameters: {

@@ -48,7 +48,7 @@ export type HoverCardBaseProps = {
    */
   openStatusRef?: React.Ref<boolean>;
   /**
-   * trigger: HoverCard를 열기 위해 사용되는 트리거 요소입니다.
+   * trigger: HoverCard를 열기 위해 사용되는 trigger 요소입니다.
    * ReactNode 또는 ComponentType 을 받을 수 있습니다.
    */
   trigger: React.ReactNode | ComponentType;
