@@ -402,7 +402,7 @@ const ControllComp = ({ onValueChange, ...args }: ComponentProps<typeof Select>)
         <span className="text-sm font-bold">비제어형 Select</span>
         <div className="w-3xs mt-2 flex gap-2 items-center">
           <Select {...args} selectRef={ref} options={controlledOptions} />
-          <Button onClick={handleUncontrolledCheck} style={{ fontSize: 12, padding: '4px 8px' }}>
+          <Button onClick={handleUncontrolledCheck} className="text-xs px-2 py-1">
             선택값 확인
           </Button>
         </div>

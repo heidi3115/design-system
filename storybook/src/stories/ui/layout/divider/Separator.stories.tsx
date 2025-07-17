@@ -277,7 +277,7 @@ export const Orientation: Story = {
               ))}
             </div>
           </div>
-          <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '80%', height: '2px' }} />
+          <hr className="mt-4 mb-4 text-juiText-primary w-4/5 h-0.5" />
           <div className={'flex flex-col gap-2 items-center justify-center text-lg'}>
             <span className={'mb-4 text-xl font-bold'}>orientation : horizontal</span>
             <div className={'flex flex-row gap-4'}>

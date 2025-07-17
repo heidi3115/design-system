@@ -204,14 +204,7 @@ export const PlacementOptions: Story = {
     return (
       // CSS Grid를 사용하여 4x3 레이아웃을 만듭니다.
       // 각 드롭다운이 열렸을 때 서로 겹치지 않도록 충분한 간격(gap)을 줍니다.
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '80px 32px', // 세로 간격을 충분히 주어 드롭다운이 겹치지 않게 함
-          placeItems: 'center',
-          padding: '40px 0',
-        }}>
+      <div className="grid grid-cols-3 gap-y-20 gap-x-8 place-items-center py-10">
         {/* sides와 aligns 배열을 순회하며 모든 조합에 대한 DropdownMenu를 렌더링합니다. */}
         {sides.map((side) =>
           aligns.map((align) => (
