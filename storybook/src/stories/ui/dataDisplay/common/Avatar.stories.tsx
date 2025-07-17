@@ -192,7 +192,7 @@ export const Default: Story = {
     },
   },
   render: (args) => (
-    <div className={'flex flex0col gap-6 items-center justify-center'}>
+    <div className={'flex flex-col gap-6 items-center justify-center'}>
       <Avatar {...args} />
       <Avatar {...args} src={'wrongSrcExample'} fallback={''} />
       <Avatar {...args} src={'fallback'} />
