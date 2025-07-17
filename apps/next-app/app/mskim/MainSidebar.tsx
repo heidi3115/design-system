@@ -1,23 +1,23 @@
 'use client';
 
 import {
-  SidebarRoot,
+  SidebarCollasibleGroup,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
+  SidebarGroupAction,
   SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarGroupAction,
-  SidebarHeader,
   SidebarMenuSub,
-  SidebarMenuSubItem,
   SidebarMenuSubButton,
-  SidebarMenuAction,
+  SidebarMenuSubItem,
+  SidebarRoot,
   SidebarSeparator,
-  SidebarCollasibleGroup,
 } from '@common/ui';
 import { HomeIcon, ListIcon, MenuIcon, PlusIcon } from '@common/ui/icons';
 import Image from 'next/image';
@@ -195,7 +195,7 @@ export function MainSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarSeparator />
-        <SidebarCollasibleGroup collasibleTitle="side bar" groupTitle="사이드바">
+        <SidebarCollasibleGroup collapsibleTitle="side bar" groupTitle="사이드바">
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

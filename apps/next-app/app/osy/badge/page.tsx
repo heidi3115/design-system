@@ -65,12 +65,13 @@ export default function BadgePage() {
       target: '_self',
     },
     {
-      label: 'linkGroup',
+      label: 'linkGroup1',
       value: '',
       href: '/osy/button',
+      disabled: true,
     },
     {
-      label: 'linkGroup',
+      label: 'linkGroup2',
       value: '1',
       href: '/osy/badge',
       target: '_blank',
@@ -100,11 +101,25 @@ export default function BadgePage() {
     },
     { label: 'Electronics', value: 'electronics', href: '' },
     { label: 'Clothing', value: 'clothing', href: '/osy/badge', target: '_self' },
-    { label: 'linkGroup', value: '', href: '/osy/button', target: '_blank' },
+    { label: 'linkGroup', value: '', href: '/osy/button', target: '_blank', isPage: true },
     { label: 'Clothing2', value: 'clothing22', href: '/osy/badge', target: '_blank' },
-    { label: 'Electronics2', value: 'electronics22', href: '/osy/tooltip' },
-    { label: 'linkGroup2', value: 'linkGroup22', href: '/osy/badge', target: '_blank', isPage: true },
-    { label: 'Current Category', value: '', href: '/osy/tooltip', isPage: false },
+    {
+      label: 'Electronics2-child',
+      value: 'electronics22',
+      href: '/osy/tooltip',
+      children: [
+        {
+          label: 'ChildLinkGroup',
+          value: 'child-linkGroup',
+          href: '/osy/button',
+          target: '_blank',
+        },
+        { label: 'ChildClothing', value: 'child-clothing', href: '/osy/badge', target: '_self' },
+        { label: 'ChildElectronics', value: 'child-electronics', href: '/osy/badge', target: '_target' },
+      ],
+    },
+    { label: 'linkGroup2', value: 'linkGroup22', href: '/osy/badge', target: '_blank', isPage: true, disabled: true },
+    { label: 'Current Category!!', value: '', href: '/osy/tooltip', isPage: false },
   ]; // length = 9
 
   return (

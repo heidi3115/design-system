@@ -3,9 +3,8 @@
 import type { ComponentProps, ReactNode } from 'react';
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
-import { ChevronRight } from 'lucide-react';
 import { cn } from '@common/ui/lib/utils';
-import { MoreHorizontalFilledIcon } from '@common/ui/icons';
+import { ChevronRightIcon, MoreHorizontalFilledIcon } from '@common/ui/icons';
 
 function BreadcrumbWrapper({ ...props }: ComponentProps<'nav'>) {
   return <nav aria-label="breadcrumb" data-slot="breadcrumb" {...props} />;
@@ -58,7 +57,7 @@ type BreadcrumbSeparatorProps = ComponentProps<'li'> & { icon?: ReactNode };
 function BreadcrumbSeparator({ icon, className, ...props }: BreadcrumbSeparatorProps) {
   return (
     <li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" className={cn(className)} {...props}>
-      {icon ?? <ChevronRight />}
+      {icon ?? <ChevronRightIcon />}
     </li>
   );
 }

@@ -13,11 +13,12 @@ import {
   MoreHorizontalFilledIcon,
   MoreVerticalFilledIcon,
   PlayIcon,
+  StarIcon,
 } from '@common/ui/icons';
 import { cn } from '@common/ui/lib/utils';
 import type { ReactElement } from 'react';
 
-const itemArr2 = [
+const itemArr = [
   {
     value: 'home',
     label: 'Home',
@@ -61,13 +62,80 @@ const itemArr2 = [
     label: 'Social Media',
     href: './',
     target: '_parent',
+    disabled: true,
   },
   {
     value: 'facebook',
     label: 'Facebook',
     href: './',
     isPage: true,
+    icon: <CalendarIcon />,
+    iconPosition: 'left',
+  },
+  {
+    value: 'ads',
+    label: 'Ads',
+    href: './',
+    className: 'text-pink-500',
+    children: [
+      { value: 'child-current-1', label: 'child-current-page-1', href: '', icon: <StarIcon /> },
+      { value: 'child-current-2', label: 'child-current-page-2', href: '', icon: <StarIcon /> },
+      { value: 'child-current-3', label: 'child-current-page-3', href: '', icon: <StarIcon /> },
+      { value: 'child-current-4', label: 'child-current-page-4', href: '', icon: <StarIcon /> },
+    ],
+  },
+  {
+    value: 'current',
+    label: 'Current Page',
+    href: './',
+    icon: <MailIcon />,
+    iconPosition: 'right',
+  },
+];
+
+const itemArrLastIsPage = [
+  {
+    value: 'dashboard-home',
+    label: 'Dashboard Home with Children',
+    href: './',
+    icon: <BookmarkIcon size={'small'} />,
+    iconPosition: 'right',
+    className: 'text-purple-400',
+    children: [
+      { value: 'pj-a', label: 'Project A', href: './a' },
+      { value: 'pj-b', label: 'Project B', href: './b' },
+    ],
+    disabled: false,
+  },
+  { value: 'marketing', label: 'Marketing - font-bold 적용', href: './', className: 'font-bold' },
+  { value: 'projects', label: 'Projects - disabled', href: '/', target: '_blank', disabled: true },
+  {
+    value: '2025-mm',
+    label: '2025-MM',
+    href: './',
+    children: [
+      { value: 'pj-a-2025', label: '2025 Project A', href: '/projects/a' },
+      { value: 'pj-b-2025', label: '2025 Project B', href: '/projects/b' },
+      {
+        value: 'pj-c-2025',
+        label: '2025 Project C',
+        href: '/projects/c',
+      },
+    ],
+  },
+  { value: 'marketing', label: 'Marketing', href: './', className: 'font-bold' },
+  {
+    value: 'social',
+    label: 'Social Media',
+    href: './',
+    target: '_parent',
     disabled: true,
+  },
+  {
+    value: 'facebook',
+    label: 'Facebook',
+    href: './',
+    isPage: true,
     icon: <CalendarIcon />,
     iconPosition: 'left',
   },
@@ -78,11 +146,18 @@ const itemArr2 = [
     className: 'text-pink-500',
   },
   {
-    value: 'current',
-    label: 'Current Page',
+    value: 'last',
+    label: 'Last Page',
     href: './',
     icon: <MailIcon />,
     iconPosition: 'right',
+    children: [
+      { value: 'child-current-1', label: 'child-current-page-1', href: '' },
+      { value: 'child-current-2', label: 'child-current-page-2', href: '' },
+      { value: 'child-current-3', label: 'child-current-page-3', href: '' },
+      { value: 'child-current-4', label: 'child-current-page-4', href: '' },
+    ],
+    isPage: true,
   },
 ];
 
@@ -125,13 +200,14 @@ const meta: Meta<typeof Breadcrumb> = {
   args: {
     variant: 'primary',
     size: 'medium',
-    items: itemArr2,
+    items: itemArr,
     maxItems: DEFAULT_MAX_ITEM_NUM,
     ellipsisPosition: 'center',
     disabled: false,
     enableDropdown: true,
     ellipsisIcon: ellipsisIconMap['horizontal'],
     separatorIcon: separatorIconMap['chevronRight'],
+    className: '',
   },
   argTypes: {
     variant: {
@@ -241,7 +317,7 @@ const meta: Meta<typeof Breadcrumb> = {
         type: { summary: 'DropdownMenu 의 Props 인 className, size, align, alignOffset, side, sideOffset 속성들' },
       },
       description: [
-        'Breadcrumb 아이템에서 Eliipsis(...) 혹은 children이 있는 Link의 경우 활성화 된 DropdownMenu의 속성을 커스텀 할 수 있는 props 입니다.',
+        'Breadcrumb 아이템에서 Ellipsis(...) 혹은 children이 있는 Link의 경우 활성화 된 DropdownMenu의 속성을 커스텀 할 수 있는 props 입니다.',
       ].join('<br/>'),
     },
   },
@@ -456,6 +532,46 @@ export const Icons: Story = {
             ))}
           </div>
         ))}
+      </div>
+    </div>
+  ),
+};
+
+export const ItemOptionsOverview: Story = {
+  args: {
+    items: itemArrLastIsPage,
+    maxItems: 7,
+    dropdownProps: { side: 'top', sideOffset: 10 },
+  },
+  argTypes: {
+    items: { control: false, table: { disable: true } },
+    dropdownProps: { control: false, table: { disable: true } },
+    separatorIcon: { control: false, table: { disable: true } },
+    ellipsisIcon: { control: false, table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Breadcrumb 의 items의 option별 내역을 확인하실 수 있습니다.',
+      },
+    },
+  },
+  render: (args) => (
+    <div className={cn(flexRow, alignCenters, fullSize)}>
+      <div className={cn(flexCol, 'gap-20', fullSize)}>
+        <h4 className={cn(flexCol, 'gap-2', 'text-sm')}>
+          <span>
+            DropdownOptions : <span className={cn(blueTxt)}>{JSON.stringify(args.dropdownProps)}</span>
+          </span>
+          <span className={cn(blueTxt)}>
+            각각의 Item에 className을 다양하게 적용하고 공통적으로 dropdownProps이 적용 되도록 props를 주었습니다.
+          </span>
+        </h4>
+        <Breadcrumb
+          {...args}
+          ellipsisIcon={getIcon(args.ellipsisIcon, 'ellipsisIcon')}
+          separatorIcon={getIcon(args.separatorIcon, 'separatorIcon')}
+        />
       </div>
     </div>
   ),
