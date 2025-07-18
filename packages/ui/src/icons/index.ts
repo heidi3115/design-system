@@ -103,6 +103,8 @@ export { CollapsePanelsIcon } from './Icon/CollapsePanelsIcon';
 export { ExpansionPanelsIcon } from './Icon/ExpansionPanelsIcon';
 export { CollapseContentIcon } from './Icon/CollapseContentIcon';
 export { ExpansionContentIcon } from './Icon/ExpansionContentIcon';
+export { MoreHorizontalFilledIcon } from './Icon/MoreHorizontalFilledIcon';
+export { MoreVerticalFilledIcon } from './Icon/MoreVerticalFilledIcon';
 export { SunIcon } from './Icon/SunIcon';
 export { MoonIcon } from './Icon/MoonIcon';
 export { SunMoonIcon } from './Icon/SunMoonIcon';
