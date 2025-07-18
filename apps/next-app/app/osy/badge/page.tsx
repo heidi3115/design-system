@@ -1,7 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
+import { cn } from '@common/ui/lib/utils';
 import {
+  Badge,
   badgeVariants,
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -11,14 +14,13 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
   BreadcrumbWrapper,
+  CountBadge,
+  GradeBadge,
   ScoringBadge,
+  StateBadge,
+  TextBadge,
 } from '@common/ui';
 import { AlertCircleIcon, AlertTriangleFilledIcon, CalendarIcon, FolderFilledIcon, FolderIcon } from '@common/ui/icons';
-import Link from 'next/link';
-import { Badge, CountBadge, StateBadge } from '@common/ui/components/Badge';
-import GradeBadge from '@common/ui/src/components/Badge/GradeBadge';
-import TextBadge from '@common/ui/src/components/Badge/TextBadge';
-import { cn } from '@common/ui/lib/utils';
 
 const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '80%', height: '2px' }} />;
 
@@ -80,6 +82,7 @@ export default function BadgePage() {
       value: '2',
       label: 'Current Category',
       href: '/osy/tooltip',
+      isPage: true,
     },
   ];
 
@@ -128,8 +131,8 @@ export default function BadgePage() {
         <div className={cn('w-auto mt-100')}>
           <Breadcrumb
             items={noTypeArr}
-            maxItems={6}
-            ellipsisPosition={'start'}
+            maxItems={7}
+            ellipsisPosition={'center'}
             dropdownProps={{ size: 4, side: 'top' }}
           />
           <Breadcrumb items={mixArr} ellipsisPosition={'end'} />
