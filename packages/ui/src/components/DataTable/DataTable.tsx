@@ -62,8 +62,8 @@ export function DataTable<T, V = unknown>({
   }, 500);
 
   return (
-    <div>
-      <Input placeholder="검색" onChange={handleChange} className="max-w-sm" value={globalFilter} />
+    <div className="w-full">
+      <Input placeholder="검색" onChange={handleChange} className="max-w-sm" />
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
