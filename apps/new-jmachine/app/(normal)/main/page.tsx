@@ -48,7 +48,7 @@ export default function MainPage({ searchParams }: { searchParams: Promise<{ per
         <div className="flex gap-4">
           <PeriodToggle />
           <Suspense key={period} fallback={<MainFallback />}>
-            <TopMain data={dailyEventScore} />
+            <TopMain dailyScoreData={dailyEventScore} />
           </Suspense>
         </div>
       </div>
