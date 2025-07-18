@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Breadcrumb, type BreadcrumbProps, breadcrumbVariants } from '@common/ui';
+import { Breadcrumb, type BreadcrumbProps, breadcrumbVariants, Separator } from '@common/ui';
 import {
   ArrowRightIcon,
   BookmarkIcon,
@@ -96,44 +96,52 @@ const itemArr = [
 const itemArrLastIsPage = [
   {
     value: 'dashboard-home',
-    label: 'Dashboard Home with Children',
+    label: 'right icon with Children',
     href: './',
     icon: <BookmarkIcon size={'small'} />,
-    iconPosition: 'right',
-    className: 'text-purple-400',
+    iconPosition: 'left',
+    className: 'text-lime-600',
     children: [
       { value: 'pj-a', label: 'Project A', href: './a' },
       { value: 'pj-b', label: 'Project B', href: './b' },
     ],
     disabled: false,
   },
-  { value: 'marketing', label: 'Marketing - font-bold 적용', href: './', className: 'font-bold' },
-  { value: 'projects', label: 'Projects - disabled', href: '/', target: '_blank', disabled: true },
+  {
+    value: 'marketing1',
+    label: 'font-bold,hover시 juiText-purple 적용',
+    href: './',
+    className: 'font-bold hover:text-juiText-purple',
+  },
+  { value: 'projects', label: 'disabled:true', href: '/', target: '_blank', disabled: true },
   {
     value: '2025-mm',
-    label: '2025-MM',
+    label: 'children이 있고 옵션 클릭 시, target이 각기 다른 경우',
     href: './',
     children: [
-      { value: 'pj-a-2025', label: '2025 Project A', href: '/projects/a' },
-      { value: 'pj-b-2025', label: '2025 Project B', href: '/projects/b' },
+      { value: 'pj-a-2025', label: '_blank', href: './', target: '_blank' },
+      { value: 'pj-b-2025', label: '_self', href: './', target: '_self' },
       {
         value: 'pj-c-2025',
-        label: '2025 Project C',
-        href: '/projects/c',
+        label: '_parent',
+        href: './',
+        target: '_parent',
       },
+      { value: 'pj-d-2025', label: '_top', href: './', target: '_top' },
     ],
   },
-  { value: 'marketing', label: 'Marketing', href: './', className: 'font-bold' },
+  { value: 'marketing2', label: 'target:=_blank 적용', href: './', target: '_blank', className: 'font-bold' },
   {
     value: 'social',
-    label: 'Social Media',
+    label: 'disable 과 isPage가 true',
     href: './',
     target: '_parent',
     disabled: true,
+    isPage: true,
   },
   {
     value: 'facebook',
-    label: 'Facebook',
+    label: 'left icon & isPage:true',
     href: './',
     isPage: true,
     icon: <CalendarIcon />,
@@ -141,21 +149,21 @@ const itemArrLastIsPage = [
   },
   {
     value: 'ads',
-    label: 'Ads',
+    label: 'text-pink-500 적용',
     href: './',
     className: 'text-pink-500',
   },
   {
     value: 'last',
-    label: 'Last Page',
+    label: 'current 로써, isPage:true 추가, children 있음',
     href: './',
     icon: <MailIcon />,
     iconPosition: 'right',
     children: [
-      { value: 'child-current-1', label: 'child-current-page-1', href: '' },
-      { value: 'child-current-2', label: 'child-current-page-2', href: '' },
-      { value: 'child-current-3', label: 'child-current-page-3', href: '' },
-      { value: 'child-current-4', label: 'child-current-page-4', href: '' },
+      { value: 'child-current-1', label: 'child-current-page-1', href: './' },
+      { value: 'child-current-2', label: 'child-current-page-2', href: './' },
+      { value: 'child-current-3', label: 'child-current-page-3', href: './' },
+      { value: 'child-current-4', label: 'child-current-page-4', href: './' },
     ],
     isPage: true,
   },
@@ -255,6 +263,7 @@ const meta: Meta<typeof Breadcrumb> = {
         '화면에 표시할 최대 Breadcrumb 아이템 수를 지정합니다.',
         '아이템 개수가 maxItems를 초과하면, Ellipsis(…)로 중간 경로를 축약하여 표시합니다.',
         '예시: maxItems=3이면 "Home / … / Current" 형태로 표시됩니다.',
+        '만약에 전체 경로를 표기하고 싶다면 maxItems에 null 을 처리하면 가능합니다.',
         '복잡한 경로에서도 UI를 간결하게 유지할 수 있습니다.',
       ].join('<br/>'),
     },
@@ -450,49 +459,6 @@ export const Sizes: Story = {
   ),
 };
 
-export const MaxItemsEllipsisPosition: Story = {
-  args: {
-    maxItems: DEFAULT_MAX_ITEM_NUM + 2,
-  },
-  argTypes: {
-    items: { control: false, table: { disable: true } },
-    dropdownProps: { control: false, table: { disable: true } },
-    ellipsisPosition: { control: false, table: { disable: true } },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Breadcrumb 의 maxItems와 ellipsisPosition 조합에 따른 축약 위치 변화의 예시들을 보여줍니다.',
-      },
-    },
-  },
-  render: (args: BreadcrumbProps) => (
-    <div className={cn(flexCol, alignCenters, 'gap-6', fullSize)}>
-      <div className={cn(flexCol, 'gap-15', fullSize)}>
-        {ellipsisPositionTypeOptions.map((position) => (
-          <div className={cn(flexCol, 'gap-4')} key={position}>
-            <p className={cn(flexRow, 'gap-2')}>
-              <span className={cn(blueTxt, 'text-xs')}>
-                ellipsisPosition : <b className={'text-juiText-primary font-bold'}>{position}</b>
-              </span>
-              <span className={cn('font-bold')}>|</span>
-              <span className={cn(blueTxt, 'text-xs')}>
-                maxItems : <b className={'text-juiText-primary font-bold'}>{args.maxItems}</b>
-              </span>
-            </p>
-            <Breadcrumb
-              {...args}
-              ellipsisPosition={position}
-              ellipsisIcon={getIcon(args.ellipsisIcon, 'ellipsisIcon')}
-              separatorIcon={getIcon(args.separatorIcon, 'separatorIcon')}
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  ),
-};
-
 export const Icons: Story = {
   args: {
     maxItems: 7,
@@ -537,41 +503,87 @@ export const Icons: Story = {
   ),
 };
 
-export const ItemOptionsOverview: Story = {
+export const MaxItemsEllipsisPosition: Story = {
   args: {
-    items: itemArrLastIsPage,
-    maxItems: 7,
-    dropdownProps: { side: 'top', sideOffset: 10 },
+    maxItems: DEFAULT_MAX_ITEM_NUM + 2,
   },
   argTypes: {
     items: { control: false, table: { disable: true } },
     dropdownProps: { control: false, table: { disable: true } },
-    separatorIcon: { control: false, table: { disable: true } },
-    ellipsisIcon: { control: false, table: { disable: true } },
+    ellipsisPosition: { control: false, table: { disable: true } },
   },
   parameters: {
     docs: {
       description: {
-        story: 'Breadcrumb 의 items의 option별 내역을 확인하실 수 있습니다.',
+        story: [
+          'Breadcrumb 의 maxItems와 ellipsisPosition과 관련된 다양한 예시를 확인할 수 있는 스토리입니다.',
+          'Breadcrumb 의 maxItems와 ellipsisPosition 조합에 따른 축약 위치 변화의 예시들을 확인하실 수 있습니다.',
+          '또한, maxItems=null의 예시와 item 별 className의 적용과 dropdownProps의 적용 결과에 대한 예시도 확인하실 수 있습니다.',
+        ].join('<br/>'),
       },
     },
   },
-  render: (args) => (
-    <div className={cn(flexRow, alignCenters, fullSize)}>
-      <div className={cn(flexCol, 'gap-20', fullSize)}>
-        <h4 className={cn(flexCol, 'gap-2', 'text-sm')}>
-          <span>
-            DropdownOptions : <span className={cn(blueTxt)}>{JSON.stringify(args.dropdownProps)}</span>
-          </span>
-          <span className={cn(blueTxt)}>
-            각각의 Item에 className을 다양하게 적용하고 공통적으로 dropdownProps이 적용 되도록 props를 주었습니다.
-          </span>
-        </h4>
-        <Breadcrumb
-          {...args}
-          ellipsisIcon={getIcon(args.ellipsisIcon, 'ellipsisIcon')}
-          separatorIcon={getIcon(args.separatorIcon, 'separatorIcon')}
-        />
+  render: (args: BreadcrumbProps) => (
+    <div className={cn(flexCol, alignCenters, 'gap-10', fullSize)}>
+      <div className={cn(flexCol, 'gap-15', 'w-full h-max')}>
+        {ellipsisPositionTypeOptions.map((position) => (
+          <div className={cn(flexCol, 'gap-4')} key={position}>
+            <p className={cn(flexRow, 'gap-2')}>
+              <span className={cn(blueTxt, 'text-xs')}>
+                ellipsisPosition : <b className={'text-juiText-primary font-bold'}>{position}</b>
+              </span>
+              <span className={cn('font-bold')}>|</span>
+              <span className={cn(blueTxt, 'text-xs')}>
+                maxItems : <b className={'text-juiText-primary font-bold'}>{args.maxItems}</b>
+              </span>
+            </p>
+            <Breadcrumb
+              {...args}
+              ellipsisPosition={position}
+              ellipsisIcon={getIcon(args.ellipsisIcon, 'ellipsisIcon')}
+              separatorIcon={getIcon(args.separatorIcon, 'separatorIcon')}
+            />
+          </div>
+        ))}
+      </div>
+      <Separator />
+      <div className={cn(flexCol, 'gap-15', 'w-full h-max')}>
+        <div className={cn(flexCol, 'gap-4')}>
+          <p className={cn(flexRow)}>
+            <span className={cn(blueTxt)}>maxItems=</span>
+            <strong className={'font-bold'}>null</strong>
+          </p>
+          <Breadcrumb
+            {...args}
+            maxItems={null}
+            ellipsisIcon={getIcon(args.ellipsisIcon, 'ellipsisIcon')}
+            separatorIcon={getIcon(args.separatorIcon, 'separatorIcon')}
+          />
+        </div>
+      </div>
+      <Separator />
+      <div className={cn(flexCol, 'gap-15', 'w-full h-max')}>
+        <div className={cn(flexCol, 'gap-4')}>
+          <p className={cn(flexCol, 'gap-2')}>
+            <span className={cn('font-bold')}>
+              <p>
+                모든 item을 확인할 수 있도록 maxItem=null을 적용하여, 각각의 Item에 적용된 className을 확인하실 수
+                있습니다. 공통적으로 dropdownProps이 적용 되도록 props를 주었습니다.
+              </p>
+            </span>
+            <span>
+              DropdownOptions : <span className={cn(blueTxt)}>{JSON.stringify({ side: 'top', sideOffset: 10 })}</span>
+            </span>
+          </p>
+          <Breadcrumb
+            {...args}
+            items={itemArrLastIsPage}
+            maxItems={null}
+            dropdownProps={{ side: 'top', sideOffset: 10 }}
+            ellipsisIcon={getIcon(args.ellipsisIcon, 'ellipsisIcon')}
+            separatorIcon={getIcon(args.separatorIcon, 'separatorIcon')}
+          />
+        </div>
       </div>
     </div>
   ),

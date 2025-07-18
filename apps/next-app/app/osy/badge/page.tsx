@@ -129,6 +129,14 @@ export default function BadgePage() {
     <section>
       <div className={cn('flex flex-col gap-10')}>
         <div className={cn('w-auto mt-100')}>
+          <p>maxItems = null</p>
+          <Breadcrumb
+            items={noTypeArr}
+            maxItems={null}
+            ellipsisPosition={'center'}
+            dropdownProps={{ size: 4, side: 'top' }}
+          />
+          <p>maxItems = 7</p>
           <Breadcrumb
             items={noTypeArr}
             maxItems={7}

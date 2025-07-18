@@ -41,12 +41,13 @@ export function createCondensedArray<T>({
   ellipsisPosition = 'center',
 }: {
   items: T[];
-  maxItems: number;
+  maxItems?: number | null;
   ellipsisPosition: EllipsisPositionType;
 }): CondensedArrayResult<T> {
   const itemsLength = items?.length;
   if (!items || itemsLength === 0) return { condensedItems: [] };
-  if (itemsLength <= maxItems) return { condensedItems: items };
+  const maxNum = maxItems ? Number(maxItems) : 0;
+  if (maxItems === null || maxNum === 0 || itemsLength <= maxNum) return { condensedItems: items };
 
   // if (maxItems <= 2) {
   //   const first = maxItems === 2 ? items[0] : undefined;
@@ -58,15 +59,15 @@ export function createCondensedArray<T>({
   // }
 
   const positionMap: Record<EllipsisPositionType, [number, number]> = {
-    start: [1, maxItems - 2],
-    center: [Math.ceil((maxItems - 1) / 2), Math.floor((maxItems - 1) / 2)],
-    end: [maxItems - 2, 1],
+    start: [1, maxNum - 2],
+    center: [Math.ceil((maxNum - 1) / 2), Math.floor((maxNum - 1) / 2)],
+    end: [maxNum - 2, 1],
   };
 
   const position = toSafeTypeValue(ellipsisPosition, VALID_ELLIPSIS_POSITIONS)
     ? ellipsisPosition
     : DEFAULT_ELLIPSIS_POSITION;
-  const [head, tail] = maxItems >= 3 ? positionMap[position] : [1, 1];
+  const [head, tail] = maxNum >= 3 ? positionMap[position] : [1, 1];
   const slicedHead = items.slice(0, head ?? 0);
   const slicedTail = items.slice(itemsLength - (tail ?? 0));
   const ellipsisItems = items.slice(head, itemsLength - (tail ?? 0));

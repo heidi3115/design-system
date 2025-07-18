@@ -54,7 +54,7 @@ export type BreadcrumbProps = ComponentProps<'nav'> & {
   items: BreadcrumbItemBaseType[];
   disabled?: boolean;
   enableDropdown?: boolean;
-  maxItems?: number;
+  maxItems?: number | null;
   ellipsisPosition?: EllipsisPositionType;
   ellipsisIcon?: ReactElement;
   separatorIcon?: ReactElement;
@@ -116,9 +116,23 @@ function Breadcrumb({
             isTrigger: enableDropdown && options.length > 0,
           }).trigger();
 
+          const renderIconPosition = (itemBase: BreadcrumbItemBaseType) =>
+            itemBase?.iconPosition === 'right' ? (
+              <>
+                <span>{itemBase?.label}</span>
+                {itemBase?.icon}
+              </>
+            ) : (
+              <>
+                {itemBase?.icon}
+                <span>{itemBase?.label}</span>
+              </>
+            );
+
           return (
             <Fragment key={`${idx}`}>
-              <BreadcrumbItem className={cn(base(), className, disabledClass)}>
+              <BreadcrumbItem
+                className={cn('flex flex-row items-center justify-center', base(), className, disabledClass)}>
                 {item === 'ellipsis' ? (
                   enableDropdown ? (
                     <DropdownMenu
@@ -138,17 +152,7 @@ function Breadcrumb({
                   <BreadcrumbPage
                     aria-current={isLast ? 'page' : undefined}
                     className={cn(base(), listItem(), item?.className, disabledClass)}>
-                    {item?.iconPosition === 'right' ? (
-                      <>
-                        <span>{item?.label}</span>
-                        {item?.icon}
-                      </>
-                    ) : (
-                      <>
-                        {item?.icon}
-                        <span>{item?.label}</span>
-                      </>
-                    )}
+                    {renderIconPosition(item)}
                   </BreadcrumbPage>
                 ) : enableDropdown && options.length > 0 ? (
                   <DropdownMenu
@@ -159,33 +163,13 @@ function Breadcrumb({
                         {...linkProps}
                         className={cn(base(), listItem(), triggerClass, item?.className, disabledClass)}
                         onClick={(e: MouseEvent) => e.stopPropagation()}>
-                        {item?.iconPosition === 'right' ? (
-                          <>
-                            <span>{item?.label}</span>
-                            {item?.icon}
-                          </>
-                        ) : (
-                          <>
-                            {item?.icon}
-                            <span>{item?.label}</span>
-                          </>
-                        )}
+                        {renderIconPosition(item)}
                       </BreadcrumbLink>
                     }
                   />
                 ) : (
                   <BreadcrumbLink {...linkProps} className={cn(base(), listItem(), item?.className, disabledClass)}>
-                    {item?.iconPosition === 'right' ? (
-                      <>
-                        <span>{item?.label}</span>
-                        {item?.icon}
-                      </>
-                    ) : (
-                      <>
-                        {item?.icon}
-                        <span>{item?.label}</span>
-                      </>
-                    )}
+                    {renderIconPosition(item)}
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
