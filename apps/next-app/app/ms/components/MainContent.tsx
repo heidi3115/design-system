@@ -23,7 +23,7 @@ export function MainContent({
     `}
       style={{ height: `calc(100svh - ${headerHeight}px)` }}
       {...props}>
-      <section className="layout-min-width h-full overflow-hidden">
+      <section className="layout-min-width h-full overflow-auto">
         {contentType === 'box' || contentType === 'inBox' ? (
           <div
             className={`bg-juiBackground-paper ${contentType === 'inBox' ? 'p-4 h-full overflow-hidden' : 'min-h-full'}`}>

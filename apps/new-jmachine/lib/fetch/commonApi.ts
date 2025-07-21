@@ -20,6 +20,15 @@ export type ApiResponse<TResult> = {
 /**
  * API 요청 시 추가 옵션
  */
+export type ServerFetchOptions = {
+  /** Next.js fetch cache 제어 옵션 (서버에서만 유효) */
+  cache?: RequestCache;
+
+  /** Next.js의 revalidate 및 tag 기반 캐시 설정 (서버에서만 유효) */
+  next?: NextFetchRequestConfig;
+  signal?: AbortSignal;
+};
+
 export type RequestOptions = {
   /** 요청할 base URL (예: https://api.example.com) */
   baseUrl?: string;
@@ -29,14 +38,7 @@ export type RequestOptions = {
 
   /** 요청에 포함할 추가 헤더들 */
   extraHeaders?: Record<string, string>;
-
-  /** Next.js fetch cache 제어 옵션 (서버에서만 유효) */
-  cache?: RequestCache;
-
-  /** Next.js의 revalidate 및 tag 기반 캐시 설정 (서버에서만 유효) */
-  next?: NextFetchRequestConfig;
-  signal?: AbortSignal;
-};
+} & ServerFetchOptions;
 
 /** 허용되는 HTTP 메서드 */
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
