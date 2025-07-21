@@ -16,7 +16,7 @@ import {
 import { CornerDownLeftIcon, InfoIcon, RotateIcon } from '@common/ui/icons';
 import { useRef } from 'react';
 
-const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '100%', height: '2px' }} />;
+const Line = () => <hr className="mt-4 mb-4 text-juiText-primary w-full h-0.5" />;
 
 export default function CommonOsyPage() {
   const wrapperRef = useRef(null);

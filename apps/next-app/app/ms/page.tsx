@@ -418,7 +418,7 @@ export default function Page() {
               <Skeleton />
               <CardSkeleton />
               <Select
-                isContentfitTriggerWidth
+                isContentFitTriggerWidth
                 options={[
                   { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
                   { label: 'Pacific Standard Time (PST)', value: 'pst1' },
@@ -613,7 +613,7 @@ export default function Page() {
               onValueChange={setSelectValue}
               placeholder="test"
               size="large"
-              isContentfitTriggerWidth
+              isContentFitTriggerWidth
               options={[
                 { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
                 { label: 'Pacific Standard Time (PST)', value: 'pst1' },
@@ -635,7 +635,7 @@ export default function Page() {
               size="small"
               width="fit"
               isSelectIndicator
-              isContentfitTriggerWidth
+              isContentFitTriggerWidth
               options={[
                 { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
                 { label: 'Pacific Standard Time (PST)', value: 'pst' },
@@ -692,7 +692,7 @@ export default function Page() {
 
             <AutoComplete
               isSelectIndicator
-              isContentfitTriggerWidth
+              isContentFitTriggerWidth
               options={[
                 { label: 'Eastern Time (EST)dddddddddddddddddddddd', value: 'est' },
                 { label: 'Pacific Time (aaa)', value: 'pst' },
@@ -707,7 +707,7 @@ export default function Page() {
               // isSelectIndicator
               defaultValue="ttt4"
               size="large"
-              // isContentfitTriggerWidth
+              // isContentFitTriggerWidth
               isLeaveClose
               options={[
                 // { label: 'Eastern Time (EST)dddddddddddddddddddddd', value: 'est' },
@@ -772,7 +772,7 @@ export default function Page() {
             <MultiSelect
               size="large"
               selectRef={selectMultiRef}
-              isContentfitTriggerWidth
+              isContentFitTriggerWidth
               onValueChange={(val) => console.warn(val)}
               options={[
                 { label: 'MMM', value: 'est' },

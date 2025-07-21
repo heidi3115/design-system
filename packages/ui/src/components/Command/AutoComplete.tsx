@@ -53,7 +53,7 @@ export type AutoCompleteProps = Omit<VariantProps<typeof commandSelectVariants>,
   placeholder?: string;
   emptyText?: string;
   isSelectIndicator?: boolean;
-  isContentfitTriggerWidth?: boolean;
+  isContentFitTriggerWidth?: boolean;
   ref?: RefCallback<HTMLElement>;
   error?: boolean;
   helperText?: ReactNode;
@@ -78,7 +78,7 @@ const AutoComplete = ({
   placeholder,
   emptyText = 'No Options',
   isSelectIndicator = false,
-  isContentfitTriggerWidth = false,
+  isContentFitTriggerWidth = false,
   isLeaveClose = false,
   className,
   itemClassName,
@@ -293,7 +293,7 @@ const AutoComplete = ({
         <Popover open={isOpen} align="start" sideOffset={0} trigger={renderInputTrigger()} className={popoverBase()}>
           <CommandList
             style={{
-              ...(isContentfitTriggerWidth ? { width: `${inputWidth}px` } : { minWidth: `${inputWidth}px` }),
+              ...(isContentFitTriggerWidth ? { width: `${inputWidth}px` } : { minWidth: `${inputWidth}px` }),
               ...(isNumberWidth && { minWidth: `${width}px` }),
             }}>
             {inputValue && canFilter && <CommandEmpty>{emptyText}</CommandEmpty>}

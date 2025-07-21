@@ -1,0 +1,167 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="UI/Overview" />
+<style>
+  {`.category-table {
+      border: 2px solid #000;
+    }
+    .category-table thead tr {
+      border-bottom: 2px solid #000;
+    }
+    .category-table thead th {
+      border-left: 2px solid #000;
+    }
+    .category-table thead th:first-child {
+      border-left: 0;
+    }
+    .category-table tbody td {
+      border-left: 2px solid #000;
+    }
+    .category-table tbody tr.divide td {
+      border-top: 2px solid #000;
+    }
+  `}
+</style>
+
+# UI Components Overview
+
+UI 컴포넌트는 기능과 역할에 따라 체계적으로 분류되어 있습니다.<br/>
+이 문서는 각 카테고리의 역할과 기준을 설명하여, 필요한 컴포넌트를 더 쉽고 빠르게 찾을 수 있도록 돕는 가이드입니다.
+<br />
+<br />
+
+---
+<br />
+
+## JUI 설계 원칙
+
+JUI 의 모든 컴포넌트는 다음 세 가지 핵심 원칙에 따라 설계되고 분류됩니다.
+
+<ul>
+  <li><strong>일관성 (Consistency)</strong> : 어떤 제품에서든 일관된 사용자 경험을 제공하기 위해, 컴포넌트의 시각적 스타일과 동작 방식을 통일합니다.</li>
+  <li><strong>재사용성 (Reusability)</strong> : 다양한 상황에서 유연하게 재사용할 수 있도록 범용적인 컴포넌트를 설계하고, 불필요한 중복을 최소화합니다.</li>
+  <li><strong>직관성 (Intuitiveness)</strong> : 컴포넌트의 이름과 구조만으로도 그 기능과 역할을 쉽게 예측할 수 있도록 직관적인 분류 체계를 지향합니다.</li>
+</ul>
+
+<br />
+
+---
+<br />
+## packages/ui의 컴포넌트들 정리 기준
+
+위 설계 원칙에 따라, 컴포넌트는 기능과 역할에 맞춰 대분류와 하위 소분류로 구성됩니다.<br/>
+하단의 역할의 대분류에 대한 설명 및 구조입니다.
+
+### 카테고리 구조
+
+<table className='category-table'>
+  <colgroup>
+    <col style={{ width: '15%' }} />
+    <col style={{ width: '20%' }} />
+    <col style={{ width: '35%' }} />
+    <col style={{ width: '30%' }} />
+  </colgroup>
+  <thead>
+  <tr>
+    <th>Category</th>
+    <th>Sub-category</th>
+    <th>Description</th>
+    <th>Components</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td rowSpan="5"><strong>Form<br />(입력)</strong></td>
+    <td colSpan="3">사용자로부터 데이터를 입력받거나 action을 trigger 하는 컴포넌트 그룹</td>
+  </tr>
+  <tr className="divide">
+    <td><strong>Action<br />(행동)</strong></td>
+    <td>사용자의 직접적인 행동을 유도합니다.</td>
+    <td>Button, Toggle, ToggleGroup</td>
+  </tr>
+  <tr>
+    <td><strong>Helper<br />(보조)</strong></td>
+    <td>입력 컴포넌트의 기능을 보조합니다.</td>
+    <td>Label</td>
+  </tr>
+  <tr>
+    <td><strong>Input<br />(입력 필드)</strong></td>
+    <td>다양한 형태의 값을 입력받습니다.</td>
+    <td>Checkbox, Input, InputOTP(SplitOtpInput), RadioGroup, Switch, Slider, Textarea</td>
+  </tr>
+  <tr>
+    <td><strong>Selection<br />(선택)</strong></td>
+    <td>정해진 목록에서 항목을 선택합니다.</td>
+    <td>Command[Autocomplete, MultiSelect], Select, DropdownMenu</td>
+  </tr>
+  <tr className="divide">
+    <td rowSpan="5"><strong>Layout<br />(레이아웃)</strong></td>
+    <td colSpan="3">UI의 구조를 잡고 컨텐츠를 배치하는 데 사용되는 컴포넌트 그룹</td>
+  </tr>
+  <tr className="divide">
+    <td><strong>Compound<br />(복합)</strong></td>
+    <td>복합적으로 통합하거나 감싸진 레이아웃 부분들을 포함합니다.</td>
+    <td>Sidebar</td>
+  </tr>
+  <tr>
+    <td><strong>Container<br />(컨테이너)</strong></td>
+    <td>컨텐츠를 감싸고 구분하는 영역을 만듭니다.</td>
+    <td>Card, Sheet</td>
+  </tr>
+  <tr>
+    <td><strong>Disclosure<br />(펼침/숨김)</strong></td>
+    <td>컨텐츠를 동적으로 보이거나 숨깁니다.</td>
+    <td>Accordion, Collapsible, Tabs</td>
+  </tr>
+  <tr>
+    <td><strong>Divider<br />(구분선)</strong></td>
+    <td>컨텐츠를 시각적으로 분리합니다.</td>
+    <td>Separator</td>
+  </tr>
+  <tr className="divide">
+    <td rowSpan="4"><strong>Feedback<br />(피드백)</strong></td>
+    <td colSpan="3">사용자에게 특정 상태, 알림, 추가 정보를 제공하는 컴포넌트 그룹</td>
+  </tr>
+  <tr className="divide">
+    <td><strong>Dialog<br />(대화 상자)</strong></td>
+    <td>사용자의 상호작용이 필요한 모달 창입니다.</td>
+    <td>AlertDialog, Dialog</td>
+  </tr>
+  <tr>
+    <td><strong>Overlay<br />(오버레이)</strong></td>
+    <td>다른 컨텐츠 위에 일시적으로 정보를 표시합니다.</td>
+    <td>HoverCard, Popover, Tooltip</td>
+  </tr>
+  <tr>
+    <td><strong>Notification<br />(알림)</strong></td>
+    <td>시스템의 상태나 이벤트 발생을 알립니다.</td>
+    <td>Alert, Toaster</td>
+  </tr>
+  <tr className="divide">
+    <td rowSpan="3"><strong>Data Display<br />(데이터 표시)</strong></td>
+    <td colSpan="3">정보를 시각적으로 표현하는 컴포넌트 그룹입니다.</td>
+  </tr>
+  <tr className="divide">
+    <td><strong>Common<br />(공통)</strong></td>
+    <td>데이터의 내용 및 진행, 상태(loading 등)를 표기합니다.</td>
+    <td>Avatar, Badge, Progress, Skeleton</td>
+  </tr>
+  <tr className="divide">
+    <td><strong>Compound<br />(복합)</strong></td>
+    <td>Data를 다양한 형태의 복합적인 컴포넌트의 조합으로 table을 만듭니다.</td>
+    <td>Table</td>
+  </tr>
+  <tr className="divide">
+    <td><strong>Navigation<br />(탐색)</strong></td>
+    <td colSpan="2" className="no-sub-category">사용자가 앱 내의 다른 섹션이나 페이지로 이동하도록 돕는 컴포넌트 그룹입니다.</td>
+    <td>Breadcrumb, NavigationMenu</td>
+  </tr>
+  </tbody>
+</table>
+
+<br/>
+---
+<br />
+
+각 컴포넌트의 상세한 사용법과 예시는 사이드바의 해당 컴포넌트 페이지에서 확인할 수 있습니다.
+<br />

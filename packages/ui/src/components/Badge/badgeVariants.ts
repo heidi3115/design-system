@@ -31,7 +31,7 @@ const badgeVariants = tv({
       urgency: 'bg-juiStatus-urgency',
     },
     /**
-     * score : variant 가 scoring 일 때. ScoringBadge 에는 score 에 대한 scoreVal이 있고 그에 대한 스타일로서 score 별로 처리하고 있습니다.
+     * score : variant 가 scoring 일 때. ScoringBadge 에는 score 에 대한 scoreVal이 있고 그에 대한 스타일로 score 별로 처리하고 있습니다.
      */
     score: {
       veryLow: 'bg-juiScore-veryLow',

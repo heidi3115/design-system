@@ -15,11 +15,11 @@ import accordionVariants from './accordionVariants';
 
 export type AccordionSingleItemProps = {
   /**
-   * value: 해당 아이템의 고유 식별자 역할을 하는 값으로써, 각 AccordionItem 의 key 값인 셈입니다.
+   * value: 해당 아이템의 고유 식별자 역할을 하는 값으로, 각 AccordionItem 의 key 값인 셈입니다.
    */
   value: string;
   /**
-   * trigger: Accordion 각 아이템의 내용을 보여주게 하는 버튼(트리거) 이자 목차 내용입니다.
+   * trigger: Accordion 각 아이템의 내용을 보여주게 하는 버튼(trigger) 이자 목차 내용입니다.
    */
   trigger: React.ReactNode;
   /**
@@ -31,7 +31,7 @@ export type AccordionSingleItemProps = {
    */
   className?: string;
   /**
-   * disabled: 각 AccordionItem 별, 활성화 여부로써 true 시, 해당 AccordionItem 은 비활성화 됩니다.
+   * disabled: 각 AccordionItem 별, 활성화 여부로 true 시, 해당 AccordionItem 은 비활성화 됩니다.
    * 기본값은 false 로 잡았습니다.
    */
   disabled?: boolean;
@@ -94,7 +94,7 @@ export type AccordionBaseProps = {
    */
   size?: VariantProps<typeof accordionVariants>['size'];
   /**
-   * orientation:  radix-ui 의 Accordion 의 Root의 API 로서, 접근성 용으로써 처리되나, UI 부분 처리를 위해 Accordion 의 방향을 vertical 인 경우 세로형이며, horizontal 인 경우 Item 들이 가로형으로 전환되도록 처리했습니다.
+   * orientation:  radix-ui 의 Accordion 의 Root의 API 로, 접근성 용으로 처리되나, UI 부분 처리를 위해 Accordion 의 방향을 vertical 인 경우 세로형이며, horizontal 인 경우 Item 들이 가로형으로 전환되도록 처리했습니다.
    * 기본값은 vertical 로 잡았습니다.
    */
   orientation?: AccordionRootProps['orientation'];
@@ -109,7 +109,7 @@ export type AccordionBaseProps = {
    */
   isBorder?: boolean;
   /**
-   * disabled: radix-ui 의 Accordion 의 Root의 API 로서 true 로 설정 시, 전체 Accordion 이 비활성화됩니다.
+   * disabled: radix-ui 의 Accordion 의 Root의 API 로 true 로 설정 시, 전체 Accordion 이 비활성화됩니다.
    * 기본값은 false 로 잡았습니다.
    */
   disabled?: boolean;
@@ -133,7 +133,7 @@ export type AccordionBaseProps = {
 export type SingleAccordionProps = {
   /**
    * Accordion의 동작 방식을 결정하는 필수 prop 입니다.
-   * "single": 한 번에 하나의 Item 만 열 수 있습니다. AccordionSingleProps 로써 (defaultValue, value는 string)
+   * "single": 한 번에 하나의 Item 만 열 수 있습니다. AccordionSingleProps 로 (defaultValue, value는 string)
    * defaultValue가 지정되어있지 않으면, Accordion 은 닫힌 상태가 됩니다.
    */
   type: 'single';
@@ -176,7 +176,7 @@ export type SingleAccordionProps = {
 export type MultipleAccordionProps = {
   /**
    * Accordion의 동작 방식을 결정하는 필수 prop 입니다.
-   * "multiple": 여러 개의 Item 을 동시에 열 수 있습니다. AccordionMultipleProps 로써 (defaultValue, value는 string[])
+   * "multiple": 여러 개의 Item 을 동시에 열 수 있습니다. AccordionMultipleProps 로 (defaultValue, value는 string[])
    * defaultValue가 지정되어있지 않으면, Accordion 은 닫힌 상태가 됩니다.
    */
   type: 'multiple';

@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  SidebarCollasibleGroup,
+  SidebarCollapsibleGroup,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
@@ -195,7 +195,7 @@ export function MainSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarSeparator />
-        <SidebarCollasibleGroup collapsibleTitle="side bar" groupTitle="사이드바">
+        <SidebarCollapsibleGroup collapsibleTitle="side bar" groupTitle="사이드바">
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -213,7 +213,7 @@ export function MainSidebar() {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarCollasibleGroup>
+        </SidebarCollapsibleGroup>
         <SidebarSeparator />
         <SidebarGroup>
           <SidebarGroupLabel>React 문서</SidebarGroupLabel>

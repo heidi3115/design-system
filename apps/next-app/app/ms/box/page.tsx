@@ -57,7 +57,7 @@ export default function BoxPages() {
           <Skeleton />
           <Skeleton />
           <Select
-            isContentfitTriggerWidth
+            isContentFitTriggerWidth
             options={[
               { label: 'Eastern Standard Time (EST)ddddddddddddddd', value: 'est1' },
               { label: 'Pacific Standard Time (PST)', value: 'pst1' },
