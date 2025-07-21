@@ -29,7 +29,7 @@ type DataTableProps<T, V> = {
 export function DataTable<T, V = unknown>({
   data,
   columns,
-  manualFiltering = false,
+  manualFiltering = false, // true로 설정 시, 검색어 필터링 권한을 서버측으로 넘기고 해당 컴포넌트에서는 검색 필터링에 관여하지 않음.
   globalFilter: externalGlobalFilter,
   onGlobalFilterChange,
   emptyState,

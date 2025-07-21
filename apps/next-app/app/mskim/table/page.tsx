@@ -17,7 +17,7 @@ export default function Page() {
     {
       scnrNm: '[QA-3560] 테스트 시나리오',
       regUser: 'hycho',
-      regUserNm: '조홍연',
+      regUserNm: '테스트이름',
       regDt: '2025-03-26 15:48:46',
     },
     {
@@ -32,7 +32,7 @@ export default function Page() {
     {
       scnrNm: '[QA-3560] 테스트 시나리오',
       regUser: 'hycho',
-      regUserNm: '조홍연',
+      regUserNm: '테스트이름',
       regDt: '2025-03-26 15:48:46',
     },
     {
@@ -71,13 +71,13 @@ export default function Page() {
 
     const dummyData: Scenario[] = [
       {
-        scnrNm: '[QA-3560] 새로운 제목2',
+        scnrNm: '검색어로 필터링된 서버 데이터 예시',
         regUser: 'hycho',
         regUserNm: '새로운데이터',
         regDt: '2025-03-26 15:48:46',
       },
       {
-        scnrNm: '[1112]새로운 제목2',
+        scnrNm: '검색어로 필터링된 서버 데이터 예시2',
         regUser: 'admin',
         regUserNm: '새로운데이터2',
         regDt: '2024-11-28 10:38:05',
@@ -96,6 +96,7 @@ export default function Page() {
           columns={columns}
           globalFilter={value}
           onGlobalFilterChange={(e) => setValue(e)}
+          manualFiltering
           emptyState={<div>검색 결과 없음</div>}
         />
       </div>
