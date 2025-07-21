@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { DropdownOption } from '@common/ui/components/DropdownMenu/DropdownMenu';
 import {
   Button,
   DropdownMenu,
@@ -8,7 +9,6 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from '@common/ui';
-import type { DropdownOption } from '@common/ui/components/DropdownMenu/DropdownMenu.tsx';
 import { useState } from 'react';
 
 const meta: Meta<typeof DropdownMenu> = {
