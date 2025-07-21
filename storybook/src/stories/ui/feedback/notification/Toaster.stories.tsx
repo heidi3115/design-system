@@ -62,7 +62,7 @@ export const Default: Story = {
       <Button
         onClick={() =>
           toast.success('성공 메시지입니다.', {
-            description: '이것은 설명입니다.',
+            description: '이것은 성공 메시지 설명입니다.',
           })
         }>
         성공 토스트 띄우기
@@ -71,7 +71,7 @@ export const Default: Story = {
       <Button
         onClick={() =>
           toast.error('에러 메시지입니다.', {
-            description: '에러 설명입니다.',
+            description: '이것은 에러 메시지 설명입니다.',
           })
         }>
         에러 토스트 띄우기
@@ -80,7 +80,7 @@ export const Default: Story = {
       <Button
         onClick={() =>
           toast.info('정보 메시지입니다.', {
-            description: '정보 설명입니다.',
+            description: '이것은 정보 메시지 설명입니다.',
           })
         }>
         정보 토스트 띄우기
@@ -89,7 +89,7 @@ export const Default: Story = {
       <Button
         onClick={() =>
           toast.warning('경고 메시지입니다.', {
-            description: '경고 설명입니다.',
+            description: '이것은 경고 메시지 설명입니다.',
           })
         }>
         경고 토스트 띄우기
@@ -112,7 +112,7 @@ export const RichColorDefault: Story = {
       <Button
         onClick={() =>
           toast.success('성공 메시지입니다.', {
-            description: '이것은 설명입니다.',
+            description: '이것은 성공 메시지 설명입니다.',
             richColors: true,
           })
         }>
@@ -121,7 +121,7 @@ export const RichColorDefault: Story = {
       <Button
         onClick={() =>
           toast.error('에러 메시지입니다.', {
-            description: '에러 설명입니다.',
+            description: '이것은 에러 메시지 설명입니다.',
             richColors: true,
           })
         }>
@@ -130,7 +130,7 @@ export const RichColorDefault: Story = {
       <Button
         onClick={() =>
           toast.info('정보 메시지입니다.', {
-            description: '정보 설명입니다.',
+            description: '이것은 정보 메시지 설명입니다.',
             richColors: true,
           })
         }>
@@ -139,7 +139,7 @@ export const RichColorDefault: Story = {
       <Button
         onClick={() =>
           toast.warning('경고 메시지입니다.', {
-            description: '경고 설명입니다.',
+            description: '이것은 경고 메시지 설명입니다.',
             richColors: true,
           })
         }>

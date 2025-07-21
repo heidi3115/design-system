@@ -5,18 +5,18 @@ import { Separator, type SeparatorProps, separatorVariants } from '@common/ui';
 const colorArray = Object.keys(
   separatorVariants.variants.variant,
 ) as (keyof typeof separatorVariants.variants.variant)[];
-
 const sizeArray = Object.keys(separatorVariants.variants.size) as (keyof typeof separatorVariants.variants.size)[];
 
 type SeparatorStorybookType = SeparatorProps;
 
+const DEFAULT_VARIANT_VALUE = 'default';
 const meta: Meta<SeparatorStorybookType> = {
   title: 'UI/Divider/Separator',
   component: Separator,
   args: {
     position: 'static',
     orientation: 'vertical',
-    variant: 'primary',
+    variant: DEFAULT_VARIANT_VALUE,
     size: 'basic',
     decorative: true,
     className: '',
@@ -27,10 +27,12 @@ const meta: Meta<SeparatorStorybookType> = {
       options: colorArray,
       table: {
         type: { summary: typeof colorArray[0] },
-        defaultValue: { summary: 'primary' },
+        defaultValue: { summary: DEFAULT_VARIANT_VALUE },
       },
-      description:
-        'Separator 의 색을 지정할 수 있는 variant 로 primary, secondary, disabled, blue, purple 에서 선택할 수 있습니다. 기본값은 primary 입니다.',
+      description: [
+        `Separator 의 색을 지정할 수 있는 variant 로 ${colorArray.join(', ')} 에서 선택할 수 있습니다.`,
+        `기본값은 ${DEFAULT_VARIANT_VALUE} 입니다.`,
+      ].join('<br/>'),
     },
     size: {
       control: 'select',
@@ -39,8 +41,9 @@ const meta: Meta<SeparatorStorybookType> = {
         type: { summary: typeof sizeArray[1] },
         defaultValue: { summary: 'basic' },
       },
-      description:
-        'Separator 의 굵기를 지정할 수 있습니다. small, basic, medium, large 에서 선택할 수 있습니다. 기본값은 basic 입니다.',
+      description: [
+        `Separator 의 굵기를 지정할 수 있습니다. ${sizeArray.join(', ')} 에서 선택할 수 있습니다. 기본값은 ${sizeArray[1]} 입니다.`,
+      ].join('<br/>'),
     },
     orientation: {
       control: 'radio',

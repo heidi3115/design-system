@@ -76,7 +76,7 @@ export const Size: SkeletonStory = {
   parameters: {
     docs: {
       description: {
-        story: 'Skeleton 컴포넌트의 지정된 size를 확인할 수 있다.',
+        story: 'Card형 Skeleton 컴포넌트의 size 예시들을 확인할 수 있습니다.',
       },
     },
   },
