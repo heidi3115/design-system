@@ -1,6 +1,6 @@
 'use client';
 
-import { type Ref, useImperativeHandle, useState, type ComponentProps, type ReactNode, type RefCallback } from 'react';
+import { type ComponentProps, type ReactNode, type Ref, type RefCallback, useImperativeHandle, useState } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 import {
@@ -9,9 +9,9 @@ import {
   SelectItem,
   SelectLabel,
   SelectRoot,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
-  SelectSeparator,
 } from './SelectParts';
 import { cn } from '../../lib/utils';
 
@@ -61,7 +61,7 @@ type SelectProps = ComponentProps<typeof SelectRoot> &
     size?: 'small' | 'default' | 'large';
     width?: VariantProps<typeof selectVariaints>['width'] | number;
     isSelectIndicator?: boolean;
-    isContentfitTriggerWidth?: boolean;
+    isContentFitTriggerWidth?: boolean;
     selectRef?: Ref<string>;
     error?: boolean;
     helperText?: ReactNode;
@@ -74,7 +74,7 @@ function Select({
   width,
   placeholder,
   isSelectIndicator = false,
-  isContentfitTriggerWidth = false,
+  isContentFitTriggerWidth = false,
   value: controlledValue,
   onValueChange,
   selectRef,
@@ -83,10 +83,10 @@ function Select({
   ...props
 }: SelectProps) {
   const isNumberWidth = typeof width === 'number';
-  const [interanlValue, setInternalValue] = useState(props.defaultValue ?? '');
+  const [internalValue, setInternalValue] = useState(props.defaultValue ?? '');
 
   const isControlled = controlledValue !== undefined;
-  const currentValue = isControlled ? controlledValue : interanlValue;
+  const currentValue = isControlled ? controlledValue : internalValue;
 
   // 비제어 선택값
   useImperativeHandle(selectRef, () => currentValue);
@@ -122,7 +122,7 @@ function Select({
         )}
       </div>
 
-      <SelectContent isContentfitTriggerWidth={isContentfitTriggerWidth}>
+      <SelectContent isContentFitTriggerWidth={isContentFitTriggerWidth}>
         {options.map((opt, idx) => {
           // 그룹일 경우
           if ('type' in opt && opt.type === 'group') {

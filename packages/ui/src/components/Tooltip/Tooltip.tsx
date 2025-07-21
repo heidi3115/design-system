@@ -30,13 +30,13 @@ export type TextAlignType = 'left' | 'center' | 'right';
 type TooltipBaseProps = {
   // Wrapper
   /**
-   * delayDuration: 모든 Tooltip의 기본 지연 시간(ms, 기본 700)으로써, Tooltip이 보여지기 전 대기 시간(밀리초 단위)입니다.
-   * 사용자가 트리거에 마우스를 올렸을 때 Tooltip이 등장하기까지의 지연 시간을 설정할 수 있습니다.
+   * delayDuration: 모든 Tooltip의 기본 지연 시간(ms, 기본 700)으로, Tooltip이 보여지기 전 대기 시간(밀리초 단위)입니다.
+   * 사용자가 trigger 에 마우스를 올렸을 때 Tooltip이 등장하기까지의 지연 시간을 설정할 수 있습니다.
    * 기본값은 0 입니다.
    */
   delayDuration?: number;
   /**
-   * open: Tooltip의 열림 상태를 제어하는 prop 으로써 외부에서 상태를 직접 관리할 때 사용합니다(Controlled).
+   * open: Tooltip의 열림 상태를 제어하는 prop 으로 외부에서 상태를 직접 관리할 때 사용합니다(Controlled).
    */
   open?: boolean;
   /**
@@ -80,7 +80,7 @@ type TooltipBaseProps = {
    */
   side?: TooltipContentProps['side'];
   /**
-   * sideOffset: Tooltip이 트리거로부터 얼마나 떨어져서 표시될지(픽셀 단위) 지정합니다.
+   * sideOffset: Tooltip이 trigger 로부터 얼마나 떨어져서 표시될지(픽셀 단위) 지정합니다.
    * 기본값은 현재 8 입니다.
    */
   sideOffset?: TooltipContentProps['sideOffset'];

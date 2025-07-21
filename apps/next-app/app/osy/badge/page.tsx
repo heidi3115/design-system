@@ -22,7 +22,7 @@ import {
 } from '@common/ui';
 import { AlertCircleIcon, AlertTriangleFilledIcon, CalendarIcon, FolderFilledIcon, FolderIcon } from '@common/ui/icons';
 
-const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '80%', height: '2px' }} />;
+const Line = () => <hr className="mt-4 mb-4 text-juiText-primary w-4/5 h-0.5" />;
 
 export default function BadgePage() {
   const MAX_VAL = 20;

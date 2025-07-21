@@ -58,7 +58,7 @@ export type MultiSelectProps = Omit<VariantProps<typeof commandSelectVariants>, 
   placeholder?: string;
   emptyText?: string;
   isSelectIndicator?: boolean;
-  isContentfitTriggerWidth?: boolean;
+  isContentFitTriggerWidth?: boolean;
   ref?: RefCallback<HTMLElement>;
   error?: boolean;
   helperText?: ReactNode;
@@ -89,7 +89,7 @@ const MultiSelect = ({
   placeholder,
   emptyText = 'No Options',
   isSelectIndicator = false,
-  isContentfitTriggerWidth = false,
+  isContentFitTriggerWidth = false,
   isLeaveClose = true,
   isAddNewItem = false,
   onNewValueAdd,
@@ -449,7 +449,7 @@ const MultiSelect = ({
           className={popoverBase()}>
           <CommandList
             style={{
-              ...(isContentfitTriggerWidth ? { width: `${inputWidth}px` } : { minWidth: `${inputWidth}px` }),
+              ...(isContentFitTriggerWidth ? { width: `${inputWidth}px` } : { minWidth: `${inputWidth}px` }),
               ...(isNumberWidth && { minWidth: `${width}px` }),
             }}>
             <CommandEmpty>{emptyText}</CommandEmpty>

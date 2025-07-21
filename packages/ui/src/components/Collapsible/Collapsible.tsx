@@ -31,7 +31,7 @@ export type CollapsibleProps = {
    */
   defaultOpen?: boolean;
   /**
-   * open: Collapsible 의 열림 상태를 제어하는 prop 으로써 외부에서 상태를 직접 관리할 때 사용합니다(Controlled).
+   * open: Collapsible 의 열림 상태를 제어하는 prop 으로 외부에서 상태를 직접 관리할 때 사용합니다(Controlled).
    */
   open?: boolean;
   /**
@@ -41,7 +41,7 @@ export type CollapsibleProps = {
   disabled?: boolean;
   /**
    * showPreview: preview 영역(요약, 미리보기 등)을 표시할지 여부를 지정합니다.
-   * true로 설정 시: preview prop에 전달된 내용을 트리거 옆에 함께 보여줍니다.
+   * true로 설정 시: preview prop에 전달된 내용을 trigger 옆에 함께 보여줍니다.
    * 기본값은 true 입니다.
    */
   showPreview?: boolean;
@@ -50,17 +50,17 @@ export type CollapsibleProps = {
    */
   size?: VariantProps<typeof collapsibleVariants>['size'];
   /**
-   * preview: Collapsible 가 닫혀 있을 때, 트리거 옆에 표시되는 미리보기(요약) 영역의 콘텐츠입니다.
+   * preview: Collapsible 가 닫혀 있을 때, trigger 옆에 표시되는 미리보기(요약) 영역의 콘텐츠입니다.
    * ReactNode 타입으로, 텍스트, 아이콘, 요약 정보 등 원하는 내용을 자유롭게 넣을 수 있습니다.
    * showPreview가 false면 보여지지 않습니다.
    */
   preview?: React.ReactNode;
   /**
-   * trigger: Collapsible 의 열고/닫을(toggle) 트리거 요소(ReactElement)로서, ReactElement 로 표현 가능한 모든 요소를 넣을 수 있습니다.
+   * trigger: Collapsible 의 열고/닫을(toggle) trigger 요소(ReactElement)로, ReactElement 로 표현 가능한 모든 요소를 넣을 수 있습니다.
    */
   trigger?: React.ReactElement;
   /**
-   * children: 숨겨진 콘텐츠 내용으로서, Collapsible 가 열렸을 때 표시되는 실제 콘텐츠입니다.
+   * children: 숨겨진 콘텐츠 내용으로, Collapsible 가 열렸을 때 표시되는 실제 콘텐츠입니다.
    * Collapsible 가 닫혀 있을 때는 렌더링되지 않거나, 접근성 목적의 aria 속성만 유지됩니다.
    * ReactNode 로 표현 가능한 모든 요소를 넣을 수 있습니다.
    */
