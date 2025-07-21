@@ -16,6 +16,7 @@ import {
 import { TableHeader, Table, TableRow, TableHead, TableCell, TableBody, Input } from '@common/ui';
 import { type ReactNode, useState } from 'react';
 import { useDebounce } from '@common/utils';
+import { SearchIcon } from '@common/ui/icons';
 
 type DataTableProps<T, V> = {
   data: T[];
@@ -63,7 +64,7 @@ export function DataTable<T, V = unknown>({
 
   return (
     <div className="w-full">
-      <Input placeholder="검색" onChange={handleChange} />
+      <Input iconLeft={SearchIcon} placeholder="검색" onChange={handleChange} />
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
