@@ -1,8 +1,6 @@
 import { type IconProps } from '../types';
 import CreateIcon from '../CreateIcon';
 
-// fillRule="evenodd" clipRule="evenodd"
-
 const FolderFilledPath = (
   <>
     <path

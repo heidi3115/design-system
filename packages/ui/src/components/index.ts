@@ -249,3 +249,17 @@ export {
   NavigationMenuIndicator,
   navigationMenuTriggerStyle,
 } from './NavigationMenu';
+
+export {
+  BreadcrumbWrapper,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+  Breadcrumb,
+  type BreadcrumbProps,
+  type BreadcrumbItemBaseType,
+  breadcrumbVariants,
+} from './Breadcrumb';
