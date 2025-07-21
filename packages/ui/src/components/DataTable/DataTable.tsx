@@ -63,7 +63,7 @@ export function DataTable<T, V = unknown>({
 
   return (
     <div className="w-full">
-      <Input placeholder="검색" onChange={handleChange} className="max-w-sm" />
+      <Input placeholder="검색" onChange={handleChange} />
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -71,7 +71,7 @@ export function DataTable<T, V = unknown>({
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                    {flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 );
               })}
@@ -96,10 +96,6 @@ export function DataTable<T, V = unknown>({
           )}
         </TableBody>
       </Table>
-      {/*<Input*/} {/*  placeholder="검색"*/}
-      {/*  value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}*/}
-      {/*  onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}*/}
-      {/*  className="max-w-sm"*/} {/*/>*/}
     </div>
   );
 }
