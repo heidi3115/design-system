@@ -15,7 +15,7 @@ import {
   PlayIcon,
   StarIcon,
 } from '@common/ui/icons';
-import { cn } from '@common/ui/lib/utils';
+import { cn } from '@common/ui/lib/utils.ts';
 import type { ReactElement } from 'react';
 
 const itemArr = [
@@ -203,7 +203,7 @@ const itemExp1 = {
 };
 
 const meta: Meta<typeof Breadcrumb> = {
-  title: 'UI/Breadcrumb',
+  title: 'UI/Navigation/Breadcrumb',
   component: Breadcrumb,
   args: {
     variant: 'primary',

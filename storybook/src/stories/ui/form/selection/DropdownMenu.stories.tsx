@@ -8,11 +8,11 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from '@common/ui';
-import type { DropdownOption } from '@common/ui/components/DropdownMenu/DropdownMenu';
+import type { DropdownOption } from '@common/ui/components/DropdownMenu/DropdownMenu.tsx';
 import { useState } from 'react';
 
 const meta: Meta<typeof DropdownMenu> = {
-  title: 'UI/Navigation/DropdownMenu',
+  title: 'UI/Form/Selection/DropdownMenu',
   component: DropdownMenu,
   parameters: {
     docs: {

@@ -91,7 +91,7 @@ const sideOptions: ComponentProps<typeof HoverCard>['side'][] = ['top', 'left', 
 const alignOptions: ComponentProps<typeof HoverCard>['align'][] = ['start', 'center', 'end'] as const;
 
 const meta: Meta<typeof HoverCard> = {
-  title: 'UI/HoverCard',
+  title: 'UI/Feedback/Overlay/HoverCard',
   component: HoverCard,
   args: {
     size: 'small',
