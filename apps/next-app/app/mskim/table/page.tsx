@@ -47,6 +47,7 @@ export default function Page() {
     {
       accessorKey: 'scnrNm',
       header: 'scnrNm',
+      enableGlobalFilter: false,
     },
     {
       accessorKey: 'regUser',
