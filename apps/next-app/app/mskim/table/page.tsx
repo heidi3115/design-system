@@ -89,7 +89,7 @@ export default function Page() {
 
   return (
     <section className="flex flex-col gap-20 items-center justify-center w-full min-h-svh">
-      <div className="flex flex-col gap-2">
+      <div className="w-200 flex flex-col gap-2">
         <span>서버사이드 필터링</span>
         <DataTable
           data={serverData}
@@ -100,11 +100,11 @@ export default function Page() {
           emptyState={<div>검색 결과 없음</div>}
         />
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="w-200 flex flex-col gap-2">
         <span>클라이언트사이드 필터링</span>
         <DataTable data={clientData} columns={columns} emptyState={<div>검색 결과 없음</div>} />
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="w-200 flex flex-col gap-2">
         <span>결과 없음</span>
         <DataTable data={testData} columns={columns} />
       </div>
