@@ -63,8 +63,8 @@ export function DataTable<T, V = unknown>({
   }, 500);
 
   return (
-    <div className="w-full">
-      <Input iconLeft={SearchIcon} placeholder="검색" onChange={handleChange} />
+    <div className="w-full flex flex-col gap-1">
+      <Input iconLeft={SearchIcon} placeholder="검색" underline="primary" onChange={handleChange} className="w-1/3" />
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

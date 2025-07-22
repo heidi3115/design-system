@@ -26,6 +26,7 @@ function Input({
   iconLeft,
   iconRight,
   disabled,
+  underline,
   value,
   defaultValue,
   step,
@@ -77,8 +78,10 @@ function Input({
               hasIconLeft,
               hasIconRight,
               disabled,
+              underline,
               className,
             }),
+            'w-full',
           )}
           {...props}
         />
