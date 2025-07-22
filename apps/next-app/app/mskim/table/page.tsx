@@ -2,7 +2,7 @@
 
 import { DataTable } from '@common/ui/components/DataTable/DataTable';
 import { ColumnDef } from '@tanstack/react-table';
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@common/ui';
+import { Input, Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@common/ui';
 import { useEffect, useState } from 'react';
 
 export type Scenario = {
@@ -66,6 +66,7 @@ export default function Page() {
 
   const testData: Scenario[] = [];
   const [value, setValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
     if (!value) return;
@@ -104,7 +105,14 @@ export default function Page() {
       </div>
       <div className="w-200 flex flex-col gap-2">
         <span>클라이언트사이드 필터링</span>
-        <DataTable data={clientData} isUseQuickSearch columns={columns} emptyState={<div>검색 결과 없음</div>} />
+        <Input placeholder="검색어를 입력하세요" underline="primary" onChange={(e) => setSearchValue(e.target.value)} />
+        <DataTable
+          data={clientData}
+          searchValue={searchValue}
+          isUseQuickSearch={false}
+          columns={columns}
+          emptyState={<div>검색 결과 없음</div>}
+        />
       </div>
       <div className="w-200 flex flex-col gap-2">
         <span>결과 없음</span>

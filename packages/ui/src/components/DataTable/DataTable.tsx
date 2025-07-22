@@ -14,7 +14,7 @@ import {
 } from '@tanstack/react-table';
 
 import { TableHeader, Table, TableRow, TableHead, TableCell, TableBody, Input } from '@common/ui';
-import { ChangeEvent, type ReactNode, useState } from 'react';
+import { type ChangeEvent, type ReactNode, useEffect, useState } from 'react';
 import { useDebounce } from '@common/utils';
 import { SearchIcon } from '@common/ui/icons';
 
@@ -26,6 +26,7 @@ type DataTableProps<T, V> = {
   onGlobalFilterChange?: (value: string) => void;
   emptyState?: ReactNode;
   isUseQuickSearch?: boolean;
+  searchValue?: string;
 };
 
 export function DataTable<T, V = unknown>({
@@ -36,6 +37,7 @@ export function DataTable<T, V = unknown>({
   onGlobalFilterChange,
   emptyState,
   isUseQuickSearch = false,
+  searchValue,
 }: DataTableProps<T, V>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -66,6 +68,12 @@ export function DataTable<T, V = unknown>({
   }, 500);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => filterTable(event.target.value);
+
+  useEffect(() => {
+    if (isUseQuickSearch) return;
+
+    filterTable(searchValue);
+  }, [filterTable, isUseQuickSearch, searchValue]);
 
   return (
     <div className="w-full flex flex-col gap-1">
