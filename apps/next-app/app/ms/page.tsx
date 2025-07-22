@@ -911,7 +911,12 @@ export default function Page() {
             <Input type="text" placeholder="aaaa" size="large" iconRight={CalendarIcon} />
             <p></p>
             <span>제어</span>
-            <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder="Controlled input" />
+            <Input
+              value={value}
+              underline="primary"
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="Controlled input"
+            />
             <p></p>
             <span>비제어</span>
             <Input

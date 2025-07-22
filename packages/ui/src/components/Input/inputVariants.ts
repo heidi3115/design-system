@@ -30,25 +30,31 @@ const inputVariants = tv({
       true: 'opacity-50 cursor-not-allowed',
     },
     underline: {
-      primary: `outline-none
-              border-none
+      primary: `outline-none 
+              light:border-solid
+              light:border-b-1
+              light:border-b-juiBorder-primary
+              light:focus:border-none
               bg-gradient-to-r from-juiPrimary to-juiPrimary
               bg-[length:0%_1px]
               bg-no-repeat
               bg-bottom
               focus:bg-[length:100%_1px]
               transition-[background-size]
-              duration-700
+              duration-300
               ease-in-out`,
       grey: `outline-none
-              border-none
+              light:border-solid
+              light:border-b-1
+              light:border-b-juiBorder-primary
+              light:focus:border-none
               bg-gradient-to-r from-juiGrey-a400 to-juiGrey-a400
               bg-[length:0%_1px]
               bg-no-repeat
               bg-bottom
               focus:bg-[length:100%_1px]
               transition-[background-size]
-              duration-700
+              duration-300
               ease-in-out`,
       none: 'outline outline-transparent light:outline-juiBorder-primary focus:outline transition-all duration-700 ease-in-out',
     },
