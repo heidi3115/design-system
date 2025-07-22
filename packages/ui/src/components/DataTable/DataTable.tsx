@@ -14,7 +14,7 @@ import {
 } from '@tanstack/react-table';
 
 import { TableHeader, Table, TableRow, TableHead, TableCell, TableBody, Input } from '@common/ui';
-import { type ReactNode, useState } from 'react';
+import { ChangeEvent, type ReactNode, useState } from 'react';
 import { useDebounce } from '@common/utils';
 import { SearchIcon } from '@common/ui/icons';
 
@@ -25,6 +25,7 @@ type DataTableProps<T, V> = {
   globalFilter?: string;
   onGlobalFilterChange?: (value: string) => void;
   emptyState?: ReactNode;
+  isUseQuickSearch?: boolean;
 };
 
 export function DataTable<T, V = unknown>({
@@ -34,6 +35,7 @@ export function DataTable<T, V = unknown>({
   globalFilter: externalGlobalFilter,
   onGlobalFilterChange,
   emptyState,
+  isUseQuickSearch = false,
 }: DataTableProps<T, V>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -58,13 +60,16 @@ export function DataTable<T, V = unknown>({
     state: { sorting, columnFilters, columnVisibility, rowSelection, globalFilter },
     onGlobalFilterChange: setGlobalFilter,
   });
-  const handleChange = useDebounce((event) => {
-    table.setGlobalFilter(event.target.value);
+
+  const filterTable = useDebounce((value) => {
+    table.setGlobalFilter(value);
   }, 500);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => filterTable(event.target.value);
 
   return (
     <div className="w-full">
-      <Input iconLeft={SearchIcon} placeholder="검색" onChange={handleChange} />
+      {isUseQuickSearch && <Input iconLeft={SearchIcon} placeholder="검색어를 입력하세요" onChange={handleChange} />}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

@@ -93,6 +93,7 @@ export default function Page() {
       <div className="w-200 flex flex-col gap-2">
         <span>서버사이드 필터링</span>
         <DataTable
+          isUseQuickSearch
           data={serverData}
           columns={columns}
           globalFilter={value}
@@ -103,11 +104,11 @@ export default function Page() {
       </div>
       <div className="w-200 flex flex-col gap-2">
         <span>클라이언트사이드 필터링</span>
-        <DataTable data={clientData} columns={columns} emptyState={<div>검색 결과 없음</div>} />
+        <DataTable data={clientData} isUseQuickSearch columns={columns} emptyState={<div>검색 결과 없음</div>} />
       </div>
       <div className="w-200 flex flex-col gap-2">
         <span>결과 없음</span>
-        <DataTable data={testData} columns={columns} />
+        <DataTable data={testData} isUseQuickSearch columns={columns} />
       </div>
       <div>
         <span className="mt-10 text-2xl">브로콜리 입고정리표</span>
