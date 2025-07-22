@@ -13,38 +13,72 @@ import {
   VisibilityState,
 } from '@tanstack/react-table';
 
-import { TableHeader, Table, TableRow, TableHead, TableCell, TableBody } from '@common/ui';
-import { type ReactNode, useState } from 'react';
+import { TableHeader, Table, TableRow, TableHead, TableCell, TableBody, Input } from '@common/ui';
+import { type ReactNode, useEffect, useState } from 'react';
+import { SearchIcon } from '@common/ui/icons';
+import { useQuickSearch } from '@common/ui/hooks/useQuickSearch';
 
-type DataTableProps<T, V> = { data: T[]; columns: ColumnDef<T, V>[]; emptyState?: ReactNode };
+type DataTableProps<T, V> = {
+  data: T[];
+  columns: ColumnDef<T, V>[];
+  manualFiltering?: boolean;
+  globalFilter?: string;
+  onGlobalFilterChange?: (value: string) => void;
+  emptyState?: ReactNode;
+  isUseQuickSearch?: boolean;
+  searchValue?: string;
+};
 
-export function DataTable<T, V = unknown>({ data, columns, emptyState }: DataTableProps<T, V>) {
+export function DataTable<T, V = unknown>({
+  data,
+  columns,
+  manualFiltering = false, // true로 설정 시, 검색어 필터링 권한을 서버측으로 넘기고 해당 컴포넌트에서는 검색 필터링에 관여하지 않음.
+  globalFilter: externalGlobalFilter,
+  onGlobalFilterChange,
+  emptyState,
+  isUseQuickSearch = false,
+  searchValue,
+}: DataTableProps<T, V>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
+  const { globalFilter, setGlobalFilter, handleChange } = useQuickSearch(externalGlobalFilter, onGlobalFilterChange);
+
   const table = useReactTable({
     data,
     columns,
+    manualFiltering,
+    getFilteredRowModel: manualFiltering ? undefined : getFilteredRowModel(),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
+    state: { sorting, columnFilters, columnVisibility, rowSelection, globalFilter },
+    onGlobalFilterChange: setGlobalFilter,
   });
 
+  useEffect(() => {
+    if (isUseQuickSearch) return;
+
+    setGlobalFilter(searchValue ?? '');
+  }, [isUseQuickSearch, searchValue, setGlobalFilter]);
+
   return (
-    <div>
+    <div className="w-full flex flex-col gap-1">
+      {isUseQuickSearch && (
+        <Input
+          iconLeft={SearchIcon}
+          placeholder="검색어를 입력하세요"
+          underline="primary"
+          onChange={handleChange}
+          className="w-1/3"
+        />
+      )}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

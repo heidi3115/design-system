@@ -4,9 +4,7 @@ const inputVariants = tv({
   base: [
     'w-full px-4 min-h-7',
     'text-xs shadow-xs border-none bg-juiBackground-input',
-    'placeholder:text-juiText-secondary ',
-    'outline outline-transparent light:outline-juiBorder-primary focus:outline',
-    'transition-all duration-700 ease-in-out',
+    'placeholder:text-juiText-secondary',
     'overflow-auto',
   ],
   variants: {
@@ -14,6 +12,7 @@ const inputVariants = tv({
       true: 'outline-juiError light:outline-juiError', // 에러일 때 빨간색 고정
       false: 'focus:outline-juiText-primary light:focus:outline-juiText-secondary', // 에러 아닐 때만 기본 파란색 포커스
     },
+
     size: {
       default: 'h-8',
       small: 'h-7',
@@ -29,6 +28,29 @@ const inputVariants = tv({
     },
     disabled: {
       true: 'opacity-50 cursor-not-allowed',
+    },
+    underline: {
+      primary: `outline-none
+              border-none
+              bg-gradient-to-r from-juiPrimary to-juiPrimary
+              bg-[length:0%_1px]
+              bg-no-repeat
+              bg-bottom
+              focus:bg-[length:100%_1px]
+              transition-[background-size]
+              duration-700
+              ease-in-out`,
+      grey: `outline-none
+              border-none
+              bg-gradient-to-r from-juiGrey-a400 to-juiGrey-a400
+              bg-[length:0%_1px]
+              bg-no-repeat
+              bg-bottom
+              focus:bg-[length:100%_1px]
+              transition-[background-size]
+              duration-700
+              ease-in-out`,
+      none: 'outline outline-transparent light:outline-juiBorder-primary focus:outline transition-all duration-700 ease-in-out',
     },
   },
   compoundVariants: [
@@ -87,6 +109,22 @@ const inputVariants = tv({
       error: true,
       className: 'pl-10 pr-14',
     },
+
+    {
+      underline: 'grey',
+      error: true,
+      className: 'bg-gradient-to-r from-juiError to-juiError bg-[length:100%_1px]',
+    },
+    {
+      underline: 'primary',
+      error: true,
+      className: 'bg-gradient-to-r from-juiError to-juiError bg-[length:100%_1px]',
+    },
+    {
+      underline: 'none',
+      error: true,
+      className: 'outline outline-juiError light:outline-juiError',
+    },
   ],
   defaultVariants: {
     variant: 'default',
@@ -94,6 +132,7 @@ const inputVariants = tv({
     hasIconLeft: false,
     hasIconRight: false,
     error: false,
+    underline: 'none',
   },
 });
 

@@ -2,73 +2,45 @@
 
 import { DataTable } from '@common/ui/components/DataTable/DataTable';
 import { ColumnDef } from '@tanstack/react-table';
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@common/ui';
+import { Input, Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@common/ui';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useDebounce } from '@common/utils';
 
 export type Scenario = {
-  scnrIdx: string;
-  scnrDttIdx: string;
-  scnrCd: string;
   scnrNm: string;
-  scnrCls: string;
-  dttTrgTyp: string;
-  dngrGrd: string;
-  dttTyp: string;
-  respMode: string;
-  oprStt: string;
-  msrCycl: string;
-  explnUseYn: string;
-  modUser: string;
-  modUserNm: string;
-  modDt: string;
   regUser: string;
   regUserNm: string;
   regDt: string;
-  alrmYn: string;
 };
 
 export default function Page() {
-  const data: Scenario[] = [
+  const [serverData, setServerData] = useState([
     {
-      scnrIdx: 'gLxtmTtq1nzgQXiM8TT5jw==',
-      scnrDttIdx: 'AYb4MDUINNoV4IrJh4UxIg==',
-      scnrCd: '212',
       scnrNm: '[QA-3560] 테스트 시나리오',
-      scnrCls: 'QA',
-      dttTrgTyp: '011001',
-      dngrGrd: '012001',
-      dttTyp: '016001',
-      respMode: '013001',
-      oprStt: '014001',
-      msrCycl: '41 16 * * * ',
-      explnUseYn: 'N',
-      modUser: 'admin',
-      modUserNm: '관리자',
-      modDt: '2025-07-14 16:57:23',
       regUser: 'hycho',
-      regUserNm: '조홍연',
+      regUserNm: '테스트이름',
       regDt: '2025-03-26 15:48:46',
-      alrmYn: 'N',
     },
     {
-      scnrIdx: 'i5DeKy0RP3wcBpK/CPAudg==',
-      scnrDttIdx: 'HGvQI8mqXT36LndysbGm8Q==',
-      scnrCd: '177',
       scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
-      scnrCls: 'QA|E-Mail|Works',
-      dttTrgTyp: '011001',
-      dngrGrd: '012003',
-      dttTyp: '016009',
-      respMode: '013001',
-      oprStt: '014001',
-      msrCycl: '27 12 * * *',
-      explnUseYn: 'N',
-      modUser: 'admin',
-      modUserNm: '관리자',
-      modDt: '2025-07-08 15:41:19',
       regUser: 'admin',
       regUserNm: '관리자',
       regDt: '2024-11-28 10:38:05',
-      alrmYn: 'N',
+    },
+  ]);
+
+  const clientData = [
+    {
+      scnrNm: '[QA-3560] 테스트 시나리오',
+      regUser: 'hycho',
+      regUserNm: '테스트이름',
+      regDt: '2025-03-26 15:48:46',
+    },
+    {
+      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
+      regUser: 'admin',
+      regUserNm: '관리자',
+      regDt: '2024-11-28 10:38:05',
     },
   ];
 
@@ -76,6 +48,7 @@ export default function Page() {
     {
       accessorKey: 'scnrNm',
       header: 'scnrNm',
+      enableGlobalFilter: false,
     },
     {
       accessorKey: 'regUser',
@@ -93,11 +66,69 @@ export default function Page() {
   ];
 
   const testData: Scenario[] = [];
+  const [value, setValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
+
+  const filterTable = useDebounce((val: string) => {
+    setSearchValue(val);
+  }, 500);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => filterTable(event.target.value);
+
+  useEffect(() => {
+    if (!value) return;
+
+    const dummyData: Scenario[] = [
+      {
+        scnrNm: '검색어로 필터링된 서버 데이터 예시',
+        regUser: 'hycho',
+        regUserNm: '새로운데이터',
+        regDt: '2025-03-26 15:48:46',
+      },
+      {
+        scnrNm: '검색어로 필터링된 서버 데이터 예시2',
+        regUser: 'admin',
+        regUserNm: '새로운데이터2',
+        regDt: '2024-11-28 10:38:05',
+      },
+    ];
+
+    setServerData(dummyData);
+  }, [value]);
 
   return (
-    <section className="flex gap-30 items-center justify-center w-full min-h-svh">
-      <DataTable data={data} columns={columns} />
-      <DataTable data={testData} columns={columns} />
+    <section className="flex flex-col gap-20 items-center justify-center w-full min-h-svh">
+      <div className="w-200 flex flex-col gap-2">
+        <span>서버사이드 필터링</span>
+        <DataTable
+          isUseQuickSearch
+          data={serverData}
+          columns={columns}
+          globalFilter={value}
+          onGlobalFilterChange={(e) => setValue(e)}
+          manualFiltering
+          emptyState={<div>검색 결과 없음</div>}
+        />
+      </div>
+      <div className="w-200 flex flex-col gap-2">
+        <span>클라이언트사이드 필터링(외부Input)</span>
+        <Input placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
+        <DataTable
+          data={clientData}
+          searchValue={searchValue}
+          isUseQuickSearch={false}
+          columns={columns}
+          emptyState={<div>검색 결과 없음</div>}
+        />
+      </div>
+      <div className="w-200 flex flex-col gap-2">
+        <span>클라이언트사이드 필터링(내부Input)</span>
+        <DataTable data={clientData} isUseQuickSearch columns={columns} emptyState={<div>검색 결과 없음</div>} />
+      </div>
+      <div className="w-200 flex flex-col gap-2">
+        <span>결과 없음</span>
+        <DataTable data={testData} isUseQuickSearch columns={columns} />
+      </div>
       <div>
         <span className="mt-10 text-2xl">브로콜리 입고정리표</span>
         <Table orientation="horizontal">
