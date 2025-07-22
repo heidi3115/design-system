@@ -112,7 +112,7 @@ const inputVariants = tv({
     {
       underline: ['default', 'primary', 'secondary'],
       error: true,
-      className: 'bg-gradient-to-r from-juiError to-juiError bg-[length:100%_1px]',
+      className: 'light:border-none bg-gradient-to-r from-juiError to-juiError bg-[length:100%_1px]',
     },
     {
       underline: 'none',
