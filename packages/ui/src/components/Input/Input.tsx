@@ -53,7 +53,7 @@ function Input({
 
   return (
     <div>
-      <div className={cn('relative group min-h-7 bg-juiBackground-input', className)}>
+      <div className={cn('relative group min-h-7', underline !== 'none' && 'bg-juiBackground-input', className)}>
         {IconLeft && (
           <span
             className={cn(
