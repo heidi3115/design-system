@@ -110,8 +110,21 @@ const inputVariants = tv({
       className: 'pl-10 pr-14',
     },
 
-    { underline: 'grey', error: true, className: 'bg-gradient-to-r from-juiError to-juiError' },
-    { underline: 'primary', error: true, className: 'bg-gradient-to-r from-juiError to-juiError' },
+    {
+      underline: 'grey',
+      error: true,
+      className: 'bg-gradient-to-r from-juiError to-juiError bg-[length:100%_1px]',
+    },
+    {
+      underline: 'primary',
+      error: true,
+      className: 'bg-gradient-to-r from-juiError to-juiError bg-[length:100%_1px]',
+    },
+    {
+      underline: 'none',
+      error: true,
+      className: 'outline outline-juiError light:outline-juiError',
+    },
   ],
   defaultVariants: {
     variant: 'default',
