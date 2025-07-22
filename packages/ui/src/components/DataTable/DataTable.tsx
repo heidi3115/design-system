@@ -14,9 +14,9 @@ import {
 } from '@tanstack/react-table';
 
 import { TableHeader, Table, TableRow, TableHead, TableCell, TableBody, Input } from '@common/ui';
-import { type ChangeEvent, type ReactNode, useEffect, useState } from 'react';
-import { useDebounce } from '@common/utils';
+import { type ReactNode, useEffect, useState } from 'react';
 import { SearchIcon } from '@common/ui/icons';
+import { useQuickSearch } from '@common/ui/hooks/useQuickSearch';
 
 type DataTableProps<T, V> = {
   data: T[];
@@ -43,9 +43,8 @@ export function DataTable<T, V = unknown>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [internalGlobalFilter, setInternalGlobalFilter] = useState('');
-  const globalFilter = externalGlobalFilter ?? internalGlobalFilter;
-  const setGlobalFilter = onGlobalFilterChange ?? setInternalGlobalFilter;
+
+  const { globalFilter, setGlobalFilter, handleChange } = useQuickSearch(externalGlobalFilter, onGlobalFilterChange);
 
   const table = useReactTable({
     data,
@@ -63,17 +62,11 @@ export function DataTable<T, V = unknown>({
     onGlobalFilterChange: setGlobalFilter,
   });
 
-  const filterTable = useDebounce((value) => {
-    table.setGlobalFilter(value);
-  }, 500);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => filterTable(event.target.value);
-
   useEffect(() => {
     if (isUseQuickSearch) return;
 
-    filterTable(searchValue);
-  }, [filterTable, isUseQuickSearch, searchValue]);
+    setGlobalFilter(searchValue ?? '');
+  }, [isUseQuickSearch, searchValue, setGlobalFilter]);
 
   return (
     <div className="w-full flex flex-col gap-1">

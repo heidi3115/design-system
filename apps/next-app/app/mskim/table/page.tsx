@@ -3,7 +3,8 @@
 import { DataTable } from '@common/ui/components/DataTable/DataTable';
 import { ColumnDef } from '@tanstack/react-table';
 import { Input, Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@common/ui';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useDebounce } from '@common/utils';
 
 export type Scenario = {
   scnrNm: string;
@@ -68,6 +69,12 @@ export default function Page() {
   const [value, setValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
 
+  const filterTable = useDebounce((val: string) => {
+    setSearchValue(val);
+  }, 500);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => filterTable(event.target.value);
+
   useEffect(() => {
     if (!value) return;
 
@@ -104,8 +111,8 @@ export default function Page() {
         />
       </div>
       <div className="w-200 flex flex-col gap-2">
-        <span>클라이언트사이드 필터링</span>
-        <Input placeholder="검색어를 입력하세요" underline="primary" onChange={(e) => setSearchValue(e.target.value)} />
+        <span>클라이언트사이드 필터링(외부Input)</span>
+        <Input placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
         <DataTable
           data={clientData}
           searchValue={searchValue}
@@ -113,6 +120,10 @@ export default function Page() {
           columns={columns}
           emptyState={<div>검색 결과 없음</div>}
         />
+      </div>
+      <div className="w-200 flex flex-col gap-2">
+        <span>클라이언트사이드 필터링(내부Input)</span>
+        <DataTable data={clientData} isUseQuickSearch columns={columns} emptyState={<div>검색 결과 없음</div>} />
       </div>
       <div className="w-200 flex flex-col gap-2">
         <span>결과 없음</span>
