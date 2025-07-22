@@ -68,8 +68,16 @@ export function DataTable<T, V = unknown>({
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => filterTable(event.target.value);
 
   return (
-    <div className="w-full">
-      {isUseQuickSearch && <Input iconLeft={SearchIcon} placeholder="검색어를 입력하세요" onChange={handleChange} />}
+    <div className="w-full flex flex-col gap-1">
+      {isUseQuickSearch && (
+        <Input
+          iconLeft={SearchIcon}
+          placeholder="검색어를 입력하세요"
+          underline="primary"
+          onChange={handleChange}
+          className="w-1/3"
+        />
+      )}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
