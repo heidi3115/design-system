@@ -13,9 +13,21 @@ import {
   VisibilityState,
 } from '@tanstack/react-table';
 
-import { TableHeader, Table, TableRow, TableHead, TableCell, TableBody, Input } from '@common/ui';
+import {
+  TableHeader,
+  Table,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableBody,
+  Input,
+  Popover,
+  Button,
+  Switch,
+  Label,
+} from '@common/ui';
 import { type ReactNode, useEffect, useState } from 'react';
-import { SearchIcon } from '@common/ui/icons';
+import { PlusCircleIcon, SearchIcon } from '@common/ui/icons';
 import { useQuickSearch } from '@common/ui/hooks/useQuickSearch';
 
 type DataTableProps<T, V> = {
@@ -68,17 +80,44 @@ export function DataTable<T, V = unknown>({
     setGlobalFilter(searchValue ?? '');
   }, [isUseQuickSearch, searchValue, setGlobalFilter]);
 
+  const [search, setSearch] = useState('');
+
   return (
     <div className="w-full flex flex-col gap-1">
-      {isUseQuickSearch && (
-        <Input
-          iconLeft={SearchIcon}
-          placeholder="검색어를 입력하세요"
-          underline="primary"
-          onChange={handleChange}
-          className="w-1/3"
-        />
-      )}
+      <div className="w-full flex gap-2">
+        {isUseQuickSearch && (
+          <Input iconLeft={SearchIcon} placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
+        )}
+        <Popover
+          className="rounded-none bg-juiBackground-solidPaper flex flex-col gap-2"
+          trigger={
+            <Button variant="transparent">
+              <PlusCircleIcon /> 필드 목록
+            </Button>
+          }>
+          <Input
+            iconLeft={SearchIcon}
+            placeholder="카테고리 명을 검색하세요"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {table
+            .getAllColumns()
+            .filter((column) => column.getCanHide())
+            .filter((column) => column.id.toLowerCase().includes(search.toLowerCase()))
+            .map((column) => (
+              <div key={column.id} className="capitalize flex items-center gap-2">
+                <Switch
+                  id={column.id}
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                />
+
+                <Label htmlFor={column.id}>{column.id}</Label>
+              </div>
+            ))}
+        </Popover>
+      </div>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
