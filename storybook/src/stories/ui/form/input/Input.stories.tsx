@@ -13,6 +13,7 @@ const ICON_MAP: Record<string, ComponentType<IconProps> | undefined> = {
 
 const sizeOptions = Object.keys(inputVariants.variants.size);
 const typeOptions = ['text', 'number', 'color'];
+const underlineOptions = Object.keys(inputVariants.variants.underline);
 
 const meta: Meta<typeof Input> = {
   title: 'UI/Form/Input/Input',
@@ -38,6 +39,12 @@ const meta: Meta<typeof Input> = {
       options: sizeOptions,
       table: { type: { summary: 'string' }, defaultValue: { summary: 'default' } },
       description: 'Input의 높이를 조절합니다.',
+    },
+    underline: {
+      control: 'select',
+      options: underlineOptions,
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'none' } },
+      description: 'Input의 outline 대신 underline으로 포커스시 강조 됩니다.',
     },
     error: {
       control: 'boolean',
@@ -353,6 +360,46 @@ export const IconControl: StoryObj<InputStoryProps> = {
         placeholder="control에서 아이콘을 선택해 주세요."
         className="w-3xl"
       />
+    );
+  },
+};
+
+export const UnderlineVariants: Story = {
+  argTypes: {
+    underline: { control: false, table: { disable: true } },
+    placeholder: { control: false, table: { disable: true } },
+    size: { control: false, table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`underline` 속성의 값에 따라 Input 하단에 강조선이 어떻게 렌더링되는지 확인할 수 있는 예시입니다. 기본적으로 `outline` 대신 포커스 시 underline이 강조됩니다.',
+      },
+    },
+  },
+  render: (args) => {
+    return (
+      <div className="flex flex-col gap-6">
+        {underlineOptions.map((underlineValue) => (
+          <div key={underlineValue} className="flex flex-col gap-2">
+            <span className="text-sm font-bold">underline: {underlineValue}</span>
+            <div className="w-72">
+              <Input
+                {...args}
+                underline={underlineValue as keyof typeof inputVariants.variants.underline}
+                placeholder={`underline: ${underlineValue}`}
+              />
+            </div>
+          </div>
+        ))}
+        <div key="error" className="flex flex-col gap-2">
+          <span className="text-sm font-bold">underline: With Error</span>
+          <div className="w-72">
+            <Input {...args} underline="primary" error placeholder={`underline: With Error`} />
+          </div>
+        </div>
+      </div>
     );
   },
 };
