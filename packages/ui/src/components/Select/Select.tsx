@@ -1,6 +1,6 @@
 'use client';
 
-import { type ComponentProps, type ReactNode, type Ref, type RefCallback, useImperativeHandle, useState } from 'react';
+import { type Ref, useImperativeHandle, useState, type ComponentProps, type ReactNode, type RefCallback } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 import {
@@ -9,9 +9,9 @@ import {
   SelectItem,
   SelectLabel,
   SelectRoot,
-  SelectSeparator,
   SelectTrigger,
   SelectValue,
+  SelectSeparator,
 } from './SelectParts';
 import { cn } from '../../lib/utils';
 
@@ -65,6 +65,8 @@ type SelectProps = ComponentProps<typeof SelectRoot> &
     selectRef?: Ref<string>;
     error?: boolean;
     helperText?: ReactNode;
+    className?: string;
+    optionsClassName?: string;
   };
 
 function Select({
@@ -77,16 +79,18 @@ function Select({
   isContentFitTriggerWidth = false,
   value: controlledValue,
   onValueChange,
+  className,
+  optionsClassName,
   selectRef,
   error,
   helperText,
   ...props
 }: SelectProps) {
   const isNumberWidth = typeof width === 'number';
-  const [internalValue, setInternalValue] = useState(props.defaultValue ?? '');
+  const [interanlValue, setInternalValue] = useState(props.defaultValue ?? '');
 
   const isControlled = controlledValue !== undefined;
-  const currentValue = isControlled ? controlledValue : internalValue;
+  const currentValue = isControlled ? controlledValue : interanlValue;
 
   // 비제어 선택값
   useImperativeHandle(selectRef, () => currentValue);
@@ -107,7 +111,7 @@ function Select({
           ref={ref}
           size={size}
           style={isNumberWidth ? { width: `100%` } : undefined}
-          className={cn(!isNumberWidth && selectVariaints({ width, error }))}>
+          className={cn(!isNumberWidth && selectVariaints({ width, error }), className)}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         {helperText && (
@@ -122,7 +126,7 @@ function Select({
         )}
       </div>
 
-      <SelectContent isContentFitTriggerWidth={isContentFitTriggerWidth}>
+      <SelectContent isContentFitTriggerWidth={isContentFitTriggerWidth} className={optionsClassName}>
         {options.map((opt, idx) => {
           // 그룹일 경우
           if ('type' in opt && opt.type === 'group') {
