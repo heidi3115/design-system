@@ -2,9 +2,10 @@
 
 import { Button, Calendar, DateRange, Input, Popover, Separator, Skeleton, Tabs, type TabItemType } from '@common/ui';
 import { useState } from 'react';
-import { PlayIcon } from '@common/ui/icons';
+import { PlayIcon, StarIcon } from '@common/ui/icons';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { cn } from '@common/ui/lib/utils';
 
 export default function TabsPage() {
   function ScenarioList(props: { scenarioId: number }) {
@@ -53,11 +54,25 @@ export default function TabsPage() {
             defaultMonth={date}
             numberOfMonths={2}
             className="rounded-lg border shadow-sm"
+            showOutsideDays={false}
             onSelect={handleSelect}
             dialogOpen={confirmationRequest !== null}
             onDialogConfirm={handleConfirm}
             onDialogCancel={handleCancel}
             dialogContent="과거 날짜를 선택하셨습니다."
+            components={{
+              Chevron: ({ className: chevronClassName, orientation, ...restChevron }) => {
+                if (orientation === 'left') {
+                  return <StarIcon className={cn('size-4', chevronClassName)} {...restChevron} />;
+                }
+
+                if (orientation === 'right') {
+                  return <StarIcon className={cn('size-4', chevronClassName)} {...restChevron} />;
+                }
+
+                return <StarIcon className={cn('size-4', chevronClassName)} {...restChevron} />;
+              },
+            }}
           />
           <Calendar
             mode="single"
@@ -65,6 +80,7 @@ export default function TabsPage() {
             defaultMonth={date}
             numberOfMonths={2}
             onSelect={setDate}
+            disabled={[{ before: new Date(2025, 6, 1), after: new Date(2025, 6, 10) }]}
             className="rounded-lg border shadow-sm"
             captionLayout="dropdown-months"
           />

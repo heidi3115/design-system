@@ -111,8 +111,8 @@ function Calendar({
           'data-[selected=true]:bg-juiPrimary/40 light:data-[selected=true]:bg-juiPrimary/60',
           defaultClassNames.today,
         ),
-        outside: cn('text-juiText-secondary aria-selected:text-juiText-secondary', defaultClassNames.outside),
-        disabled: cn('text-juiText-secondary opacity-50', defaultClassNames.disabled),
+        outside: cn('text-juiText-primary/60 aria-selected:text-juiText-primary/60', defaultClassNames.outside),
+        disabled: cn('flex text-juiText-secondary', defaultClassNames.disabled),
         hidden: cn('invisible', defaultClassNames.hidden),
         ...classNames,
       }}
@@ -174,7 +174,7 @@ function Calendar({
               value={String(value)}
               width="fit"
               className="min-w-0"
-              optionsClassName="min-w-0 bg-ju text-center"
+              optionsClassName="min-w-0 text-center"
               isContentFitTriggerWidth
               onValueChange={handleValueChange}
               options={
@@ -219,6 +219,9 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
       data-range-middle={modifiers.range_middle}
       data-today={modifiers.today}
       className={cn(
+        // 버튼 색상 초기화
+        'text-inherit',
+
         // ✅ 선택 상태
         'data-[selected-single=true]:bg-juiPrimary',
         'data-[selected-single=true]:rounded-full',
