@@ -102,3 +102,5 @@ export { CollapsePanelsIcon } from './Icon/CollapsePanelsIcon';
 export { ExpansionPanelsIcon } from './Icon/ExpansionPanelsIcon';
 export { CollapseContentIcon } from './Icon/CollapseContentIcon';
 export { ExpansionContentIcon } from './Icon/ExpansionContentIcon';
+export { ToggleLeftIcon } from './Icon/ToggleLeftIcon';
+export { ToggleRightIcon } from './Icon/ToggleRightIcon';

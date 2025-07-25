@@ -27,7 +27,7 @@ import {
   Label,
 } from '@common/ui';
 import { type ReactNode, useEffect, useState } from 'react';
-import { PlusCircleIcon, SearchIcon } from '@common/ui/icons';
+import { PlusCircleIcon, SearchIcon, ToggleLeftIcon, ToggleRightIcon } from '@common/ui/icons';
 import { useQuickSearch } from '@common/ui/hooks/useQuickSearch';
 
 type DataTableProps<T, V> = {
@@ -88,8 +88,39 @@ export function DataTable<T, V = unknown>({
         {isUseQuickSearch && (
           <Input iconLeft={SearchIcon} placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
         )}
+        {table.getAllColumns().map((column) => (
+          <label key={column.id}>
+            <input
+              checked={column.getIsVisible()}
+              disabled={!column.getCanHide()}
+              onChange={column.getToggleVisibilityHandler()}
+              type="checkbox"
+            />
+            {column.id}
+          </label>
+        ))}
+        {/*<DropdownMenu trigger={<Button>Columns</Button>} size={300}>*/}
+        {/*  {table*/}
+        {/*    .getAllColumns()*/}
+        {/*    .filter((column) => column.getCanHide())*/}
+        {/*    .map((column) => {*/}
+        {/*      return (*/}
+        {/*        <DropdownMenuCheckboxItem*/}
+        {/*          key={column.id}*/}
+        {/*          className="capitalize"*/}
+        {/*          checked={column.getIsVisible()}*/}
+        {/*          onCheckedChange={(value) => column.toggleVisibility(!!value)}>*/}
+        {/*          <Switch*/}
+        {/*            checked={column.getIsVisible()}*/}
+        {/*            onCheckedChange={(value) => column.toggleVisibility(!!value)}*/}
+        {/*          />*/}
+        {/*          {column.id}*/}
+        {/*        </DropdownMenuCheckboxItem>*/}
+        {/*      );*/}
+        {/*    })}*/}
+        {/*</DropdownMenu>*/}
         <Popover
-          className="rounded-none bg-juiBackground-solidPaper flex flex-col gap-2"
+          className="rounded-none bg-juiBackground-solidPaper flex flex-col gap-2 p-0 w-[238px]"
           trigger={
             <Button variant="transparent">
               <PlusCircleIcon /> 필드 목록
@@ -101,21 +132,33 @@ export function DataTable<T, V = unknown>({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          {table
-            .getAllColumns()
-            .filter((column) => column.getCanHide())
-            .filter((column) => column.id.toLowerCase().includes(search.toLowerCase()))
-            .map((column) => (
-              <div key={column.id} className="capitalize flex items-center gap-2">
-                <Switch
-                  id={column.id}
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                />
+          <div className="flex flex-col gap-2 p-2">
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .filter((column) => column.id.toLowerCase().includes(search.toLowerCase()))
+              .map((column) => (
+                <div key={column.id} className="capitalize flex items-center gap-2">
+                  <Switch
+                    id={column.id}
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                  />
 
-                <Label htmlFor={column.id}>{column.id}</Label>
-              </div>
-            ))}
+                  <Label htmlFor={column.id}>{column.id}</Label>
+                </div>
+              ))}
+          </div>
+          <div className="flex">
+            <Button className="w-1/2 h-10">
+              <ToggleLeftIcon />
+              전체 숨기기
+            </Button>
+            <Button className="w-1/2 h-10" variant="primary">
+              <ToggleRightIcon />
+              전체 보기
+            </Button>
+          </div>
         </Popover>
       </div>
       <Table>
