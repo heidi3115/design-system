@@ -357,7 +357,7 @@ export const DefaultMonth: Story = {
   render: () => (
     <div className="flex gap-8">
       <section>
-        <h3 className="mb-3 ml-2 font-semibold text-lg">DefaultMonth Defalt Current Month</h3>
+        <h3 className="mb-3 ml-2 font-semibold text-lg">DefaultMonth Default Current Month</h3>
         <Calendar />
       </section>
 
