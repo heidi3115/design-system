@@ -206,7 +206,7 @@ export const Range: Story = {
 
 export const Multiple: Story = {
   render: MultipleCalendarStory,
-  name: 'Multiple Range',
+  name: 'Multiple',
   parameters: {
     docs: {
       description: {
