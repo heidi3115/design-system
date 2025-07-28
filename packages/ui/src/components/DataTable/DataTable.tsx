@@ -150,11 +150,28 @@ export function DataTable<T, V = unknown>({
               ))}
           </div>
           <div className="flex">
-            <Button className="w-1/2 h-10">
+            <Button
+              onClick={() => {
+                table.getAllColumns().forEach((column) => {
+                  if (column.getCanHide()) {
+                    column.toggleVisibility(false);
+                  }
+                });
+              }}
+              className="w-1/2 h-10">
               <ToggleLeftIcon />
               전체 숨기기
             </Button>
-            <Button className="w-1/2 h-10" variant="primary">
+            <Button
+              onClick={() => {
+                table.getAllColumns().forEach((column) => {
+                  if (column.getCanHide()) {
+                    column.toggleVisibility(true);
+                  }
+                });
+              }}
+              className="w-1/2 h-10"
+              variant="primary">
               <ToggleRightIcon />
               전체 보기
             </Button>
