@@ -39,6 +39,7 @@ type DataTableProps<T, V> = {
   emptyState?: ReactNode;
   isUseQuickSearch?: boolean;
   searchValue?: string;
+  columnFilterTrigger?: ReactNode;
 };
 
 export function DataTable<T, V = unknown>({
@@ -50,6 +51,7 @@ export function DataTable<T, V = unknown>({
   emptyState,
   isUseQuickSearch = false,
   searchValue,
+  columnFilterTrigger,
 }: DataTableProps<T, V>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -81,9 +83,13 @@ export function DataTable<T, V = unknown>({
   }, [isUseQuickSearch, searchValue, setGlobalFilter]);
 
   const [search, setSearch] = useState('');
+  const filteredColumns = table
+    .getAllColumns()
+    .filter((column) => column.getCanHide())
+    .filter((column) => column.id.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className="w-full flex flex-col gap-1">
+    <div className="w-full flex flex-col min-h-50 gap-1">
       <div className="w-full flex gap-2">
         {isUseQuickSearch && (
           <Input iconLeft={SearchIcon} placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
@@ -99,32 +105,14 @@ export function DataTable<T, V = unknown>({
             {column.id}
           </label>
         ))}
-        {/*<DropdownMenu trigger={<Button>Columns</Button>} size={300}>*/}
-        {/*  {table*/}
-        {/*    .getAllColumns()*/}
-        {/*    .filter((column) => column.getCanHide())*/}
-        {/*    .map((column) => {*/}
-        {/*      return (*/}
-        {/*        <DropdownMenuCheckboxItem*/}
-        {/*          key={column.id}*/}
-        {/*          className="capitalize"*/}
-        {/*          checked={column.getIsVisible()}*/}
-        {/*          onCheckedChange={(value) => column.toggleVisibility(!!value)}>*/}
-        {/*          <Switch*/}
-        {/*            checked={column.getIsVisible()}*/}
-        {/*            onCheckedChange={(value) => column.toggleVisibility(!!value)}*/}
-        {/*          />*/}
-        {/*          {column.id}*/}
-        {/*        </DropdownMenuCheckboxItem>*/}
-        {/*      );*/}
-        {/*    })}*/}
-        {/*</DropdownMenu>*/}
         <Popover
           className="rounded-none bg-juiBackground-solidPaper flex flex-col gap-2 p-0 w-[238px]"
           trigger={
-            <Button variant="transparent">
-              <PlusCircleIcon /> 필드 목록
-            </Button>
+            columnFilterTrigger ?? (
+              <Button variant="transparent">
+                <PlusCircleIcon /> 필드 목록
+              </Button>
+            )
           }>
           <Input
             iconLeft={SearchIcon}
@@ -133,21 +121,20 @@ export function DataTable<T, V = unknown>({
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className="flex flex-col gap-2 p-2">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .filter((column) => column.id.toLowerCase().includes(search.toLowerCase()))
-              .map((column) => (
+            {filteredColumns.length > 0 ? (
+              filteredColumns.map((column) => (
                 <div key={column.id} className="capitalize flex items-center gap-2">
                   <Switch
                     id={column.id}
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) => column.toggleVisibility(!!value)}
                   />
-
                   <Label htmlFor={column.id}>{column.id}</Label>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="text-sm text-muted-foreground px-2 py-4 text-center">데이터가 없습니다.</div>
+            )}
           </div>
           <div className="flex">
             <Button

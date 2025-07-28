@@ -2,7 +2,7 @@
 
 import { DataTable } from '@common/ui/components/DataTable/DataTable';
 import { ColumnDef } from '@tanstack/react-table';
-import { Input, Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@common/ui';
+import { Button, Input, Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@common/ui';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDebounce } from '@common/utils';
 
@@ -103,6 +103,7 @@ export default function Page() {
         <DataTable
           isUseQuickSearch
           data={serverData}
+          columnFilterTrigger={<Button variant="transparent">커스텀필터목록</Button>}
           columns={columns}
           globalFilter={value}
           onGlobalFilterChange={(e) => setValue(e)}
