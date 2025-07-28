@@ -87,10 +87,10 @@ function Select({
   ...props
 }: SelectProps) {
   const isNumberWidth = typeof width === 'number';
-  const [interanlValue, setInternalValue] = useState(props.defaultValue ?? '');
+  const [internalValue, setInternalValue] = useState(props.defaultValue ?? '');
 
   const isControlled = controlledValue !== undefined;
-  const currentValue = isControlled ? controlledValue : interanlValue;
+  const currentValue = isControlled ? controlledValue : internalValue;
 
   // 비제어 선택값
   useImperativeHandle(selectRef, () => currentValue);
