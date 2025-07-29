@@ -1,4 +1,4 @@
-import { isValidElement } from 'react';
+import { isValidElement, type ReactNode } from 'react';
 
 import {
   AlertDialogRoot,
@@ -17,7 +17,7 @@ type BaseProps = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   title?: 'warning' | 'success';
-  description?: string;
+  description?: ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
   onConfirm?: () => void;

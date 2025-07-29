@@ -27,6 +27,12 @@ export function useDateInputFormatter({ initDate, setInputValue, setIsError }: U
   const prevValueRef = useRef('');
   const prevDigitsRef = useRef('');
 
+  const isValidFormattedDate = (value: string) => {
+    const parsed = parse(value, 'yyyy-MM-dd', new Date());
+
+    return isValid(parsed);
+  };
+
   useEffect(() => {
     if (initDate) {
       const formatted = format(initDate, 'yyyy-MM-dd');
@@ -35,22 +41,20 @@ export function useDateInputFormatter({ initDate, setInputValue, setIsError }: U
       prevDigitsRef.current = formatted.replace(/[^0-9]/g, '').slice(0, 8);
       setInputValue?.(formatted);
 
-      const parsed = parse(formatted, 'yyyy-MM-dd', new Date());
-
-      setIsError?.(!isValid(parsed));
+      setIsError?.(!isValidFormattedDate(formatted));
     }
   }, [initDate, setInputValue, setIsError]);
 
   const isValidYear = (year: string) => {
-    const parsed = parse(year, 'yyyy', new Date());
+    const n = Number(year);
 
-    return isValid(parsed);
+    return year.length === 4 && n >= 1000 && n <= 9999;
   };
 
   const isValidMonth = (month: string) => {
-    const parsed = parse(month, 'MM', new Date());
+    const n = Number(month);
 
-    return isValid(parsed);
+    return month.length === 2 && n >= 1 && n <= 12;
   };
 
   const formatDateInput = (raw: string, prevRaw: string) => {
@@ -138,15 +142,15 @@ export function useDateInputFormatter({ initDate, setInputValue, setIsError }: U
       newPos += formatted.length - raw.length;
     }
 
-    setTimeout(() => {
-      e.target.setSelectionRange(newPos, newPos);
-    }, 10);
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        e.target.setSelectionRange(newPos, newPos);
+      }, 1);
+    });
 
     setInputValue?.(formatted);
 
-    const parsed = parse(formatted, 'yyyy-MM-dd', new Date());
-
-    setIsError?.(!isValid(parsed));
+    setIsError?.(!isValidFormattedDate(formatted));
   };
 
   return {

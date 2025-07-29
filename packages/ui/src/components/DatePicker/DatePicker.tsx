@@ -1,10 +1,20 @@
 'use client';
 
-import { useState, useEffect, useImperativeHandle, type ComponentProps, type ReactNode, type Ref } from 'react';
+import {
+  useState,
+  useEffect,
+  useImperativeHandle,
+  type ComponentProps,
+  type ReactNode,
+  type Ref,
+  useMemo,
+  useCallback,
+} from 'react';
 import { format, parse } from 'date-fns';
 
 import { Calendar, Input, Popover } from '../../components';
 import { CalendarIcon } from '@common/ui/icons';
+import { useConfirmDialog } from '@common/ui/hooks';
 import { useDateInputFormatter } from './hooks/useDateInputFormatter';
 import { cn } from '@common/ui/lib/utils';
 
@@ -59,16 +69,13 @@ function DatePicker({
   conditionContent = (selectedDate) => `${selectedDate?.toDateString()} 선택하시겠습니까?`,
   inputProps,
 }: DatePickerProps) {
+  const { openDialog } = useConfirmDialog();
+
   // 각 요소들의 className
   const { input: inputClassName, calendar: calendarClassName, popover: popoverClassName } = classNames ?? {};
 
-  // inputProps에 특정 아이콘이 들어오는지 확인
-  const hasCustomIcon = inputProps?.iconRight || inputProps?.iconLeft;
-  const { iconRight = hasCustomIcon ? undefined : CalendarIcon, ...restInputProps } = inputProps ?? {};
-
-  const isControlled = initDate !== undefined;
-
   // 내부 상태 (언컨트롤드 모드용)
+  const isControlled = initDate !== undefined;
   const [internalDate, setInternalDate] = useState<Date | undefined>(defaultDate);
   const date = isControlled ? initDate : internalDate;
 
@@ -96,21 +103,39 @@ function DatePicker({
     }
   }, [date]);
 
+  const dateUpdate = useCallback(
+    (confirmDate: Date) => {
+      setIsError(false);
+
+      if (!isControlled) setInternalDate(confirmDate);
+      onDateChange?.(confirmDate);
+    },
+    [isControlled, onDateChange],
+  );
+
   // input blur 시 유효한 날짜면 onChange 또는 내부 상태 업데이트
   const handleInputBlur = () => {
     const parsed = parse(inputValue, 'yyyy-MM-dd', new Date());
 
     if (isNaN(parsed.getTime())) {
       setIsError(true);
-    } else {
-      setIsError(false);
 
-      if (!isControlled) {
-        setInternalDate(parsed);
+      return;
+    }
+
+    if (onConditionRequestCallback?.(parsed) && confirmationRequest === undefined) {
+      if (date) {
+        openDialog({
+          description: conditionContent?.(parsed),
+          onCancel: () => setInputValue(format(date, 'yyyy-MM-dd')),
+          onConfirm: () => dateUpdate(parsed),
+        });
       }
 
-      onDateChange?.(parsed);
+      return;
     }
+
+    dateUpdate(parsed);
   };
 
   // 캘린더에서 날짜 선택 시 onChange 또는 내부 상태 업데이트
@@ -128,13 +153,17 @@ function DatePicker({
       setInputValue(formatted);
       setOpen(false);
 
-      if (!isControlled) {
-        setInternalDate(selectDate);
-      }
-
-      onDateChange?.(selectDate);
+      dateUpdate(selectDate);
     }
   };
+
+  // inputProps에 특정 아이콘이 들어오는지 확인
+  const { iconRight, iconLeft, ...restInputProps } = inputProps ?? {};
+
+  const hasCustomIcon = iconRight || iconLeft;
+  const defaultIconRight = useMemo(() => {
+    return hasCustomIcon ? undefined : CalendarIcon;
+  }, [hasCustomIcon]);
 
   return (
     <div data-slot="date-picker-warpper" className={cn('w-fit', className)}>
@@ -154,7 +183,8 @@ function DatePicker({
               placeholder="YYYY-MM-DD"
               className={cn('[&::-webkit-calendar-picker-indicator]:hidden', inputClassName)}
               error={isError}
-              iconRight={iconRight}
+              iconRight={defaultIconRight}
+              iconLeft={iconLeft}
               iconProps={{
                 onClick: () => setOpen((prev) => !prev),
                 className: cn('cursor-pointer', open && ' text-juiPrimary'),
