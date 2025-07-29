@@ -26,13 +26,13 @@ import {
   Switch,
   Label,
 } from '@common/ui';
-import { type ReactNode, useEffect, useState } from 'react';
+import { type Dispatch, type ReactNode, type SetStateAction, useEffect, useMemo, useState } from 'react';
 import { PlusCircleIcon, SearchIcon, ToggleLeftIcon, ToggleRightIcon } from '@common/ui/icons';
 import { useQuickSearch } from '@common/ui/hooks/useQuickSearch';
 
 type DataTableProps<T, V> = {
-  data: T[];
-  columns: ColumnDef<T, V>[];
+  rows: T[];
+  columns: ColumnDef<T>[];
   manualFiltering?: boolean;
   globalFilter?: string;
   onGlobalFilterChange?: (value: string) => void;
@@ -40,10 +40,11 @@ type DataTableProps<T, V> = {
   isUseQuickSearch?: boolean;
   searchValue?: string;
   columnFilterTrigger?: ReactNode;
+  setColumnData?: Dispatch<SetStateAction<{ cols: ColumnDef<T, V>[] }>>;
 };
 
 export function DataTable<T, V = unknown>({
-  data,
+  rows,
   columns,
   manualFiltering = false, // true로 설정 시, 검색어 필터링 권한을 서버측으로 넘기고 해당 컴포넌트에서는 검색 필터링에 관여하지 않음.
   globalFilter: externalGlobalFilter,
@@ -52,16 +53,32 @@ export function DataTable<T, V = unknown>({
   isUseQuickSearch = false,
   searchValue,
   columnFilterTrigger,
+  setColumnData,
 }: DataTableProps<T, V>) {
+  const initialColumnVisibility = useMemo(() => {
+    const visibility: Record<string, boolean> = {};
+
+    columns.forEach((col) => {
+      if ('accessorKey' in col && typeof col.accessorKey === 'string') {
+        // const id = col.accessorKey;
+        // const isHide = col.meta?.hide ?? false;
+        //
+        // visibility[id] = !isHide;
+      }
+    });
+
+    return visibility;
+  }, [columns]);
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(initialColumnVisibility);
   const [rowSelection, setRowSelection] = useState({});
 
   const { globalFilter, setGlobalFilter, handleChange } = useQuickSearch(externalGlobalFilter, onGlobalFilterChange);
 
   const table = useReactTable({
-    data,
+    data: rows,
     columns,
     manualFiltering,
     getFilteredRowModel: manualFiltering ? undefined : getFilteredRowModel(),
@@ -94,17 +111,6 @@ export function DataTable<T, V = unknown>({
         {isUseQuickSearch && (
           <Input iconLeft={SearchIcon} placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
         )}
-        {table.getAllColumns().map((column) => (
-          <label key={column.id}>
-            <input
-              checked={column.getIsVisible()}
-              disabled={!column.getCanHide()}
-              onChange={column.getToggleVisibilityHandler()}
-              type="checkbox"
-            />
-            {column.id}
-          </label>
-        ))}
         <Popover
           className="rounded-none bg-juiBackground-solidPaper flex flex-col gap-2 p-0 w-[238px]"
           trigger={
@@ -120,7 +126,7 @@ export function DataTable<T, V = unknown>({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <div className="flex flex-col gap-2 p-2">
+          <div className="flex flex-col gap-2 p-2 h-[248px] overflow-auto">
             {filteredColumns.length > 0 ? (
               filteredColumns.map((column) => (
                 <div key={column.id} className="capitalize flex items-center gap-2">
@@ -130,6 +136,7 @@ export function DataTable<T, V = unknown>({
                     onCheckedChange={(value) => column.toggleVisibility(!!value)}
                   />
                   <Label htmlFor={column.id}>{column.id}</Label>
+                  {/*<Label htmlFor={column.id}>{column.columnDef.header}</Label>*/}
                 </div>
               ))
             ) : (
@@ -164,7 +171,24 @@ export function DataTable<T, V = unknown>({
             </Button>
           </div>
         </Popover>
+        {manualFiltering && (
+          <Button
+            onClick={() => {
+              const visibilityMap = new Map(table.getAllColumns().map((col) => [col.id, col.getIsVisible()]));
+
+              setColumnData?.((prev) => ({
+                ...prev,
+                cols: prev.cols.map((col) => ({
+                  ...col,
+                  hide: !visibilityMap.get(col.id as string),
+                })),
+              }));
+            }}>
+            필드 저장
+          </Button>
+        )}
       </div>
+
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

@@ -1,16 +1,38 @@
 'use client';
 
 import { DataTable } from '@common/ui/components/DataTable/DataTable';
-import { ColumnDef } from '@tanstack/react-table';
-import { Button, Input, Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@common/ui';
+import { CellContext, ColumnDef } from '@tanstack/react-table';
+import { Button, Input } from '@common/ui';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDebounce } from '@common/utils';
 
-export type Scenario = {
+type Scenario = {
   scnrNm: string;
   regUser: string;
   regUserNm: string;
   regDt: string;
+};
+
+type ColumnType = {
+  width: number;
+  minWidth: number;
+  maxWidth: number;
+  hide: boolean;
+  hideable: boolean;
+  sortable: boolean;
+  resizable: boolean;
+  filterable: boolean;
+  groupable: boolean;
+  pinnable: boolean;
+  aggregable: boolean;
+  editable: boolean;
+  type: string;
+  align: string;
+  headerAlign: string;
+  field: string;
+  headerName: string;
+  hasBeenResized: boolean;
+  computedWidth: number;
 };
 
 export default function Page() {
@@ -44,26 +66,44 @@ export default function Page() {
     },
   ];
 
-  const columns: ColumnDef<Scenario, string>[] = [
-    {
-      accessorKey: 'scnrNm',
-      header: 'scnrNm',
-      enableGlobalFilter: false,
-    },
-    {
-      accessorKey: 'regUser',
-      header: 'regUser',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('regUser')}</div>,
-    },
-    {
-      accessorKey: 'regUserNm',
-      header: 'regUserNm',
-    },
-    {
-      accessorKey: 'regDt',
-      header: 'regDt',
-    },
-  ];
+  // const [columnData, setColumnData] = useState({
+  //   gridCd: '20000',
+  //   cols: JSON.parse(
+  //     '[{"width":50,"minWidth":50,"maxWidth":null,"hide":false,"hideable":false,"sortable":false,"resizable":true,"filterable":false,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"number","align":"right","headerAlign":"right","field":"id","hasBeenResized":true,"headerName":"No","computedWidth":50},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"string","align":"left","field":"scnrNm","hasBeenResized":true,"headerName":"시나리오명","cellClassName":"t200007","flex":1,"computedWidth":435},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"center","field":"dngrGrd","hasBeenResized":true,"headerName":"시나리오 등급","headerAlign":"center","cellClassName":"t200379","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"string","align":"left","field":"scnrCls","hasBeenResized":true,"headerName":"분류","cellClassName":"t000006","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"left","field":"dttTyp","hasBeenResized":true,"headerName":"탐지 형태","cellClassName":"t200032","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"left","field":"alrmYn","hasBeenResized":true,"headerName":"알림 사용","cellClassName":"t200011","headerAlign":"center","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"left","field":"explnUseYn","hasBeenResized":true,"headerName":"소명 요청","cellClassName":"t200313","headerAlign":"center","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"left","field":"oprStt","hasBeenResized":true,"headerName":"운영 상태","cellClassName":"t200012","headerAlign":"center","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"string","align":"left","field":"regUserNm","hasBeenResized":true,"headerName":"등록자","cellClassName":"t000018","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"date","align":"left","field":"regDt","hasBeenResized":true,"headerName":"등록일","cellClassName":"t000019","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"string","align":"left","field":"modUserNm","hasBeenResized":true,"headerName":"최종 수정자","cellClassName":"t200319","computedWidth":100},{"width":150,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"dateTime","align":"left","field":"modDt","hasBeenResized":true,"headerName":"최종 수정일","cellClassName":"t200320","computedWidth":150}]',
+  //   ),
+  //   pinCols: '{}',
+  //   gridSize: '15',
+  // });
+  const [columnData] = useState({
+    gridCd: '20000',
+    cols: JSON.parse(
+      '[{"width":50,"minWidth":50,"maxWidth":null,"hide":false,"hideable":false,"sortable":false,"resizable":true,"filterable":false,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"number","align":"right","headerAlign":"right","field":"id","hasBeenResized":true,"headerName":"No","computedWidth":50},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"string","align":"left","field":"scnrNm","hasBeenResized":true,"headerName":"시나리오명","cellClassName":"t200007","flex":1,"computedWidth":435},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"center","field":"dngrGrd","hasBeenResized":true,"headerName":"시나리오 등급","headerAlign":"center","cellClassName":"t200379","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"string","align":"left","field":"scnrCls","hasBeenResized":true,"headerName":"분류","cellClassName":"t000006","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"left","field":"dttTyp","hasBeenResized":true,"headerName":"탐지 형태","cellClassName":"t200032","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"left","field":"alrmYn","hasBeenResized":true,"headerName":"알림 사용","cellClassName":"t200011","headerAlign":"center","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"left","field":"explnUseYn","hasBeenResized":true,"headerName":"소명 요청","cellClassName":"t200313","headerAlign":"center","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"left","field":"oprStt","hasBeenResized":true,"headerName":"운영 상태","cellClassName":"t200012","headerAlign":"center","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"string","align":"left","field":"regUserNm","hasBeenResized":true,"headerName":"등록자","cellClassName":"t000018","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"date","align":"left","field":"regDt","hasBeenResized":true,"headerName":"등록일","cellClassName":"t000019","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"string","align":"left","field":"modUserNm","hasBeenResized":true,"headerName":"최종 수정자","cellClassName":"t200319","computedWidth":100},{"width":150,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"dateTime","align":"left","field":"modDt","hasBeenResized":true,"headerName":"최종 수정일","cellClassName":"t200320","computedWidth":150}]',
+    ),
+    pinCols: '{}',
+    gridSize: '15',
+  });
+
+  // console.log(columnData,'컬럼데이터')
+
+  // utils로 빼기
+  function createColumnsFromRaw<T>(cols: ColumnType[]): ColumnDef<T, unknown>[] {
+    return cols.map((col) => ({
+      accessorKey: col.field,
+      header: col.headerName || col.field,
+      meta: { ...col, filterable: col.field !== 'No' },
+      cell: (ctx: CellContext<T, unknown>) => {
+        const { row } = ctx;
+
+        if (col.field === 'id') {
+          return <div>{row.index + 1}</div>;
+        }
+
+        return <div>{row.getValue(col.field)}</div>;
+      },
+    }));
+  }
+
+  const columns = createColumnsFromRaw(columnData.cols);
 
   const testData: Scenario[] = [];
   const [value, setValue] = useState('');
@@ -102,9 +142,10 @@ export default function Page() {
         <span>서버사이드 필터링</span>
         <DataTable
           isUseQuickSearch
-          data={serverData}
+          rows={serverData}
           columnFilterTrigger={<Button variant="transparent">커스텀필터목록</Button>}
           columns={columns}
+          // setColumnData={setColumnData}
           globalFilter={value}
           onGlobalFilterChange={(e) => setValue(e)}
           manualFiltering
@@ -115,7 +156,7 @@ export default function Page() {
         <span>클라이언트사이드 필터링(외부Input)</span>
         <Input placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
         <DataTable
-          data={clientData}
+          rows={clientData}
           searchValue={searchValue}
           isUseQuickSearch={false}
           columns={columns}
@@ -124,47 +165,11 @@ export default function Page() {
       </div>
       <div className="w-200 flex flex-col gap-2">
         <span>클라이언트사이드 필터링(내부Input)</span>
-        <DataTable data={clientData} isUseQuickSearch columns={columns} emptyState={<div>검색 결과 없음</div>} />
+        <DataTable rows={clientData} isUseQuickSearch columns={columns} emptyState={<div>검색 결과 없음</div>} />
       </div>
       <div className="w-200 flex flex-col gap-2">
         <span>결과 없음</span>
-        <DataTable data={testData} isUseQuickSearch columns={columns} />
-      </div>
-      <div>
-        <span className="mt-10 text-2xl">브로콜리 입고정리표</span>
-        <Table orientation="horizontal">
-          <TableHeader>
-            <TableRow>
-              <TableHead>입고일</TableHead>
-              <TableHead>생산지</TableHead>
-              <TableHead>브로콜리 가격</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell>2025.07.11</TableCell>
-              <TableCell>제주 서귀포시</TableCell>
-              <TableCell>30,000</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>2025.07.11</TableCell>
-              <TableCell>전남 여수</TableCell>
-              <TableCell>27,000</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>2025.07.10</TableCell>
-              <TableCell>제주 서귀포시</TableCell>
-              <TableCell>29,000</TableCell>
-            </TableRow>
-          </TableBody>
-          <TableFooter className="m-auto">
-            <tr>
-              <th scope="row">합계</th>
-              <td></td>
-              <td className="p-4">86,000</td>
-            </tr>
-          </TableFooter>
-        </Table>
+        <DataTable rows={testData} isUseQuickSearch columns={columns} />
       </div>
     </section>
   );
