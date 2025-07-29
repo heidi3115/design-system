@@ -368,3 +368,32 @@ export const DefaultMonth: Story = {
     </div>
   ),
 };
+
+export const WithModifiersAndClassNames: Story = {
+  name: 'With Modifiers and ModifiersClassNames',
+  parameters: {
+    docs: {
+      controls: { disable: true },
+      description: {
+        story: '`modifiers`와 `modifiersClassNames`를 사용하여 특정 날짜에 커스텀 클래스를 적용하는 예시입니다.',
+      },
+    },
+  },
+  render: () => {
+    const modifiers = {
+      highlight: [new Date(2024, 6, 3), new Date(2024, 6, 4)],
+    };
+    const modifiersClassNames = {
+      highlight: 'font-bold text-juiError text-lg',
+    };
+
+    return (
+      <Calendar
+        mode="single"
+        modifiers={modifiers}
+        modifiersClassNames={modifiersClassNames}
+        defaultMonth={new Date(2024, 6, 1)}
+      />
+    );
+  },
+};

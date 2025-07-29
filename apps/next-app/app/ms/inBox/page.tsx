@@ -61,6 +61,12 @@ export default function BoxPages() {
           numberOfMonths={2}
           calendarProps={{
             captionLayout: 'dropdown-months',
+            modifiers: {
+              highlight: [new Date(2024, 6, 3), new Date(2024, 6, 4)],
+            },
+            modifiersClassNames: {
+              highlight: 'font-bold',
+            },
           }}
           inputProps={{
             underline: 'none',

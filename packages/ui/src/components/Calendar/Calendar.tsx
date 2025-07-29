@@ -1,7 +1,14 @@
 'use client';
 
 import * as React from 'react';
-import { DayButton, DayPicker, getDefaultClassNames, type DateRange } from 'react-day-picker';
+import {
+  DayButton,
+  DayPicker,
+  getDefaultClassNames,
+  type Modifiers,
+  type ModifiersClassNames,
+  type DateRange,
+} from 'react-day-picker';
 import { ko } from 'date-fns/locale';
 
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, XIcon } from '@common/ui/icons';
@@ -33,6 +40,8 @@ function Calendar({
   dialogContent?: React.ReactNode;
 }) {
   const defaultClassNames = getDefaultClassNames();
+
+  const dayButtonClassNames = props.modifiersClassNames;
 
   return (
     <DayPicker
@@ -152,7 +161,7 @@ function Calendar({
 
           return <ChevronDownIcon className={cn('size-4', chevronClassName)} {...restChevron} />;
         },
-        DayButton: CalendarDayButton,
+        DayButton: (buttonProps) => CalendarDayButton({ ...buttonProps, customClassNames: dayButtonClassNames }),
         WeekNumber: ({ children, ...restWeekNumber }) => {
           return (
             <td {...restWeekNumber}>
@@ -196,7 +205,15 @@ function Calendar({
   );
 }
 
-function CalendarDayButton({ className, day, modifiers, ...props }: React.ComponentProps<typeof DayButton>) {
+function CalendarDayButton({
+  className,
+  day,
+  modifiers,
+  customClassNames,
+  ...props
+}: React.ComponentProps<typeof DayButton> & {
+  customClassNames?: ModifiersClassNames;
+}) {
   const defaultClassNames = getDefaultClassNames();
 
   const ref = React.useRef<HTMLButtonElement>(null);
@@ -204,6 +221,13 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
   React.useEffect(() => {
     if (modifiers.focused) ref.current?.focus();
   }, [modifiers.focused]);
+
+  const getModifiersClassName = (modifierObj: Modifiers, modifiersClassNames?: ModifiersClassNames) => {
+    return Object.entries(modifierObj)
+      .filter(([key, isActive]) => isActive && modifiersClassNames?.[key])
+      .map(([key]) => modifiersClassNames![key])
+      .join(' ');
+  };
 
   return (
     <Button
@@ -220,7 +244,7 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
       data-today={modifiers.today}
       className={cn(
         // 버튼 색상 초기화
-        'text-inherit',
+        'text-inherit font-normal',
 
         // ✅ 선택 상태
         'data-[selected-single=true]:bg-juiPrimary',
@@ -268,7 +292,6 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
         'm-auto',
         'gap-1',
         'leading-none',
-        'font-normal',
         'hover:font-bold',
         'hover:bg-current/20',
         'hover:rounded-full',
@@ -279,9 +302,9 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
         '[&>span]:opacity-70',
 
         // ✅ 외부 전달 props
-        defaultClassNames.day,
         'rounded-full',
-
+        defaultClassNames.day,
+        customClassNames && getModifiersClassName(modifiers, customClassNames),
         className,
       )}
       {...props}
