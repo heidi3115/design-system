@@ -55,6 +55,18 @@ export function useCheckDateRangeValidity({ maxRange, minRange }: UseCheckDateRa
       };
     }
 
+    const invalid = type === 'start' ? target >= compare : target < compare;
+
+    if (invalid) {
+      const message =
+        type === 'start' ? '시작 날짜가 종료 날짜보다 늦거나 같습니다.' : '종료 날짜가 시작 날짜보다 빠릅니다.';
+
+      return {
+        isError: true,
+        errorMessage: message,
+      };
+    }
+
     const diff = differenceInCalendarDays(target, compare);
 
     if (typeof maxRange === 'number' && Math.abs(diff) > maxRange) {
@@ -68,18 +80,6 @@ export function useCheckDateRangeValidity({ maxRange, minRange }: UseCheckDateRa
 
     if (typeof minRange === 'number' && Math.abs(diff) < minRange) {
       const message = `최소 범위 (${minRange}일)보다 작습니다.`;
-
-      return {
-        isError: true,
-        errorMessage: message,
-      };
-    }
-
-    const invalid = type === 'start' ? target >= compare : target < compare;
-
-    if (invalid) {
-      const message =
-        type === 'start' ? '시작 날짜가 종료 날짜보다 늦거나 같습니다.' : '종료 날짜가 시작 날짜보다 빠릅니다.';
 
       return {
         isError: true,
