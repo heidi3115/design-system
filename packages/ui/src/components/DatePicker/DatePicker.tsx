@@ -2,7 +2,6 @@
 
 import {
   useState,
-  useEffect,
   useImperativeHandle,
   type ComponentProps,
   type ReactNode,
@@ -16,10 +15,11 @@ import { Calendar, Input, Popover } from '../../components';
 import { CalendarIcon } from '@common/ui/icons';
 import { useConfirmDialog } from '@common/ui/hooks';
 import { useDateInputFormatter } from './hooks/useDateInputFormatter';
+import { useUpdateEffect } from '@common/utils';
 import { cn } from '@common/ui/lib/utils';
 
 type DatePickerBaseProps = {
-  date?: Date;
+  date?: Date | 'init';
   defaultDate?: Date;
   onDateChange?: (date: Date | undefined) => void;
   dateRef?: Ref<Date | undefined>;
@@ -37,7 +37,8 @@ type DatePickerBaseProps = {
     'mode' | 'dialogOpen' | 'onDialogConfirm' | 'onDialogCancel' | 'dialogContent' | 'disabled'
   >;
   disabled?: ComponentProps<typeof Calendar>['disabled'];
-  inputProps?: Omit<ComponentProps<typeof Input>, 'iconProp'>;
+  inputProps?: Omit<ComponentProps<typeof Input>, 'iconProp' | 'placeholder'>;
+  placeholder?: ComponentProps<typeof Input>['placeholder'];
 };
 
 type WithCondition = {
@@ -68,6 +69,7 @@ function DatePicker({
   onConditionRequestCallback,
   conditionContent = (selectedDate) => `${selectedDate?.toDateString()} 선택하시겠습니까?`,
   inputProps,
+  placeholder = 'YYYY-MM-DD',
 }: DatePickerProps) {
   const { openDialog } = useConfirmDialog();
 
@@ -75,11 +77,13 @@ function DatePicker({
   const { input: inputClassName, calendar: calendarClassName, popover: popoverClassName } = classNames ?? {};
 
   // 내부 상태 (언컨트롤드 모드용)
-  const isControlled = initDate !== undefined;
   const [internalDate, setInternalDate] = useState<Date | undefined>(defaultDate);
-  const date = isControlled ? initDate : internalDate;
+  const isControlled = initDate !== undefined;
 
-  useImperativeHandle(dateRef, () => date);
+  const date = isControlled ? initDate : internalDate;
+  const isInitDate = date === 'init';
+
+  useImperativeHandle(dateRef, () => (isInitDate ? undefined : date));
 
   const [inputValue, setInputValue] = useState(() => (date ? format(date, 'yyyy-MM-dd') : ''));
   const [isError, setIsError] = useState(false);
@@ -88,13 +92,19 @@ function DatePicker({
   const [confirmationRequest, setConfirmationRequest] = useState<Date | undefined>(undefined);
 
   const { handleInputChange } = useDateInputFormatter({
-    initDate: date,
+    initDate: isInitDate ? undefined : date,
     setInputValue,
     setIsError,
   });
 
   // value (또는 internalDate) 변경 시 inputValue 동기화
-  useEffect(() => {
+  useUpdateEffect(() => {
+    if (isInitDate) {
+      setInputValue('');
+
+      return;
+    }
+
     if (date) {
       setInputValue(format(date, 'yyyy-MM-dd'));
       setIsError(false);
@@ -180,16 +190,17 @@ function DatePicker({
               onBlur={handleInputBlur}
               onClick={(e) => e.preventDefault()}
               onFocus={() => setOpen(false)}
-              placeholder="YYYY-MM-DD"
               className={cn('[&::-webkit-calendar-picker-indicator]:hidden', inputClassName)}
-              error={isError}
               iconRight={defaultIconRight}
               iconLeft={iconLeft}
               iconProps={{
                 onClick: () => setOpen((prev) => !prev),
                 className: cn('cursor-pointer', open && ' text-juiPrimary'),
               }}
+              placeholder={placeholder}
               {...restInputProps}
+              error={isError || restInputProps.error}
+              helperText={restInputProps.helperText || (isError && '올바른 날짜를 입력해 주세요')}
             />
           </div>
         }
@@ -198,9 +209,9 @@ function DatePicker({
         {...popoverProps}>
         <Calendar
           mode="single"
-          selected={date}
+          selected={isInitDate ? undefined : date}
           onSelect={handleSelectDate}
-          defaultMonth={date}
+          defaultMonth={isInitDate ? undefined : date}
           className={cn(calendarClassName)}
           captionLayout="dropdown"
           numberOfMonths={numberOfMonths}
