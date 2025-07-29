@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { type RefObject, useCallback, useRef, useState } from 'react';
 import { format, isValid } from 'date-fns';
 
 import {
@@ -105,6 +105,28 @@ export default function BoxPages() {
     [startDate],
   );
 
+  const getDateValidation = ({
+    target,
+    compare,
+    type,
+    setErrorMessageRef,
+  }: {
+    target: Date;
+    compare: Date | undefined | 'init';
+    type: 'start' | 'end';
+    setErrorMessageRef: RefObject<string>;
+  }): boolean => {
+    const { isError, errorMessage } = checkDateRangeValidity({
+      target,
+      compare,
+      type,
+    });
+
+    setErrorMessageRef.current = errorMessage ?? '';
+
+    return isError;
+  };
+
   return (
     <div className="flex flex-col gap-4 p-4">
       <div className="h-9">
@@ -116,17 +138,14 @@ export default function BoxPages() {
           <DatePicker
             date={startDate}
             onDateChange={handleStartDateChange}
-            onConditionRequestCallback={(condDate) => {
-              const { isError, errorMessage } = checkDateRangeValidity({
+            onConditionRequestCallback={(condDate) =>
+              getDateValidation({
                 target: condDate,
                 compare: endDate,
                 type: 'start',
-              });
-
-              startErrorMessageRef.current = errorMessage ?? '';
-
-              return isError;
-            }}
+                setErrorMessageRef: startErrorMessageRef,
+              })
+            }
             conditionContent={(condDate) => (
               <span>
                 {startErrorMessageRef.current}
@@ -148,17 +167,13 @@ export default function BoxPages() {
             }}
             calendarProps={{
               modifiers: {
-                against: (date: Date) => {
-                  const { isError, errorMessage } = checkDateRangeValidity({
+                against: (date: Date) =>
+                  getDateValidation({
                     target: date,
                     compare: endDate,
                     type: 'start',
-                  });
-
-                  startErrorMessageRef.current = errorMessage ?? '';
-
-                  return isError;
-                },
+                    setErrorMessageRef: startErrorMessageRef,
+                  }),
               },
               modifiersClassNames: {
                 against: 'text-juiText-secondary',
@@ -172,17 +187,14 @@ export default function BoxPages() {
           <DatePicker
             date={endDate}
             onDateChange={handleEndDateChange}
-            onConditionRequestCallback={(condDate) => {
-              const { isError, errorMessage } = checkDateRangeValidity({
+            onConditionRequestCallback={(condDate) =>
+              getDateValidation({
                 target: condDate,
                 compare: startDate,
                 type: 'end',
-              });
-
-              endErrorMessageRef.current = errorMessage ?? '';
-
-              return isError;
-            }}
+                setErrorMessageRef: endErrorMessageRef,
+              })
+            }
             conditionContent={(condDate) => (
               <span>
                 {endErrorMessageRef.current}
@@ -204,17 +216,13 @@ export default function BoxPages() {
             }}
             calendarProps={{
               modifiers: {
-                against: (date: Date) => {
-                  const { isError, errorMessage } = checkDateRangeValidity({
+                against: (date: Date) =>
+                  getDateValidation({
                     target: date,
                     compare: startDate,
                     type: 'end',
-                  });
-
-                  endErrorMessageRef.current = errorMessage ?? '';
-
-                  return isError;
-                },
+                    setErrorMessageRef: endErrorMessageRef,
+                  }),
               },
               modifiersClassNames: {
                 against: 'text-juiText-secondary',

@@ -70,7 +70,7 @@ export function useCheckDateRangeValidity({ maxRange, minRange }: UseCheckDateRa
     const diff = differenceInCalendarDays(target, compare);
 
     if (typeof maxRange === 'number' && Math.abs(diff) > maxRange) {
-      const message = `최대 범위 (${maxRange}일)를 초과했습니다.`;
+      const message = `Max 범위 (${maxRange}일)를 초과했습니다.`;
 
       return {
         isError: true,
@@ -79,7 +79,7 @@ export function useCheckDateRangeValidity({ maxRange, minRange }: UseCheckDateRa
     }
 
     if (typeof minRange === 'number' && Math.abs(diff) < minRange) {
-      const message = `최소 범위 (${minRange}일)보다 작습니다.`;
+      const message = `Min 범위 (${minRange}일)보다 작습니다.`;
 
       return {
         isError: true,
