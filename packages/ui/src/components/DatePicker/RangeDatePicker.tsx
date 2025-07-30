@@ -12,17 +12,22 @@ type RangeDateType = {
 };
 
 type RangeDatePickerProps = {
+  defaultRange?: RangeDateType;
   range?: RangeDateType;
   onRangeChange?: (rnage: RangeDateType) => void;
   minRangeDays?: number;
   maxRangeDays?: number;
 };
 
-function RangeDatePicker({ range, onRangeChange, minRangeDays, maxRangeDays }: RangeDatePickerProps) {
+function RangeDatePicker({ defaultRange, range, onRangeChange, minRangeDays, maxRangeDays }: RangeDatePickerProps) {
   const isControlled = range !== undefined && onRangeChange !== undefined;
 
-  const [uncontrolledStartDate, setUncontrolledStartDate] = useState<Date | undefined | 'init'>(range?.start);
-  const [uncontrolledEndDate, setUncontrolledEndDate] = useState<Date | undefined | 'init'>(range?.end);
+  const [uncontrolledStartDate, setUncontrolledStartDate] = useState<Date | undefined | 'init'>(
+    defaultRange?.start ?? undefined,
+  );
+  const [uncontrolledEndDate, setUncontrolledEndDate] = useState<Date | undefined | 'init'>(
+    defaultRange?.end ?? undefined,
+  );
 
   const startDate = isControlled ? range?.start : uncontrolledStartDate;
   const endDate = isControlled ? range?.end : uncontrolledEndDate;
@@ -104,7 +109,7 @@ function RangeDatePicker({ range, onRangeChange, minRangeDays, maxRangeDays }: R
     setErrorMessageRef,
   }: {
     target: Date;
-    compare: Date | undefined | 'init';
+    compare?: Date | 'init';
     type: 'start' | 'end';
     setErrorMessageRef: RefObject<string>;
   }): boolean => {
