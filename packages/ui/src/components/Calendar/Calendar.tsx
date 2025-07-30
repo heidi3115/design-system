@@ -12,12 +12,13 @@ import {
 import { ko } from 'date-fns/locale';
 
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, XIcon } from '@common/ui/icons';
+import { setLocalISODate } from '@common/utils';
 import { Button, buttonVariants } from '../Button';
 import { Select } from '../Select';
 import { DialogDescription, DialogOverlay, DialogRoot, DialogTitle, DialogFooter } from '@common/ui/components/Dialog';
 import { DialogPortal, DialogContent, DialogClose } from '@radix-ui/react-dialog';
-import { cn } from '../../lib/utils';
 import { dialogVariants } from '../Dialog/dialogVariants';
+import { cn } from '../../lib/utils';
 
 function Calendar({
   className,
@@ -58,7 +59,7 @@ function Calendar({
       )}
       captionLayout={captionLayout}
       formatters={{
-        formatMonthDropdown: (date) => date.toLocaleString('default', { month: 'short' }),
+        formatMonthDropdown: (date) => date.toLocaleString('ko', { month: 'short' }),
         ...formatters,
       }}
       classNames={{
@@ -234,7 +235,7 @@ function CalendarDayButton({
       ref={ref}
       variant="transparent"
       size="small"
-      data-day={day.date.toLocaleDateString()}
+      data-day={setLocalISODate(day.date)}
       data-selected-single={
         modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle
       }
