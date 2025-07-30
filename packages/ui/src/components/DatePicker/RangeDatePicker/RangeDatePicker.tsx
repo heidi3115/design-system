@@ -4,7 +4,6 @@ import {
   useRef,
   useState,
   useCallback,
-  useMemo,
   type ComponentProps,
   type RefObject,
   type ReactNode,
@@ -16,6 +15,9 @@ import { useCheckDateRangeValidity } from '../hooks/useCheckDateRangeValidity';
 import { DefaultConfirmAlert } from './DefaultConfirmAlert';
 import DatePicker from '../DatePicker';
 import { cn } from '@common/ui/lib/utils';
+
+const OPPOSITE_SIGN_DEFAULT_CLASSNAME =
+  'relative [&[data-slot=button]::after]:absolute [&[data-slot=button]::after]:top-full [&[data-slot=button]::after]:left-1/2 [&[data-slot=button]::after]:-translate-x-1/2 [&[data-slot=button]::after]:-translate-y-full [&[data-slot=button]::after]:text-[8px] [&[data-slot=button]::after]:text-juiText-blue [&[data-slot=button]::after]:pb-0.5 [&[data-slot=button]]:rounded-md' as const;
 
 type RangeDateType = {
   start?: Date;
@@ -169,27 +171,11 @@ function RangeDatePicker({
     return isError;
   };
 
-  const oppositeSignDefaultClassName = useMemo(
-    () =>
-      [
-        'relative',
-        '[&[data-slot=button]::after]:absolute',
-        '[&[data-slot=button]::after]:top-full',
-        '[&[data-slot=button]::after]:left-1/2',
-        '[&[data-slot=button]::after]:-translate-x-1/2',
-        '[&[data-slot=button]::after]:-translate-y-full',
-        '[&[data-slot=button]::after]:text-[8px]',
-        '[&[data-slot=button]::after]:text-juiText-blue',
-        '[&[data-slot=button]::after]:pb-0.5',
-        '[&[data-slot=button]]:rounded-md',
-      ].join(' '),
-    [],
-  );
-
   return (
     <div
       data-slot="range-picker-wrapper"
       className={cn('flex gap-2 items-center', direction === 'vertical' && 'flex-col items-start', className)}>
+      {/* Start */}
       <div className={cn('relative flex gap-0.5 flex-col', label.labelDirection === 'side' && 'flex-row')}>
         {label.start &&
           (typeof label.start === 'function' ? label.start : <Label className="text-[10px] px-1">{label.start}</Label>)}
@@ -235,7 +221,7 @@ function RangeDatePicker({
             },
             modifiersClassNames: {
               endDay: cn(
-                oppositeSign.end.className ?? oppositeSignDefaultClassName,
+                oppositeSign.end.className ?? OPPOSITE_SIGN_DEFAULT_CLASSNAME,
                 `[&[data-slot=button]::after]:content-[var(--opposite-name)]`,
               ),
               against: 'text-juiText-secondary',
@@ -245,12 +231,14 @@ function RangeDatePicker({
         />
       </div>
 
+      {/* Delimiter */}
       {delimiter && (
         <span className={cn(direction === 'horizontal' && label.labelDirection !== 'side' && 'mt-auto mx-0 mb-2')}>
           {delimiter}
         </span>
       )}
 
+      {/* End */}
       <div className={cn('relative flex gap-0.5 flex-col', label.labelDirection === 'side' && 'flex-row')}>
         {label.end &&
           (typeof label.end === 'function' ? label.end : <Label className="text-[10px] px-1">{label.end}</Label>)}
@@ -296,7 +284,7 @@ function RangeDatePicker({
             },
             modifiersClassNames: {
               startDay: cn(
-                oppositeSign.start.className ?? oppositeSignDefaultClassName,
+                oppositeSign.start.className ?? OPPOSITE_SIGN_DEFAULT_CLASSNAME,
                 `[&[data-slot=button]::after]:content-[var(--opposite-name)]`,
               ),
               against: 'text-juiText-secondary',
