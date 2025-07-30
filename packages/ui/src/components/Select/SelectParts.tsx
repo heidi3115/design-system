@@ -117,7 +117,7 @@ function SelectContent({
           'relative z-50',
 
           // 크기 관련(외부에서 wrapper 만들면 검토)
-          'max-h-96 min-w-32',
+          'max-h-96 min-w-24',
 
           // 트랜스폼 원점
           'origin-top-left',

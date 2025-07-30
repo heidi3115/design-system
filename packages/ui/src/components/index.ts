@@ -263,3 +263,5 @@ export {
   type BreadcrumbItemBaseType,
   breadcrumbVariants,
 } from './Breadcrumb';
+
+export { Calendar, CalendarDayButton, type DateRange } from './Calendar';
