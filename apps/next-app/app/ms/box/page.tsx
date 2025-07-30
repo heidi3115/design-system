@@ -147,7 +147,7 @@ export default function BoxPages() {
               })
             }
             conditionContent={(condDate) => (
-              <span>
+              <span className="text-xs">
                 {startErrorMessageRef.current}
                 <br />
                 {condDate && (
@@ -196,7 +196,7 @@ export default function BoxPages() {
               })
             }
             conditionContent={(condDate) => (
-              <span>
+              <span className="text-xs">
                 {endErrorMessageRef.current}
                 <br />
                 {condDate && (

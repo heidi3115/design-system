@@ -136,7 +136,7 @@ function DatePicker({
     if (onConditionRequestCallback?.(parsed) && confirmationRequest === undefined) {
       if (date) {
         openDialog({
-          description: conditionContent?.(parsed),
+          description: <span className="text-xs">{conditionContent?.(parsed)}</span>,
           onCancel: () => setInputValue(format(date, 'yyyy-MM-dd')),
           onConfirm: () => dateUpdate(parsed),
         });
