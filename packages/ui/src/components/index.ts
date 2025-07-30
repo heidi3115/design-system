@@ -266,4 +266,4 @@ export {
 
 export { Calendar, CalendarDayButton, type DateRange } from './Calendar';
 
-export { DatePicker } from './DatePicker';
+export { DatePicker, RangeDatePicker } from './DatePicker';
