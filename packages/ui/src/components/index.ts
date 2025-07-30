@@ -267,3 +267,25 @@ export {
 export { Calendar, CalendarDayButton, type DateRange } from './Calendar';
 
 export { DatePicker, RangeDatePicker } from './DatePicker';
+
+export {
+  treeViewVariants,
+  TreeViewRoot,
+  TreeViewItem,
+  TreeViewItemTrigger,
+  TreeViewItemContent,
+  TreeView,
+  TreeItem,
+  type TreeViewRootProps,
+  type TreeViewItemProps,
+  type TreeViewItemContentProps,
+  type TreeViewItemTriggerProps,
+  type TreeViewProps,
+  type TreeItemProps,
+  type BaseTreeNodeProps,
+  type TreeNodeProps,
+  type TreeItemRef,
+  type TreeViewRef,
+  type TreeViewState,
+  type TreeViewStateInfo,
+} from './TreeView';
