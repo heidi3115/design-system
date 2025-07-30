@@ -26,13 +26,13 @@ import {
   Switch,
   Label,
 } from '@common/ui';
-import { type Dispatch, type ReactNode, type SetStateAction, useEffect, useMemo, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { PlusCircleIcon, SearchIcon, ToggleLeftIcon, ToggleRightIcon } from '@common/ui/icons';
 import { useQuickSearch } from '@common/ui/hooks/useQuickSearch';
 
 type DataTableProps<T, V> = {
   rows: T[];
-  columns: ColumnDef<T>[];
+  columns: ColumnDef<T, V>[];
   manualFiltering?: boolean;
   globalFilter?: string;
   onGlobalFilterChange?: (value: string) => void;
@@ -40,7 +40,6 @@ type DataTableProps<T, V> = {
   isUseQuickSearch?: boolean;
   searchValue?: string;
   columnFilterTrigger?: ReactNode;
-  setColumnData?: Dispatch<SetStateAction<{ cols: ColumnDef<T, V>[] }>>;
 };
 
 export function DataTable<T, V = unknown>({
@@ -53,26 +52,10 @@ export function DataTable<T, V = unknown>({
   isUseQuickSearch = false,
   searchValue,
   columnFilterTrigger,
-  setColumnData,
 }: DataTableProps<T, V>) {
-  const initialColumnVisibility = useMemo(() => {
-    const visibility: Record<string, boolean> = {};
-
-    columns.forEach((col) => {
-      if ('accessorKey' in col && typeof col.accessorKey === 'string') {
-        // const id = col.accessorKey;
-        // const isHide = col.meta?.hide ?? false;
-        //
-        // visibility[id] = !isHide;
-      }
-    });
-
-    return visibility;
-  }, [columns]);
-
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(initialColumnVisibility);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
   const { globalFilter, setGlobalFilter, handleChange } = useQuickSearch(externalGlobalFilter, onGlobalFilterChange);
@@ -174,15 +157,13 @@ export function DataTable<T, V = unknown>({
         {manualFiltering && (
           <Button
             onClick={() => {
-              const visibilityMap = new Map(table.getAllColumns().map((col) => [col.id, col.getIsVisible()]));
-
-              setColumnData?.((prev) => ({
-                ...prev,
-                cols: prev.cols.map((col) => ({
-                  ...col,
-                  hide: !visibilityMap.get(col.id as string),
-                })),
+              const status = table.getAllColumns().map((col) => ({
+                field: col.id,
+                hide: !col.getIsVisible(),
+                headerName: col.columnDef.header,
               }));
+
+              console.warn(JSON.stringify(status, null, 2));
             }}>
             필드 저장
           </Button>
