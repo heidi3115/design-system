@@ -2,17 +2,17 @@
 
 import { type ComponentProps, type ReactNode } from 'react';
 import {
-  DropdownMenuRoot,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-  DropdownMenuGroup,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRoot,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
 } from './DropdownMenuParts';
 import { Button } from '../Button';
 
@@ -29,7 +29,7 @@ const dropdownMenuItemVariants = tv({
   },
 });
 
-type OptionItem = {
+export type OptionItem = {
   type?: 'item' | 'check';
   label: string;
   value: string;

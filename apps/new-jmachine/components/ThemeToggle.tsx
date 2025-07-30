@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { MoonIcon, SunIcon, SunMoonIcon } from 'lucide-react';
 
 import { Tooltip } from '@common/ui';
 import { useTheme } from 'next-themes';
+import { MoonIcon, SunIcon, SunMoonIcon } from '@common/ui/icons';
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -20,7 +20,7 @@ export default function ThemeToggle() {
 
   return (
     <Tooltip contents={theme === 'dark' ? 'Light' : 'Dark'}>
-      <div className="cursor-pointer hover:text-juiText-secondary">
+      <div className="cursor-pointer p-2 rounded-full hover:bg-juiPrimary/50">
         {currentTheme === 'dark' ? (
           <SunIcon onClick={() => setTheme('light')} />
         ) : (

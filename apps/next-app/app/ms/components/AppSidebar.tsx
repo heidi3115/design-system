@@ -1,28 +1,28 @@
 'use client';
 
 import {
-  SidebarRoot,
+  Button,
+  Progress,
+  SidebarCollapsibleGroup,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarHeader,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  Button,
-  SidebarInput,
-  SidebarMenuItem,
-  SidebarMenuAction,
   SidebarGroupAction,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInput,
+  SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarMenuSkeleton,
   SidebarMenuSub,
-  SidebarMenuSubItem,
   SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarRoot,
   SidebarSeparator,
-  SidebarCollasibleGroup,
-  Progress,
 } from '@common/ui';
 import {
   BellIcon,
@@ -337,7 +337,7 @@ export function AppSidebar() {
 
         <SidebarSeparator />
         {/* Collapsible 그룹 */}
-        <SidebarCollasibleGroup collapsibleTitle="Collapsible" groupTitle="Collasible 사이드바">
+        <SidebarCollapsibleGroup collapsibleTitle="Collapsible" groupTitle="Collapsible 사이드바">
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
@@ -362,15 +362,15 @@ export function AppSidebar() {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarCollasibleGroup>
+        </SidebarCollapsibleGroup>
 
         <SidebarSeparator />
-        {/* collasible 서브 그룹 */}
+        {/* collapsible 서브 그룹 */}
         <SidebarGroup className="pb-0">
-          <SidebarGroupLabel>Collasible 서브 그룹 사이드바</SidebarGroupLabel>
+          <SidebarGroupLabel>Collapsible 서브 그룹 사이드바</SidebarGroupLabel>
         </SidebarGroup>
         {subData.navMain.map((item, index) => (
-          <SidebarCollasibleGroup
+          <SidebarCollapsibleGroup
             extendType="plus"
             key={item.title}
             defaultOpen={index === 1}
@@ -394,7 +394,7 @@ export function AppSidebar() {
                 </SidebarMenuSub>
               </SidebarGroupContent>
             ) : null}
-          </SidebarCollasibleGroup>
+          </SidebarCollapsibleGroup>
         ))}
       </SidebarContent>
       <SidebarFooter>

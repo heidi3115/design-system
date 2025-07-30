@@ -80,12 +80,12 @@ function SelectTrigger({
 function SelectContent({
   className,
   children,
-  isContentfitTriggerWidth,
+  isContentFitTriggerWidth,
   position = 'popper',
   container,
   ...props
 }: ComponentProps<typeof SelectPrimitive.Content> & {
-  isContentfitTriggerWidth?: boolean;
+  isContentFitTriggerWidth?: boolean;
   container?: HTMLElement;
 }) {
   const [mounted, setMounted] = useState(false);
@@ -117,7 +117,7 @@ function SelectContent({
           'relative z-50',
 
           // 크기 관련(외부에서 wrapper 만들면 검토)
-          'max-h-96 min-w-32',
+          'max-h-96 min-w-24',
 
           // 트랜스폼 원점
           'origin-top-left',
@@ -128,8 +128,8 @@ function SelectContent({
           // 박스 스타일
           'shadow-md',
 
-          // isContentfitTriggerWidth 이 true 이면 트리거 input의 넓이에 맞추고 아니면 option의 길이에 맞춤
-          isContentfitTriggerWidth ? 'w-[var(--radix-select-trigger-width)]' : 'w-fit',
+          // isContentFitTriggerWidth 이 true 이면 트리거 input의 넓이에 맞추고 아니면 option의 길이에 맞춤
+          isContentFitTriggerWidth ? 'w-[var(--radix-select-trigger-width)]' : 'w-fit',
 
           // 포지션이 popper일 때 위치 보정
           position === 'popper' &&

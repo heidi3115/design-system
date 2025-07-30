@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
-import { ArrowLeftIcon, ArrowRightIcon, ChevronDownIcon, MinusIcon, PlusIcon, type IconProps } from '@common/ui/icons';
+import { ArrowLeftIcon, ArrowRightIcon, ChevronDownIcon, type IconProps, MinusIcon, PlusIcon } from '@common/ui/icons';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 import {
@@ -518,7 +518,7 @@ const sidebarMenuButtonVariants = tv({
         hover:text-juiText-secondary
         hover:shadow-[0_0_0_1px_var(--juiText-disabled)]
       `,
-      collasible: `
+      collapsible: `
         data-[active=true]:bg-transparent 
         active:bg-transparent
         hover:font-bold
@@ -564,7 +564,7 @@ function SidebarMenuButton({
   const Comp = asChild ? Slot : 'button';
 
   const { state, toggleSidebar } = useSidebar();
-  const { mode: collasibleMode } = useCollapsibleStore();
+  const { mode: collapsibleMode } = useCollapsibleStore();
 
   const button = (
     <Comp
@@ -576,7 +576,7 @@ function SidebarMenuButton({
       onClick={(event) => {
         props.onClick?.(event);
 
-        if (collasibleMode === 'sheet') {
+        if (collapsibleMode === 'sheet') {
           requestAnimationFrame(() => {
             toggleSidebar();
           });
@@ -772,7 +772,7 @@ function SidebarMenuSubButton({
   const Comp = asChild ? Slot : 'a';
 
   const { toggleSidebar } = useSidebar();
-  const { mode: collasibleMode } = useCollapsibleStore();
+  const { mode: collapsibleMode } = useCollapsibleStore();
 
   return (
     <Comp
@@ -801,7 +801,7 @@ function SidebarMenuSubButton({
       onClick={(event) => {
         props.onClick?.(event);
 
-        if (collasibleMode === 'sheet') {
+        if (collapsibleMode === 'sheet') {
           requestAnimationFrame(() => {
             toggleSidebar();
           });
@@ -812,7 +812,7 @@ function SidebarMenuSubButton({
   );
 }
 
-function SidebarCollasibleGroup({
+function SidebarCollapsibleGroup({
   collapsibleTitle,
   collapsibleIcon,
   groupTitle,
@@ -841,7 +841,7 @@ function SidebarCollasibleGroup({
 } & Pick<React.ComponentProps<typeof SidebarMenuButton>, 'tooltipContents' | 'hoverCardContents' | 'hoverCardProps'>) {
   const { state } = useSidebar();
 
-  const CollasibleIcon = collapsibleIcon;
+  const CollapsibleIcon = collapsibleIcon;
   const OpenCustomIcon = customIcon?.open;
   const CloseCustomIcon = customIcon?.close;
 
@@ -852,13 +852,13 @@ function SidebarCollasibleGroup({
         <SidebarMenuItem>
           <CollapsibleTrigger asChild>
             <SidebarMenuButton
-              variant="collasible"
+              variant="collapsible"
               className={cn(triggerClassName, 'm-auto', !collapsibleVisible && 'group-data-[state=collapsed]:hidden')}
               tooltipContents={tooltipContents}
               hoverCardContents={hoverCardContents}
               hoverCardProps={hoverCardProps}>
-              {CollasibleIcon && <CollasibleIcon />}
-              {!CollasibleIcon && state === 'collapsed' && `${collapsibleTitle[0]}...`}
+              {CollapsibleIcon && <CollapsibleIcon />}
+              {!CollapsibleIcon && state === 'collapsed' && `${collapsibleTitle[0]}...`}
               <span>{collapsibleTitle}</span>
 
               {customIcon && OpenCustomIcon && CloseCustomIcon ? (
@@ -941,6 +941,6 @@ export {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
-  SidebarCollasibleGroup,
+  SidebarCollapsibleGroup,
   useSidebar,
 };

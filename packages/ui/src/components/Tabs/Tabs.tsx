@@ -84,6 +84,7 @@ function Tabs<T extends TabItemType>({
 
   return (
     <TabsRoot
+      className="h-full"
       defaultValue={activeValue}
       onValueChange={(value) => {
         setActiveValue(value);
@@ -140,7 +141,7 @@ function Tabs<T extends TabItemType>({
               key={value}
               value={value}
               style={{ maxHeight: `calc(100svh - ${restScreenHeight}px)` }}
-              className={cn(`overflow-auto`)}>
+              className={cn(contentBoxType === 'inBox' ? `overflow-hidden` : `overflow-auto`)}>
               {contentBoxType === 'flex' && contents}
               {contentBoxType === 'box' && (
                 <div

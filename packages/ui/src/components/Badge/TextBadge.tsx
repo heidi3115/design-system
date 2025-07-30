@@ -7,7 +7,7 @@ import { cn } from '@common/ui/lib/utils';
 
 export type TextBadgeContentProps = {
   /**
-   * textOnly: TextBadge 내부의 삭제 버튼을 제거하고 텍스트 태그만으로서 작동할지의 여부
+   * textOnly: TextBadge 내부의 삭제 버튼을 제거하고 텍스트 태그만으로 작동할지의 여부
    */
   textOnly?: boolean;
   /**

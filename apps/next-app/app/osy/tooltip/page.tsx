@@ -22,7 +22,7 @@ import {
 import ThemeToggle from '../../../components/ThemeToggle';
 import { useState } from 'react';
 
-const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '80%', height: '2px' }} />;
+const Line = () => <hr className="mt-4 mb-4 text-juiText-primary w-4/5 h-0.5" />;
 const sizeKeys = Object.keys(tooltipVariants.variants.size) as (keyof typeof tooltipVariants.variants.size)[];
 const variantKeys = Object.keys(tooltipVariants.variants.variant) as (keyof typeof tooltipVariants.variants.variant)[];
 

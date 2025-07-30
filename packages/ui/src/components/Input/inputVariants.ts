@@ -30,26 +30,9 @@ const inputVariants = tv({
       true: 'opacity-50 cursor-not-allowed',
     },
     underline: {
-      primary: `outline-none
-              border-none
-              bg-gradient-to-r from-juiPrimary to-juiPrimary
-              bg-[length:0%_1px]
-              bg-no-repeat
-              bg-bottom
-              focus:bg-[length:100%_1px]
-              transition-[background-size]
-              duration-700
-              ease-in-out`,
-      grey: `outline-none
-              border-none
-              bg-gradient-to-r from-juiGrey-a400 to-juiGrey-a400
-              bg-[length:0%_1px]
-              bg-no-repeat
-              bg-bottom
-              focus:bg-[length:100%_1px]
-              transition-[background-size]
-              duration-700
-              ease-in-out`,
+      primary: `bg-gradient-to-r from-juiPrimary to-juiPrimary`,
+      secondary: `bg-gradient-to-r from-juiSecondary to-juiSecondary`,
+      default: `bg-gradient-to-r from-juiText-primary to-juiText-primary`,
       none: 'outline outline-transparent light:outline-juiBorder-primary focus:outline transition-all duration-700 ease-in-out',
     },
   },
@@ -110,15 +93,26 @@ const inputVariants = tv({
       className: 'pl-10 pr-14',
     },
 
+    // underline 옵션
     {
-      underline: 'grey',
-      error: true,
-      className: 'bg-gradient-to-r from-juiError to-juiError bg-[length:100%_1px]',
+      underline: ['primary', 'secondary', 'default'],
+      className: `outline-none 
+              light:border-solid
+              light:border-b-1
+              light:border-b-juiBorder-primary
+              light:focus:border-none
+              bg-[length:0%_1px]
+              bg-no-repeat
+              bg-bottom
+              focus:bg-[length:100%_1px]
+              transition-[background-size]
+              duration-300
+              ease-in-out`,
     },
     {
-      underline: 'primary',
+      underline: ['default', 'primary', 'secondary'],
       error: true,
-      className: 'bg-gradient-to-r from-juiError to-juiError bg-[length:100%_1px]',
+      className: 'light:border-none bg-gradient-to-r from-juiError to-juiError bg-[length:100%_1px]',
     },
     {
       underline: 'none',

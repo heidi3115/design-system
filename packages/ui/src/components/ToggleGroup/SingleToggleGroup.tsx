@@ -26,11 +26,8 @@ function SingleToggleGroup(props: Omit<ToggleGroupProps, 'type'>) {
   useImperativeHandle(valueRef, () => currentValue);
 
   const handleChange = (val: string) => {
-    if (isControlled) {
-      onValueChange?.(val);
-    } else {
-      setUncontrolledValue(val);
-    }
+    if (!isControlled) setUncontrolledValue(val);
+    onValueChange?.(val);
   };
 
   return (

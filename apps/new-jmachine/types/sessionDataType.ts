@@ -1,0 +1,20 @@
+export type SessionDataType = {
+  auths: string;
+  userId: string;
+  userNm: string;
+  userEmail: string;
+  cpyCd: string;
+  deptNm: string;
+  grupIdxList: number[];
+  loginDt: string;
+  passwordModYn: 'Y' | 'N';
+  tfaAuthUseYn: string;
+  pwdLockExpDt: string;
+  jsLoginYn: 'Y' | 'N';
+  loginFailedLockCount: number;
+  loginFailCount: number;
+  useFunction: string;
+  lang: string;
+  jsToken: string;
+  loginConfig: string;
+};

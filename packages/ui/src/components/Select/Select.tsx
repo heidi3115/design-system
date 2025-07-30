@@ -61,10 +61,12 @@ type SelectProps = ComponentProps<typeof SelectRoot> &
     size?: 'small' | 'default' | 'large';
     width?: VariantProps<typeof selectVariaints>['width'] | number;
     isSelectIndicator?: boolean;
-    isContentfitTriggerWidth?: boolean;
+    isContentFitTriggerWidth?: boolean;
     selectRef?: Ref<string>;
     error?: boolean;
     helperText?: ReactNode;
+    className?: string;
+    optionsClassName?: string;
   };
 
 function Select({
@@ -74,19 +76,21 @@ function Select({
   width,
   placeholder,
   isSelectIndicator = false,
-  isContentfitTriggerWidth = false,
+  isContentFitTriggerWidth = false,
   value: controlledValue,
   onValueChange,
+  className,
+  optionsClassName,
   selectRef,
   error,
   helperText,
   ...props
 }: SelectProps) {
   const isNumberWidth = typeof width === 'number';
-  const [interanlValue, setInternalValue] = useState(props.defaultValue ?? '');
+  const [internalValue, setInternalValue] = useState(props.defaultValue ?? '');
 
   const isControlled = controlledValue !== undefined;
-  const currentValue = isControlled ? controlledValue : interanlValue;
+  const currentValue = isControlled ? controlledValue : internalValue;
 
   // 비제어 선택값
   useImperativeHandle(selectRef, () => currentValue);
@@ -107,7 +111,7 @@ function Select({
           ref={ref}
           size={size}
           style={isNumberWidth ? { width: `100%` } : undefined}
-          className={cn(!isNumberWidth && selectVariaints({ width, error }))}>
+          className={cn(!isNumberWidth && selectVariaints({ width, error }), className)}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         {helperText && (
@@ -122,7 +126,7 @@ function Select({
         )}
       </div>
 
-      <SelectContent isContentfitTriggerWidth={isContentfitTriggerWidth}>
+      <SelectContent isContentFitTriggerWidth={isContentFitTriggerWidth} className={optionsClassName}>
         {options.map((opt, idx) => {
           // 그룹일 경우
           if ('type' in opt && opt.type === 'group') {

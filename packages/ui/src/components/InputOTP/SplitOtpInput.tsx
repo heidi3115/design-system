@@ -1,7 +1,7 @@
 'use client';
 
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@common/ui';
-import { useImperativeHandle, useState, type ComponentProps, type Ref } from 'react';
+import { type ComponentProps, type Ref, useImperativeHandle, useState } from 'react';
 import { type VariantProps } from 'tailwind-variants';
 
 import splitOtpInputVariants from './splitOtpInputVariants';
@@ -38,9 +38,9 @@ function SplitOtpInput({
 }: SplitOtpInputProps) {
   const safeLength = Math.max(1, maxLength); // 0 이면 1로 보정한다
 
-  const [interanlValue, setInternalValue] = useState(defaultValue?.toString() ?? '');
+  const [internalValue, setInternalValue] = useState(defaultValue?.toString() ?? '');
   const isControlled = value !== undefined;
-  const currentValue = isControlled ? value : interanlValue;
+  const currentValue = isControlled ? value : internalValue;
 
   useImperativeHandle(otpRef, () => currentValue);
 

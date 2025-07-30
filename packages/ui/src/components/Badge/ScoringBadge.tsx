@@ -23,7 +23,7 @@ export type ScoringBadgePropsType = Omit<React.ComponentProps<'span'>, 'children
      */
     icon?: React.ReactNode;
     /**
-     * iconPosition: ScoringBadge 내부의 icon 의 위치로서 scoreVal / maxVal 값 의 왼쪽/오른쪽 여부입니다. 기본적으로 'left' 처리됩니다.
+     * iconPosition: ScoringBadge 내부의 icon 의 위치로 scoreVal / maxVal 값 의 왼쪽/오른쪽 여부입니다. 기본적으로 'left' 처리됩니다.
      */
     iconPosition?: 'left' | 'right';
     /**

@@ -1,16 +1,16 @@
 'use client';
 
 import {
-  SidebarCollasibleGroup,
-  SidebarGroupContent,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
-  SidebarMenuSubButton,
-  SidebarMenuAction,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarMenu,
+  SidebarCollapsibleGroup,
   SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from '@common/ui';
 import { ExternalLinkIcon, IconProps } from '@common/ui/icons';
 import Link from 'next/link';
@@ -62,7 +62,7 @@ function renderGroupItem({
   const isTopLevel = depth === 0;
 
   return (
-    <SidebarCollasibleGroup
+    <SidebarCollapsibleGroup
       key={item.code}
       collapsibleTitle={item.title}
       collapsibleIcon={IconComponent}
@@ -95,7 +95,7 @@ function renderGroupItem({
           <NavigationItemRenderer items={item.children!} depth={depth + 1} isHover={isHover} />
         </SidebarMenuSub>
       </SidebarGroupContent>
-    </SidebarCollasibleGroup>
+    </SidebarCollapsibleGroup>
   );
 }
 
