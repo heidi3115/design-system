@@ -108,3 +108,6 @@ export { MoreVerticalFilledIcon } from './Icon/MoreVerticalFilledIcon';
 export { SunIcon } from './Icon/SunIcon';
 export { MoonIcon } from './Icon/MoonIcon';
 export { SunMoonIcon } from './Icon/SunMoonIcon';
+export { PlayArrowIcon } from './Icon/PlayArrowIcon';
+export { OpenFolderFilledIcon } from './Icon/OpenFolderFilledIcon';
+export { CloseFolderFilledIcon } from './Icon/CloseFolderFilledIcon';
