@@ -44,6 +44,7 @@ type RangeDatePickerProps = {
     labelDirection?: 'side' | 'top';
   };
   customConfirmAlert?: ({ condDate, type }: { condDate?: Date; type: 'start' | 'end' }) => ReactNode;
+  isConfrimAlert?: boolean;
   className?: string;
 } & Omit<
   ComponentProps<typeof DatePicker>,
@@ -76,11 +77,10 @@ function RangeDatePicker({
     labelDirection: 'top',
   },
   customConfirmAlert,
+  isConfrimAlert = true,
   className,
   ...datePickerProps
 }: RangeDatePickerProps) {
-  const isControlled = range !== undefined && onRangeChange !== undefined;
-
   const [uncontrolledStartDate, setUncontrolledStartDate] = useState<Date | undefined | 'init'>(
     defaultRange?.start ?? undefined,
   );
@@ -88,8 +88,8 @@ function RangeDatePicker({
     defaultRange?.end ?? undefined,
   );
 
-  const startDate = isControlled ? range?.start : uncontrolledStartDate;
-  const endDate = isControlled ? range?.end : uncontrolledEndDate;
+  const startDate = range?.start ?? uncontrolledStartDate;
+  const endDate = range?.end ?? uncontrolledEndDate;
 
   const [startError, setStartError] = useState(false);
   const [endError, setEndError] = useState(false);
@@ -104,17 +104,15 @@ function RangeDatePicker({
 
   const updateRange = useCallback(
     (start?: Date | 'init', end?: Date | 'init') => {
-      if (!isControlled) {
-        setUncontrolledStartDate(start);
-        setUncontrolledEndDate(end);
-      }
+      setUncontrolledStartDate(start);
+      setUncontrolledEndDate(end);
 
       const parsedStart = start === 'init' ? undefined : start;
       const parsedEnd = end === 'init' ? undefined : end;
 
       onRangeChange?.({ start: parsedStart, end: parsedEnd });
     },
-    [isControlled, onRangeChange],
+    [onRangeChange],
   );
 
   const handleDateChange = useCallback(
@@ -182,26 +180,31 @@ function RangeDatePicker({
         <DatePicker
           date={startDate}
           onDateChange={(date) => handleDateChange({ type: 'start', date })}
-          onConditionRequestCallback={(condDate) =>
-            getDateValidation({
-              target: condDate,
-              compare: endDate,
-              type: 'start',
-              setErrorMessageRef: startErrorMessageRef,
-            })
-          }
-          conditionContent={(condDate) =>
-            customConfirmAlert ? (
-              customConfirmAlert({ condDate, type: 'start' })
-            ) : (
-              <DefaultConfirmAlert
-                type="start"
-                condDate={condDate}
-                errorMessage={startErrorMessageRef.current}
-                selectedDate={startDate}
-              />
-            )
-          }
+          {...(isConfrimAlert
+            ? {
+                onConditionRequestCallback: (condDate) =>
+                  getDateValidation({
+                    target: condDate,
+                    compare: endDate,
+                    type: 'start',
+                    setErrorMessageRef: startErrorMessageRef,
+                  }),
+                conditionContent: (condDate) =>
+                  customConfirmAlert ? (
+                    customConfirmAlert({ condDate, type: 'start' })
+                  ) : (
+                    <DefaultConfirmAlert
+                      type="start"
+                      condDate={condDate}
+                      errorMessage={startErrorMessageRef.current}
+                      selectedDate={startDate}
+                    />
+                  ),
+              }
+            : {
+                onConditionRequestCallback: undefined,
+                conditionContent: undefined,
+              })}
           placeholder={startPlaceholder}
           inputProps={{
             error: startError,
@@ -245,26 +248,31 @@ function RangeDatePicker({
         <DatePicker
           date={endDate}
           onDateChange={(date) => handleDateChange({ type: 'end', date })}
-          onConditionRequestCallback={(condDate) =>
-            getDateValidation({
-              target: condDate,
-              compare: startDate,
-              type: 'end',
-              setErrorMessageRef: endErrorMessageRef,
-            })
-          }
-          conditionContent={(condDate) =>
-            customConfirmAlert ? (
-              customConfirmAlert({ condDate, type: 'end' })
-            ) : (
-              <DefaultConfirmAlert
-                type="end"
-                condDate={condDate}
-                errorMessage={endErrorMessageRef.current}
-                selectedDate={endDate}
-              />
-            )
-          }
+          {...(isConfrimAlert
+            ? {
+                onConditionRequestCallback: (condDate) =>
+                  getDateValidation({
+                    target: condDate,
+                    compare: startDate,
+                    type: 'end',
+                    setErrorMessageRef: endErrorMessageRef,
+                  }),
+                conditionContent: (condDate) =>
+                  customConfirmAlert ? (
+                    customConfirmAlert({ condDate, type: 'end' })
+                  ) : (
+                    <DefaultConfirmAlert
+                      type="end"
+                      condDate={condDate}
+                      errorMessage={endErrorMessageRef.current}
+                      selectedDate={endDate}
+                    />
+                  ),
+              }
+            : {
+                onConditionRequestCallback: undefined,
+                conditionContent: undefined,
+              })}
           placeholder={endPlaceholder}
           inputProps={{
             error: endError,

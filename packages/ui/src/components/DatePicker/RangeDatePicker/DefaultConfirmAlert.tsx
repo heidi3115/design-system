@@ -11,7 +11,7 @@ type DefaultConfirmAlertProps = {
 
 export function DefaultConfirmAlert({ type, condDate, errorMessage, selectedDate }: DefaultConfirmAlertProps) {
   return (
-    <span className="text-xs text-center mb-3">
+    <span className="text-xs text-center p-4">
       {errorMessage}
       <br />
       {condDate && (

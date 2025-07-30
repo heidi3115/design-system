@@ -54,15 +54,16 @@ export default function BoxPages() {
         <h1 className="text-4xl font-bold">BOX LAYOUT</h1>
       </div>
       <RangeDatePicker
-        // defaultRange={{
-        //   start: new Date(2025, 6, 2),
-        //   end: new Date(2025, 6, 18),
-        // }}
+        defaultRange={{
+          start: new Date(2025, 6, 2),
+          end: new Date(2025, 6, 18),
+        }}
         onRangeChange={(newRange) => {
           console.warn('비제어 선택된 날짜 범위:', newRange);
         }}
         minRangeDays={10}
         maxRangeDays={30}
+        isConfrimAlert={false}
         startPlaceholder="시작 날짜 선택"
       />
       <RangeDatePicker
@@ -73,28 +74,29 @@ export default function BoxPages() {
         }}
         minRangeDays={10}
         maxRangeDays={30}
-        isArrow
-        numberOfMonths={2}
+        // isArrow
+        // numberOfMonths={2}
         delimiter={<Link2Icon />}
         // direction="vertical"
-        label={{
-          start: '시작날짜',
-          end: <Switch />,
-          // labelDirection: 'side',
-        }}
-        oppositeSign={{
-          start: { show: true },
-          end: { show: false },
-        }}
-        customConfirmAlert={({ condDate, type }) => {
-          console.warn(condDate, type);
+        // label={{
+        //   start: '시작날짜',
+        //   end: <Switch />,
+        //   // labelDirection: 'side',
+        // }}
+        // oppositeSign={{
+        //   start: { show: true },
+        //   end: { show: false },
+        // }}
+        // customConfirmAlert={({ condDate, type }) => {
+        //   console.warn(condDate, type);
 
-          return (
-            <div>
-              {type} {condDate?.toLocaleDateString()} error
-            </div>
-          );
-        }}
+        //   return (
+        //     <div>
+        //       {type} {condDate?.toLocaleDateString()} error
+        //     </div>
+        //   );
+        // }}
+        // isConfrimAlert={false}
       />
 
       <Switch defaultChecked />
