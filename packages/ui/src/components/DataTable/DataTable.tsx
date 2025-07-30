@@ -86,7 +86,11 @@ export function DataTable<T, V = unknown>({
   const filteredColumns = table
     .getAllColumns()
     .filter((column) => column.getCanHide())
-    .filter((column) => column.id.toLowerCase().includes(search.toLowerCase()));
+    .filter(
+      (column) =>
+        typeof column.columnDef.header === 'string' &&
+        column.columnDef.header.toLowerCase().includes(search.toLowerCase()),
+    );
 
   return (
     <div className="w-full flex flex-col min-h-50 gap-1">
@@ -106,7 +110,6 @@ export function DataTable<T, V = unknown>({
           <Input
             iconLeft={SearchIcon}
             placeholder="카테고리 명을 검색하세요"
-            value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className="flex flex-col gap-2 p-2 h-[248px] overflow-auto">
@@ -118,8 +121,9 @@ export function DataTable<T, V = unknown>({
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) => column.toggleVisibility(!!value)}
                   />
-                  <Label htmlFor={column.id}>{column.id}</Label>
-                  {/*<Label htmlFor={column.id}>{column.columnDef.header}</Label>*/}
+                  <Label htmlFor={column.id}>
+                    {typeof column.columnDef.header === 'string' && column.columnDef.header}
+                  </Label>
                 </div>
               ))
             ) : (
