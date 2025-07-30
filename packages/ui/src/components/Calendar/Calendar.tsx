@@ -102,7 +102,7 @@ function Calendar({
         weekday: cn(
           'text-juiText-primary font-medium rounded-md flex-1 text-[0.8rem] select-none',
           '[&:nth-child(1)]:text-juiError', // 일요일 (index 0 → 1번째 child)
-          '[&:nth-child(7)]:text-juiPrimary', // 토요일 (index 6 → 7번째 child)
+          '[&:nth-child(7)]:text-juiText-blue', // 토요일 (index 6 → 7번째 child)
           defaultClassNames.weekday,
         ),
         week: cn('flex w-full mt-2 rounded-md overflow-hidden', defaultClassNames.week),
@@ -138,7 +138,7 @@ function Calendar({
           }, []);
 
           return (
-            <div ref={wrapperRef} className="relative h-fit w-fit">
+            <div ref={wrapperRef} className="relative h-fit w-fit translate-y-">
               <div data-slot="calendar" ref={rootRef} className={cn(rootClassName)} {...restRoot} />
               <ConfirmationDialog
                 open={dialogOpen ?? false}

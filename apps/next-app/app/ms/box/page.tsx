@@ -53,12 +53,16 @@ export default function BoxPages() {
         <h1 className="text-4xl font-bold">BOX LAYOUT</h1>
       </div>
       <RangeDatePicker
-        defaultRange={range}
+        // defaultRange={{
+        //   start: new Date(2025, 6, 2),
+        //   end: new Date(2025, 6, 18),
+        // }}
         onRangeChange={(newRange) => {
           console.warn('비제어 선택된 날짜 범위:', newRange);
         }}
         minRangeDays={10}
         maxRangeDays={30}
+        startPlaceholder="시작 날짜 선택"
       />
       <RangeDatePicker
         range={range}
@@ -68,6 +72,15 @@ export default function BoxPages() {
         }}
         minRangeDays={10}
         maxRangeDays={30}
+        isArrow
+        numberOfMonths={2}
+        // delimiter={null}
+        direction="vertical"
+        label={{
+          start: 'start',
+          end: <Switch />,
+          // labelDirection: 'side',
+        }}
       />
 
       <Switch defaultChecked />
