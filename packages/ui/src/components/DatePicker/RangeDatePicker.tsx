@@ -1,6 +1,15 @@
 'use client';
 
-import { useRef, useState, useCallback, useMemo, type ComponentProps, type RefObject, type ReactNode } from 'react';
+import {
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+  type ComponentProps,
+  type RefObject,
+  type ReactNode,
+  type CSSProperties,
+} from 'react';
 import { format, isValid } from 'date-fns';
 
 import { Label } from '../../components';
@@ -225,8 +234,7 @@ function RangeDatePicker({
             helperText: startError && startErrorMessageRef.current,
           }}
           calendarProps={{
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            style: { ['--opposite-name' as any]: `"${oppositeSign.end.label}"` },
+            style: { '--opposite-name': `"${oppositeSign.end.label ?? 'END'}"` } as CSSProperties,
             modifiers: {
               endDay: oppositeSign.end.show && endDate instanceof Date && endDate,
               against: (date: Date) =>
@@ -248,7 +256,7 @@ function RangeDatePicker({
           {...datePickerProps}
         />
       </div>
-      {delimiter && <span>{delimiter}</span>}
+      {delimiter && (typeof delimiter === 'function' ? delimiter : <span>{delimiter}</span>)}
       <div className={cn('relative flex gap-0.5 flex-col', label.labelDirection === 'side' && 'flex-row')}>
         {label.end &&
           (typeof label.end === 'function' ? label.end : <Label className="text-[10px] px-1">{label.end}</Label>)}
@@ -283,8 +291,7 @@ function RangeDatePicker({
             helperText: endError && endErrorMessageRef.current,
           }}
           calendarProps={{
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            style: { ['--opposite-name' as any]: `"${oppositeSign.start.label}"` },
+            style: { '--opposite-name': `"${oppositeSign.start.label ?? 'START'}"` } as CSSProperties,
             modifiers: {
               startDay: oppositeSign.start.show && startDate instanceof Date && startDate,
               against: (date: Date) =>

@@ -21,6 +21,7 @@ import {
   Switch,
   useConfirmDialog,
 } from '@common/ui';
+import { CheckIcon } from '@common/ui/icons';
 
 export default function BoxPages() {
   const otpRef = useRef(null);
@@ -74,12 +75,16 @@ export default function BoxPages() {
         maxRangeDays={30}
         isArrow
         numberOfMonths={2}
-        // delimiter={null}
+        delimiter={<CheckIcon />}
         direction="vertical"
         label={{
-          start: 'start',
+          start: 'S',
           end: <Switch />,
           // labelDirection: 'side',
+        }}
+        oppositeSign={{
+          start: { show: true },
+          end: { show: false },
         }}
       />
 
