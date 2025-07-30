@@ -21,7 +21,7 @@ import {
   Switch,
   useConfirmDialog,
 } from '@common/ui';
-import { CheckIcon } from '@common/ui/icons';
+import { Link2Icon } from 'lucide-react';
 
 export default function BoxPages() {
   const otpRef = useRef(null);
@@ -75,16 +75,25 @@ export default function BoxPages() {
         maxRangeDays={30}
         isArrow
         numberOfMonths={2}
-        delimiter={<CheckIcon />}
-        direction="vertical"
+        delimiter={<Link2Icon />}
+        // direction="vertical"
         label={{
-          start: 'S',
+          start: '시작날짜',
           end: <Switch />,
           // labelDirection: 'side',
         }}
         oppositeSign={{
           start: { show: true },
           end: { show: false },
+        }}
+        customConfirmAlert={({ condDate, type }) => {
+          console.warn(condDate, type);
+
+          return (
+            <div>
+              {type} {condDate?.toLocaleDateString()} error
+            </div>
+          );
         }}
       />
 

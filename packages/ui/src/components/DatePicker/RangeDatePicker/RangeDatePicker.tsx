@@ -10,11 +10,11 @@ import {
   type ReactNode,
   type CSSProperties,
 } from 'react';
-import { format, isValid } from 'date-fns';
 
-import { Label } from '../../components';
-import { useCheckDateRangeValidity } from './hooks/useCheckDateRangeValidity';
-import DatePicker from './DatePicker';
+import { Label } from '../..';
+import { useCheckDateRangeValidity } from '../hooks/useCheckDateRangeValidity';
+import { DefaultConfirmAlert } from './DefaultConfirmAlert';
+import DatePicker from '../DatePicker';
 import { cn } from '@common/ui/lib/utils';
 
 type RangeDateType = {
@@ -41,6 +41,7 @@ type RangeDatePickerProps = {
     end?: ReactNode;
     labelDirection?: 'side' | 'top';
   };
+  customConfirmAlert?: ({ condDate, type }: { condDate?: Date; type: 'start' | 'end' }) => ReactNode;
   className?: string;
 } & Omit<
   ComponentProps<typeof DatePicker>,
@@ -72,6 +73,7 @@ function RangeDatePicker({
     end: null,
     labelDirection: 'top',
   },
+  customConfirmAlert,
   className,
   ...datePickerProps
 }: RangeDatePickerProps) {
@@ -113,48 +115,36 @@ function RangeDatePicker({
     [isControlled, onRangeChange],
   );
 
-  const handleStartDateChange = useCallback(
-    (date?: Date) => {
-      if (date) {
-        const { isError, errorMessage } = checkDateRangeValidity({ target: date, compare: endDate, type: 'start' });
+  const handleDateChange = useCallback(
+    ({ type, date }: { type: 'start' | 'end'; date: Date | undefined }) => {
+      const target = date;
+      const compare = type === 'start' ? endDate : startDate;
+      const errorRef = type === 'start' ? endErrorMessageRef : startErrorMessageRef;
+      const setError = type === 'start' ? setEndError : setStartError;
+
+      if (target) {
+        const { isError, errorMessage } = checkDateRangeValidity({
+          target,
+          compare,
+          type,
+        });
 
         if (isError) {
-          setEndError(true);
-          endErrorMessageRef.current = errorMessage ?? '';
-          updateRange(date, 'init');
+          setError(true);
+          errorRef.current = errorMessage ?? '';
+          updateRange(type === 'start' ? target : 'init', type === 'end' ? target : 'init');
         } else {
-          setEndError(false);
-          endErrorMessageRef.current = '';
-          updateRange(date, endDate);
+          setError(false);
+          errorRef.current = '';
+          updateRange(type === 'start' ? target : startDate, type === 'end' ? target : endDate);
         }
       }
 
-      setStartError(false);
+      // reset opposite error
+      (type === 'start' ? setStartError : setEndError)(false);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [endDate, updateRange],
-  );
-
-  const handleEndDateChange = useCallback(
-    (date?: Date) => {
-      if (date) {
-        const { isError, errorMessage } = checkDateRangeValidity({ target: date, compare: startDate, type: 'end' });
-
-        if (isError) {
-          setStartError(true);
-          startErrorMessageRef.current = errorMessage ?? '';
-          updateRange('init', date);
-        } else {
-          setStartError(false);
-          startErrorMessageRef.current = '';
-          updateRange(startDate, date);
-        }
-      }
-
-      setEndError(false);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [startDate, updateRange],
+    [startDate, endDate, updateRange],
   );
 
   const getDateValidation = ({
@@ -205,7 +195,7 @@ function RangeDatePicker({
           (typeof label.start === 'function' ? label.start : <Label className="text-[10px] px-1">{label.start}</Label>)}
         <DatePicker
           date={startDate}
-          onDateChange={handleStartDateChange}
+          onDateChange={(date) => handleDateChange({ type: 'start', date })}
           onConditionRequestCallback={(condDate) =>
             getDateValidation({
               target: condDate,
@@ -214,20 +204,18 @@ function RangeDatePicker({
               setErrorMessageRef: startErrorMessageRef,
             })
           }
-          conditionContent={(condDate) => (
-            <span className="text-xs">
-              {startErrorMessageRef.current}
-              <br />
-              {condDate && (
-                <>
-                  {format(condDate, 'yyyy-MM-dd')} 선택하면 <br />
-                  종료시간이 없어 집니다.
-                </>
-              )}
-              <br />
-              {startDate instanceof Date && isValid(startDate) && <>취소시 {format(startDate, 'yyyy-MM-dd')} 유지</>}
-            </span>
-          )}
+          conditionContent={(condDate) =>
+            customConfirmAlert ? (
+              customConfirmAlert({ condDate, type: 'start' })
+            ) : (
+              <DefaultConfirmAlert
+                type="start"
+                condDate={condDate}
+                errorMessage={startErrorMessageRef.current}
+                selectedDate={startDate}
+              />
+            )
+          }
           placeholder={startPlaceholder}
           inputProps={{
             error: startError,
@@ -256,13 +244,19 @@ function RangeDatePicker({
           {...datePickerProps}
         />
       </div>
-      {delimiter && (typeof delimiter === 'function' ? delimiter : <span>{delimiter}</span>)}
+
+      {delimiter && (
+        <span className={cn(direction === 'horizontal' && label.labelDirection !== 'side' && 'mt-auto mx-0 mb-2')}>
+          {delimiter}
+        </span>
+      )}
+
       <div className={cn('relative flex gap-0.5 flex-col', label.labelDirection === 'side' && 'flex-row')}>
         {label.end &&
           (typeof label.end === 'function' ? label.end : <Label className="text-[10px] px-1">{label.end}</Label>)}
         <DatePicker
           date={endDate}
-          onDateChange={handleEndDateChange}
+          onDateChange={(date) => handleDateChange({ type: 'end', date })}
           onConditionRequestCallback={(condDate) =>
             getDateValidation({
               target: condDate,
@@ -271,20 +265,18 @@ function RangeDatePicker({
               setErrorMessageRef: endErrorMessageRef,
             })
           }
-          conditionContent={(condDate) => (
-            <span className="text-xs">
-              {endErrorMessageRef.current}
-              <br />
-              {condDate && (
-                <>
-                  {format(condDate, 'yyyy-MM-dd')} 선택하면 <br />
-                  시작시간이 없어집니다.
-                </>
-              )}
-              <br />
-              {endDate instanceof Date && isValid(endDate) && <>취소시 {format(endDate, 'yyyy-MM-dd')} 유지</>}
-            </span>
-          )}
+          conditionContent={(condDate) =>
+            customConfirmAlert ? (
+              customConfirmAlert({ condDate, type: 'end' })
+            ) : (
+              <DefaultConfirmAlert
+                type="end"
+                condDate={condDate}
+                errorMessage={endErrorMessageRef.current}
+                selectedDate={endDate}
+              />
+            )
+          }
           placeholder={endPlaceholder}
           inputProps={{
             error: endError,
