@@ -30,6 +30,12 @@ import { type ReactNode, useEffect, useState } from 'react';
 import { PlusCircleIcon, SearchIcon, ToggleLeftIcon, ToggleRightIcon } from '@common/ui/icons';
 import { useQuickSearch } from '@common/ui/hooks/useQuickSearch';
 
+type ColumnType = {
+  headerName: string;
+  hide: boolean;
+  field: string;
+};
+
 type DataTableProps<T, V> = {
   rows: T[];
   columns: ColumnDef<T, V>[];
@@ -40,9 +46,11 @@ type DataTableProps<T, V> = {
   isUseQuickSearch?: boolean;
   searchValue?: string;
   columnFilterTrigger?: ReactNode;
+  onColumnStatusChange?: (status: ColumnType[]) => void;
 };
 
 export function DataTable<T, V = unknown>({
+  onColumnStatusChange,
   rows,
   columns,
   manualFiltering = false, // true로 설정 시, 검색어 필터링 권한을 서버측으로 넘기고 해당 컴포넌트에서는 검색 필터링에 관여하지 않음.
@@ -164,10 +172,12 @@ export function DataTable<T, V = unknown>({
               const status = table.getAllColumns().map((col) => ({
                 field: col.id,
                 hide: !col.getIsVisible(),
-                headerName: col.columnDef.header,
+                headerName: typeof col.columnDef.header === 'string' ? col.columnDef.header : '',
               }));
 
-              console.warn(JSON.stringify(status, null, 2));
+              if (onColumnStatusChange) {
+                onColumnStatusChange(status);
+              }
             }}>
             필드 저장
           </Button>

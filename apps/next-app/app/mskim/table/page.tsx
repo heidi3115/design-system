@@ -14,25 +14,9 @@ type Scenario = {
 };
 
 export type ColumnType = {
-  width: number;
-  minWidth: number;
-  maxWidth: number;
   hide: boolean;
-  hideable: boolean;
-  sortable: boolean;
-  resizable: boolean;
-  filterable: boolean;
-  groupable: boolean;
-  pinnable: boolean;
-  aggregable: boolean;
-  editable: boolean;
-  type: string;
-  align: string;
-  headerAlign: string;
   field: string;
   headerName: string;
-  hasBeenResized: boolean;
-  computedWidth: number;
 };
 
 export type GridType = {
@@ -71,11 +55,18 @@ export default function Page() {
     },
   ];
 
-  const columnData = {
+  const [columnData, setColumnData] = useState<GridType>({
     gridCd: '20000',
     cols: JSON.parse(
       '[{"width":50,"minWidth":50,"maxWidth":null,"hide":false,"hideable":false,"sortable":false,"resizable":true,"filterable":false,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"number","align":"right","headerAlign":"right","field":"id","hasBeenResized":true,"headerName":"No","computedWidth":50},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"string","align":"left","field":"scnrNm","hasBeenResized":true,"headerName":"시나리오명","cellClassName":"t200007","flex":1,"computedWidth":435},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"center","field":"dngrGrd","hasBeenResized":true,"headerName":"시나리오 등급","headerAlign":"center","cellClassName":"t200379","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"string","align":"left","field":"scnrCls","hasBeenResized":true,"headerName":"분류","cellClassName":"t000006","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"left","field":"dttTyp","hasBeenResized":true,"headerName":"탐지 형태","cellClassName":"t200032","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"left","field":"alrmYn","hasBeenResized":true,"headerName":"알림 사용","cellClassName":"t200011","headerAlign":"center","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"left","field":"explnUseYn","hasBeenResized":true,"headerName":"소명 요청","cellClassName":"t200313","headerAlign":"center","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"singleSelect","align":"left","field":"oprStt","hasBeenResized":true,"headerName":"운영 상태","cellClassName":"t200012","headerAlign":"center","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"string","align":"left","field":"regUserNm","hasBeenResized":true,"headerName":"등록자","cellClassName":"t000018","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"date","align":"left","field":"regDt","hasBeenResized":true,"headerName":"등록일","cellClassName":"t000019","computedWidth":100},{"width":100,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"string","align":"left","field":"modUserNm","hasBeenResized":true,"headerName":"최종 수정자","cellClassName":"t200319","computedWidth":100},{"width":150,"minWidth":50,"maxWidth":null,"hide":false,"hideable":true,"sortable":true,"resizable":true,"filterable":true,"groupable":true,"pinnable":true,"aggregable":true,"editable":false,"type":"dateTime","align":"left","field":"modDt","hasBeenResized":true,"headerName":"최종 수정일","cellClassName":"t200320","computedWidth":150}]',
     ),
+  });
+
+  const handleColumnStatusChange = (status: ColumnType[]) => {
+    setColumnData((prev) => ({
+      ...prev,
+      cols: status,
+    }));
   };
 
   // utils로 빼기
@@ -138,10 +129,10 @@ export default function Page() {
           rows={serverData}
           columnFilterTrigger={<Button variant="transparent">커스텀필터목록</Button>}
           columns={columns}
-          // setColumnData={setColumnData}
           globalFilter={value}
           onGlobalFilterChange={(e) => setValue(e)}
           manualFiltering
+          onColumnStatusChange={handleColumnStatusChange}
           emptyState={<div>검색 결과 없음</div>}
         />
       </div>
