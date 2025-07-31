@@ -281,7 +281,6 @@ export {
   type TreeViewProps,
   type TreeItemProps,
   type BaseTreeNodeProps,
-  type TreeItemRef,
   type TreeViewRef,
   type TreeViewState,
   type TreeViewStateInfo,

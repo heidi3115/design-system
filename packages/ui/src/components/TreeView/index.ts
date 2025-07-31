@@ -5,7 +5,7 @@ export type {
   TreeViewItemContentProps,
   TreeViewItemTriggerProps,
 } from './TreeViewParts';
-export { default as TreeItem, type TreeItemProps, type TreeItemRef, type BaseTreeNodeProps } from './TreeItem';
+export { default as TreeItem, type TreeItemProps, type BaseTreeNodeProps } from './TreeItem';
 export {
   default as TreeView,
   type TreeViewProps,

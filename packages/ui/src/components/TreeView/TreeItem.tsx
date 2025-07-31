@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useImperativeHandle } from 'react';
+import React from 'react';
 import { Collapsible } from '@common/ui';
 import { cn } from '@common/ui/lib/utils';
 import { CloseFolderFilledIcon, OpenFolderFilledIcon, PlayArrowIcon } from '@common/ui/icons';
@@ -21,21 +21,6 @@ export type BaseTreeNodeProps<T = unknown> = {
   children?: BaseTreeNodeProps<T>[];
   /** 확장을 위한 인덱스 시그니처 */
   [key: string]: unknown;
-};
-
-export type TreeItemRef<T = unknown> = {
-  /** 현재 노드 정보 반환 */
-  getNode: () => BaseTreeNodeProps<T>;
-  /** 현재 노드의 선택 상태 */
-  isSelected: () => boolean;
-  /** 현재 노드의 확장 상태 */
-  isExpanded: () => boolean;
-  /** 현재 노드의 비활성화 상태 */
-  isDisabled: () => boolean;
-  /** 노드를 선택 */
-  select: () => void;
-  /** 노드를 토글 */
-  toggle: () => void;
 };
 
 export type TreeItemProps<T> = {
@@ -67,8 +52,6 @@ export type TreeItemProps<T> = {
   className?: string;
   /** TreeView 상태 (읽기용) */
   treeState?: TreeViewState;
-  /** */
-  treeItemRef?: React.Ref<TreeItemRef<T>>;
 };
 
 export default function TreeItem<T = unknown>({
@@ -88,7 +71,6 @@ export default function TreeItem<T = unknown>({
   onToggle,
   className,
   treeState,
-  treeItemRef,
 }: TreeItemProps<T>) {
   const hasChildren = Array.isArray(node?.children) && node.children.length > 0;
   const hasLineLevel = showLineLevel === undefined ? undefined : showLineLevel;
@@ -139,27 +121,6 @@ export default function TreeItem<T = unknown>({
         {nodeItem.name}
       </span>
     </TreeViewItemTrigger>
-  );
-
-  useImperativeHandle(
-    treeItemRef,
-    () => ({
-      getNode: () => node,
-      isSelected: () => selected,
-      isExpanded: () => expanded,
-      isDisabled: () => disabled,
-      select: () => {
-        if (!disabled && onSelect) {
-          onSelect(node.id);
-        }
-      },
-      toggle: () => {
-        if (!disabled && hasChildren && onToggle) {
-          onToggle(node.id, !expanded);
-        }
-      },
-    }),
-    [node, selected, expanded, hasChildren, disabled, onSelect, onToggle],
   );
 
   return (
