@@ -10,7 +10,7 @@ import {
   type CSSProperties,
 } from 'react';
 
-import { Label } from '../..';
+import { Label } from '../../Label';
 import { useCheckDateRangeValidity } from '../hooks/useCheckDateRangeValidity';
 import { DefaultConfirmAlert } from './DefaultConfirmAlert';
 import DatePicker from '../DatePicker';
