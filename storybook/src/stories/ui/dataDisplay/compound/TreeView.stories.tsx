@@ -5,6 +5,7 @@ import {
   fileTypeTreeData,
   highriskGroupTreeData,
   responseStatusTreeData,
+  sampleTreeData1,
 } from '@common/ui/__tests__/testTreeData.ts';
 import type { TreeViewStateInfo } from '@common/ui/components/TreeView';
 import type { TreeViewRef } from '@common/ui/components/TreeView/TreeView';
@@ -339,7 +340,7 @@ export const Variants: Story = {
 
 export const Sizes: Story = {
   args: {
-    treeData: fileTypeTreeData,
+    treeData: sampleTreeData1,
     showLineLevel: 0,
   },
   argTypes: {

@@ -1,4 +1,3 @@
-export * from './types';
 export { TreeViewRoot, TreeViewItem, TreeViewItemTrigger, TreeViewItemContent } from './TreeViewParts';
 export type {
   TreeViewRootProps,
@@ -6,7 +5,7 @@ export type {
   TreeViewItemContentProps,
   TreeViewItemTriggerProps,
 } from './TreeViewParts';
-export { default as TreeItem, type TreeItemProps, type TreeItemRef } from './TreeItem';
+export { default as TreeItem, type TreeItemProps, type TreeItemRef, type BaseTreeNodeProps } from './TreeItem';
 export {
   default as TreeView,
   type TreeViewProps,

@@ -5,13 +5,27 @@ import { Collapsible } from '@common/ui';
 import { cn } from '@common/ui/lib/utils';
 import { CloseFolderFilledIcon, OpenFolderFilledIcon, PlayArrowIcon } from '@common/ui/icons';
 import { TreeViewItem, TreeViewItemContent, TreeViewItemTrigger } from './TreeViewParts';
-import type { TreeNodeProps } from './types';
 import { type TreeViewState } from './TreeView';
 import { treeViewVariants } from './treeViewVariants';
 
+/**
+ * 기본 트리 노드 인터페이스
+ * 모든 API 에서 공통으로 사용되는 필수 필드들을 정의
+ */
+export type BaseTreeNodeProps<T = unknown> = {
+  /** 트리 노드의 고유 식별자 */
+  id: string;
+  /** 트리 노드의 표시명 */
+  name: string;
+  /** 자식 노드들 (재귀적 구조) */
+  children?: BaseTreeNodeProps<T>[];
+  /** 확장을 위한 인덱스 시그니처 */
+  [key: string]: unknown;
+};
+
 export type TreeItemRef<T = unknown> = {
   /** 현재 노드 정보 반환 */
-  getNode: () => TreeNodeProps<T>;
+  getNode: () => BaseTreeNodeProps<T>;
   /** 현재 노드의 선택 상태 */
   isSelected: () => boolean;
   /** 현재 노드의 확장 상태 */
@@ -26,7 +40,7 @@ export type TreeItemRef<T = unknown> = {
 
 export type TreeItemProps<T> = {
   /** 트리 노드 데이터 */
-  node: TreeNodeProps<T>;
+  node: BaseTreeNodeProps<T>;
   /** 현재 노드의 트리 레벨 (들여쓰기용) */
   level?: number;
   // === 개별 노드 상태 (TreeView 에서 계산되어 전달예정) ===
@@ -105,7 +119,7 @@ export default function TreeItem<T = unknown>({
     if (!disabled && onSelect) onSelect(nodeId);
   };
 
-  const renderTrigger = (nodeItem: TreeNodeProps<T>) => (
+  const renderTrigger = (nodeItem: BaseTreeNodeProps<T>) => (
     <TreeViewItemTrigger
       data-slot="tree-item-trigger"
       data-active={selected}
@@ -170,7 +184,7 @@ export default function TreeItem<T = unknown>({
           <TreeViewItemContent
             className={cn(variantClass, itemContent(), level === lineLevelNum && lineDotClass)}
             onClick={(e: React.MouseEvent) => e.stopPropagation()}>
-            {node.children!.map((childNode: TreeNodeProps) => (
+            {node.children!.map((childNode: BaseTreeNodeProps) => (
               <TreeItem
                 {...childNode}
                 key={childNode.id}

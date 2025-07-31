@@ -3,10 +3,9 @@
 import { flattenTree, isLeafNode, isSafeNode } from '@common/ui/components/TreeView/utils';
 import { cn } from '@common/ui/lib/utils';
 import React, { useCallback, useImperativeHandle, useMemo, useState } from 'react';
-import TreeItem from './TreeItem';
+import TreeItem, { type BaseTreeNodeProps } from './TreeItem';
 import { TreeViewRoot } from './TreeViewParts';
 import { treeViewVariants } from './treeViewVariants';
-import type { TreeNodeProps } from './types';
 
 export type TreeViewState = {
   selectedIds: Set<string>;
@@ -35,14 +34,14 @@ export type TreeViewRef<T = unknown> = {
   getExpandedIds: () => string[];
   getDisabledIds: () => string[];
   /** 노드 ID로 노드 객체 조회 (유틸리티) */
-  getNodeById: (id: string) => TreeNodeProps<T> | undefined;
+  getNodeById: (id: string) => BaseTreeNodeProps<T> | undefined;
   /** 현재 TreeViewState 정보 */
   getState: () => TreeViewStateInfo;
 };
 
 export type TreeViewProps<T = unknown> = {
   /** 트리 데이터 배열 */
-  treeData?: TreeNodeProps<T>[];
+  treeData?: BaseTreeNodeProps<T>[];
   /** treeView 의 사이즈  */
   size?: keyof typeof treeViewVariants.variants.size;
   /** treeView 의 테마 색상 지정.   */
@@ -63,9 +62,9 @@ export type TreeViewProps<T = unknown> = {
   expandedIds?: string[];
 
   /** 노드 선택 시 호출되는 콜백 (selectedIds 배열 형태로 반환) */
-  onSelectedNodes?: (selectedIds?: string[], selectedNodes?: TreeNodeProps<T>[]) => void;
+  onSelectedNodes?: (selectedIds?: string[], selectedNodes?: BaseTreeNodeProps<T>[]) => void;
   /** 노드 확장/축소 시 호출되는 콜백으로 확장된 노드들을 expandedIds 배열 형태로 반환 */
-  onToggledNodes?: (expandedIds?: string[], expandedNodes?: TreeNodeProps<T>[]) => void;
+  onToggledNodes?: (expandedIds?: string[], expandedNodes?: BaseTreeNodeProps<T>[]) => void;
 
   /** 노드간 연결선 표시 여부 및 연결선을 보여줄 레벨 */
   showLineLevel?: number;
@@ -124,7 +123,7 @@ export default function TreeView<T>({
   });
 
   const flatTreeNodeMap = useMemo(() => {
-    return treeData ? flattenTree(treeData) : new Map<string, TreeNodeProps<T>>();
+    return treeData ? flattenTree(treeData) : new Map<string, BaseTreeNodeProps<T>>();
   }, [treeData]);
 
   const getDisabledIds = useMemo(() => {
@@ -256,7 +255,7 @@ export default function TreeView<T>({
         e.stopPropagation();
         e.preventDefault();
       }}>
-      {treeData.map((treeNode: TreeNodeProps<T>) => {
+      {treeData.map((treeNode: BaseTreeNodeProps<T>) => {
         const isNodeDisabled = disabled || currentState.disabledIds?.has(treeNode.id) || false;
 
         return (
