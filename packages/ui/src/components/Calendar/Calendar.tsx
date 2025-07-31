@@ -26,6 +26,7 @@ function Calendar({
   showOutsideDays = true,
   captionLayout = 'label',
   buttonVariant = 'transparent',
+  navLayout = 'around',
   formatters,
   components,
   dialogOpen,
@@ -43,6 +44,8 @@ function Calendar({
   const defaultClassNames = getDefaultClassNames();
 
   const dayButtonClassNames = props.modifiersClassNames;
+
+  const navLayoutAdjust = navLayout === 'around' ? undefined : navLayout;
 
   return (
     <DayPicker
@@ -62,11 +65,17 @@ function Calendar({
         formatMonthDropdown: (date) => date.toLocaleString('ko', { month: 'short' }),
         ...formatters,
       }}
+      navLayout={navLayoutAdjust}
       classNames={{
         root: cn('w-fit', defaultClassNames.root),
         months: cn('flex gap-4 flex-col md:flex-row relative', defaultClassNames.months),
         month: cn('flex flex-col w-full gap-4', defaultClassNames.month),
-        nav: cn('flex items-center gap-1 w-full absolute top-0 inset-x-0 justify-between', defaultClassNames.nav),
+        nav: cn(
+          'flex items-center gap-1 absolute top-0 inset-x-0',
+          navLayoutAdjust === undefined && 'w-full justify-between',
+          navLayoutAdjust === 'after' && 'w-fit ml-auto',
+          defaultClassNames.nav,
+        ),
         button_previous: cn(
           buttonVariants({ variant: buttonVariant }),
           'size-(--cell-size) aria-disabled:opacity-50 p-0 select-none',
@@ -78,11 +87,13 @@ function Calendar({
           defaultClassNames.button_next,
         ),
         month_caption: cn(
-          'flex items-center justify-center h-(--cell-size) w-full px-(--cell-size) min-w-72',
+          'flex items-center h-(--cell-size) w-full min-w-72',
+          navLayoutAdjust === undefined && 'justify-center px-(--cell-size)',
           defaultClassNames.month_caption,
         ),
         dropdowns: cn(
-          'w-full flex items-center text-sm font-medium justify-center h-(--cell-size) gap-1.5',
+          'w-full flex items-center text-sm font-medium h-(--cell-size) gap-1.5',
+          navLayoutAdjust === undefined && 'justify-center',
           defaultClassNames.dropdowns,
         ),
         dropdown_root: cn(
@@ -93,7 +104,7 @@ function Calendar({
         caption_label: cn(
           'select-none font-medium',
           captionLayout === 'label'
-            ? 'text-sm'
+            ? 'text-sm px-2'
             : 'rounded-md pl-2 pr-1 flex items-center gap-1 text-sm h-8 [&>svg]:text-juiText-secondary [&>svg]:size-3.5',
           defaultClassNames.caption_label,
         ),
