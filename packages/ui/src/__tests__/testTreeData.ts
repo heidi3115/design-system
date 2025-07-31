@@ -1,12 +1,56 @@
-import type {
-  AssetTreeNodeProps,
-  HighRiskTreeNodeProps,
-  ResponseStatusTreeNodeProps,
-  TreeNodeProps,
-} from '@common/ui/components/TreeView';
+import { type BaseTreeNodeProps } from '@common/ui';
+
+/**
+ * 이 파일은 다양한 API 엔드포인트에서 받아오는 트리 데이터 구조의 참조 및 추후 사용할 데이터 타입 정의입니다.
+ *
+ * 참고한 API 구조:
+ * - 자산구분 목록 조회: /japi/get/asset/division/tree
+ * - 고위험군 그룹 트리 조회: /japi/get/high-risk/groups/tree
+ * - 대응상태 분류 트리 조회: /japi/get/response-status/tree
+ *
+ */
+
+// 자산구분 API 전용 필드들 - /japi/get/asset/division/tree
+export type AssetTreeDataType = {
+  /** 정렬 순서 */
+  ord?: number;
+  /** 자산구분 인덱스 */
+  asstDvnIdx?: number;
+  /** 부모 자산구분 코드 */
+  passtDvnCd?: string;
+  /** 자산구분명 전체 경로 */
+  asstDvnNmFullPath?: string;
+};
+
+// 고위험군 관련 API 전용 필드들 - /japi/get/high-risk/groups/tree
+export type HighRiskTreeDataType = {
+  /** 정렬 순서 */
+  ord?: number;
+  /** 고위험군 그룹 인덱스 */
+  hrskGrupIdx?: number;
+  /** 부모 그룹 코드 */
+  pgrupCd?: string | null;
+  /** 기준 종료일 표준 */
+  baseEndDtStd?: string | null;
+};
+
+// 대응상태 API 전용 필드들 - /japi/get/response-status/tree
+export type ResponseStatusTreeDataType = {
+  /** 트리 레벨 */
+  lvl?: number;
+  /** 대응상태 구분 인덱스 */
+  rsstIdx?: number;
+  /** 부모  코드 */
+  pId?: string | null;
+};
+
+// === API별 특화 노드 타입들 ===
+export type AssetTreeNodeProps = BaseTreeNodeProps<AssetTreeDataType>;
+export type HighRiskTreeNodeProps = BaseTreeNodeProps<HighRiskTreeDataType>;
+export type ResponseStatusTreeNodeProps = BaseTreeNodeProps<ResponseStatusTreeDataType>;
 
 // 기본 트리 형식
-export const basicTreeData1: TreeNodeProps[] = [
+export const basicTreeData1: BaseTreeNodeProps[] = [
   {
     id: '1-1',
     name: 'lvl:1-1',
@@ -104,7 +148,7 @@ export const basicTreeData1: TreeNodeProps[] = [
 ];
 
 // 샘플 데이터1 : 자산 형식
-export const sampleTreeData1: TreeNodeProps[] = [
+export const sampleTreeData1: BaseTreeNodeProps[] = [
   {
     id: '1',
     name: '자산구분 1',
@@ -1200,11 +1244,6 @@ export const responseStatusTreeData: ResponseStatusTreeNodeProps[] = [
   },
 ];
 
-// 폴더, 파일, 이미지, 동영상 타입의 경우
-export type DataType = {
-  category: 'folder' | 'file' | 'image' | 'video' | 'pack' | 'error';
-  metadata: Record<string, unknown>;
-};
 export const fileTypeTreeData = [
   {
     id: '1',
