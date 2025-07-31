@@ -53,6 +53,66 @@ export default function Page() {
       regUserNm: '관리자',
       regDt: '2024-11-28 10:38:05',
     },
+    {
+      scnrNm: '[QA-3560] 테스트 시나리오',
+      regUser: 'test',
+      regUserNm: '테스트이름',
+      regDt: '2025-03-26 15:48:46',
+    },
+    {
+      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
+      regUser: 'test2',
+      regUserNm: '관리자',
+      regDt: '2024-11-28 10:38:05',
+    },
+    {
+      scnrNm: '[QA-3560] 테스트 시나리오',
+      regUser: 'test3',
+      regUserNm: '테스트이름',
+      regDt: '2025-03-26 15:48:46',
+    },
+    {
+      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
+      regUser: 'test4',
+      regUserNm: '관리자',
+      regDt: '2024-11-28 10:38:05',
+    },
+    {
+      scnrNm: '[QA-3560] 테스트 시나리오',
+      regUser: 'test5',
+      regUserNm: '테스트이름',
+      regDt: '2025-03-26 15:48:46',
+    },
+    {
+      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
+      regUser: 'test6',
+      regUserNm: '관리자',
+      regDt: '2024-11-28 10:38:05',
+    },
+    {
+      scnrNm: '[QA-3560] 테스트 시나리오',
+      regUser: 'test7',
+      regUserNm: '테스트이름',
+      regDt: '2025-03-26 15:48:46',
+    },
+    {
+      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
+      regUser: 'test8',
+      regUserNm: '관리자',
+      regDt: '2024-11-28 10:38:05',
+    },
+    {
+      scnrNm: '[QA-3560] 테스트 시나리오',
+      regUser: 'test9',
+      regUserNm: '테스트이름',
+      regDt: '2025-03-26 15:48:46',
+    },
+    {
+      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
+      regUser: 'test10',
+      regUserNm: '관리자',
+      regDt: '2024-11-28 10:38:05',
+    },
   ];
 
   const [columnData, setColumnData] = useState<GridType>({
