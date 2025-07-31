@@ -1,4 +1,4 @@
-import type { TreeNodeProps } from './types';
+import type { BaseTreeNodeProps } from './TreeItem';
 
 /**
  * 트리 관련 유틸리티 함수들
@@ -9,7 +9,7 @@ import type { TreeNodeProps } from './types';
  * @param node 트리 노드
  * @returns 자식이 없으면 true, 있으면 false
  */
-export const isLeafNode = <T>(node: TreeNodeProps<T> | undefined) => {
+export const isLeafNode = <T>(node: BaseTreeNodeProps<T> | undefined) => {
   return !!node && (!Array.isArray(node.children) || node.children.length === 0);
 };
 
@@ -18,7 +18,7 @@ export const isLeafNode = <T>(node: TreeNodeProps<T> | undefined) => {
  * @param treeNode 트리 노드
  * @returns id와 name이 모두 존재하면 true
  */
-export const isSafeNode = <T>(treeNode: TreeNodeProps<T> | undefined): treeNode is TreeNodeProps<T> =>
+export const isSafeNode = <T>(treeNode: BaseTreeNodeProps<T> | undefined): treeNode is BaseTreeNodeProps<T> =>
   !!treeNode && Boolean(treeNode.id) && Boolean(treeNode.name);
 
 /**
@@ -26,10 +26,10 @@ export const isSafeNode = <T>(treeNode: TreeNodeProps<T> | undefined): treeNode 
  * @param nodes 트리 노드 배열
  * @returns 노드 ID를 키로 하는 Map
  */
-export const flattenTree = (nodes: TreeNodeProps[]): Map<string, TreeNodeProps> => {
-  const result = new Map<string, TreeNodeProps>();
+export const flattenTree = (nodes: BaseTreeNodeProps[]): Map<string, BaseTreeNodeProps> => {
+  const result = new Map<string, BaseTreeNodeProps>();
 
-  const traverse = (nodeList: TreeNodeProps[]) => {
+  const traverse = (nodeList: BaseTreeNodeProps[]) => {
     for (const node of nodeList) {
       result.set(node.id, node);
 
@@ -49,10 +49,10 @@ export const flattenTree = (nodes: TreeNodeProps[]): Map<string, TreeNodeProps> 
  * @param nodes 트리 노드 배열
  * @returns 모든 노드 ID 배열
  */
-export const getAllNodeIds = <T>(nodes: TreeNodeProps<T>[]): string[] => {
+export const getAllNodeIds = <T>(nodes: BaseTreeNodeProps<T>[]): string[] => {
   const ids: string[] = [];
 
-  const traverse = (nodeList: TreeNodeProps<T>[]) => {
+  const traverse = (nodeList: BaseTreeNodeProps<T>[]) => {
     for (const node of nodeList) {
       ids.push(node.id);
 
