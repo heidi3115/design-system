@@ -265,3 +265,5 @@ export {
 } from './Breadcrumb';
 
 export { Calendar, CalendarDayButton, type DateRange } from './Calendar';
+
+export { DatePicker } from './DatePicker';

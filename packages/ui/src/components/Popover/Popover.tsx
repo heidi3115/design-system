@@ -4,8 +4,8 @@ import {
   type RefObject,
   type ReactNode,
   type ComponentType,
-  createElement,
   type ComponentProps,
+  createElement,
   useLayoutEffect,
   useState,
 } from 'react';
@@ -108,7 +108,9 @@ function Popover({
         {isArrow && (
           <PopoverArrow
             className={cn('w-2.5 h-1.5', `fill-${bgColor}`)}
-            style={{ fill: bgColor ? `var(--color-${bgColor}, var(--${bgColor}))` : 'var(--juiBackground-popover)' }}
+            style={{
+              fill: bgColor ? `var(--color-${bgColor}, var(--${bgColor}))` : 'var(--juiBackground-popover)',
+            }}
           />
         )}
       </PopoverContent>
