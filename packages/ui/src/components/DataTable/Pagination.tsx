@@ -14,20 +14,26 @@ function Pagination<TData>({ table }: PaginationProps<TData>) {
   return (
     <div className="flex gap-2">
       <Button
-        className="border rounded p-1"
+        className="border rounded-3xl p-1"
         onClick={() => table.previousPage()}
-        disabled={!table.getCanPreviousPage()}>
+        disabled={!table.getCanPreviousPage()}
+        variant={'transparent'}>
         {'<'}
       </Button>
       {pages.map((page) => (
         <Button
           key={page}
-          className={`border rounded p-1 w-8 ${currentPage === page ? 'bg-blue-500 text-white' : ''}`}
+          variant={currentPage === page ? 'primary' : 'transparent'}
+          className={'rounded-3xl p-1 w-8'}
           onClick={() => table.setPageIndex(page)}>
           {page + 1}
         </Button>
       ))}
-      <Button className="border rounded p-1" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+      <Button
+        variant={'transparent'}
+        className="rounded-3xl border p-1"
+        onClick={() => table.nextPage()}
+        disabled={!table.getCanNextPage()}>
         {'>'}
       </Button>
     </div>
