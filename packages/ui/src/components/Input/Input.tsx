@@ -17,6 +17,7 @@ type InputProps = Omit<React.ComponentProps<'input'>, 'size'> &
     error?: boolean;
     helperText?: ReactNode;
     step?: number;
+    iconProps?: IconProps;
   };
 
 function Input({
@@ -32,6 +33,7 @@ function Input({
   step,
   error,
   helperText,
+  iconProps,
   onChange,
   ...props
 }: InputProps) {
@@ -52,15 +54,17 @@ function Input({
   };
 
   return (
-    <div>
+    <div data-slot="input-wrapper">
       <div className={cn('relative group min-h-7', underline !== 'none' && 'bg-juiBackground-input', className)}>
         {IconLeft && (
           <span
             className={cn(
-              'absolute left-3 top-1/2 -translate-y-1/2 text-current pointer-events-none',
+              'absolute left-3 top-1/2 -translate-y-1/2 text-current',
+              !iconProps && 'pointer-events-none',
+              iconProps && 'hover:text-current/50',
               disabled && 'opacity-50 cursor-not-allowed',
             )}>
-            <IconLeft size="small" />
+            <IconLeft size="small" {...iconProps} />
           </span>
         )}
 
@@ -100,10 +104,12 @@ function Input({
         {IconRight && (
           <span
             className={cn(
-              'absolute right-3 top-1/2 -translate-y-1/2 text-current pointer-events-none',
+              'absolute right-3 top-1/2 -translate-y-1/2 text-current',
+              !iconProps && 'pointer-events-none',
+              iconProps && 'hover:text-current/50',
               disabled && 'opacity-50 cursor-not-allowed',
             )}>
-            <IconRight size="small" />
+            <IconRight size="small" {...iconProps} />
           </span>
         )}
 

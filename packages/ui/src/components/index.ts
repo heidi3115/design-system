@@ -287,3 +287,5 @@ export {
   type TreeViewState,
   type TreeViewStateInfo,
 } from './TreeView';
+
+export { DatePicker } from './DatePicker';

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import {
   Button,
@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
   Checkbox,
+  DatePicker,
   Popover,
   RadioGroup,
   Select,
@@ -20,6 +21,7 @@ import {
   Switch,
   useConfirmDialog,
 } from '@common/ui';
+import { EyeIcon } from '@common/ui/icons';
 
 export default function BoxPages() {
   const otpRef = useRef(null);
@@ -41,11 +43,63 @@ export default function BoxPages() {
     { label: 'Kiwi', value: 'kiwi' },
   ];
 
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const uncontrollDate = useRef<Date | undefined>(undefined);
+
   return (
     <div className="flex flex-col gap-4 h-full overflow-auto">
       <div className="h-9">
         <h1 className="text-4xl font-bold">IN BOX LAYOUT</h1>
       </div>
+
+      <div className="relative flex flex-col gap-4 ml-4">
+        <DatePicker
+          defaultDate={new Date(2024, 5, 11)}
+          dateRef={uncontrollDate}
+          className="w-200"
+          isArrow
+          numberOfMonths={2}
+          calendarProps={{
+            captionLayout: 'dropdown-months',
+            modifiers: {
+              highlight: [new Date(2024, 6, 3), new Date(2024, 6, 4)],
+            },
+            modifiersClassNames: {
+              highlight: 'font-bold',
+            },
+          }}
+          inputProps={{
+            underline: 'none',
+            iconLeft: EyeIcon,
+          }}
+          disabled={[{ before: new Date(2024, 6, 1), after: new Date(2024, 6, 10) }]}
+        />
+
+        <DatePicker
+          date={selectedDate}
+          onDateChange={(date) => {
+            setSelectedDate(date);
+          }}
+          onConditionRequestCallback={(condDate) => condDate < new Date()}
+          conditionContent={(condDate) => `과거를 선택할수 없습니다. ${condDate?.toDateString()} 선택하시겠습니까?`}
+          popoverProps={{
+            isArrow: true,
+          }}
+        />
+
+        <DatePicker
+          date={selectedDate}
+          onDateChange={(date) => {
+            setSelectedDate(date);
+          }}
+          popoverProps={{
+            isArrow: true,
+          }}
+        />
+
+        <p>선택된 날짜: {selectedDate ? selectedDate.toDateString() : '없음'}</p>
+      </div>
+
       <Switch defaultChecked />
       <Switch variant="secondary" defaultChecked />
       <Switch variant="error" defaultChecked />
