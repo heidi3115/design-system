@@ -78,7 +78,7 @@ function CalendarTime({
               <div className="flex items-center gap-1">
                 {/* Hour Select */}
                 <Select
-                  width={40}
+                  width={38}
                   className={cn(timeSelectClassName)}
                   optionsClassName="min-w-0"
                   itemClassName="justify-center"
@@ -95,7 +95,7 @@ function CalendarTime({
                     <span>:</span>
                     {/* Minute Select */}
                     <Select
-                      width={40}
+                      width={38}
                       className={cn(timeSelectClassName)}
                       optionsClassName="min-w-0"
                       itemClassName="justify-center"
@@ -114,8 +114,9 @@ function CalendarTime({
                     <span>:</span>
                     {/* Second Select */}
                     <Select
-                      width={40}
+                      width={38}
                       className={cn(timeSelectClassName)}
+                      optionsClassName="min-w-0"
                       itemClassName="justify-center"
                       isContentFitTriggerWidth
                       defaultValue={String(dateTime?.getSeconds() ?? 0)}
