@@ -19,7 +19,7 @@ const treeViewVariants = tv({
   variants: {
     variant: {
       // --tree-view-color 로 색 지정.
-      default: { common: '[--tree-view-color:var(--juiGrey-a700)]' },
+      default: { common: '[--tree-view-color:var(--juiGrey-a400)]' },
       primary: { common: '[--tree-view-color:var(--juiPrimary)]' },
       secondary: { common: '[--tree-view-color:var(--juiSecondary)]' },
       error: { common: '[--tree-view-color:var(--juiError)]' },
@@ -77,8 +77,7 @@ const treeViewVariants = tv({
           // data-active=true인 경우에만 자식 span에 배경색 적용
           '[&[data-active=true]_span[data-slot=item-trigger-icon]]:bg-[var(--tree-view-color)]',
         ],
-        icons:
-          'rounded-full active:[&_span[data-slot=item-trigger-icon]]:bg-[var(--tree-view-color)] [&[data-active=true]]:bg-[var(--tree-view-color)',
+        icons: 'rounded-full', // active:[&_span[data-slot=item-trigger-icon]]:bg-[var(--tree-view-color)] [&[data-active=true]]:bg-[var(--tree-view-color)
       },
     },
     disabled: {
