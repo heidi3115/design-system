@@ -195,7 +195,8 @@ function Calendar({
               value={String(value)}
               width="fit"
               className="min-w-0"
-              optionsClassName="min-w-0 text-center"
+              optionsClassName="min-w-0 justify-center"
+              itemClassName="justify-center"
               isContentFitTriggerWidth
               onValueChange={handleValueChange}
               options={
@@ -348,7 +349,7 @@ function ConfirmationDialog({
         <DialogContent className="absolute flex flex-col justify-center min-h-34 top-[50%] left-[50%] z-50 min-w-60 max-w-68 translate-x-[-50%] translate-y-[-50%] rounded-lg bg-juiBackground-popover p-4 shadow-lg">
           <DialogTitle className="sr-only">title</DialogTitle>
           <DialogDescription className="text-juiText-primary overflow-hidden break-all break-words text-center" asChild>
-            {dialogContent}
+            <span>{dialogContent}</span>
           </DialogDescription>
           <DialogClose className={cn(closeButton(), 'top-2.5 right-2.5 focus:ring-0 focus:ring-offset-0')}>
             <XIcon />

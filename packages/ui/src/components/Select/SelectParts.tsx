@@ -21,10 +21,12 @@ function SelectValue({ ...props }: ComponentProps<typeof SelectPrimitive.Value>)
 function SelectTrigger({
   className,
   size = 'default',
+  isTriggerIcon = true,
   children,
   ...props
 }: ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: 'small' | 'default' | 'large';
+  isTriggerIcon?: boolean;
 }) {
   return (
     <SelectPrimitive.Trigger
@@ -70,9 +72,11 @@ function SelectTrigger({
       )}
       {...props}>
       {children}
-      <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50 transition-transform duration-200" />
-      </SelectPrimitive.Icon>
+      {isTriggerIcon && (
+        <SelectPrimitive.Icon asChild>
+          <ChevronDownIcon className="size-4 opacity-50 transition-transform duration-200" />
+        </SelectPrimitive.Icon>
+      )}
     </SelectPrimitive.Trigger>
   );
 }

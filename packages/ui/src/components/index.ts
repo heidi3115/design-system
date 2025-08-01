@@ -264,6 +264,6 @@ export {
   breadcrumbVariants,
 } from './Breadcrumb';
 
-export { Calendar, CalendarDayButton, type DateRange } from './Calendar';
+export { Calendar, CalendarTime, CalendarDayButton, type DateRange } from './Calendar';
 
 export { DatePicker, RangeDatePicker } from './DatePicker';
