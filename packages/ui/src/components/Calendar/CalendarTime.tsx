@@ -1,6 +1,6 @@
 'use client';
 
-import { type ComponentProps, useRef, useState } from 'react';
+import { type ComponentProps, type ReactNode, useRef, useState } from 'react';
 import { format } from 'date-fns';
 
 import { ClockIcon } from '@common/ui/icons';
@@ -13,11 +13,13 @@ function CalendarTime({
   selected,
   onSelect,
   timeType = 'minute',
+  closeButton,
   ...calendarProps
 }: Omit<ComponentProps<typeof Calendar>, 'mode' | 'selected' | 'onSelect' | 'footer'> & {
   selected: Date | undefined;
   onSelect?: (calDate: Date | undefined) => void;
   timeType?: 'hour' | 'minute' | 'second';
+  closeButton?: ReactNode;
 }) {
   const [dateTime, setDateTime] = useState<Date | undefined>(selected);
 
@@ -72,7 +74,7 @@ function CalendarTime({
       footer={
         <>
           <Separator />
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mt-2.5">
             <div className="flex items-center gap-2">
               <ClockIcon size="small" />
               <div className="flex items-center gap-1">
@@ -80,7 +82,7 @@ function CalendarTime({
                 <Select
                   width={38}
                   className={cn(timeSelectClassName)}
-                  optionsClassName="min-w-0"
+                  optionsClassName="min-w-0 max-h-56"
                   itemClassName="justify-center"
                   isContentFitTriggerWidth
                   defaultValue={String(dateTime?.getHours() ?? 0)}
@@ -97,7 +99,7 @@ function CalendarTime({
                     <Select
                       width={38}
                       className={cn(timeSelectClassName)}
-                      optionsClassName="min-w-0"
+                      optionsClassName="min-w-0 max-h-56"
                       itemClassName="justify-center"
                       isContentFitTriggerWidth
                       defaultValue={String(dateTime?.getMinutes() ?? 0)}
@@ -116,7 +118,7 @@ function CalendarTime({
                     <Select
                       width={38}
                       className={cn(timeSelectClassName)}
-                      optionsClassName="min-w-0"
+                      optionsClassName="min-w-0 max-h-56"
                       itemClassName="justify-center"
                       isContentFitTriggerWidth
                       defaultValue={String(dateTime?.getSeconds() ?? 0)}
@@ -142,6 +144,7 @@ function CalendarTime({
                 : ''}
             </span>
           </div>
+          <div className="flex">{closeButton}</div>
         </>
       }
       {...calendarProps}

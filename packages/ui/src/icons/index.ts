@@ -10,6 +10,7 @@ export { BarChartIcon } from './Icon/BarChartIcon';
 export { BellIcon } from './Icon/BellIcon';
 export { BookmarkIcon } from './Icon/BookmarkIcon';
 export { CalendarIcon } from './Icon/CalendarIcon';
+export { CalendarClockIcon } from './Icon/CalendarClockIcon';
 export { CheckIcon } from './Icon/CheckIcon';
 export { CheckSquareIcon } from './Icon/CheckSquareIcon';
 export { CheckCircleIcon } from './Icon/CheckCircleIcon';

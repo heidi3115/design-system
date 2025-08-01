@@ -90,7 +90,7 @@ function SelectContent({
   ...props
 }: ComponentProps<typeof SelectPrimitive.Content> & {
   isContentFitTriggerWidth?: boolean;
-  container?: HTMLElement;
+  container?: HTMLElement | null;
 }) {
   const [mounted, setMounted] = useState(false);
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);

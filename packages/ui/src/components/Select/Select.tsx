@@ -69,6 +69,8 @@ type SelectProps = ComponentProps<typeof SelectRoot> &
     className?: string;
     optionsClassName?: string;
     itemClassName?: string;
+    position?: ComponentProps<typeof SelectContent>['position'];
+    container?: ComponentProps<typeof SelectContent>['container'];
   };
 
 function Select({
@@ -88,6 +90,8 @@ function Select({
   error,
   helperText,
   isTriggerIcon,
+  position,
+  container,
   ...props
 }: SelectProps) {
   const isNumberWidth = typeof width === 'number';
@@ -131,7 +135,11 @@ function Select({
         )}
       </div>
 
-      <SelectContent isContentFitTriggerWidth={isContentFitTriggerWidth} className={optionsClassName}>
+      <SelectContent
+        isContentFitTriggerWidth={isContentFitTriggerWidth}
+        position={position}
+        container={container}
+        className={optionsClassName}>
         {options.map((opt, idx) => {
           // 그룹일 경우
           if ('type' in opt && opt.type === 'group') {

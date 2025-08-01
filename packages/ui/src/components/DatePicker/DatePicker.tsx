@@ -11,12 +11,14 @@ import {
 } from 'react';
 import { format, parse } from 'date-fns';
 
-import { Calendar, Input, Popover } from '../../components';
-import { CalendarIcon } from '@common/ui/icons';
+import { Button, Calendar, CalendarTime, Input, Popover } from '../../components';
+import { CalendarIcon, CalendarClockIcon } from '@common/ui/icons';
 import { useConfirmDialog } from '@common/ui/hooks';
-import { useDateInputFormatter } from './hooks/useDateInputFormatter';
+import { useDateTimeInputFormatter } from './hooks/useDateTimeInputFormatter';
 import { useUpdateEffect } from '@common/utils';
 import { cn } from '@common/ui/lib/utils';
+
+type TimeType = 'date' | 'hour' | 'minute' | 'second';
 
 type DatePickerBaseProps = {
   date?: Date | 'init';
@@ -39,6 +41,7 @@ type DatePickerBaseProps = {
   disabled?: ComponentProps<typeof Calendar>['disabled'];
   inputProps?: Omit<ComponentProps<typeof Input>, 'iconProp' | 'placeholder'>;
   placeholder?: ComponentProps<typeof Input>['placeholder'];
+  timeType?: TimeType;
 };
 
 type WithCondition = {
@@ -69,8 +72,20 @@ function DatePicker({
   onConditionRequestCallback,
   conditionContent = (selectedDate) => `${selectedDate?.toDateString()} 선택하시겠습니까?`,
   inputProps,
-  placeholder = 'YYYY-MM-DD',
+  timeType = 'date',
+  placeholder,
 }: DatePickerProps) {
+  const timeTypeFormatMap: Record<TimeType, string> = {
+    date: 'yyyy-MM-dd',
+    hour: 'yyyy-MM-dd HH:00',
+    minute: 'yyyy-MM-dd HH:mm',
+    second: 'yyyy-MM-dd HH:mm:ss',
+  };
+
+  const timeTypeFormat = timeTypeFormatMap[timeType ?? 'date'];
+
+  const CalendarComp = timeType === 'date' ? Calendar : CalendarTime;
+
   const { openDialog } = useConfirmDialog();
 
   // 각 요소들의 className
@@ -85,16 +100,17 @@ function DatePicker({
 
   useImperativeHandle(dateRef, () => (isInitDate ? undefined : date));
 
-  const [inputValue, setInputValue] = useState(() => (date ? format(date, 'yyyy-MM-dd') : ''));
+  const [inputValue, setInputValue] = useState(() => (date ? format(date, timeTypeFormat) : ''));
   const [isError, setIsError] = useState(false);
   const [open, setOpen] = useState(false);
 
   const [confirmationRequest, setConfirmationRequest] = useState<Date | undefined>(undefined);
 
-  const { handleInputChange } = useDateInputFormatter({
+  const { handleInputChange } = useDateTimeInputFormatter({
     initDate: isInitDate ? undefined : date,
     setInputValue,
     setIsError,
+    withTimeType: timeType,
   });
 
   // value (또는 internalDate) 변경 시 inputValue 동기화
@@ -106,7 +122,7 @@ function DatePicker({
     }
 
     if (date) {
-      setInputValue(format(date, 'yyyy-MM-dd'));
+      setInputValue(format(date, timeTypeFormat));
       setIsError(false);
     } else {
       setInputValue('');
@@ -125,7 +141,7 @@ function DatePicker({
 
   // input blur 시 유효한 날짜면 onChange 또는 내부 상태 업데이트
   const handleInputBlur = () => {
-    const parsed = parse(inputValue, 'yyyy-MM-dd', new Date());
+    const parsed = parse(inputValue, timeTypeFormat, new Date());
 
     if (isNaN(parsed.getTime())) {
       setIsError(true);
@@ -137,7 +153,7 @@ function DatePicker({
       if (date) {
         openDialog({
           description: <span className="text-xs">{conditionContent?.(parsed)}</span>,
-          onCancel: () => setInputValue(format(date, 'yyyy-MM-dd')),
+          onCancel: () => setInputValue(format(date, timeTypeFormat)),
           onConfirm: () => dateUpdate(parsed),
         });
       }
@@ -158,10 +174,13 @@ function DatePicker({
         return;
       }
 
-      const formatted = format(selectDate, 'yyyy-MM-dd');
+      const formatted = format(selectDate, 'yyyy-MM-dd HH:mm:ss');
 
       setInputValue(formatted);
-      setOpen(false);
+
+      if (timeType === 'date') {
+        setOpen(false);
+      }
 
       dateUpdate(selectDate);
     }
@@ -172,8 +191,8 @@ function DatePicker({
 
   const hasCustomIcon = iconRight || iconLeft;
   const defaultIconRight = useMemo(() => {
-    return hasCustomIcon ? undefined : CalendarIcon;
-  }, [hasCustomIcon]);
+    return hasCustomIcon ? undefined : timeType === 'date' ? CalendarIcon : CalendarClockIcon;
+  }, [hasCustomIcon, timeType]);
 
   return (
     <div data-slot="date-picker-warpper" className={cn('w-fit', className)}>
@@ -195,9 +214,14 @@ function DatePicker({
               iconLeft={iconLeft}
               iconProps={{
                 onClick: () => setOpen((prev) => !prev),
-                className: cn('cursor-pointer', open && ' text-juiPrimary'),
+                className: cn(
+                  'cursor-pointer',
+                  open && 'bg-current/20 p-1 size-6 rounded-lg',
+                  open && !iconLeft && 'translate-x-1 ',
+                  open && iconLeft && '-translate-x-1g',
+                ),
               }}
-              placeholder={placeholder}
+              placeholder={placeholder ?? timeTypeFormat}
               {...restInputProps}
               error={isError || restInputProps.error}
               helperText={restInputProps.helperText || (isError && '올바른 날짜를 입력해 주세요')}
@@ -207,8 +231,9 @@ function DatePicker({
         isArrow={isArrow}
         className={popoverClassName}
         {...popoverProps}>
-        <Calendar
+        <CalendarComp
           mode="single"
+          {...(timeType !== 'date' && { timeType: timeType })}
           selected={isInitDate ? undefined : date}
           onSelect={handleSelectDate}
           defaultMonth={isInitDate ? undefined : date}
@@ -229,6 +254,11 @@ function DatePicker({
                 },
               }
             : {})}
+          closeButton={
+            <Button className="ml-auto mt-1 mr-0" onClick={() => setOpen(false)}>
+              닫기
+            </Button>
+          }
           {...calendarProps}
         />
       </Popover>

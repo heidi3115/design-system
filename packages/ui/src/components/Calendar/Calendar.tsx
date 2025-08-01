@@ -149,7 +149,7 @@ function Calendar({
           }, []);
 
           return (
-            <div ref={wrapperRef} className="relative h-fit w-fit translate-y-">
+            <div ref={wrapperRef} className="relative h-fit w-fit">
               <div data-slot="calendar" ref={rootRef} className={cn(rootClassName)} {...restRoot} />
               <ConfirmationDialog
                 open={dialogOpen ?? false}

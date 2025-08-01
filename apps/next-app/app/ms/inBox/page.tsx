@@ -54,6 +54,16 @@ export default function BoxPages() {
 
       <div className="relative flex flex-col gap-4 ml-4">
         <DatePicker
+          timeType="minute"
+          defaultDate={new Date(2025, 7, 3, 11, 22)}
+          onDateChange={(date) => {
+            console.warn(date);
+          }}
+          calendarProps={{
+            numberOfMonths: 2,
+          }}
+        />
+        <DatePicker
           defaultDate={new Date(2024, 5, 11)}
           dateRef={uncontrollDate}
           className="w-200"
@@ -76,6 +86,7 @@ export default function BoxPages() {
         />
 
         <DatePicker
+          timeType="minute"
           date={selectedDate}
           onDateChange={(date) => {
             setSelectedDate(date);
