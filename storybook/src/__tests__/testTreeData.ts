@@ -694,7 +694,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
     ord: 0,
     baseEndDtStd: null,
     id: 'H100',
-    name: '임직원 고위험군',
+    name: '임직원 고위험군_id:H100',
     children: [
       {
         hrskGrupIdx: 2,
@@ -702,7 +702,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 0,
         baseEndDtStd: null,
         id: 'H101',
-        name: 'BlackList',
+        name: 'BlackList_id:H101',
       },
       {
         hrskGrupIdx: 19,
@@ -710,7 +710,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 11,
         baseEndDtStd: '133001001',
         id: 'H112',
-        name: 'QA1_기본자동점검일',
+        name: 'QA1_기본자동점검일_id:H112',
       },
       {
         hrskGrupIdx: 15,
@@ -718,11 +718,11 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 7,
         baseEndDtStd: '133001003',
         id: 'H108',
-        name: 'QA2_퇴직예정자',
+        name: 'QA2_퇴직예정자_id:H108',
         children: [
-          { hrskGrupIdx: 151, pgrupCd: 'H108', id: 'H108-1', name: 'QA2_퇴직예정자-child-1' },
-          { hrskGrupIdx: 152, pgrupCd: 'H108', id: 'H108-2', name: 'QA2_퇴직예정자-child-2', disabled: true },
-          { hrskGrupIdx: 153, pgrupCd: 'H108', id: 'H108-3', name: 'QA2_퇴직예정자-child-3' },
+          { hrskGrupIdx: 151, pgrupCd: 'H108', id: 'H108-1', name: 'QA2_퇴직예정자-child-1_id:H108-1' },
+          { hrskGrupIdx: 152, pgrupCd: 'H108', id: 'H108-2', name: 'QA2_퇴직예정자-child-2_id:H108-2', disabled: true },
+          { hrskGrupIdx: 153, pgrupCd: 'H108', id: 'H108-3', name: 'QA2_퇴직예정자-child-3_id:H108-3' },
         ],
       },
       {
@@ -731,30 +731,40 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 8,
         baseEndDtStd: '133001002',
         id: 'H109',
-        name: 'QA3_휴직예정자',
+        name: 'QA3_휴직예정자_id:H109',
         children: [
-          { hrskGrupIdx: 161, pgrupCd: 'H109', id: 'H109-1', name: 'QA3_휴직예정자-child-1' },
+          { hrskGrupIdx: 161, pgrupCd: 'H109', id: 'H109-1', name: 'QA3_휴직예정자-child-1_id:H109-1' },
           {
             hrskGrupIdx: 162,
             pgrupCd: 'H109',
             id: 'H109-2',
-            name: 'QA3_휴직예정자-child-2',
+            name: 'QA3_휴직예정자-child-2_id:H109-2',
             disabled: false,
             children: [
               {
                 hrskGrupIdx: 1621,
                 pgrupCd: 'H109-2',
                 id: 'H109-2-1',
-                name: 'QA3_휴직예정자-child-2-1',
+                name: 'QA3_휴직예정자-child-2-1_id:H109-2-1',
                 children: [
-                  { hrskGrupIdx: 16211, pgrupCd: 'H109-2-1', id: 'H109-2-1-1', name: 'QA3_휴직예정자-child-2-1-1' },
-                  { hrskGrupIdx: 16212, pgrupCd: 'H109-2-1', id: 'H109-2-1-2', name: 'QA3_휴직예정자-child-2-1-2' },
+                  {
+                    hrskGrupIdx: 16211,
+                    pgrupCd: 'H109-2-1',
+                    id: 'H109-2-1-1',
+                    name: 'QA3_휴직예정자-child-2-1-1_id:H109-2-1-1',
+                  },
+                  {
+                    hrskGrupIdx: 16212,
+                    pgrupCd: 'H109-2-1',
+                    id: 'H109-2-1-2',
+                    name: 'QA3_휴직예정자-child-2-1-2_id:H109-2-1-2',
+                  },
                 ],
               },
-              { hrskGrupIdx: 1622, pgrupCd: 'H109-2', id: 'H109-2-2', name: 'QA3_휴직예정자-child-2-2' },
+              { hrskGrupIdx: 1622, pgrupCd: 'H109-2', id: 'H109-2-2', name: 'QA3_휴직예정자-child-2-2_id:H109-2-2' },
             ],
           },
-          { hrskGrupIdx: 163, pgrupCd: 'H109', id: 'H109-3', name: 'QA3_휴직예정자-child-3', disabled: true },
+          { hrskGrupIdx: 163, pgrupCd: 'H109', id: 'H109-3', name: 'QA3_휴직예정자-child-3_id:H109-3', disabled: true },
         ],
       },
       {
@@ -763,7 +773,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 24,
         baseEndDtStd: '133001003',
         id: 'H125',
-        name: 'QA4_테스트',
+        name: 'QA4_테스트_id:H125',
       },
       {
         hrskGrupIdx: 14,
@@ -771,7 +781,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 6,
         baseEndDtStd: null,
         id: 'H107',
-        name: '교육용 그룹',
+        name: '교육용 그룹_id:H107',
       },
       {
         hrskGrupIdx: 6,
@@ -779,7 +789,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 4,
         baseEndDtStd: null,
         id: 'H105',
-        name: '기타',
+        name: '기타_id:H105',
       },
       {
         hrskGrupIdx: 24,
@@ -787,7 +797,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 16,
         baseEndDtStd: '133001001',
         id: 'H117',
-        name: '삭제예정',
+        name: '삭제예정_id:H117',
         children: [
           {
             hrskGrupIdx: 241,
@@ -795,7 +805,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
             ord: 161,
             baseEndDtStd: '133001001',
             id: 'H117-1',
-            name: '삭제예정-child-1',
+            name: '삭제예정-child-1_id:H117-1',
           },
           {
             hrskGrupIdx: 242,
@@ -803,7 +813,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
             ord: 160,
             baseEndDtStd: '133001001',
             id: 'H117-2',
-            name: '삭제예정-child-2',
+            name: '삭제예정-child-2_id:H117-2',
           },
         ],
       },
@@ -813,7 +823,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 3,
         baseEndDtStd: '133001003',
         id: 'H104',
-        name: '상시 개인정보 취급자',
+        name: '상시 개인정보 취급자_id:H104',
       },
       {
         hrskGrupIdx: 26,
@@ -821,7 +831,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 18,
         baseEndDtStd: '133001001',
         id: 'H119',
-        name: '새 그룹',
+        name: '새 그룹_id:H119',
       },
       {
         hrskGrupIdx: 31,
@@ -829,7 +839,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 23,
         baseEndDtStd: null,
         id: 'H124',
-        name: '새 그룹_test',
+        name: '새 그룹_test_id:H124',
       },
       {
         hrskGrupIdx: 4,
@@ -837,7 +847,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 2,
         baseEndDtStd: '133001002',
         id: 'H103',
-        name: '예외권한자',
+        name: '예외권한자_id:H103',
       },
       {
         hrskGrupIdx: 23,
@@ -845,7 +855,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 15,
         baseEndDtStd: '133001001',
         id: 'H116',
-        name: '자동점검 실패',
+        name: '자동점검 실패_id:H116',
       },
       {
         hrskGrupIdx: 3,
@@ -853,7 +863,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 1,
         baseEndDtStd: null,
         id: 'H102',
-        name: '퇴직예정자',
+        name: '퇴직예정자_id:H102',
       },
       {
         hrskGrupIdx: 13,
@@ -861,7 +871,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 5,
         baseEndDtStd: '133001003',
         id: 'H106',
-        name: '퇴직자',
+        name: '퇴직자_id:H106',
       },
     ],
   },
@@ -871,7 +881,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
     ord: 1,
     baseEndDtStd: null,
     id: 'H200',
-    name: '자산 고위험군',
+    name: '자산 고위험군_id:H200',
     children: [
       {
         hrskGrupIdx: 8,
@@ -879,7 +889,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 0,
         baseEndDtStd: null,
         id: 'H201',
-        name: 'CPU 과부하 장비그룹',
+        name: 'CPU 과부하 장비그룹_id:H201',
         children: [
           {
             hrskGrupIdx: 81,
@@ -887,7 +897,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
             ord: 2,
             baseEndDtStd: null,
             id: 'H201-1',
-            name: 'CPU 과부하 장비그룹-child-1',
+            name: 'CPU 과부하 장비그룹-child-1_id:H201-1',
           },
           {
             hrskGrupIdx: 82,
@@ -895,7 +905,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
             ord: 1,
             baseEndDtStd: '133001001',
             id: 'H201-2',
-            name: 'CPU 과부하 장비그룹-child-2',
+            name: 'CPU 과부하 장비그룹-child-2_id:H201-2',
           },
         ],
       },
@@ -905,7 +915,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 1,
         baseEndDtStd: null,
         id: 'H202',
-        name: 'DISK 용량과다 장비그룹',
+        name: 'DISK 용량과다 장비그룹_id:H202',
       },
       {
         hrskGrupIdx: 10,
@@ -913,7 +923,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 2,
         baseEndDtStd: null,
         id: 'H203',
-        name: 'MEM 과사용 장비그룹',
+        name: 'MEM 과사용 장비그룹_id:H203',
       },
       {
         hrskGrupIdx: 12,
@@ -921,7 +931,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 4,
         baseEndDtStd: null,
         id: 'H205',
-        name: '기타',
+        name: '기타_id:H205',
         children: [
           {
             hrskGrupIdx: 81,
@@ -929,7 +939,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
             ord: 2,
             baseEndDtStd: '133001001',
             id: 'H205-1',
-            name: '기타-child-1',
+            name: '기타-child-1_id:H205-1',
           },
           {
             hrskGrupIdx: 82,
@@ -937,7 +947,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
             ord: 1,
             baseEndDtStd: '133001001',
             id: 'H205-2',
-            name: '기타-child-2',
+            name: '기타-child-2_id:H205-2',
           },
           {
             hrskGrupIdx: 83,
@@ -945,7 +955,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
             ord: 3,
             baseEndDtStd: '133001001',
             id: 'H205-3',
-            name: '기타-child-3',
+            name: '기타-child-3_id:H205-3',
           },
         ],
       },
@@ -955,7 +965,7 @@ export const highriskGroupTreeData: HighRiskTreeNodeProps[] = [
         ord: 3,
         baseEndDtStd: null,
         id: 'H204',
-        name: '서버 중단 장비그룹',
+        name: '서버 중단 장비그룹_id:H204',
         children: [],
       },
     ],

@@ -6,11 +6,5 @@ export type {
   TreeViewItemTriggerProps,
 } from './TreeViewParts';
 export { default as TreeItem, type TreeItemProps, type BaseTreeNodeProps } from './TreeItem';
-export {
-  default as TreeView,
-  type TreeViewProps,
-  type TreeViewState,
-  type TreeViewStateInfo,
-  type TreeViewRef,
-} from './TreeView';
+export { default as TreeView, type TreeViewProps, type TreeViewStateType } from './TreeView';
 export { treeViewVariants } from './treeViewVariants';

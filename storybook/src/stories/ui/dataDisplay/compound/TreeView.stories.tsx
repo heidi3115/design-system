@@ -1,4 +1,9 @@
-import { Button, Separator, TreeView, type TreeViewProps, treeViewVariants } from '@common/ui';
+import React, { useRef, useState } from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button, Separator, TreeView, type TreeViewProps, type TreeViewStateType, treeViewVariants } from '@common/ui';
+import { EyeIcon, EyeOffIcon, UserFilledIcon } from '@common/ui/icons';
+import { cn } from '@common/ui/lib/utils.ts';
+import { flattenTree, getAllNodeIds, isLeafNode } from '@common/ui/components/TreeView/utils.ts';
 import {
   assetDivisionTreeData,
   basicTreeData1,
@@ -6,14 +11,7 @@ import {
   highriskGroupTreeData,
   responseStatusTreeData,
   sampleTreeData1,
-} from '@common/ui/__tests__/testTreeData.ts';
-import type { TreeViewStateInfo } from '@common/ui/components/TreeView';
-import type { TreeViewRef } from '@common/ui/components/TreeView/TreeView';
-import { getAllNodeIds } from '@common/ui/components/TreeView/utils.ts';
-import { EyeIcon, EyeOffIcon, UserFilledIcon } from '@common/ui/icons';
-import { cn } from '@common/ui/lib/utils.ts';
-import type { Meta, StoryObj } from '@storybook/react';
-import React, { useEffect, useRef, useState } from 'react';
+} from '../../../../__tests__/testTreeData.ts';
 
 // 공통 스타일 클래스
 const flexRow = 'relative flex flex-row size-max gap-4 text-juiText-primary';
@@ -25,15 +23,24 @@ const variantOptions = Object.keys(
   treeViewVariants.variants.variant,
 ) as (keyof typeof treeViewVariants.variants.variant)[];
 
-// meta 정의
 const meta: Meta<typeof TreeView> = {
   title: 'UI/DataDisplay/Compound/TreeView',
   component: TreeView,
   args: {
     treeData: basicTreeData1,
-    variant: 'default',
     size: 'basic',
+    variant: 'default',
     disabled: false,
+    defaultSelectedIds: undefined,
+    selectedIds: undefined,
+    defaultExpandedIds: undefined,
+    expandedIds: undefined,
+    defaultDisabledIds: undefined,
+    disabledIds: undefined,
+    onSelectedNodes: undefined,
+    onToggledNodes: undefined,
+    onDisabledNodes: undefined,
+    onTreeViewState: undefined,
     multiSelect: false,
     leafOnlySelect: false,
     showIcons: true,
@@ -41,14 +48,9 @@ const meta: Meta<typeof TreeView> = {
     expandedIcon: undefined,
     endIcon: undefined,
     showLineLevel: undefined,
-    defaultSelectedIds: undefined,
-    selectedIds: undefined,
-    defaultExpandedIds: undefined,
-    expandedIds: undefined,
-    onSelectedNodes: undefined,
-    onToggledNodes: undefined,
     nodeClassName: '',
     className: '',
+    treeViewRef: undefined,
   },
   argTypes: {
     treeData: {
@@ -67,18 +69,9 @@ type TreeNodeProps<T> = {
         },
       },
       description: [
-        '트리 형태로 렌더링할 계층적 데이터 배열입니다.',
+        '트리 형태로 렌더링할 계층적 데이터 배열입니다. id 와 name 이 필수여야 합니다.',
         '자식 노드가 있을 경우 `children` 속성에 배열로 하위 노드를 넣어야 합니다.',
         '예: [{ id: "1", name: "Parent", children: [{ id: "1-1", name: "Child" }] }, ...]',
-      ].join('\n'),
-    },
-    variant: {
-      control: 'select',
-      options: variantOptions,
-      table: { type: { summary: `${variantOptions.join(' | ')}` }, defaultValue: { summary: 'default' } },
-      description: [
-        '트리의 테마/색상 스타일을 지정합니다.',
-        '브랜드 컬러, 에러 컬러 등 다양한 variant로 스타일을 제어할 수 있습니다.',
       ].join('\n'),
     },
     size: {
@@ -90,76 +83,21 @@ type TreeNodeProps<T> = {
         `기본값은 'basic' 이며, ${sizeOptions.join(' | ')} 등 다양한 옵션이 있습니다.`,
       ].join('\n'),
     },
+    variant: {
+      control: 'select',
+      options: variantOptions,
+      table: { type: { summary: `${variantOptions.join(' | ')}` }, defaultValue: { summary: 'default' } },
+      description: [
+        '트리의 테마/색상 스타일을 지정합니다.',
+        '브랜드 컬러, 에러 컬러 등 다양한 variant로 스타일을 제어할 수 있습니다.',
+      ].join('\n'),
+    },
     disabled: {
       control: 'boolean',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
       description: [
-        '전체 TreeView를 비활성화할지 여부입니다.',
-        'true일 때 노드 선택/확장 등 모든 상호작용이 비활성화됩니다.',
-      ].join('\n'),
-    },
-    multiSelect: {
-      control: 'boolean',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-      description: ['다중 선택 모드를 활성화합니다.', 'true 활성화 시 여러 노드를 동시에 선택할 수 있습니다.'].join(
-        '\n',
-      ),
-    },
-    leafOnlySelect: {
-      control: 'boolean',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-      description: [
-        'multiSelect가 true일 때 leaf 노드만 선택 가능하도록 제한합니다.',
-        'leaf 노드는 자식이 없는 노드를 의미합니다.',
-      ].join('\n'),
-    },
-    showIcons: {
-      control: 'boolean',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
-      description: [
-        '노드 이름 좌측에 아이콘을 표시할지 여부입니다.',
-        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있습니다.',
-      ].join('\n'),
-    },
-    defaultIcon: {
-      control: false,
-      table: {
-        type: { summary: 'React.ReactNode' },
-        defaultValue: { summary: 'undefined' },
-      },
-      description: [
-        '노드 이름 좌측에 아이콘 중 기본적인 축소 상태일 때의 아이콘을 일컫습니다.',
-        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있으며, undefined로 지정하지 않을 경우 기본 아이콘으로 적용됩니다.',
-      ].join('\n'),
-    },
-    expandedIcon: {
-      control: false,
-      table: {
-        type: { summary: 'React.ReactNode' },
-        defaultValue: { summary: 'undefined' },
-      },
-      description: [
-        '노드 이름 좌측에 아이콘 중 확장된 상태일 때의 아이콘을 일컫습니다.',
-        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있으며, undefined로 지정하지 않을 경우 기본 아이콘으로 적용됩니다.',
-      ].join('\n'),
-    },
-    endIcon: {
-      control: false,
-      table: {
-        type: { summary: 'React.ReactNode' },
-        defaultValue: { summary: 'undefined' },
-      },
-      description: [
-        '노드 이름 좌측에 아이콘 중 leaf node 로써, 자식이 없는 상일 때의 아이콘을 일컫습니다.',
-        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있으며, undefined로 지정하지 않을 경우 기본 아이콘으로 적용됩니다.',
-      ].join('\n'),
-    },
-    showLineLevel: {
-      control: 'number',
-      table: { type: { summary: 'number | undefined' }, defaultValue: { summary: 'undefined' } },
-      description: [
-        '노드 간 연결선(수직선)을 적용할 depth 레벨을 지정합니다.',
-        '0일 때 root 부터, undefined 이면 연결선을 표시하지 않습니다.',
+        '전체 TreeView 컴포넌트를 비활성화할지 여부입니다.',
+        'true일 때 노드 선택/확장 등 모든 상호작용이 비활성화 됩니다.',
       ].join('\n'),
     },
     defaultSelectedIds: {
@@ -169,7 +107,7 @@ type TreeNodeProps<T> = {
         defaultValue: { summary: 'undefined' },
       },
       description: [
-        '기본 선택된 노드 ID 들 입니다. (Uncontrolled 모드용).',
+        '기본값으로 선택된 노드 ID 들 입니다. (Uncontrolled 모드용).',
         'selectedIds가 제공되지 않을 때 초기 선택 상태를 설정합니다.',
       ].join('\n'),
     },
@@ -191,7 +129,7 @@ type TreeNodeProps<T> = {
         defaultValue: { summary: 'undefined' },
       },
       description: [
-        '기본 확장된 노드 ID 들 입니다. (Uncontrolled 모드용).',
+        '기본값으로 확장된 노드 ID 들 입니다. (Uncontrolled 모드용).',
         'expandedIds가 제공되지 않을 때 초기 확장 상태를 설정합니다.',
       ].join('\n'),
     },
@@ -206,6 +144,28 @@ type TreeNodeProps<T> = {
         'onToggledNodes와 함께 사용하여 확장 상태를 외부에서 제어합니다.',
       ].join('\n'),
     },
+    defaultDisabledIds: {
+      control: false,
+      table: {
+        type: { summary: 'string[]' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '기본값으로 비활성화 된 노드 ID 들 입니다. (Uncontrolled 모드용).',
+        'disabledIds가 제공되지 않을 때 초기 비활성화 상태를 설정합니다.',
+      ].join('\n'),
+    },
+    disabledIds: {
+      control: false,
+      table: {
+        type: { summary: 'string[]' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '현재 비활성화 된 노드 ID 들 입니다. (Controlled 모드용).',
+        'onDisabledNodes와 함께 사용하여 비활성화 상태를 외부에서 제어합니다.',
+      ].join('\n'),
+    },
     onSelectedNodes: {
       control: false,
       table: {
@@ -213,7 +173,7 @@ type TreeNodeProps<T> = {
         defaultValue: { summary: 'undefined' },
       },
       description: [
-        '노드 선택 시 호출되는 콜백함수입니다.',
+        '노드가 선택 시 호출되는 콜백 함수입니다.',
         'Storybook 에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
       ].join('\n'),
     },
@@ -224,8 +184,98 @@ type TreeNodeProps<T> = {
         defaultValue: { summary: 'undefined' },
       },
       description: [
-        '노드 확장/축소 시 호출되는 콜백함수입니다.',
+        '노드의 상태가 확장/축소 변화될 경우 호출되는 콜백 함수입니다.',
         'Storybook 에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
+      ].join('\n'),
+    },
+    onDisabledNodes: {
+      control: false,
+      table: {
+        type: { summary: '(disabledIds?: string[], disabledNodes?: TreeNodeProps<T>[]) => void' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '노드의 상태가 비활성화 될 시 호출되는 콜백 함수입니다.',
+        'Storybook 에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
+      ].join('\n'),
+    },
+    onTreeViewState: {
+      control: false,
+      table: {
+        type: { summary: '(state: TreeViewStateType) => void' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        'TreeView 컴포넌트에서 노드의 상태(선택/확장/비활성화)가 변화될 시 호출되는 콜백 함수입니다.',
+        'Storybook 에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
+      ].join('\n'),
+    },
+    multiSelect: {
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: [
+        'TreeView 컴포넌트에서 다중 선택 모드를 활성화합니다.',
+        'true로 활성화 시 여러 노드를 동시에 선택할 수 있습니다.',
+      ].join('\n'),
+    },
+    leafOnlySelect: {
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: [
+        'multiSelect가 true일 때 leaf 노드만 선택 가능하도록 제한합니다.',
+        'leaf 노드는 자식이 없는 노드를 의미합니다.',
+        'multiSelect가 false 일 경우 하나의 노드만이 선택 가능 할 때, 자식이 있는 노드는 선택이 불가합니다.',
+      ].join('\n'),
+    },
+    showIcons: {
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
+      description: [
+        '노드 이름 좌측에 아이콘을 표시할지 여부입니다.',
+        '아이콘은 기본적으로 제공되고 있으며, 각 노드 타입에 맞는 것으로 필요에 따라 defaultIcon, expandedIcon, endIcon 으로 별도로 설정할 수 있습니다.',
+        '별도로 아이콘이 지정 되어있어도 showIcons 이 false 면 아이콘이 보이지 않게 됩니다.',
+      ].join('\n'),
+    },
+    defaultIcon: {
+      control: false,
+      table: {
+        type: { summary: 'React.ReactNode' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '노드 중에서 자식이 있는 아이콘 일 경우, 노드 이름 좌측에 아이콘 중 기본적인 축소 상태일 때의 아이콘을 일컫습니다.',
+        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있으며, undefined로 지정하지 않을 경우 기본 아이콘으로 적용됩니다.',
+      ].join('\n'),
+    },
+    expandedIcon: {
+      control: false,
+      table: {
+        type: { summary: 'React.ReactNode' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '자식이 있는 아이콘 일 경우, 노드 이름 좌측에 아이콘 중 확장된 상태일 때의 아이콘을 일컫습니다.',
+        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있으며, undefined로 지정하지 않을 경우 기본 아이콘으로 적용됩니다.',
+      ].join('\n'),
+    },
+    endIcon: {
+      control: false,
+      table: {
+        type: { summary: 'React.ReactNode' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '자식이 없는 리프 노드(leaf node) 의 경우, 노드 이름 좌측에 있는 아이콘을 일컫습니다.',
+        '리프 노드의 경우 축소/확장 상태를 보여줄 필요가 없으므로 동일한 아이콘이 유지됩니다.',
+        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있으며, undefined로 지정하지 않을 경우 기본 아이콘으로 적용됩니다.',
+      ].join('\n'),
+    },
+    showLineLevel: {
+      control: 'number',
+      table: { type: { summary: 'number | undefined' }, defaultValue: { summary: 'undefined' } },
+      description: [
+        '노드 간 연결선(수직선)을 적용할 depth 레벨을 지정합니다.',
+        '0일 때 root 부터, undefined 이면 연결선을 표시하지 않습니다.',
       ].join('\n'),
     },
     nodeClassName: {
@@ -238,14 +288,27 @@ type TreeNodeProps<T> = {
       table: { type: { summary: 'string' }, defaultValue: { summary: '' } },
       description: 'TreeView 컴포넌트에 추가할 CSS 클래스명입니다. Tailwind CSS 클래스를 사용할 수 있습니다.',
     },
+    treeViewRef: {
+      control: false,
+      table: {
+        type: { summary: 'React.Ref<TreeViewStateType>' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        'TreeView의 현재 상태를 외부에서 참조할 수 있도록 하는 Ref 객체입니다.',
+        '부모 컴포넌트에서 트리의 선택/확장/비활성화 등 전체 상태를 실시간으로 조회하거나, 상태 기반 액션에 활용할 수 있습니다.',
+        '예: 버튼 클릭 시 treeViewRef.current로 트리 상태 확인',
+        'Storybook 에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
+      ].join('\n'),
+    },
   },
   parameters: {
     docs: {
       description: {
         component: [
-          'TreeView 컴포넌트는 계층적/트리 구조 데이터를 시각적으로 탐색하거나 관리할 수 있도록 도와드리는 UI 요소입니다.',
-          '폴더, 조직도, 네비게이션, 분류, 설정 트리 등 다양한 곳에 활용하실 수 있습니다.',
-          '트리 노드 데이터는 `id`, `name`, `children`(재귀) 속성이 필수이며, 필요시 확장 필드를 사용하실 수 있습니다.',
+          'TreeView 컴포넌트는 계층적/트리 구조 데이터를 시각적으로 탐색하거나 관리할 수 있도록 도와는 UI 요소입니다.',
+          '폴더, 조직도, 네비게이션, 분류, 설정 트리 등 다양한 곳에 활용할 수 있습니다.',
+          '트리 노드 데이터는 `id`, `name`속성이 필수이며, 필요시  `children`(재귀) 를 이용하여 확장 필드를 사용할 수 있습니다.',
         ].join('\n\n'),
       },
     },
@@ -279,39 +342,22 @@ export const Variants: Story = {
     showLineLevel: 0,
   },
   argTypes: {
-    variant: {
-      table: { disable: true },
-    },
-    treeData: {
-      table: { disable: true },
-    },
-    defaultIcon: {
-      table: { disable: true },
-    },
-    expandedIcon: {
-      table: { disable: true },
-    },
-    endIcon: {
-      table: { disable: true },
-    },
-    defaultSelectedIds: {
-      table: { disable: true },
-    },
-    selectedIds: {
-      table: { disable: true },
-    },
-    defaultExpandedIds: {
-      table: { disable: true },
-    },
-    expandedIds: {
-      table: { disable: true },
-    },
-    onSelectedNodes: {
-      table: { disable: true },
-    },
-    onToggledNodes: {
-      table: { disable: true },
-    },
+    variant: { table: { disable: true } },
+    treeData: { table: { disable: true } },
+    defaultIcon: { table: { disable: true } },
+    expandedIcon: { table: { disable: true } },
+    endIcon: { table: { disable: true } },
+    defaultSelectedIds: { table: { disable: true } },
+    selectedIds: { table: { disable: true } },
+    defaultExpandedIds: { table: { disable: true } },
+    expandedIds: { table: { disable: true } },
+    defaultDisabledIds: { table: { disable: true } },
+    disabledIds: { table: { disable: true } },
+    onSelectedNodes: { table: { disable: true } },
+    onToggledNodes: { table: { disable: true } },
+    onDisabledNodes: { table: { disable: true } },
+    onTreeViewState: { table: { disable: true } },
+    treeViewRef: { table: { disable: true } },
   },
   parameters: {
     docs: {
@@ -344,32 +390,27 @@ export const Sizes: Story = {
     showLineLevel: 0,
   },
   argTypes: {
-    size: {
-      table: { disable: true },
-    },
-    treeData: {
-      table: { disable: true },
-    },
-    defaultIcon: {
-      table: { disable: true },
-    },
-    expandedIcon: {
-      table: { disable: true },
-    },
-    endIcon: {
-      table: { disable: true },
-    },
-    onSelectedNodes: {
-      table: { disable: true },
-    },
-    onToggledNodes: {
-      table: { disable: true },
-    },
+    size: { table: { disable: true } },
+    treeData: { table: { disable: true } },
+    defaultIcon: { table: { disable: true } },
+    expandedIcon: { table: { disable: true } },
+    endIcon: { table: { disable: true } },
+    defaultSelectedIds: { table: { disable: true } },
+    selectedIds: { table: { disable: true } },
+    defaultExpandedIds: { table: { disable: true } },
+    expandedIds: { table: { disable: true } },
+    defaultDisabledIds: { table: { disable: true } },
+    disabledIds: { table: { disable: true } },
+    onSelectedNodes: { table: { disable: true } },
+    onToggledNodes: { table: { disable: true } },
+    onDisabledNodes: { table: { disable: true } },
+    onTreeViewState: { table: { disable: true } },
+    treeViewRef: { table: { disable: true } },
   },
   parameters: {
     docs: {
       description: {
-        story: ['여러 size 옵션별 TreeView 결과를 확인하실 수 있는 예시입니다.'].join('\n'),
+        story: ['여러 size 옵션별 TreeView 결과를 확인할 수 있는 예시입니다.'].join('\n'),
       },
     },
   },
@@ -391,78 +432,47 @@ export const Sizes: Story = {
 };
 
 function UncontrolledExample({ ...args }: TreeViewProps) {
-  const treeViewRef = useRef<TreeViewRef>(null);
+  const treeViewRef = useRef<TreeViewStateType>(null);
   const [lastAction, setLastAction] = useState<string>('');
-  const [stateInfo, setStateInfo] = useState<
-    | (TreeViewStateInfo & {
-        selectedIds: string[];
-        expandedIds: string[];
-      })
-    | null
-  >(null);
-
-  const handleGetState = () => {
-    if (treeViewRef.current) {
-      const state = treeViewRef.current.getState();
-      const selectedIds = treeViewRef.current.getSelectedIds();
-      const expandedIds = treeViewRef.current.getExpandedIds();
-
-      setStateInfo({ ...state, selectedIds, expandedIds });
-      setLastAction('상태 조회 완료');
-    }
-  };
-
-  const handleClearState = () => {
-    setStateInfo(null);
-    setLastAction('');
-  };
+  const [treeState, setTreeState] = useState<TreeViewStateType | null>(null);
 
   return (
     <div className={cn(flexCol, 'items-center justify-center size-full')} key={JSON.stringify(args)}>
       <h3 className="text-lg font-semibold">비제어 (Uncontrolled)</h3>
       <div className={cn(flexRow, 'relative items-start justify-center gap-6 size-full')}>
         <div className={cn(flexCol, 'gap-4 flex-1 text-xs')}>
+          <h2 className={'[&_b]:text-juiText-blue'}>
+            {`선택에 대한 부분을 확인하기 위하여 현재 `}
+            <br />
+            multiSelect 는 <b>{`${args.multiSelect}`}</b> 로,
+            <br />
+            leafOnlySelect 는, <b>{`${args.leafOnlySelect}`}</b> 로 고정되어 있습니다.
+          </h2>
           <p className={cn(flexRow, 'gap-2 w-max')}>
-            <span className={'w-max'}>설정되어 있던 defaultSelectedIds :</span>
+            <span className={'w-max'}>초기 defaultSelectedIds :</span>
             <span className={cn(blueTxt)}>{JSON.stringify(args.defaultSelectedIds)}</span>
           </p>
           <p className={cn(flexRow, 'gap-2 w-max')}>
-            <span className={'x-max'}>설정되어 있던 defaultExpandedIds :</span>
+            <span className={'x-max'}>초기 defaultExpandedIds :</span>
             <span className={cn(blueTxt)}>{JSON.stringify(args.defaultExpandedIds)}</span>
           </p>
-          <p className={cn(flexRow)}>
+          <p className={cn(flexRow, 'gap-2 w-max')}>
+            <span className={'x-max'}>초기 defaultDisabledIds :</span>
+            <span className={cn(blueTxt)}>{JSON.stringify(args.defaultDisabledIds)}</span>
+          </p>
+          <div className={cn(flexRow)}>
             <pre className={'text-xs py-4 whitespace-pre-wrap'}>
-              {`현재 TreeView 상태 정보:
-- 제어 모드: ${stateInfo?.isControlled.selected ? 'Controlled' : 'Uncontrolled'} (선택) / ${stateInfo?.isControlled.expanded ? 'Controlled' : 'Uncontrolled'} (확장)
-- 전체 노드: ${stateInfo?.totalNodes || 0}개
-- 선택된 노드: ${stateInfo?.selectedCount || 0}개 [${stateInfo?.selectedIds.join(', ') || '없음'}]
-- 확장된 노드: ${stateInfo?.expandedCount || 0}개 [${stateInfo?.expandedIds.join(', ') || '없음'}]
-- 비활성화된 노드: ${stateInfo?.disabledCount || 0}개
-- 마지막 선택: ${stateInfo?.lastSelectedId || '없음'}`}
+              {treeState
+                ? `현재 TreeView 상태 정보:
+- 제어 모드 여부: ${args?.selectedIds ? 'Controlled' : 'Uncontrolled'} (선택) / ${args?.expandedIds ? 'Controlled' : 'Uncontrolled'} (확장) / ${args?.disabled || args?.disabledIds ? 'Controlled' : 'Uncontrolled'} (비활성화) 
+- 전체 노드: ${treeState?.totalNodes || 0}개
+- 선택된 노드: ${treeState?.selectedCount || 0}개 [${Array.from(treeState?.selectedIds).join(', ') || '없음'}]
+- 확장된 노드: ${treeState?.expandedCount || 0}개 [${Array.from(treeState?.expandedIds).join(', ') || '없음'}]
+- 비활성화된 노드: ${treeState?.disabledCount || 0}개 [${Array.from(treeState?.disabledIds).join(', ') || '없음'}]
+- 마지막 선택 노드(리프 노드 기준): ${treeState?.lastSelectedId || '없음'}`
+                : `아직 TreeView 상태 정보 없음.`}
             </pre>
-          </p>
-          <p className={'flex flex-wrap gap-2'}>
-            <Button
-              variant={'primary'}
-              size={'small'}
-              className={'text-xs '}
-              onClick={(e: React.MouseEvent) => {
-                e.stopPropagation();
-                handleGetState();
-              }}>
-              ref로 상태 조회
-            </Button>
-            <Button
-              variant={'secondary'}
-              size={'small'}
-              className={'text-xs'}
-              onClick={(e: React.MouseEvent) => {
-                e.stopPropagation();
-                handleClearState();
-              }}>
-              정보 지우기
-            </Button>
-          </p>
+          </div>
           {lastAction && (
             <p className={blueTxt}>
               <span className={'text-juiText-primary'}>마지막 액션:</span> {lastAction}
@@ -474,50 +484,21 @@ function UncontrolledExample({ ...args }: TreeViewProps) {
             <TreeView
               {...args}
               treeViewRef={treeViewRef}
-              onSelectedNodes={(ids) => {
-                setStateInfo((prev) =>
-                  !prev
-                    ? {
-                        isControlled: { selected: false, expanded: false },
-                        totalNodes: 0,
-                        selectedCount: ids?.length || 0,
-                        expandedCount: 0,
-                        disabledCount: 0,
-                        lastSelectedId: '',
-                        selectedIds: ids || [],
-                        expandedIds: [],
-                      }
-                    : {
-                        ...prev,
-                        selectedIds: ids || [],
-                        selectedCount: ids?.length || 0,
-                      },
-                );
-
-                setLastAction(`선택 변경: ${ids?.length || 0}개 노드 [${ids?.join(', ') || '없음'}]`);
+              onTreeViewState={(state) => {
+                setTreeState(state);
+                treeViewRef.current = state;
               }}
-              onToggledNodes={(ids) => {
-                setStateInfo((prev) =>
-                  !prev
-                    ? {
-                        isControlled: { selected: false, expanded: false },
-                        totalNodes: 0,
-                        selectedCount: 0,
-                        expandedCount: ids?.length || 0,
-                        disabledCount: 0,
-                        lastSelectedId: '',
-                        selectedIds: [],
-                        expandedIds: ids || [],
-                      }
-                    : {
-                        ...prev,
-                        expandedIds: ids || [],
-                        expandedCount: ids?.length || 0,
-                      },
-                );
-
-                setLastAction(`확장 변경: ${ids?.length || 0}개 노드 [${ids?.join(', ') || '없음'}]`);
-              }}
+              onSelectedNodes={(selectedIds) =>
+                setLastAction(`선택 변경: ${selectedIds?.length || 0}개 노드 [${selectedIds?.join(', ') || '없음'}]`)
+              }
+              onToggledNodes={(expandedIds) =>
+                setLastAction(`확장 변경: ${expandedIds?.length || 0}개 노드 [${expandedIds?.join(', ') || '없음'}]`)
+              }
+              onDisabledNodes={(disabledIds) =>
+                setLastAction(
+                  `비활성화 변경: ${disabledIds?.length || 0}개 노드 [${disabledIds?.join(', ') || '없음'}]`,
+                )
+              }
             />
           </div>
         </div>
@@ -534,46 +515,34 @@ export const Uncontrolled: Story = {
     showLineLevel: 0,
     defaultSelectedIds: ['H100', 'H112', 'H109'],
     defaultExpandedIds: ['H100'],
+    defaultDisabledIds: ['H108-1', 'H107'],
   },
   argTypes: {
     treeData: { table: { disable: true } },
     multiSelect: { table: { disable: true } },
     leafOnlySelect: { table: { disable: true } },
-    defaultIcon: {
-      table: { disable: true },
-    },
-    expandedIcon: {
-      table: { disable: true },
-    },
-    endIcon: {
-      table: { disable: true },
-    },
-    defaultSelectedIds: {
-      table: { disable: true },
-    },
-    defaultExpandedIds: {
-      table: { disable: true },
-    },
-    selectedIds: {
-      table: { disable: true },
-    },
-    expandedIds: {
-      table: { disable: true },
-    },
-    onSelectedNodes: {
-      table: { disable: true },
-    },
-    onToggledNodes: {
-      table: { disable: true },
-    },
+    defaultIcon: { table: { disable: true } },
+    expandedIcon: { table: { disable: true } },
+    endIcon: { table: { disable: true } },
+    defaultSelectedIds: { table: { disable: true } },
+    selectedIds: { table: { disable: true } },
+    defaultExpandedIds: { table: { disable: true } },
+    expandedIds: { table: { disable: true } },
+    defaultDisabledIds: { table: { disable: true } },
+    disabledIds: { table: { disable: true } },
+    onSelectedNodes: { table: { disable: true } },
+    onToggledNodes: { table: { disable: true } },
+    onDisabledNodes: { table: { disable: true } },
+    onTreeViewState: { table: { disable: true } },
+    treeViewRef: { table: { disable: true } },
   },
   parameters: {
     docs: {
       description: {
         story: [
-          '`defaultSelectedIds`와 `defaultExpandedIds`를 통해 초기값을 이용한 TreeView 컴포넌트의 비제어(Uncontrolled) 예시입니다.',
+          '`defaultSelectedIds`와 `defaultExpandedIds`,`defaultDisabledIds` 를 통해 초기값을 이용한 TreeView 컴포넌트의 비제어(Uncontrolled) 예시입니다.',
           '비제어 모드에서는 TreeView 컴포넌트가 선택 및 확장 상태를 자체적으로 관리합니다.',
-          '기본 선택과 확장 상태는 `defaultSelectedIds`와 `defaultExpandedIds`를 통해 초기값을 설정하실 수 있습니다.',
+          '기본 선택과 확장 상태는 `defaultSelectedIds`와 `defaultExpandedIds`, `defaultDisabledIds` 를 통해 초기값을 설정할 수 있습니다.',
         ].join('\n'),
       },
     },
@@ -584,88 +553,94 @@ export const Uncontrolled: Story = {
 };
 
 function ControlledExample({ ...args }: TreeViewProps) {
-  const treeViewRef = useRef<TreeViewRef>(null);
-  const [selectedIds, setSelectedIds] = useState<string[]>(args?.selectedIds || []);
-  const [expandedIds, setExpandedIds] = useState<string[]>(args?.expandedIds || []);
-  const [stateInfo, setStateInfo] = useState<TreeViewStateInfo | null>(null);
+  const treeViewRef = useRef<TreeViewStateType>(null);
+  const [disabled, setDisabled] = useState<boolean>(args?.disabled || false);
+  const [selectedIds, setSelectedIds] = useState<string[]>(args.selectedIds ?? []);
+  const [expandedIds, setExpandedIds] = useState<string[]>(args.expandedIds ?? []);
+  const [disabledIds, setDisabledIds] = useState<string[]>(args?.disabledIds || []);
+  const [treeState, setTreeState] = useState<TreeViewStateType | null>(null);
   const [lastAction, setLastAction] = useState<string>('');
+  const flatTreeNodeMap = flattenTree(args?.treeData || []);
   const allKeys = getAllNodeIds(args?.treeData || []);
-
-  const handleGetState = () => {
-    if (treeViewRef.current) {
-      setSelectedIds(treeViewRef.current.getSelectedIds());
-      setExpandedIds(treeViewRef.current.getExpandedIds());
-      setStateInfo(treeViewRef.current.getState());
-      setLastAction('상태 조회 완료');
-    }
-  };
-
-  const handleResetSelection = () => {
-    setSelectedIds([]);
-    setLastAction('선택 초기화');
-  };
-
-  const handleSelectAll = () => {
-    setSelectedIds(allKeys);
-    setLastAction(`모든 Leaf 노드 선택: ${allKeys.length}개`);
-  };
-
-  const handleExpandAll = () => {
-    setExpandedIds(allKeys);
-    setLastAction(`모든 노드 확장: ${allKeys.length}개`);
-  };
-
-  const handleCollapseAll = () => {
-    setExpandedIds([]);
-    setLastAction('모든 노드 축소');
-  };
-
-  useEffect(() => {
-    handleGetState();
-  }, []);
+  const allParentKeys = [...flatTreeNodeMap.values()].filter((k) => !isLeafNode(k)).map((d) => d.id);
+  const tmpSelect = ['H112', 'H205-2'];
+  const tmpExpand = ['H108', 'H205'];
+  const tmpDisable = ['H205-1', 'H202', 'H108-3'];
 
   return (
     <div className={cn(flexCol, 'items-center justify-center size-full')} key={JSON.stringify(args)}>
       <h3 className="text-lg font-semibold">제어 (Controlled)</h3>
       <div className={cn(flexRow, 'relative items-start justify-center gap-6 size-full')}>
         <div className={cn(flexCol, 'gap-4 flex-1 text-xs max-w-1/2')}>
+          <h2 className={'[&_b]:text-juiText-blue'}>
+            {`선택에 대한 부분을 확인하기 위하여 현재 `}
+            <br />
+            multiSelect 는 <b>{`${args.multiSelect}`}</b> 로,
+            <br />
+            leafOnlySelect 는, <b>{`${args.leafOnlySelect}`}</b> 로 고정되어 있습니다.
+          </h2>
           <p className={cn(flexRow, 'gap-2 w-max')}>
-            <span className={'w-max'}>설정되어 있던 defaultSelectedIds :</span>
+            <span className={'w-max'}>초기 defaultSelectedIds :</span>
             <span className={cn(blueTxt)}>{JSON.stringify(args.defaultSelectedIds)}</span>
           </p>
           <p className={cn(flexRow, 'gap-2 w-max')}>
-            <span className={'x-max'}>설정되어 있던 defaultExpandedIds :</span>
+            <span className={'x-max'}>초기 defaultExpandedIds :</span>
             <span className={cn(blueTxt)}>{JSON.stringify(args.defaultExpandedIds)}</span>
           </p>
           <p className={cn(flexRow, 'gap-2 w-max')}>
-            <span className={'w-max'}>현재 selectedIds :</span>
+            <span className={'x-max'}>초기 defaultDisabledIds :</span>
+            <span className={cn(blueTxt)}>{JSON.stringify(args.defaultDisabledIds)}</span>
+          </p>
+          <p className={cn(flexRow, 'gap-2 w-max')}>
+            <span className={'w-max'}>초기 selectedIds :</span>
             <span className={cn(blueTxt)}>{JSON.stringify(args.selectedIds)}</span>
           </p>
           <p className={cn(flexRow, 'gap-2 w-max')}>
-            <span className={'x-max'}>현재 expandedIds :</span>
+            <span className={'x-max'}>초기 expandedIds :</span>
             <span className={cn(blueTxt)}>{JSON.stringify(args.expandedIds)}</span>
           </p>
-          <p className={cn(flexRow, 'w-full')}>
-            <pre className={'w-full text-xs py-4 whitespace-pre-line'}>
-              {`현재 TreeView 상태 정보:
-- 제어 모드: ${stateInfo?.isControlled.selected ? 'Controlled' : 'Uncontrolled'} (선택) / ${stateInfo?.isControlled.expanded ? 'Controlled' : 'Uncontrolled'} (확장)
-- 전체 노드: ${stateInfo?.totalNodes || 0}개
-- 선택된 노드: ${stateInfo?.selectedCount || 0}개 [${selectedIds.join(', ') || '없음'}]
-- 확장된 노드: ${stateInfo?.expandedCount || 0}개 [${expandedIds.join(', ') || '없음'}]
-- 비활성화된 노드: ${stateInfo?.disabledCount || 0}개
-- 마지막 선택: ${stateInfo?.lastSelectedId || '없음'}`}
+          <p className={cn(flexRow, 'gap-2 w-max')}>
+            <span className={'x-max'}>초기 disabledIds :</span>
+            <span className={cn(blueTxt)}>{JSON.stringify(args.disabledIds)}</span>
+          </p>
+          <div className={cn(flexRow, 'w-full')}>
+            <pre className={'text-xs py-4 whitespace-pre-wrap'}>
+              {treeState
+                ? `현재 TreeView 상태 정보:
+- 제어 모드 여부: ${args?.selectedIds ? 'Controlled' : 'Uncontrolled'} (선택) / ${args?.expandedIds ? 'Controlled' : 'Uncontrolled'} (확장) / ${args?.disabled || args?.disabledIds ? 'Controlled' : 'Uncontrolled'} (비활성화) 
+- 전체 노드: ${treeState?.totalNodes || 0}개
+- 선택된 노드: ${treeState?.selectedCount || 0}개 [${Array.from(treeState?.selectedIds).join(', ') || '없음'}]
+- 확장된 노드: ${treeState?.expandedCount || 0}개 [${Array.from(treeState?.expandedIds).join(', ') || '없음'}]
+- 비활성화된 노드: ${treeState?.disabledCount || 0}개 [${Array.from(treeState?.disabledIds).join(', ') || '없음'}]
+- 마지막 선택 노드(리프 노드 기준): ${treeState?.lastSelectedId || '없음'}`
+                : `아직 TreeView 상태 정보 없음.`}
             </pre>
+          </div>
+          <p className={'flex flex-wrap gap-2'}>
+            <Button
+              variant={'default'}
+              size={'small'}
+              className={'text-xs'}
+              onClick={(e: React.MouseEvent) => {
+                e.stopPropagation();
+                setDisabled((prev) => !prev);
+              }}>
+              TreeView 컴포넌트 전체를 {`${disabled ? '활성화' : '비활성화'}`} 하기
+            </Button>
           </p>
           <p className={'flex flex-wrap gap-2'}>
             <Button
-              variant={'primary'}
+              variant={'secondary'}
               size={'small'}
-              className={'text-xs '}
+              className={'text-xs'}
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
-                handleGetState();
+
+                const isAllSelected = selectedIds?.length === allKeys.length;
+
+                setSelectedIds(isAllSelected ? [] : allKeys);
               }}>
-              ref로 상태 조회
+              모든 노드 {`${selectedIds?.length === allKeys.length ? '선택 해제 ' : '선택'}`} 하기
             </Button>
             <Button
               variant={'secondary'}
@@ -673,40 +648,67 @@ function ControlledExample({ ...args }: TreeViewProps) {
               className={'text-xs'}
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
-                handleSelectAll();
+
+                const isAllExpanded = expandedIds?.length === allParentKeys.length;
+
+                setExpandedIds(isAllExpanded ? [] : allParentKeys);
               }}>
-              모두 선택하기
+              모든 노드 {`${expandedIds?.length === allParentKeys.length ? '축소' : '확장'}`}하기
             </Button>
             <Button
-              variant={'transparentGrey'}
+              variant={'secondary'}
               size={'small'}
               className={'text-xs'}
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
-                handleResetSelection();
+
+                const isAllDisabled = disabledIds?.length === allKeys.length;
+
+                setDisabledIds(isAllDisabled ? [] : allKeys);
               }}>
-              모든 선택 초기화하기
+              모든 노드 {`${disabledIds?.length === allKeys.length ? '활성화' : '비활성화'}`}하기
             </Button>
+          </p>
+          <p className={'flex flex-wrap gap-2'}>
             <Button
               variant={'gradient'}
               size={'small'}
               className={'text-xs'}
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
-                handleExpandAll();
-              }}>
-              모두 확장하기
-            </Button>
+
+                const isSelected = selectedIds.some((d) => tmpSelect.includes(d));
+
+                setSelectedIds(
+                  isSelected ? selectedIds.filter((d) => !tmpSelect.includes(d)) : [...selectedIds, ...tmpSelect],
+                );
+              }}>{`임의의 노드 [${tmpSelect.join(', ')}] 를 ${selectedIds.some((d) => tmpSelect.includes(d)) ? '선택 해제' : '선택'}하기`}</Button>
             <Button
-              variant={'default'}
+              variant={'gradient'}
               size={'small'}
               className={'text-xs'}
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
-                handleCollapseAll();
-              }}>
-              모두 축소하기
-            </Button>
+
+                const isOpen = expandedIds.some((d) => tmpExpand.includes(d));
+
+                setExpandedIds(
+                  isOpen ? expandedIds.filter((d) => !tmpExpand.includes(d)) : [...expandedIds, ...tmpExpand],
+                );
+              }}>{`임의의 노드 [${tmpExpand.join(', ')}] 를 ${expandedIds.some((d) => tmpExpand.includes(d)) ? '축소' : '확장'}하기`}</Button>
+            <Button
+              variant={'gradient'}
+              size={'small'}
+              className={'text-xs'}
+              onClick={(e: React.MouseEvent) => {
+                e.stopPropagation();
+
+                const isDisabled = disabledIds.some((d) => tmpDisable.includes(d));
+
+                setDisabledIds(
+                  isDisabled ? disabledIds.filter((d) => !tmpDisable.includes(d)) : [...disabledIds, ...tmpDisable],
+                );
+              }}>{`임의의 노드 [${tmpDisable.join(', ')}] 를 ${disabledIds.some((d) => tmpDisable.includes(d)) ? '활성화' : '비활성화'}하기`}</Button>
           </p>
           {lastAction && (
             <p className={blueTxt}>
@@ -718,53 +720,24 @@ function ControlledExample({ ...args }: TreeViewProps) {
           <div className={cn(flexCol, 'items-start overflow-y-auto w-full h-150 p-4 border border-juiText-primary')}>
             <TreeView
               {...args}
+              disabled={disabled}
               selectedIds={selectedIds}
               expandedIds={expandedIds}
-              treeViewRef={treeViewRef}
+              disabledIds={disabledIds}
               onSelectedNodes={(ids) => {
-                setStateInfo((prev) =>
-                  !prev
-                    ? {
-                        isControlled: { selected: false, expanded: false },
-                        totalNodes: 0,
-                        selectedCount: ids?.length || 0,
-                        expandedCount: 0,
-                        disabledCount: 0,
-                        lastSelectedId: '',
-                        selectedIds: ids || [],
-                        expandedIds: [],
-                      }
-                    : {
-                        ...prev,
-                        selectedIds: ids || [],
-                        selectedCount: ids?.length || 0,
-                      },
-                );
-
+                setSelectedIds(ids ?? []);
                 setLastAction(`선택 변경: ${ids?.length || 0}개 노드 [${ids?.join(', ') || '없음'}]`);
               }}
               onToggledNodes={(ids) => {
-                setStateInfo((prev) =>
-                  !prev
-                    ? {
-                        isControlled: { selected: false, expanded: false },
-                        totalNodes: 0,
-                        selectedCount: 0,
-                        expandedCount: ids?.length || 0,
-                        disabledCount: 0,
-                        lastSelectedId: '',
-                        selectedIds: [],
-                        expandedIds: ids || [],
-                      }
-                    : {
-                        ...prev,
-                        expandedIds: ids || [],
-                        expandedCount: ids?.length || 0,
-                      },
-                );
-
+                setExpandedIds(ids ?? []);
                 setLastAction(`확장 변경: ${ids?.length || 0}개 노드 [${ids?.join(', ') || '없음'}]`);
               }}
+              onDisabledNodes={(ids) => {
+                setDisabledIds(ids ?? []);
+                setLastAction(`비활성화 변경: ${ids?.length || 0}개 노드 [${ids?.join(', ') || '없음'}]`);
+              }}
+              onTreeViewState={setTreeState}
+              treeViewRef={treeViewRef}
             />
           </div>
         </div>
@@ -777,9 +750,11 @@ export const Controlled: Story = {
   args: {
     treeData: highriskGroupTreeData,
     defaultSelectedIds: ['H100', 'H112', 'H109'],
-    selectedIds: ['H201', 'H203'],
+    selectedIds: ['H201-1', 'H203'],
     defaultExpandedIds: ['H100'],
-    expandedIds: ['H200'],
+    expandedIds: ['H200', 'H201'],
+    defaultDisabledIds: ['H202'],
+    disabledIds: ['H204', 'H205-3'],
     multiSelect: true,
     leafOnlySelect: true,
     showLineLevel: 0,
@@ -788,39 +763,26 @@ export const Controlled: Story = {
     treeData: { table: { disable: true } },
     multiSelect: { table: { disable: true } },
     leafOnlySelect: { table: { disable: true } },
-    defaultIcon: {
-      table: { disable: true },
-    },
-    expandedIcon: {
-      table: { disable: true },
-    },
-    endIcon: {
-      table: { disable: true },
-    },
-    defaultSelectedIds: {
-      table: { disable: true },
-    },
-    defaultExpandedIds: {
-      table: { disable: true },
-    },
-    selectedIds: {
-      table: { disable: true },
-    },
-    expandedIds: {
-      table: { disable: true },
-    },
-    onSelectedNodes: {
-      table: { disable: true },
-    },
-    onToggledNodes: {
-      table: { disable: true },
-    },
+    defaultIcon: { table: { disable: true } },
+    expandedIcon: { table: { disable: true } },
+    endIcon: { table: { disable: true } },
+    defaultSelectedIds: { table: { disable: true } },
+    selectedIds: { table: { disable: true } },
+    defaultExpandedIds: { table: { disable: true } },
+    expandedIds: { table: { disable: true } },
+    defaultDisabledIds: { table: { disable: true } },
+    disabledIds: { table: { disable: true } },
+    onSelectedNodes: { table: { disable: true } },
+    onToggledNodes: { table: { disable: true } },
+    onDisabledNodes: { table: { disable: true } },
+    onTreeViewState: { table: { disable: true } },
+    treeViewRef: { table: { disable: true } },
   },
   parameters: {
     docs: {
       description: {
         story: [
-          '`selectedIds`와 `expandedIds`를 통해 외부에서 상태를 제어하는 TreeView 컴포넌트의 제어(Controlled) 예시입니다.',
+          '`selectedIds`와 `expandedIds`, `disabledIds` 를 통해 외부에서 상태를 제어하는 TreeView 컴포넌트의 제어(Controlled) 예시입니다.',
           '제어 모드에서는 부모 컴포넌트가 선택 및 확장 상태를 완전히 관리합니다.',
           '노드를 클릭/토글하실 때 onSelectedNodes, onToggledNodes 콜백이 호출되며, 부모 컴포넌트가 상태를 관합니다.',
         ].join('\n'),
@@ -842,40 +804,27 @@ export const IconAndLine: Story = {
     showLineLevel: 0,
   },
   argTypes: {
-    showLineLevel: { table: { disable: true } },
     treeData: { table: { disable: true } },
-    defaultIcon: {
-      table: { disable: true },
-    },
-    expandedIcon: {
-      table: { disable: true },
-    },
-    endIcon: {
-      table: { disable: true },
-    },
-    defaultSelectedIds: {
-      table: { disable: true },
-    },
-    defaultExpandedIds: {
-      table: { disable: true },
-    },
-    selectedIds: {
-      table: { disable: true },
-    },
-    expandedIds: {
-      table: { disable: true },
-    },
-    onSelectedNodes: {
-      table: { disable: true },
-    },
-    onToggledNodes: {
-      table: { disable: true },
-    },
+    showLineLevel: { table: { disable: true } },
+    defaultIcon: { table: { disable: true } },
+    expandedIcon: { table: { disable: true } },
+    endIcon: { table: { disable: true } },
+    defaultSelectedIds: { table: { disable: true } },
+    selectedIds: { table: { disable: true } },
+    defaultExpandedIds: { table: { disable: true } },
+    expandedIds: { table: { disable: true } },
+    defaultDisabledIds: { table: { disable: true } },
+    disabledIds: { table: { disable: true } },
+    onSelectedNodes: { table: { disable: true } },
+    onToggledNodes: { table: { disable: true } },
+    onDisabledNodes: { table: { disable: true } },
+    onTreeViewState: { table: { disable: true } },
+    treeViewRef: { table: { disable: true } },
   },
   parameters: {
     docs: {
       description: {
-        story: ['다양한 커스텀 된 iconMap의 예시들과, showLineLevel 의 예시를 확인하실 수 있습니다.'].join('\n'),
+        story: ['다양한 커스텀 된 iconMap의 예시들과, showLineLevel 의 예시를 확인할 수 있습니다.'].join('\n'),
       },
     },
   },
@@ -887,14 +836,14 @@ export const IconAndLine: Story = {
             key={idx}
             className={cn(flexCol, 'min-w-1/3 h-100 overflow-y-auto p-2 border border-juiText-primary rounded-md')}>
             <div>
-              <p className={blueTxt}>
+              <div className={blueTxt}>
                 <pre className={'w-full text-xs py-4 whitespace-pre-line'}>
                   {`지정된 아이콘 정보 :
 defaultIcon: <EyeIcon />
     expandedIcon: <EyeOffIcon />
     endIcon: <UserFilledIcon />`}
                 </pre>
-              </p>
+              </div>
               <p className={blueTxt}>showLineLevel : {idx}</p>
             </div>
             <TreeView {...args} showLineLevel={idx} />
@@ -953,33 +902,20 @@ export const Selections: Story = {
     treeData: { table: { disable: true } },
     multiSelect: { table: { disable: true } },
     leafOnlySelect: { table: { disable: true } },
-    defaultIcon: {
-      table: { disable: true },
-    },
-    expandedIcon: {
-      table: { disable: true },
-    },
-    endIcon: {
-      table: { disable: true },
-    },
-    defaultSelectedIds: {
-      table: { disable: true },
-    },
-    defaultExpandedIds: {
-      table: { disable: true },
-    },
-    selectedIds: {
-      table: { disable: true },
-    },
-    expandedIds: {
-      table: { disable: true },
-    },
-    onSelectedNodes: {
-      table: { disable: true },
-    },
-    onToggledNodes: {
-      table: { disable: true },
-    },
+    defaultIcon: { table: { disable: true } },
+    expandedIcon: { table: { disable: true } },
+    endIcon: { table: { disable: true } },
+    defaultSelectedIds: { table: { disable: true } },
+    selectedIds: { table: { disable: true } },
+    defaultExpandedIds: { table: { disable: true } },
+    expandedIds: { table: { disable: true } },
+    defaultDisabledIds: { table: { disable: true } },
+    disabledIds: { table: { disable: true } },
+    onSelectedNodes: { table: { disable: true } },
+    onToggledNodes: { table: { disable: true } },
+    onDisabledNodes: { table: { disable: true } },
+    onTreeViewState: { table: { disable: true } },
+    treeViewRef: { table: { disable: true } },
   },
   parameters: {
     docs: {
