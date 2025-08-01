@@ -72,7 +72,7 @@ export default function TabsPage() {
             onSelect={setDateTime}
             className="rounded-lg border shadow-sm"
             captionLayout="dropdown-months"
-            numberOfMonths={2}
+            // numberOfMonths={2}
           />
 
           <Calendar

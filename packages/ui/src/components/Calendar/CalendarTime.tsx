@@ -1,29 +1,60 @@
 'use client';
 
 import { type ComponentProps, useRef, useState } from 'react';
-import { Calendar } from './Calendar';
-import { Select } from '../Select';
-import { Separator } from '../Separator';
-import { ClockIcon } from '@common/ui/icons';
 import { format } from 'date-fns';
 
-type TimeType = 'hour' | 'minutes' | 'seconds';
+import { ClockIcon } from '@common/ui/icons';
+import { Calendar } from './Calendar';
+import { Select, Separator } from '../../components';
+import { useTimeChangeHandler } from './hooks/useTimeChangeHandler';
+import { cn } from '@common/ui/lib/utils';
 
 function CalendarTime({
   selected,
   onSelect,
-  timeType = 'minutes',
+  timeType = 'minute',
   ...calendarProps
 }: Omit<ComponentProps<typeof Calendar>, 'mode' | 'selected' | 'onSelect' | 'footer'> & {
   selected: Date | undefined;
   onSelect?: (calDate: Date | undefined) => void;
-  timeType?: TimeType;
+  timeType?: 'hour' | 'minute' | 'second';
 }) {
   const [dateTime, setDateTime] = useState<Date | undefined>(selected);
 
   const hourRef = useRef('0');
   const minRef = useRef('0');
   const secRef = useRef('0');
+
+  const timeSelectClassName =
+    '!h-6 justify-center min-w-0 p-1 light:border-0 light:border-b-1 border-b-1 data-[state=open]:border-0 data-[state=open]:border-b-1';
+
+  const handleTimeChange = useTimeChangeHandler({
+    dateTime,
+    setDateTime,
+    onSelect,
+  });
+
+  const makeDateWithTime = (date: Date) => {
+    const newDate = new Date(date);
+
+    newDate.setHours(parseInt(hourRef.current));
+    if (timeType !== 'hour') newDate.setMinutes(parseInt(minRef.current));
+    else newDate.setMinutes(0);
+
+    if (timeType === 'second') newDate.setSeconds(parseInt(secRef.current));
+    else newDate.setSeconds(0);
+
+    return newDate;
+  };
+
+  const generateTimeUnitOptions = (length: number) => {
+    return Array.from({ length }, (_, i) => {
+      return {
+        label: i.toString().padStart(2, '0'),
+        value: String(i),
+      };
+    });
+  };
 
   return (
     <Calendar
@@ -33,21 +64,7 @@ function CalendarTime({
       onSelect={(calDate) => {
         if (!calDate) return;
 
-        const newDate = new Date(calDate);
-
-        newDate.setHours(parseInt(hourRef.current));
-
-        if (timeType !== 'hour') {
-          newDate.setMinutes(parseInt(minRef.current));
-        } else {
-          newDate.setMinutes(0);
-        }
-
-        if (timeType === 'seconds') {
-          newDate.setSeconds(parseInt(secRef.current));
-        } else {
-          newDate.setSeconds(0);
-        }
+        const newDate = makeDateWithTime(calDate);
 
         setDateTime(newDate);
         onSelect?.(newDate);
@@ -55,93 +72,75 @@ function CalendarTime({
       footer={
         <>
           <Separator />
-          <div className="flex items-center gap-2">
-            <ClockIcon size="small" />
-            <div className="flex items-center gap-1">
-              {/* Hour Select */}
-              <Select
-                width={40}
-                className="!h-6 justify-center min-w-0 p-1 light:border-0 light:border-b-1 border-b-1 data-[state=open]:border-0 data-[state=open]:border-b-1"
-                optionsClassName="min-w-0"
-                itemClassName="justify-center"
-                isContentFitTriggerWidth
-                defaultValue={String(dateTime?.getHours() ?? 0)}
-                selectRef={hourRef}
-                onValueChange={(hour) => {
-                  if (!dateTime) return;
-                  const newDate = new Date(dateTime);
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <ClockIcon size="small" />
+              <div className="flex items-center gap-1">
+                {/* Hour Select */}
+                <Select
+                  width={40}
+                  className={cn(timeSelectClassName)}
+                  optionsClassName="min-w-0"
+                  itemClassName="justify-center"
+                  isContentFitTriggerWidth
+                  defaultValue={String(dateTime?.getHours() ?? 0)}
+                  selectRef={hourRef}
+                  onValueChange={handleTimeChange('hour')}
+                  options={generateTimeUnitOptions(24)}
+                  isTriggerIcon={false}
+                />
 
-                  newDate.setHours(parseInt(hour));
-                  setDateTime(newDate);
-                  onSelect?.(newDate);
-                }}
-                options={Array.from({ length: 24 }, (_, i) => ({
-                  label: i.toString().padStart(2, '0'),
-                  value: String(i),
-                }))}
-                isTriggerIcon={false}
-              />
+                {(timeType === 'minute' || timeType === 'second') && (
+                  <>
+                    <span>:</span>
+                    {/* Minute Select */}
+                    <Select
+                      width={40}
+                      className={cn(timeSelectClassName)}
+                      optionsClassName="min-w-0"
+                      itemClassName="justify-center"
+                      isContentFitTriggerWidth
+                      defaultValue={String(dateTime?.getMinutes() ?? 0)}
+                      selectRef={minRef}
+                      onValueChange={handleTimeChange('minute')}
+                      options={generateTimeUnitOptions(60)}
+                      isTriggerIcon={false}
+                    />
+                  </>
+                )}
 
-              {(timeType === 'minutes' || timeType === 'seconds') && (
-                <>
-                  <span>:</span>
-                  {/* Minute Select */}
-                  <Select
-                    width={40}
-                    className="!h-6 justify-center min-w-0 p-1 light:border-0 light:border-b-1 border-b-1 data-[state=open]:border-0 data-[state=open]:border-b-1"
-                    optionsClassName="min-w-0"
-                    itemClassName="justify-center"
-                    isContentFitTriggerWidth
-                    defaultValue={String(dateTime?.getMinutes() ?? 0)}
-                    selectRef={minRef}
-                    onValueChange={(min) => {
-                      if (!dateTime) return;
-                      const newDate = new Date(dateTime);
-
-                      newDate.setMinutes(parseInt(min));
-                      setDateTime(newDate);
-                      onSelect?.(newDate);
-                    }}
-                    options={Array.from({ length: 60 }, (_, i) => ({
-                      label: i.toString().padStart(2, '0'),
-                      value: String(i),
-                    }))}
-                    isTriggerIcon={false}
-                  />
-                </>
-              )}
-
-              {timeType === 'seconds' && (
-                <>
-                  <span>:</span>
-                  {/* Second Select */}
-                  <Select
-                    width={40}
-                    className="!h-6 justify-center min-w-0 p-1 light:border-0 light:border-b-1 border-b-1 data-[state=open]:border-0 data-[state=open]:border-b-1"
-                    optionsClassName="min-w-0"
-                    itemClassName="justify-center"
-                    isContentFitTriggerWidth
-                    defaultValue={String(dateTime?.getSeconds() ?? 0)}
-                    selectRef={secRef}
-                    onValueChange={(sec) => {
-                      if (!dateTime) return;
-                      const newDate = new Date(dateTime);
-
-                      newDate.setSeconds(parseInt(sec));
-                      setDateTime(newDate);
-                      onSelect?.(newDate);
-                    }}
-                    options={Array.from({ length: 60 }, (_, i) => ({
-                      label: i.toString().padStart(2, '0'),
-                      value: String(i),
-                    }))}
-                    isTriggerIcon={false}
-                  />
-                </>
-              )}
+                {timeType === 'second' && (
+                  <>
+                    <span>:</span>
+                    {/* Second Select */}
+                    <Select
+                      width={40}
+                      className={cn(timeSelectClassName)}
+                      itemClassName="justify-center"
+                      isContentFitTriggerWidth
+                      defaultValue={String(dateTime?.getSeconds() ?? 0)}
+                      selectRef={secRef}
+                      onValueChange={handleTimeChange('second')}
+                      options={generateTimeUnitOptions(60)}
+                      isTriggerIcon={false}
+                    />
+                  </>
+                )}
+              </div>
             </div>
+            <span>
+              {dateTime
+                ? format(
+                    dateTime,
+                    timeType === 'hour'
+                      ? 'yyyy-MM-dd HH:00'
+                      : timeType === 'minute'
+                        ? 'yyyy-MM-dd HH:mm'
+                        : 'yyyy-MM-dd HH:mm:ss',
+                  )
+                : ''}
+            </span>
           </div>
-          <div className="mt-1">{dateTime ? format(dateTime, 'yyyy-MM-dd HH:mm:ss') : '-'}</div>
         </>
       }
       {...calendarProps}
