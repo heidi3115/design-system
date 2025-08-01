@@ -77,7 +77,8 @@ const treeViewVariants = tv({
           // data-active=true인 경우에만 자식 span에 배경색 적용
           '[&[data-active=true]_span[data-slot=item-trigger-icon]]:bg-[var(--tree-view-color)]',
         ],
-        icons: 'rounded-full active:[&_span[data-slot=item-trigger-icon]]:bg-[var(--tree-view-color)]',
+        icons:
+          'rounded-full active:[&_span[data-slot=item-trigger-icon]]:bg-[var(--tree-view-color)] [&[data-active=true]]:bg-[var(--tree-view-color)',
       },
     },
     disabled: {

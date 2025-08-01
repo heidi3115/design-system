@@ -5,7 +5,7 @@ import { Collapsible } from '@common/ui';
 import { cn } from '@common/ui/lib/utils';
 import { CloseFolderFilledIcon, OpenFolderFilledIcon, PlayArrowIcon } from '@common/ui/icons';
 import { TreeViewItem, TreeViewItemContent, TreeViewItemTrigger } from './TreeViewParts';
-import { type TreeViewState } from './TreeView';
+import { type TreeViewStateType } from './TreeView';
 import { treeViewVariants } from './treeViewVariants';
 
 /**
@@ -29,9 +29,9 @@ export type TreeItemProps<T> = {
   /** 현재 노드의 트리 레벨 (들여쓰기용) */
   level?: number;
   // === 개별 노드 상태 (TreeView 에서 계산되어 전달예정) ===
-  disabled?: boolean;
   selected?: boolean;
   expanded?: boolean;
+  disabled?: boolean;
   /** 아이콘 */
   defaultIcon?: React.ReactNode;
   expandedIcon?: React.ReactNode;
@@ -51,7 +51,7 @@ export type TreeItemProps<T> = {
   /** 클래스명 */
   className?: string;
   /** TreeView 상태 (읽기용) */
-  treeState?: TreeViewState;
+  treeViewState?: TreeViewStateType;
 };
 
 export default function TreeItem<T = unknown>({
@@ -62,15 +62,16 @@ export default function TreeItem<T = unknown>({
   endIcon = null,
   size = 'basic',
   variant = 'default',
-  disabled = false,
   selected = false,
   expanded = false,
+  disabled = false,
   showIcons = true,
   showLineLevel,
   onSelect,
   onToggle,
   className,
-  treeState,
+  treeViewState,
+  ...props
 }: TreeItemProps<T>) {
   const hasChildren = Array.isArray(node?.children) && node.children.length > 0;
   const hasLineLevel = showLineLevel === undefined ? undefined : showLineLevel;
@@ -103,13 +104,14 @@ export default function TreeItem<T = unknown>({
 
   const renderTrigger = (nodeItem: BaseTreeNodeProps<T>) => (
     <TreeViewItemTrigger
+      {...props}
       data-slot="tree-item-trigger"
       data-active={selected}
       expanded={expanded}
       onClick={(e) => handleItemSelect(e, nodeItem.id)}
       className={cn(variantClass, itemTrigger(), disabledClass)}>
       {showIcons && (
-        <span data-slot="item-trigger-icon" className={cn(variantClass, icons(), disabledClass)}>
+        <span data-slot="item-trigger-icon" data-active={selected} className={cn(variantClass, icons(), disabledClass)}>
           {hasChildren
             ? expanded
               ? expandedIcon || <OpenFolderFilledIcon />
@@ -145,28 +147,34 @@ export default function TreeItem<T = unknown>({
           <TreeViewItemContent
             className={cn(variantClass, itemContent(), level === lineLevelNum && lineDotClass)}
             onClick={(e: React.MouseEvent) => e.stopPropagation()}>
-            {node.children!.map((childNode: BaseTreeNodeProps) => (
-              <TreeItem
-                {...childNode}
-                key={childNode.id}
-                node={childNode}
-                level={level + 1}
-                size={size}
-                variant={variant}
-                showLineLevel={showLineLevel}
-                showIcons={showIcons}
-                defaultIcon={defaultIcon}
-                expandedIcon={expandedIcon}
-                endIcon={endIcon}
-                selected={treeState?.selectedIds?.has(childNode.id)}
-                expanded={treeState?.expandedIds?.has(childNode.id)}
-                disabled={disabled || Boolean(treeState?.disabledIds?.has(childNode.id) || childNode?.disabled)}
-                onSelect={onSelect}
-                onToggle={onToggle}
-                className={cn(className)}
-                treeState={treeState}
-              />
-            ))}
+            {node.children!.map((childNode: BaseTreeNodeProps) => {
+              const isNodeSelected = treeViewState?.selectedIds.has(childNode.id);
+              const isNodeExpanded = treeViewState?.expandedIds.has(childNode.id);
+              const isNodeDisabled = disabled || treeViewState?.disabledIds?.has(childNode.id) || false;
+
+              return (
+                <TreeItem
+                  {...childNode}
+                  key={childNode.id}
+                  node={childNode}
+                  level={level + 1}
+                  defaultIcon={defaultIcon}
+                  expandedIcon={expandedIcon}
+                  endIcon={endIcon}
+                  size={size}
+                  variant={variant}
+                  selected={isNodeSelected}
+                  expanded={isNodeExpanded}
+                  disabled={isNodeDisabled}
+                  showIcons={showIcons}
+                  showLineLevel={showLineLevel}
+                  onSelect={onSelect}
+                  onToggle={onToggle}
+                  className={cn(className)}
+                  treeViewState={treeViewState}
+                />
+              );
+            })}
           </TreeViewItemContent>
         </Collapsible>
       ) : (

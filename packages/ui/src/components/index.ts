@@ -280,10 +280,8 @@ export {
   type TreeViewItemProps,
   type TreeViewItemContentProps,
   type TreeViewItemTriggerProps,
-  type TreeViewProps,
   type TreeItemProps,
   type BaseTreeNodeProps,
-  type TreeViewRef,
-  type TreeViewState,
-  type TreeViewStateInfo,
+  type TreeViewProps,
+  type TreeViewStateType,
 } from './TreeView';
