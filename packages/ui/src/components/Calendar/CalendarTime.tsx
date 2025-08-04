@@ -14,6 +14,7 @@ function CalendarTime({
   onSelect,
   timeType = 'minute',
   closeButton,
+  onDialogCancel,
   ...calendarProps
 }: Omit<ComponentProps<typeof Calendar>, 'mode' | 'selected' | 'onSelect' | 'footer'> & {
   selected: Date | undefined;
@@ -22,6 +23,10 @@ function CalendarTime({
   closeButton?: ReactNode;
 }) {
   const [dateTime, setDateTime] = useState<Date | undefined>(selected);
+
+  const initialHourRef = useRef(String(selected?.getHours() ?? '0'));
+  const initialMinRef = useRef(String(selected?.getMinutes() ?? '0'));
+  const initialSecRef = useRef(String(selected?.getSeconds() ?? '0'));
 
   const hourRef = useRef('0');
   const minRef = useRef('0');
@@ -70,6 +75,20 @@ function CalendarTime({
 
         setDateTime(newDate);
         onSelect?.(newDate);
+      }}
+      onDialogCancel={() => {
+        if (!selected) return;
+
+        const resetDate = new Date(selected);
+
+        resetDate.setHours(parseInt(initialHourRef.current));
+        resetDate.setMinutes(parseInt(initialMinRef.current));
+        resetDate.setSeconds(parseInt(initialSecRef.current));
+
+        setDateTime(resetDate);
+        onSelect?.(resetDate);
+
+        onDialogCancel?.();
       }}
       footer={
         <>

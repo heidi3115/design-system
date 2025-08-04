@@ -1,10 +1,10 @@
-import { differenceInCalendarDays } from 'date-fns';
+'use client';
 
 type RangeType = 'start' | 'end';
 
 type UseCheckDateRangeValidityOptions = {
-  maxRange?: number;
-  minRange?: number;
+  maxRange?: number; // 단위: 일
+  minRange?: number; // 단위: 일
 };
 
 type CheckDateRangeParams = {
@@ -16,30 +16,11 @@ type CheckDateRangeParams = {
 /**
  * useCheckDateRangeValidity
  *
- * 날짜 범위 유효성을 검사하는 커스텀 훅입니다.
- *
- * @param maxRange - 허용되는 최대 범위 (일수 기준). 이보다 크면 에러 반환.
- * @param minRange - 허용되는 최소 범위 (일수 기준). 이보다 작으면 에러 반환.
- *
- * @returns checkDateRangeValidity 함수: 주어진 두 날짜(target, compare)와 타입에 따라 유효성을 검사하고,
- *          유효하지 않은 경우 에러 메시지와 함께 반환합니다.
+ * 날짜 범위 유효성을 검사하는 커스텀 훅입니다. (시간까지 포함)
  */
 export function useCheckDateRangeValidity({ maxRange, minRange }: UseCheckDateRangeValidityOptions = {}) {
-  /**
-   * checkDateRangeValidity
-   *
-   * 날짜 유효성을 검사하는 함수입니다.
-   * - 시작 날짜는 종료 날짜보다 이전이어야 합니다.
-   * - 종료 날짜는 시작 날짜보다 이후여야 합니다.
-   * - 날짜 간 차이가 최대 범위를 초과하거나 최소 범위 미만일 경우 에러를 반환합니다.
-   *
-   * @param target - 기준이 되는 날짜 (사용자가 선택한 날짜)
-   * @param compare - 비교 대상 날짜
-   * @param type - 날짜 비교 기준 ('start' | 'end')
-   *
-   * @returns isError - 유효성 검사 결과 (true일 경우 에러)
-   * @returns errorMessage - 유효하지 않을 경우의 에러 메시지 (옵셔널)
-   */
+  const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
   const checkDateRangeValidity = ({
     target,
     compare,
@@ -55,7 +36,10 @@ export function useCheckDateRangeValidity({ maxRange, minRange }: UseCheckDateRa
       };
     }
 
-    const invalid = type === 'start' ? target >= compare : target < compare;
+    const targetTime = target.getTime();
+    const compareTime = compare.getTime();
+
+    const invalid = type === 'start' ? targetTime >= compareTime : targetTime < compareTime;
 
     if (invalid) {
       const message =
@@ -67,23 +51,20 @@ export function useCheckDateRangeValidity({ maxRange, minRange }: UseCheckDateRa
       };
     }
 
-    const diff = differenceInCalendarDays(target, compare);
+    const diffInMs = targetTime - compareTime;
+    const absDiffInDays = Math.abs(diffInMs / MS_PER_DAY);
 
-    if (typeof maxRange === 'number' && Math.abs(diff) > maxRange) {
-      const message = `Max 범위 (${maxRange}일)를 초과했습니다.`;
-
+    if (typeof maxRange === 'number' && absDiffInDays > maxRange) {
       return {
         isError: true,
-        errorMessage: message,
+        errorMessage: `Max 범위 (${maxRange}일)를 초과했습니다.`,
       };
     }
 
-    if (typeof minRange === 'number' && Math.abs(diff) < minRange) {
-      const message = `Min 범위 (${minRange}일)보다 작습니다.`;
-
+    if (typeof minRange === 'number' && absDiffInDays < minRange) {
       return {
         isError: true,
-        errorMessage: message,
+        errorMessage: `Min 범위 (${minRange}일)보다 작습니다.`,
       };
     }
 

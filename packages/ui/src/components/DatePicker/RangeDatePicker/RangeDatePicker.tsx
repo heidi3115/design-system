@@ -24,6 +24,8 @@ type RangeDateType = {
   end?: Date;
 };
 
+type TimeType = ComponentProps<typeof DatePicker>['timeType'];
+
 type RangeDatePickerProps = {
   defaultRange?: RangeDateType;
   range?: RangeDateType;
@@ -43,8 +45,17 @@ type RangeDatePickerProps = {
     end?: ReactNode;
     labelDirection?: 'side' | 'top';
   };
-  customConfirmAlert?: ({ condDate, type }: { condDate?: Date; type: 'start' | 'end' }) => ReactNode;
+  customConfirmAlert?: ({
+    condDate,
+    type,
+    timeType,
+  }: {
+    condDate?: Date;
+    type: 'start' | 'end';
+    timeType?: TimeType;
+  }) => ReactNode;
   isConfrimAlert?: boolean;
+  timeType?: TimeType;
   className?: string;
 } & Omit<
   ComponentProps<typeof DatePicker>,
@@ -55,6 +66,7 @@ type RangeDatePickerProps = {
   | 'placeholder'
   | 'onConditionRequestCallback'
   | 'conditionContent'
+  | 'timeType'
 >;
 
 function RangeDatePicker({
@@ -78,6 +90,7 @@ function RangeDatePicker({
   },
   customConfirmAlert,
   isConfrimAlert = true,
+  timeType = 'date',
   className,
   ...datePickerProps
 }: RangeDatePickerProps) {
@@ -179,6 +192,7 @@ function RangeDatePicker({
           (typeof label.start === 'function' ? label.start : <Label className="text-[10px] px-1">{label.start}</Label>)}
         <DatePicker
           date={startDate}
+          timeType={timeType}
           onDateChange={(date) => handleDateChange({ type: 'start', date })}
           {...(isConfrimAlert
             ? {
@@ -191,13 +205,14 @@ function RangeDatePicker({
                   }),
                 conditionContent: (condDate) =>
                   customConfirmAlert ? (
-                    customConfirmAlert({ condDate, type: 'start' })
+                    customConfirmAlert({ condDate, type: 'start', timeType: timeType })
                   ) : (
                     <DefaultConfirmAlert
                       type="start"
                       condDate={condDate}
                       errorMessage={startErrorMessageRef.current}
                       selectedDate={startDate}
+                      timeType={timeType}
                     />
                   ),
               }
@@ -247,6 +262,7 @@ function RangeDatePicker({
           (typeof label.end === 'function' ? label.end : <Label className="text-[10px] px-1">{label.end}</Label>)}
         <DatePicker
           date={endDate}
+          timeType={timeType}
           onDateChange={(date) => handleDateChange({ type: 'end', date })}
           {...(isConfrimAlert
             ? {
@@ -259,13 +275,14 @@ function RangeDatePicker({
                   }),
                 conditionContent: (condDate) =>
                   customConfirmAlert ? (
-                    customConfirmAlert({ condDate, type: 'end' })
+                    customConfirmAlert({ condDate, type: 'end', timeType: timeType })
                   ) : (
                     <DefaultConfirmAlert
                       type="end"
                       condDate={condDate}
                       errorMessage={endErrorMessageRef.current}
                       selectedDate={endDate}
+                      timeType={timeType}
                     />
                   ),
               }
