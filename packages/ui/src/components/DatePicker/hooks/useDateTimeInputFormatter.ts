@@ -357,7 +357,16 @@ export function useDateTimeInputFormatter({
    */
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => (currentValue: string) => {
     const input = e.currentTarget;
+
+    // 포커스 해제
+    if (e.key === 'Enter') {
+      e.currentTarget.blur();
+
+      return;
+    }
+
     const cursor = input.selectionStart ?? 0;
+    const rangeEnd = input.selectionEnd ?? 0;
     const currentFieldIndex = findCurrentFieldIndex(cursor);
     const maxLength = getMaxFormattedLength();
 
@@ -374,10 +383,17 @@ export function useDateTimeInputFormatter({
     // 숫자 필드가 아니면 0부터 시작
     const currentNumber = isNumberField ? parseInt(fieldValue, 10) : 0;
 
-    if (e.key === 'ArrowRight') {
-      e.preventDefault();
+    // 현재 값이 최대 길이에 맞아야 방향키 동작
+    const isMaxCurentLength = currentValue.length === getMaxFormattedLength();
 
+    if (e.key === 'ArrowRight' && isMaxCurentLength) {
       const nextField = FIELD_RANGES[currentFieldIndex + 1];
+
+      if (cursor === rangeEnd && nextField?.start !== cursor + 1) {
+        return;
+      }
+
+      e.preventDefault();
 
       if (nextField) {
         input.setSelectionRange(nextField.start, nextField.end);
@@ -386,10 +402,14 @@ export function useDateTimeInputFormatter({
       }
     }
 
-    if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-
+    if (e.key === 'ArrowLeft' && isMaxCurentLength) {
       const prevField = FIELD_RANGES[currentFieldIndex - 1];
+
+      if (cursor === rangeEnd && prevField?.end !== cursor - 1) {
+        return;
+      }
+
+      e.preventDefault();
 
       if (prevField) {
         input.setSelectionRange(prevField.start, prevField.end);
@@ -398,7 +418,7 @@ export function useDateTimeInputFormatter({
       }
     }
 
-    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    if ((e.key === 'ArrowUp' || e.key === 'ArrowDown') && isMaxCurentLength) {
       e.preventDefault();
 
       const limits = RANGE_LIMITS[currentField.name] ?? { min: 0, max: 9999 };
@@ -451,6 +471,12 @@ export function useDateTimeInputFormatter({
     const input = e.currentTarget;
     const selectionStart = input.selectionStart ?? 0;
     const selectionEnd = input.selectionEnd ?? 0;
+
+    if (selectionEnd - selectionStart === getMaxFormattedLength()) {
+      e.preventDefault();
+
+      return;
+    }
 
     const field = FIELD_RANGES.find(({ start, end }) => selectionStart >= start && selectionStart < end + 1);
 
