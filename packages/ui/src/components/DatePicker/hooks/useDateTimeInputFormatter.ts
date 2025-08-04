@@ -52,6 +52,8 @@ type useDateTimeInputFormatterProps = {
  *
  * @param props - 초기 날짜, 입력 값 설정 함수, 에러 상태 설정 함수, 시간 포함 옵션
  * @returns handleInputChange - input의 onChange 이벤트 핸들러
+ * @returns handleKeyDown - input의 onKeyDown 이벤트 핸들러
+ * @returns handleClick - input의 onClick 이벤트 핸들러
  */
 export function useDateTimeInputFormatter({
   initDate,
@@ -295,6 +297,13 @@ export function useDateTimeInputFormatter({
     return FIELD_RANGES.findIndex(({ start, end }) => cursorPos >= start && cursorPos <= end);
   };
 
+  /**
+   * 입력 필드의 onChange 이벤트 핸들러
+   * - 사용자가 입력할 때마다 raw 입력값을 포맷에 맞게 자동 변환 (하이픈, 콜론 추가 등)
+   * - 변환된 값으로 상태를 업데이트(setInputValue 호출)
+   * - 입력된 날짜/시간 값의 유효성 검사 결과를 setIsError로 전달
+   * - 커서 위치가 하이픈, 콜론 등 구분자에 걸릴 경우 다음 위치로 자동 이동 처리
+   */
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
     const prevRaw = prevValueRef.current;
@@ -340,6 +349,12 @@ export function useDateTimeInputFormatter({
     });
   };
 
+  /**
+   * 입력 필드의 onKeyDown 이벤트 핸들러
+   * - 화살표 좌우키(ArrowLeft, ArrowRight)로 각 날짜/시간 필드 간 이동 (전체 필드 범위 선택)
+   * - 화살표 상하키(ArrowUp, ArrowDown)로 현재 필드의 숫자 값 증가/감소 (범위 내 순환)
+   * - 최대 입력 길이를 초과하는 입력 방지 처리
+   */
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => (currentValue: string) => {
     const input = e.currentTarget;
     const cursor = input.selectionStart ?? 0;
@@ -426,6 +441,12 @@ export function useDateTimeInputFormatter({
     }
   };
 
+  /**
+   * 입력 필드의 onClick 이벤트 핸들러
+   * - 사용자가 클릭 시 커서 위치에 해당하는 날짜/시간 필드 전체 범위를 선택하여 편집 편의성 제공
+   * - 이미 선택된 상태면 별도 동작하지 않음
+   * - 클릭 시 기본 커서 위치 변경 이벤트 방지(e.preventDefault)
+   */
   const handleClick = (e: MouseEvent<HTMLInputElement>) => {
     const input = e.currentTarget;
     const selectionStart = input.selectionStart ?? 0;
