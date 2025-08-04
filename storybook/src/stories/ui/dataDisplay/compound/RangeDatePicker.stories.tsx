@@ -49,6 +49,22 @@ const meta: Meta<typeof RangeDatePicker> = {
       control: false,
       description: '시작/종료 필드에 표시할 라벨 및 라벨 배치 방향 설정입니다.',
     },
+    delimiter: {
+      control: false,
+      description: '시작 입력창과 종료 입력창 사이의 컴포넌트 및 문자를 넣을 수 있는 설정입니다.',
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        component: `
+두 날짜 사이의 범위를 선택할 수 있는 컴포넌트입니다. 
+- 연/월 선택을 지원하며, 
+- 시작일과 종료일을 각각 선택하거나 동시에 선택할 수 있습니다.
+- 날짜 유효성 검사, 라벨, 커스텀 알림 등의 기능도 포함합니다.
+        `.trim(),
+      },
+    },
   },
 };
 
@@ -73,7 +89,25 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: '언컨트롤드 모드에서 기본 시작일과 종료일이 설정된 날짜 선택 예시입니다.',
+        story: '기본 시작일과 종료일이 설정된 날짜 선택 예시입니다.',
+      },
+    },
+  },
+};
+
+export const Time: Story = {
+  name: 'Time Range Selection',
+  args: {
+    timeType: 'minute',
+    defaultRange: {
+      start: today,
+      end: plus5days,
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '시간 설정을 포함한 시작일과 종료일이 설정된 날짜 선택 예시입니다.',
       },
     },
   },
@@ -92,6 +126,26 @@ export const Disabled: Story = {
     docs: {
       description: {
         story: 'RangeDatePicker가 비활성화된 상태의 예시입니다.',
+      },
+    },
+  },
+};
+
+export const NumberMonth: Story = {
+  name: 'NumberMonth',
+  args: {
+    defaultRange: {
+      start: today,
+      end: plus5days,
+    },
+    calendarProps: {
+      numberOfMonths: 2,
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'numberOfMonths을 활용하여 2개의 캘린더를 보여주는 예시입니다.',
       },
     },
   },
