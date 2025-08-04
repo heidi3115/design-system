@@ -219,9 +219,16 @@ function DatePicker({
               iconRight={defaultIconRight}
               iconLeft={iconLeft}
               iconProps={{
-                onClick: () => setOpen((prev) => !prev),
+                onClick: (e) => {
+                  if (disabled) e.preventDefault();
+
+                  if (!disabled) {
+                    setOpen((prev) => !prev);
+                  }
+                },
                 className: cn(
                   'cursor-pointer',
+                  disabled && 'cursor-not-allowed',
                   open && 'bg-current/20 p-1 size-6 rounded-lg',
                   open && !iconLeft && 'translate-x-1 ',
                   open && iconLeft && '-translate-x-1',

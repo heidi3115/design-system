@@ -104,7 +104,7 @@ function CloseButtonStory(props: React.ComponentProps<typeof CalendarTime>) {
 }
 
 const meta: Meta<typeof CalendarTime> = {
-  title: 'UI/DataDisplay/Compound/CalendarTime',
+  title: 'UI/DataDisplay/Compound/Calendar/CalendarTime',
   component: CalendarTime,
   args: {
     timeType: 'minute',

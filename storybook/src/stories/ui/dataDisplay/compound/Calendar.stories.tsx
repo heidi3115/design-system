@@ -97,7 +97,7 @@ function DialogCalendarStory(props: React.ComponentProps<typeof Calendar>) {
 }
 
 const meta: Meta<typeof Calendar> = {
-  title: 'UI/DataDisplay/Compound/Calendar',
+  title: 'UI/DataDisplay/Compound/Calendar/Calendar',
   component: Calendar,
   args: {
     mode: 'single',

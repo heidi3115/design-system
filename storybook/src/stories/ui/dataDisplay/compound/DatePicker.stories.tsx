@@ -5,7 +5,7 @@ import { DatePicker } from '@common/ui';
 import { EyeIcon } from '@common/ui/icons';
 
 const meta: Meta<typeof DatePicker> = {
-  title: 'UI/DataDisplay/Compound/DatePicker',
+  title: 'UI/DataDisplay/Compound/DatePicker/DatePicker',
   component: DatePicker,
   args: {
     timeType: 'date',
