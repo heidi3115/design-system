@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, type ChangeEvent } from 'react';
+import { useRef, useEffect, type ChangeEvent, type KeyboardEvent, type MouseEvent } from 'react';
 import { parse, format, isValid } from 'date-fns';
 
 const FORMAT_MAP = {
@@ -228,14 +228,14 @@ export function useDateTimeInputFormatter({
 
       newValue = `${year}-${month}-${day} ${formattedHour}:`;
     } else if (minuteJustCompleted) {
-      const formattedHour = hour.length === 1 ? `0${hour}` : hour;
+      const formattedHour = isSingleDigitHour ? `0${hour}:` : hour;
       const formattedMinute = isSingleDigitMinute ? `0${singleMinuteDigit}` : minute;
 
       newValue = `${year}-${month}-${day} ${formattedHour}:${formattedMinute}`;
       if (withTimeType === 'second' && !raw.endsWith(':')) newValue += ':';
     } else if (secondJustCompleted) {
-      const formattedHour = hour.length === 1 ? `0${hour}` : hour;
-      const formattedMinute = minute.length === 1 ? `0${minute}` : minute;
+      const formattedHour = isSingleDigitHour ? `0${hour}:` : hour;
+      const formattedMinute = isSingleDigitMinute ? `0${minute}:` : minute;
 
       newValue = `${year}-${month}-${day} ${formattedHour}:${formattedMinute}:${second}`;
     } else {
@@ -273,6 +273,28 @@ export function useDateTimeInputFormatter({
     return newValue;
   };
 
+  const FIELD_RANGES = [
+    { name: 'year', start: 0, end: 4 },
+    { name: 'month', start: 5, end: 7 },
+    { name: 'day', start: 8, end: 10 },
+    { name: 'hour', start: 11, end: 13 },
+    { name: 'minute', start: 14, end: 16 },
+    { name: 'second', start: 17, end: 19 },
+  ] as const;
+
+  const RANGE_LIMITS: Record<string, { min: number; max: number }> = {
+    year: { min: 1900, max: 2100 },
+    month: { min: 1, max: 12 },
+    day: { min: 1, max: 31 },
+    hour: { min: 0, max: 23 },
+    minute: { min: 0, max: 59 },
+    second: { min: 0, max: 59 },
+  } as const;
+
+  const findCurrentFieldIndex = (cursorPos: number) => {
+    return FIELD_RANGES.findIndex(({ start, end }) => cursorPos >= start && cursorPos <= end);
+  };
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
     const prevRaw = prevValueRef.current;
@@ -286,17 +308,145 @@ export function useDateTimeInputFormatter({
       newPos += formatted.length - raw.length;
     }
 
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        e.target.setSelectionRange(newPos, newPos);
-      }, 1);
-    });
+    const maxLength = getMaxFormattedLength();
+
+    if (newPos > maxLength) {
+      newPos = maxLength;
+    }
 
     setInputValue?.(formatted);
     setIsError?.(!isValidFormattedDateTime(formatted));
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const val = e.target.value;
+        const nextChar = val.charAt(newPos);
+        const currentFieldIndex = findCurrentFieldIndex(newPos);
+
+        let shouldSkip = nextChar === '-' || nextChar === ':' || nextChar === ' ';
+
+        if (currentFieldIndex !== -1) {
+          const { end } = FIELD_RANGES[currentFieldIndex] ?? { end: 0 };
+
+          if (newPos < end) {
+            shouldSkip = false;
+          }
+        }
+
+        const adjustedPos = shouldSkip ? newPos + 1 : newPos;
+
+        e.target.setSelectionRange(adjustedPos, adjustedPos);
+      }, 1);
+    });
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => (currentValue: string) => {
+    const input = e.currentTarget;
+    const cursor = input.selectionStart ?? 0;
+    const currentFieldIndex = findCurrentFieldIndex(cursor);
+    const maxLength = getMaxFormattedLength();
+
+    // 현재 필드 범위 가져오기
+    const currentField = FIELD_RANGES[currentFieldIndex];
+    if (!currentField) return;
+
+    // 현재 필드 값
+    const fieldValue = currentValue.slice(currentField.start, currentField.end);
+
+    // 숫자 필드 여부 확인 (숫자만 있으면 숫자 필드)
+    const isNumberField = /^[0-9]+$/.test(fieldValue);
+
+    // 숫자 필드가 아니면 0부터 시작
+    const currentNumber = isNumberField ? parseInt(fieldValue, 10) : 0;
+
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+
+      const nextField = FIELD_RANGES[currentFieldIndex + 1];
+
+      if (nextField) {
+        input.setSelectionRange(nextField.start, nextField.end);
+      } else {
+        input.setSelectionRange(currentField.start, currentField.end);
+      }
+    }
+
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+
+      const prevField = FIELD_RANGES[currentFieldIndex - 1];
+
+      if (prevField) {
+        input.setSelectionRange(prevField.start, prevField.end);
+      } else {
+        input.setSelectionRange(currentField.start, currentField.end);
+      }
+    }
+
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+
+      const limits = RANGE_LIMITS[currentField.name] ?? { min: 0, max: 9999 };
+
+      let newNumber = currentNumber;
+
+      if (e.key === 'ArrowUp') {
+        newNumber = currentNumber + 1;
+        if (newNumber > limits.max) newNumber = limits.min; // max 넘으면 min으로 순환
+      }
+
+      if (e.key === 'ArrowDown') {
+        newNumber = currentNumber - 1;
+        if (newNumber < limits.min) newNumber = limits.max; // min 아래면 max로 순환
+      }
+
+      const fieldLength = currentField.end - currentField.start;
+      const newNumberStr = String(newNumber).padStart(fieldLength, '0');
+
+      const newValue = currentValue.slice(0, currentField.start) + newNumberStr + currentValue.slice(currentField.end);
+
+      input.value = newValue;
+
+      setInputValue?.(newValue);
+
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          input.setSelectionRange(currentField.start, currentField.end);
+        }, 1);
+      });
+    }
+
+    // maxLength 넘어가는 입력 방지
+    if (
+      !['ArrowRight', 'ArrowLeft', 'Backspace', 'ArrowUp', 'ArrowDown'].includes(e.key) &&
+      currentValue.length >= maxLength &&
+      cursor >= maxLength
+    ) {
+      e.preventDefault();
+    }
+  };
+
+  const handleClick = (e: MouseEvent<HTMLInputElement>) => {
+    const input = e.currentTarget;
+    const selectionStart = input.selectionStart ?? 0;
+    const selectionEnd = input.selectionEnd ?? 0;
+
+    const field = FIELD_RANGES.find(({ start, end }) => selectionStart >= start && selectionStart < end + 1);
+
+    if (field) {
+      const isAlreadySelected = selectionStart === field.start && selectionEnd === field.end;
+
+      if (!isAlreadySelected) {
+        input.setSelectionRange(field.start, field.end);
+      }
+
+      e.preventDefault();
+    }
   };
 
   return {
     handleInputChange,
+    handleKeyDown,
+    handleClick,
   };
 }

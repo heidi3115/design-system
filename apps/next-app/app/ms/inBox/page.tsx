@@ -61,6 +61,7 @@ export default function BoxPages() {
           }}
           calendarProps={{
             numberOfMonths: 2,
+            navLayout: 'after',
           }}
         />
         <DatePicker

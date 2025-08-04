@@ -6,6 +6,7 @@ import {
   type ComponentProps,
   type ReactNode,
   type Ref,
+  type ChangeEvent,
   useMemo,
   useCallback,
 } from 'react';
@@ -106,7 +107,7 @@ function DatePicker({
 
   const [confirmationRequest, setConfirmationRequest] = useState<Date | undefined>(undefined);
 
-  const { handleInputChange } = useDateTimeInputFormatter({
+  const { handleInputChange, handleKeyDown, handleClick } = useDateTimeInputFormatter({
     initDate: isInitDate ? undefined : date,
     setInputValue,
     setIsError,
@@ -140,8 +141,10 @@ function DatePicker({
   );
 
   // input blur 시 유효한 날짜면 onChange 또는 내부 상태 업데이트
-  const handleInputBlur = () => {
+  const handleInputBlur = (e: ChangeEvent<HTMLInputElement>) => {
     const parsed = parse(inputValue, timeTypeFormat, new Date());
+
+    setInputValue(e.target.value);
 
     if (isNaN(parsed.getTime())) {
       setIsError(true);
@@ -207,8 +210,9 @@ function DatePicker({
               value={inputValue}
               onChange={handleInputChange}
               onBlur={handleInputBlur}
-              onClick={(e) => e.preventDefault()}
+              onClick={handleClick}
               onFocus={() => setOpen(false)}
+              onKeyDown={(e) => handleKeyDown(e)(inputValue)}
               className={cn('[&::-webkit-calendar-picker-indicator]:hidden', inputClassName)}
               iconRight={defaultIconRight}
               iconLeft={iconLeft}
