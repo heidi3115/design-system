@@ -68,7 +68,6 @@ export default function BoxPages() {
           defaultDate={new Date(2024, 5, 11)}
           dateRef={uncontrollDate}
           className="w-200"
-          isArrow
           numberOfMonths={2}
           calendarProps={{
             captionLayout: 'dropdown-months',
@@ -83,7 +82,6 @@ export default function BoxPages() {
             underline: 'none',
             iconLeft: EyeIcon,
           }}
-          disabled={[{ before: new Date(2024, 6, 1), after: new Date(2024, 6, 10) }]}
         />
 
         <DatePicker

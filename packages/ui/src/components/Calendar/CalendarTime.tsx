@@ -17,7 +17,7 @@ function CalendarTime({
   onDialogCancel,
   ...calendarProps
 }: Omit<ComponentProps<typeof Calendar>, 'mode' | 'selected' | 'onSelect' | 'footer'> & {
-  selected: Date | undefined;
+  selected?: Date | undefined;
   onSelect?: (calDate: Date | undefined) => void;
   timeType?: 'hour' | 'minute' | 'second';
   closeButton?: ReactNode;

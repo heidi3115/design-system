@@ -43,6 +43,8 @@ function Calendar({
 }) {
   const defaultClassNames = getDefaultClassNames();
 
+  const currentYear = new Date().getFullYear();
+
   const dayButtonClassNames = props.modifiersClassNames;
 
   const navLayoutAdjust = navLayout === 'around' ? undefined : navLayout;
@@ -51,6 +53,8 @@ function Calendar({
     <DayPicker
       mode="single"
       locale={ko}
+      fromYear={currentYear - 100}
+      toYear={currentYear + 100}
       showOutsideDays={showOutsideDays}
       className={cn(
         'bg-juiBackground-popover group/calendar p-3',
