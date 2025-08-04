@@ -200,7 +200,7 @@ export const DisabledCalendar: Story = {
     docs: {
       description: {
         story: [
-          'calendarProps.disabled`를 설정하여 캘린더에서 선택할 수 있는 날짜 범위를 제한할 수 있습니다.',
+          'disabledCalendar 나 calendarProps.disabled`를 설정하여 캘린더에서 선택할 수 있는 날짜 범위를 제한할 수 있습니다.',
           '{ before: new Date(2025, 6, 5), after: new Date(2025, 6, 15) }',
           '(25-07-05 ~ 25-07-15 만 활성화)',
         ].join('<br/>'),
