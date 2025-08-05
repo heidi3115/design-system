@@ -110,6 +110,9 @@ function RangeDatePicker({
   const startErrorMessageRef = useRef('');
   const endErrorMessageRef = useRef('');
 
+  const [startCalOpen, setStartCalOpen] = useState(false);
+  const [endCalOpen, setEndCalOpen] = useState(false);
+
   const { checkDateRangeValidity } = useCheckDateRangeValidity({
     maxRange: maxRangeDays,
     minRange: minRangeDays,
@@ -151,6 +154,14 @@ function RangeDatePicker({
           errorRef.current = '';
           updateRange(type === 'start' ? target : startDate, type === 'end' ? target : endDate);
         }
+
+        if (isError && type === 'start') {
+          setStartCalOpen(false);
+        }
+
+        if (isError && type === 'end') {
+          setEndCalOpen(false);
+        }
       }
 
       // reset opposite error
@@ -181,9 +192,6 @@ function RangeDatePicker({
 
     return isError;
   };
-
-  const [startCalOpen, setStartCalOpen] = useState(false);
-  const [endCalOpen, setEndCalOpen] = useState(false);
 
   return (
     <div
