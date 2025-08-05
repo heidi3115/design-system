@@ -80,7 +80,7 @@ function DatePicker({
 }: DatePickerProps) {
   const timeTypeFormatMap: Record<TimeType, string> = {
     date: 'yyyy-MM-dd',
-    hour: 'yyyy-MM-dd HH:00',
+    hour: 'yyyy-MM-dd HH',
     minute: 'yyyy-MM-dd HH:mm',
     second: 'yyyy-MM-dd HH:mm:ss',
   };

@@ -98,6 +98,7 @@ export default function BoxPages() {
         />
 
         <DatePicker
+          timeType="hour"
           date={selectedDate}
           onDateChange={(date) => {
             setSelectedDate(date);
