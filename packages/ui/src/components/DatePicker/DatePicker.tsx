@@ -85,7 +85,7 @@ function DatePicker({
     second: 'yyyy-MM-dd HH:mm:ss',
   };
 
-  const timeTypeFormat = timeTypeFormatMap[timeType ?? 'date'];
+  const timeTypeFormat = timeTypeFormatMap[timeType];
 
   const CalendarComp = timeType === 'date' ? Calendar : CalendarTime;
 

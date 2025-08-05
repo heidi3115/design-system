@@ -45,7 +45,10 @@ const meta: Meta<typeof RangeDatePicker> = {
     },
     isConfrimAlert: {
       control: { type: 'boolean' },
-      description: '날짜 선택 시 확인 다이얼로그 표시 여부를 설정합니다.',
+      description: [
+        '날짜 선택 시 조건 상관 없이 확인 다이얼로그 표시 여부를 설정합니다.',
+        '** 조건: start, end 범위 및 maxRangeDays 보다 좁을때, minRangeDays 보다 넓을때',
+      ].join('<br />'),
     },
     customConfirmAlert: {
       control: false,
