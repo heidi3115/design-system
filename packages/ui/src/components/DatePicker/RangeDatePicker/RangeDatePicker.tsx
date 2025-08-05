@@ -10,7 +10,7 @@ import {
   type CSSProperties,
 } from 'react';
 
-import { Label } from '../../Label';
+import { Label, Button } from '../../../components';
 import { useCheckDateRangeValidity } from '../hooks/useCheckDateRangeValidity';
 import { DefaultConfirmAlert } from './DefaultConfirmAlert';
 import DatePicker from '../DatePicker';
@@ -182,6 +182,9 @@ function RangeDatePicker({
     return isError;
   };
 
+  const [startCalOpen, setStartCalOpen] = useState(false);
+  const [endCalOpen, setEndCalOpen] = useState(false);
+
   return (
     <div
       data-slot="range-picker-wrapper"
@@ -193,6 +196,8 @@ function RangeDatePicker({
         <DatePicker
           date={startDate}
           timeType={timeType}
+          open={startCalOpen}
+          onOpenChange={setStartCalOpen}
           onDateChange={(date) => handleDateChange({ type: 'start', date })}
           {...(isConfrimAlert
             ? {
@@ -245,6 +250,20 @@ function RangeDatePicker({
               ),
               against: 'text-juiText-secondary',
             },
+            ...(timeType !== 'date' && {
+              closeButton: (
+                <div className="flex gap-2 ml-auto mt-1 mr-0">
+                  <Button
+                    onClick={() => {
+                      setStartCalOpen(false);
+                      setEndCalOpen(true);
+                    }}>
+                    다음
+                  </Button>
+                  <Button onClick={() => setStartCalOpen(false)}>시작 닫기</Button>
+                </div>
+              ),
+            }),
           }}
           {...datePickerProps}
         />
@@ -264,6 +283,8 @@ function RangeDatePicker({
         <DatePicker
           date={endDate}
           timeType={timeType}
+          open={endCalOpen}
+          onOpenChange={setEndCalOpen}
           onDateChange={(date) => handleDateChange({ type: 'end', date })}
           {...(isConfrimAlert
             ? {
@@ -316,6 +337,20 @@ function RangeDatePicker({
               ),
               against: 'text-juiText-secondary',
             },
+            ...(timeType !== 'date' && {
+              closeButton: (
+                <div className="flex gap-2 ml-auto mt-1 mr-0">
+                  <Button
+                    onClick={() => {
+                      setEndCalOpen(false);
+                      setStartCalOpen(true);
+                    }}>
+                    이전
+                  </Button>
+                  <Button onClick={() => setEndCalOpen(false)}>종료 닫기</Button>
+                </div>
+              ),
+            }),
           }}
           {...datePickerProps}
         />

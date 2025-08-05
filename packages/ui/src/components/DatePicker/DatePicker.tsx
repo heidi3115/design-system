@@ -16,6 +16,7 @@ import { Button, Calendar, CalendarTime, Input, Popover } from '../../components
 import { CalendarIcon, CalendarClockIcon } from '@common/ui/icons';
 import { useConfirmDialog } from '@common/ui/hooks';
 import { useDateTimeInputFormatter } from './hooks/useDateTimeInputFormatter';
+import { useCalendarOpenInPicker } from './hooks/useCalendarOpenInPicker';
 import { useUpdateEffect } from '@common/utils';
 import { cn } from '@common/ui/lib/utils';
 
@@ -26,6 +27,8 @@ type DatePickerBaseProps = {
   defaultDate?: Date;
   onDateChange?: (date: Date | undefined) => void;
   dateRef?: Ref<Date | undefined>;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   isArrow?: ComponentProps<typeof Popover>['isArrow'];
   numberOfMonths?: ComponentProps<typeof Calendar>['numberOfMonths'];
   className?: string;
@@ -64,6 +67,8 @@ function DatePicker({
   defaultDate,
   onDateChange,
   dateRef,
+  open: openProp,
+  onOpenChange: onOpenChangeProp,
   isArrow,
   numberOfMonths,
   className,
@@ -103,9 +108,11 @@ function DatePicker({
 
   useImperativeHandle(dateRef, () => (isInitDate ? undefined : date));
 
+  // Calendar Oepn 커스텀 훅
+  const [open, setOpen] = useCalendarOpenInPicker(openProp, onOpenChangeProp);
+
   const [inputValue, setInputValue] = useState(() => (date ? format(date, timeTypeFormat) : ''));
   const [isError, setIsError] = useState(false);
-  const [open, setOpen] = useState(false);
 
   const [confirmationRequest, setConfirmationRequest] = useState<Date | undefined>(undefined);
 
@@ -223,7 +230,7 @@ function DatePicker({
                   if (disabled) e.preventDefault();
 
                   if (!disabled) {
-                    setOpen((prev) => !prev);
+                    setOpen(open ? open : !open);
                   }
                 },
                 className: cn(

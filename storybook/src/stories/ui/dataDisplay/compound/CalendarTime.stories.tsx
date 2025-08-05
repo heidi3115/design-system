@@ -117,7 +117,11 @@ const meta: Meta<typeof CalendarTime> = {
     },
     selected: {
       control: false,
-      description: '선택된 날짜, 날짜 배열 또는 범위입니다. `mode`에 따라 타입이 달라집니다.',
+      description: '선택된 날짜 Date 값 입니다.(CalendarTime 에서는 single 모드만 지원)',
+      table: {
+        type: { summary: 'Date | undefined' },
+        defaultValue: { summary: 'undefined' },
+      },
     },
     onSelect: {
       control: false,
