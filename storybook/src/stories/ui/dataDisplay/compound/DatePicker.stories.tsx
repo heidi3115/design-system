@@ -209,6 +209,78 @@ export const DisabledCalendar: Story = {
   },
 };
 
+type SideType = 'top' | 'right' | 'bottom' | 'left';
+type AlignType = 'start' | 'center' | 'end';
+const sideOptions: SideType[] = ['top', 'left', 'bottom', 'right'] as const;
+const alignOptions: AlignType[] = ['start', 'center', 'end'] as const;
+
+export const PositionCalendar: Story = {
+  name: 'Position Calendar',
+  args: {
+    defaultDate: new Date(2025, 6, 10),
+  },
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story: [
+          '`popoverProps`를 사용하여 캘린더 팝오버의 위치를 설정할 수 있습니다.',
+          '',
+          '**`side`**는 팝오버가 기준 요소의 어느 방향에 나타날지를 결정합니다:',
+          '- "top": 기준 요소 위쪽, "right": 기준 요소 오른쪽, "bottom": 기준 요소 아래쪽, "left": 기준 요소 왼쪽',
+          '',
+          '**`align`**은 해당 방향(`side`) 기준으로 팝오버를 어떻게 정렬할지를 설정합니다:',
+          '- "start": 시작 지점 정렬, "center": 가운데 정렬, "end": 끝 지점 정렬',
+          '',
+          '예를 들어 `side: "right"` 와 `align: "start"`를 지정하면, 팝오버는 입력 필드의 오른쪽 위쪽에 정렬되어 나타납니다.',
+        ].join('<br/>'),
+      },
+    },
+  },
+
+  render: (args) => {
+    return (
+      <div className="w-full p-4 flex flex-col gap-4 rounded">
+        <h3 className="text-xl font-bold">side와 align 조합 캘린더 팝오버 위치 예시</h3>
+        <div className="relative w-full flex flex-col gap-4 p-4 border min-w-3xl rounded">
+          <div className="flex flex-col gap-4 p-4 rounded relative min-h-[560px]">
+            {sideOptions.map((side) => (
+              <div
+                key={side}
+                className={`flex flex-col gap-4 p-4 absolute -translate-x-1/2 -translate-y-1/2 ${
+                  side === 'top'
+                    ? 'left-[48%] top-[20%]'
+                    : side === 'left'
+                      ? 'left-[18%] top-[50%]'
+                      : side === 'bottom'
+                        ? 'left-[48%] top-[78%]'
+                        : 'right-[2%] top-[50%]'
+                }`}>
+                <div
+                  className={`grid ${
+                    side === 'top' || side === 'bottom' ? 'grid-cols-3 gap-20' : 'grid-rows-3 gap-20'
+                  }`}>
+                  {alignOptions.map((align) => (
+                    <DatePicker
+                      key={`${side}_${align}`}
+                      {...args}
+                      popoverProps={{ side, align }}
+                      calendarProps={{
+                        footer: `side:${side}, align:${align}`,
+                      }}
+                      className="w-30"
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
 export const WithIconAndNoUnderline: Story = {
   args: {
     defaultDate: new Date(2025, 6, 10),
