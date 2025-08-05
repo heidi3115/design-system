@@ -22,7 +22,7 @@ export function DefaultConfirmAlert({
 }: DefaultConfirmAlertProps) {
   const timeTypeFormatMap: Record<typeof timeType, string> = {
     date: 'yyyy-MM-dd',
-    hour: 'yyyy-MM-dd HH:00',
+    hour: 'yyyy-MM-dd HH',
     minute: 'yyyy-MM-dd HH:mm',
     second: 'yyyy-MM-dd HH:mm:ss',
   };
