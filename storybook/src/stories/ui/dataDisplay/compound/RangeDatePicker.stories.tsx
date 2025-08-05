@@ -8,7 +8,21 @@ const meta: Meta<typeof RangeDatePicker> = {
   component: RangeDatePicker,
   args: {
     timeType: 'date',
-    isConfrimAlert: true,
+    label: {
+      start: '',
+      end: '',
+      labelDirection: 'top',
+    },
+    oppositeSign: {
+      start: {
+        show: true,
+        label: 'START',
+      },
+      end: {
+        show: true,
+        label: 'END',
+      },
+    },
   },
   argTypes: {
     timeType: {
@@ -42,16 +56,22 @@ const meta: Meta<typeof RangeDatePicker> = {
       description: '언컨트롤드 모드에서 초기 시작/종료 날짜 범위입니다.',
     },
     oppositeSign: {
-      control: false,
       description: '시작/종료 날짜 버튼 옆에 표시할 반대 지점 라벨 및 스타일 설정입니다.',
     },
     label: {
-      control: false,
       description: '시작/종료 필드에 표시할 라벨 및 라벨 배치 방향 설정입니다.',
     },
     delimiter: {
       control: false,
       description: '시작 입력창과 종료 입력창 사이의 컴포넌트 및 문자를 넣을 수 있는 설정입니다.',
+    },
+    range: {
+      control: false,
+      description: '{start: Date, end: Date} 타입의 range 변수 입니다.',
+    },
+    onRangeChange: {
+      control: false,
+      description: 'range 콜백 함수 입니다.',
     },
   },
   parameters: {
