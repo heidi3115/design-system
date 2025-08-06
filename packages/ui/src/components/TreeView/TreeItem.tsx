@@ -69,28 +69,29 @@ export default function TreeItem<T = unknown>({
   size = 'basic',
   variant = 'default',
   indentSize = DEFAULT_INDENT_SIZE,
-  showLineLevel,
+  showLineLevel = undefined,
   onSelect,
   onToggle,
   className,
   treeViewState,
 }: TreeItemProps<T>) {
   const hasChildren = Array.isArray(node?.children) && node.children.length > 0;
-  const hasLineLevel = showLineLevel === undefined ? undefined : showLineLevel;
+  const hasLineLevel = !(showLineLevel === undefined);
   const lineLevelNum = hasLineLevel ? showLineLevel || 0 : 0;
 
   const { base, common, items, itemTrigger, itemContent, icons } = treeViewVariants({
     size,
     variant,
-    showLines: hasLineLevel ? level >= lineLevelNum : true,
+    showLines: hasLineLevel ? level === lineLevelNum : false,
     itemSelected: selected,
     disabled,
   });
   const disabledClass = disabled ? base() : '';
   const variantClass = common();
   const itemsClass = items();
-  const lineDotClass =
-    "after:content-['·'] after:text-[40px]/0 after:size-1 after:absolute after:left-0 after:bottom-0 after:-translate-x-1.5";
+  const lineDotClass = !hasLineLevel
+    ? "after:content-['·'] after:text-[40px]/0 after:size-1 after:absolute after:left-0 after:bottom-0 after:-translate-x-1.5"
+    : '';
 
   const handleItemToggle = (e: React.MouseEvent, nodeId: string) => {
     e.stopPropagation();

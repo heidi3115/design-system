@@ -175,7 +175,7 @@ type TreeNodeProps<T> = {
       table: { type: { summary: 'number | undefined' }, defaultValue: { summary: 'undefined' } },
       description: [
         '노드 간 연결선(수직선)을 적용할 depth 레벨을 지정합니다.',
-        '0일 때 root 부터, undefined 이면 연결선을 표시하지 않습니다.',
+        '0일 때 root 레벨에서 선이 보이며, 각 보이고 싶은 선의 레벨을 지정할 수 있고, undefined 이면 연결선을 표시하지 않습니다.',
       ].join('\n'),
     },
     defaultSelectedIds: {
