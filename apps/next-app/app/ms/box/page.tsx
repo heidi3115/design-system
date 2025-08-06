@@ -113,6 +113,8 @@ export default function BoxPages() {
         startPlaceholder="시작 날짜 선택"
       />
 
+      <RangeDatePicker timeType="minute" startPlaceholder="시작 날짜 선택" />
+
       <Switch defaultChecked />
       <Switch variant="secondary" defaultChecked />
       <Switch variant="error" defaultChecked />
