@@ -2,46 +2,40 @@
 
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button, Calendar, type DateRange } from '@common/ui';
+import { Button, CalendarTime } from '@common/ui';
 
-// 1. Single 모드 상태 관리 컴포넌트
-function SingleCalendarStory(props: React.ComponentProps<typeof Calendar>) {
-  const [selected, setSelected] = React.useState<Date | undefined>(new Date(2025, 6, 10));
+// 1. Mintue 모드 상태 관리 컴포넌트
+function MinCalendarStory(props: React.ComponentProps<typeof CalendarTime>) {
+  const [selected, setSelected] = React.useState<Date | undefined>(new Date(2025, 6, 10, 12, 11));
 
-  return <Calendar {...props} mode="single" defaultMonth={selected} selected={selected} onSelect={setSelected} />;
+  return <CalendarTime {...props} defaultMonth={selected} selected={selected} onSelect={setSelected} />;
 }
 
-// 2. Range 모드 상태 관리 컴포넌트
-function RangeCalendarStory(props: React.ComponentProps<typeof Calendar>) {
-  const [range, setRange] = React.useState<DateRange | undefined>({
-    from: new Date(2025, 6, 10),
-    to: new Date(2025, 6, 20),
-  });
+// 2. Second 모드 상태 관리 컴포넌트
+function SecondCalendarStory(props: React.ComponentProps<typeof CalendarTime>) {
+  const [selected, setSelected] = React.useState<Date | undefined>(new Date(2025, 6, 10, 12, 11));
 
-  return <Calendar {...props} mode="range" defaultMonth={range?.from} selected={range} onSelect={setRange} />;
+  return (
+    <CalendarTime {...props} timeType="second" defaultMonth={selected} selected={selected} onSelect={setSelected} />
+  );
 }
 
-// 3. Multiple 모드 상태 관리 컴포넌트
-function MultipleCalendarStory(props: React.ComponentProps<typeof Calendar>) {
-  const [multi, setMulti] = React.useState<Date[] | undefined>([
-    new Date(2025, 6, 10),
-    new Date(2025, 6, 12),
-    new Date(2025, 6, 14),
-  ]);
+// 3. Hour 모드 상태 관리 컴포넌트
+function HourCalendarStory(props: React.ComponentProps<typeof CalendarTime>) {
+  const [selected, setSelected] = React.useState<Date | undefined>(new Date(2025, 6, 10, 12, 11));
 
-  return <Calendar {...props} mode="multiple" defaultMonth={multi?.[0]} selected={multi} onSelect={setMulti} />;
+  return <CalendarTime {...props} timeType="hour" defaultMonth={selected} selected={selected} onSelect={setSelected} />;
 }
 
 // 4. Min/Max disabled 범위 상태 관리 컴포넌트
-function DisabledBoundsCalendarStory(props: React.ComponentProps<typeof Calendar>) {
+function DisabledBoundsCalendarStory(props: React.ComponentProps<typeof CalendarTime>) {
   const [selected, setSelected] = React.useState<Date | undefined>(undefined);
-  const minDate = new Date(2025, 6, 10);
-  const maxDate = new Date(2025, 6, 20);
+  const minDate = new Date(2025, 6, 10, 0, 0);
+  const maxDate = new Date(2025, 6, 20, 0, 0);
 
   return (
-    <Calendar
+    <CalendarTime
       {...props}
-      mode="single"
       defaultMonth={selected}
       selected={selected}
       onSelect={setSelected}
@@ -51,15 +45,14 @@ function DisabledBoundsCalendarStory(props: React.ComponentProps<typeof Calendar
 }
 
 // 5.From/To disabled 범위 상태 관리 컴포넌트
-function DisabledFromToCalendarStory(props: React.ComponentProps<typeof Calendar>) {
+function DisabledFromToCalendarStory(props: React.ComponentProps<typeof CalendarTime>) {
   const [selected, setSelected] = React.useState<Date | undefined>(undefined);
-  const minDate = new Date(2025, 6, 10);
-  const maxDate = new Date(2025, 6, 20);
+  const minDate = new Date(2025, 6, 10, 0, 0);
+  const maxDate = new Date(2025, 6, 20, 0, 0);
 
   return (
-    <Calendar
+    <CalendarTime
       {...props}
-      mode="single"
       defaultMonth={selected}
       selected={selected}
       onSelect={setSelected}
@@ -69,16 +62,15 @@ function DisabledFromToCalendarStory(props: React.ComponentProps<typeof Calendar
 }
 
 // 6. 다이얼로그 열림 상태 관리 컴포넌트
-function DialogCalendarStory(props: React.ComponentProps<typeof Calendar>) {
+function DialogCalendarStory(props: React.ComponentProps<typeof CalendarTime>) {
   const [selected, setSelected] = React.useState<Date | undefined>(undefined);
   const [open, setOpen] = React.useState(false);
 
   return (
     <div>
       <Button onClick={() => setOpen(true)}>Open Calendar</Button>
-      <Calendar
+      <CalendarTime
         {...props}
-        mode="single"
         selected={selected}
         onSelect={setSelected}
         dialogOpen={open}
@@ -96,24 +88,40 @@ function DialogCalendarStory(props: React.ComponentProps<typeof Calendar>) {
   );
 }
 
-const meta: Meta<typeof Calendar> = {
-  title: 'UI/DataDisplay/Compound/Calendar/Calendar',
-  component: Calendar,
+function CloseButtonStory(props: React.ComponentProps<typeof CalendarTime>) {
+  const [selected, setSelected] = React.useState<Date | undefined>(undefined);
+
+  return (
+    <div>
+      <CalendarTime
+        {...props}
+        selected={selected}
+        onSelect={setSelected}
+        closeButton={<Button className="ml-auto mt-1 mr-0">OK</Button>}
+      />
+    </div>
+  );
+}
+
+const meta: Meta<typeof CalendarTime> = {
+  title: 'UI/DataDisplay/Compound/Calendar/CalendarTime',
+  component: CalendarTime,
   args: {
-    mode: 'single',
+    timeType: 'minute',
   },
   argTypes: {
-    mode: {
-      control: false,
-      table: {
-        type: { summary: 'single | multiple | range' },
-        defaultValue: { summary: 'single' },
-      },
-      description: '날짜 선택 모드를 지정합니다. 단일, 범위, 다중 선택 중 하나입니다.',
+    timeType: {
+      control: { type: 'radio' },
+      options: ['hour', 'minute', 'second'],
+      description: '시간 선택 단위를 설정합니다. (`hour`, `minute`, `second`)',
     },
     selected: {
       control: false,
-      description: '선택된 날짜, 날짜 배열 또는 범위입니다. `mode`에 따라 타입이 달라집니다.',
+      description: '선택된 날짜 Date 값 입니다.(CalendarTime 에서는 single 모드만 지원)',
+      table: {
+        type: { summary: 'Date | undefined' },
+        defaultValue: { summary: 'undefined' },
+      },
     },
     onSelect: {
       control: false,
@@ -175,7 +183,7 @@ const meta: Meta<typeof Calendar> = {
           '이 컴포넌트는 [`react-day-picker`](https://react-day-picker.js.org/) 라이브러리를 기반으로 구현되었습니다.',
           '자세한 동작 방식이나 옵션은 해당 라이브러리의 문서를 참고해 주세요.',
           '',
-          '지원하는 모드: `single`, `multiple`, `range`',
+          '지원하는 모드: `mintue`, `hour`, `second`',
           '추가로 다이얼로그, caption layout, 비활성화 범위, 다중 월(month) 등 다양한 기능을 래핑하여 제공합니다.',
         ].join('<br/>'),
       },
@@ -184,39 +192,39 @@ const meta: Meta<typeof Calendar> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Calendar>;
+type Story = StoryObj<typeof CalendarTime>;
 
-export const Single: Story = {
-  render: SingleCalendarStory,
-  name: 'Single Date',
+export const Mintue: Story = {
+  render: MinCalendarStory,
+  name: 'Mintue Date',
   parameters: {
     docs: {
       description: {
-        story: '단일 날짜를 선택할 수 있는 기본 모드입니다.',
+        story: 'Mintue까지 날짜를 선택할 수 있는 기본 모드입니다.',
       },
     },
   },
 };
 
-export const Range: Story = {
-  render: RangeCalendarStory,
-  name: 'Date Range',
+export const Second: Story = {
+  render: SecondCalendarStory,
+  name: 'Second Date',
   parameters: {
     docs: {
       description: {
-        story: '시작일과 종료일을 선택할 수 있는 range 모드입니다.',
+        story: 'Second까지 날짜를 선택할 수 있는 기본 모드입니다.',
       },
     },
   },
 };
 
-export const Multiple: Story = {
-  render: MultipleCalendarStory,
-  name: 'Multiple',
+export const Hour: Story = {
+  render: HourCalendarStory,
+  name: 'Hour Date',
   parameters: {
     docs: {
       description: {
-        story: '여러 날짜를 동시에 선택할 수 있는 multiple 모드입니다.',
+        story: 'Hour까지 날짜를 선택할 수 있는 기본 모드입니다.',
       },
     },
   },
@@ -258,6 +266,18 @@ export const WithDialog: Story = {
   },
 };
 
+export const CloseButton: Story = {
+  render: CloseButtonStory,
+  name: 'With Close Buttojn',
+  parameters: {
+    docs: {
+      description: {
+        story: '`closeButton` prop을 통해 캘린더를 닫거나 동작을 제어 할 수 있습니다.',
+      },
+    },
+  },
+};
+
 export const CaptionLayoutComparison: Story = {
   name: 'CaptionLayout',
   parameters: {
@@ -273,22 +293,22 @@ export const CaptionLayoutComparison: Story = {
     <div className="grid grid-cols-2 grid-rows-2 gap-4">
       <section className="m-auto">
         <h3 className="mb-3 text-center font-semibold text-lg">label</h3>
-        <Calendar mode="single" captionLayout="label" />
+        <CalendarTime timeType="minute" captionLayout="label" />
       </section>
 
       <section className="m-auto">
         <h3 className="mb-3 text-center font-semibold text-lg">dropdown</h3>
-        <Calendar mode="single" captionLayout="dropdown" />
+        <CalendarTime captionLayout="dropdown" />
       </section>
 
       <section className="m-auto">
         <h3 className="mb-3 text-center font-semibold text-lg">dropdown-months</h3>
-        <Calendar mode="single" captionLayout="dropdown-months" />
+        <CalendarTime captionLayout="dropdown-months" />
       </section>
 
       <section className="m-auto">
         <h3 className="mb-3 text-center font-semibold text-lg">dropdown-years</h3>
-        <Calendar mode="single" captionLayout="dropdown-years" />
+        <CalendarTime captionLayout="dropdown-years" />
       </section>
     </div>
   ),
@@ -308,17 +328,17 @@ export const NumberOfMonths: Story = {
     <div className="flex flex-col gap-4">
       <section>
         <h3 className="mb-3 ml-2 font-semibold text-lg">1</h3>
-        <Calendar captionLayout="label" />
+        <CalendarTime captionLayout="label" />
       </section>
 
       <section>
         <h3 className="mb-3 ml-2 font-semibold text-lg">2</h3>
-        <Calendar numberOfMonths={2} captionLayout="dropdown" />
+        <CalendarTime numberOfMonths={2} captionLayout="dropdown" />
       </section>
 
       <section>
         <h3 className="mb-3 ml-2 font-semibold text-lg">3</h3>
-        <Calendar numberOfMonths={3} captionLayout="dropdown-months" />
+        <CalendarTime numberOfMonths={3} captionLayout="dropdown-months" />
       </section>
     </div>
   ),
@@ -338,12 +358,12 @@ export const ShowOutsideDays: Story = {
     <div className="flex gap-8">
       <section>
         <h3 className="mb-3 ml-2 font-semibold text-lg">showOutsideDays: true</h3>
-        <Calendar />
+        <CalendarTime />
       </section>
 
       <section>
         <h3 className="mb-3 ml-2 font-semibold text-lg">showOutsideDays: false</h3>
-        <Calendar showOutsideDays={false} />
+        <CalendarTime showOutsideDays={false} />
       </section>
     </div>
   ),
@@ -364,12 +384,12 @@ export const DefaultMonth: Story = {
     <div className="flex gap-8">
       <section>
         <h3 className="mb-3 ml-2 font-semibold text-lg">DefaultMonth Default Current Month</h3>
-        <Calendar />
+        <CalendarTime />
       </section>
 
       <section>
         <h3 className="mb-3 ml-2 font-semibold text-lg">DefaultMonth: 1979. 01</h3>
-        <Calendar defaultMonth={new Date(1979, 0, 1)} />
+        <CalendarTime defaultMonth={new Date(1979, 0, 1)} />
       </section>
     </div>
   ),
@@ -389,12 +409,12 @@ export const NavPosition: Story = {
     <div className="flex gap-8">
       <section>
         <h3 className="mb-3 ml-2 font-semibold text-lg">Around Default</h3>
-        <Calendar navLayout="around" />
+        <CalendarTime navLayout="around" />
       </section>
 
       <section>
         <h3 className="mb-3 ml-2 font-semibold text-lg">After</h3>
-        <Calendar navLayout="after" />
+        <CalendarTime navLayout="after" />
       </section>
     </div>
   ),
@@ -419,8 +439,7 @@ export const WithModifiersAndClassNames: Story = {
     };
 
     return (
-      <Calendar
-        mode="single"
+      <CalendarTime
         modifiers={modifiers}
         modifiersClassNames={modifiersClassNames}
         defaultMonth={new Date(2024, 6, 1)}

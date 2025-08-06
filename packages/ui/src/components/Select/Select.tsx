@@ -65,8 +65,12 @@ type SelectProps = ComponentProps<typeof SelectRoot> &
     selectRef?: Ref<string>;
     error?: boolean;
     helperText?: ReactNode;
+    isTriggerIcon?: boolean;
     className?: string;
     optionsClassName?: string;
+    itemClassName?: string;
+    position?: ComponentProps<typeof SelectContent>['position'];
+    container?: ComponentProps<typeof SelectContent>['container'];
   };
 
 function Select({
@@ -81,9 +85,13 @@ function Select({
   onValueChange,
   className,
   optionsClassName,
+  itemClassName,
   selectRef,
   error,
   helperText,
+  isTriggerIcon,
+  position,
+  container,
   ...props
 }: SelectProps) {
   const isNumberWidth = typeof width === 'number';
@@ -111,6 +119,7 @@ function Select({
           ref={ref}
           size={size}
           style={isNumberWidth ? { width: `100%` } : undefined}
+          isTriggerIcon={isTriggerIcon}
           className={cn(!isNumberWidth && selectVariaints({ width, error }), className)}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
@@ -126,7 +135,11 @@ function Select({
         )}
       </div>
 
-      <SelectContent isContentFitTriggerWidth={isContentFitTriggerWidth} className={optionsClassName}>
+      <SelectContent
+        isContentFitTriggerWidth={isContentFitTriggerWidth}
+        position={position}
+        container={container}
+        className={optionsClassName}>
         {options.map((opt, idx) => {
           // 그룹일 경우
           if ('type' in opt && opt.type === 'group') {
@@ -144,7 +157,8 @@ function Select({
                       value={item.value}
                       disabled={item.disabled}
                       size={size}
-                      isSelectIndicator={isSelectIndicator}>
+                      isSelectIndicator={isSelectIndicator}
+                      className={itemClassName}>
                       {item.label}
                     </SelectItem>
                   );
@@ -167,7 +181,8 @@ function Select({
               value={item.value}
               disabled={item.disabled}
               size={size}
-              isSelectIndicator={isSelectIndicator}>
+              isSelectIndicator={isSelectIndicator}
+              className={itemClassName}>
               {item.label}
             </SelectItem>
           );

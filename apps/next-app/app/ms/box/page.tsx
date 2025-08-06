@@ -99,6 +99,20 @@ export default function BoxPages() {
         // isConfrimAlert={false}
       />
 
+      <RangeDatePicker
+        timeType="minute"
+        defaultRange={{
+          start: new Date(2025, 6, 2, 10, 10),
+          end: new Date(2025, 7, 1, 9, 10),
+        }}
+        minRangeDays={10}
+        maxRangeDays={30}
+        onRangeChange={(newRange) => {
+          console.warn('비제어 선택된 날짜 범위:', newRange);
+        }}
+        startPlaceholder="시작 날짜 선택"
+      />
+
       <Switch defaultChecked />
       <Switch variant="secondary" defaultChecked />
       <Switch variant="error" defaultChecked />

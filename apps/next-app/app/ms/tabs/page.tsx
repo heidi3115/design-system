@@ -1,7 +1,18 @@
 'use client';
 
-import { Button, Calendar, DateRange, Input, Popover, Separator, Skeleton, Tabs, type TabItemType } from '@common/ui';
-import { useState } from 'react';
+import {
+  Button,
+  Calendar,
+  CalendarTime,
+  DateRange,
+  Input,
+  Popover,
+  Separator,
+  Skeleton,
+  Tabs,
+  type TabItemType,
+} from '@common/ui';
+import { useLayoutEffect, useState } from 'react';
 import { PlayIcon, StarIcon } from '@common/ui/icons';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
@@ -43,11 +54,27 @@ export default function TabsPage() {
       setConfirmationRequest(null);
     };
 
+    const [dateTime, setDateTime] = useState<Date | undefined>(undefined);
+
+    useLayoutEffect(() => {
+      if (dateTime) {
+        console.warn(dateTime);
+      }
+    }, [dateTime]);
+
     return (
-      <div className="bg-juiBackground-paper w-full p-4 h-[2000px] overflow-auto">
+      <div className="bg-juiBackground-paper w-full p-4 overflow-auto">
         <h1 className="text-4xl font-bold">TABS LAYOUT</h1>
         <div className="flex flex-col gap-4">
           <Input underline="secondary" className="w-50" placeholder="text" />
+          <CalendarTime
+            selected={dateTime}
+            onSelect={setDateTime}
+            className="rounded-lg border shadow-sm"
+            captionLayout="dropdown-months"
+            // numberOfMonths={2}
+          />
+
           <Calendar
             mode="single"
             selected={date}

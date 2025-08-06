@@ -10,7 +10,7 @@ import {
   type CSSProperties,
 } from 'react';
 
-import { Label } from '../../Label';
+import { Label, Button } from '../../../components';
 import { useCheckDateRangeValidity } from '../hooks/useCheckDateRangeValidity';
 import { DefaultConfirmAlert } from './DefaultConfirmAlert';
 import DatePicker from '../DatePicker';
@@ -23,6 +23,8 @@ type RangeDateType = {
   start?: Date;
   end?: Date;
 };
+
+type TimeType = ComponentProps<typeof DatePicker>['timeType'];
 
 type RangeDatePickerProps = {
   defaultRange?: RangeDateType;
@@ -43,8 +45,17 @@ type RangeDatePickerProps = {
     end?: ReactNode;
     labelDirection?: 'side' | 'top';
   };
-  customConfirmAlert?: ({ condDate, type }: { condDate?: Date; type: 'start' | 'end' }) => ReactNode;
+  customConfirmAlert?: ({
+    condDate,
+    type,
+    timeType,
+  }: {
+    condDate?: Date;
+    type: 'start' | 'end';
+    timeType?: TimeType;
+  }) => ReactNode;
   isConfrimAlert?: boolean;
+  timeType?: TimeType;
   className?: string;
 } & Omit<
   ComponentProps<typeof DatePicker>,
@@ -55,6 +66,7 @@ type RangeDatePickerProps = {
   | 'placeholder'
   | 'onConditionRequestCallback'
   | 'conditionContent'
+  | 'timeType'
 >;
 
 function RangeDatePicker({
@@ -78,6 +90,7 @@ function RangeDatePicker({
   },
   customConfirmAlert,
   isConfrimAlert = true,
+  timeType = 'date',
   className,
   ...datePickerProps
 }: RangeDatePickerProps) {
@@ -96,6 +109,9 @@ function RangeDatePicker({
 
   const startErrorMessageRef = useRef('');
   const endErrorMessageRef = useRef('');
+
+  const [startCalOpen, setStartCalOpen] = useState(false);
+  const [endCalOpen, setEndCalOpen] = useState(false);
 
   const { checkDateRangeValidity } = useCheckDateRangeValidity({
     maxRange: maxRangeDays,
@@ -138,6 +154,14 @@ function RangeDatePicker({
           errorRef.current = '';
           updateRange(type === 'start' ? target : startDate, type === 'end' ? target : endDate);
         }
+
+        if (isError && type === 'start') {
+          setStartCalOpen(false);
+        }
+
+        if (isError && type === 'end') {
+          setEndCalOpen(false);
+        }
       }
 
       // reset opposite error
@@ -179,6 +203,9 @@ function RangeDatePicker({
           (typeof label.start === 'function' ? label.start : <Label className="text-[10px] px-1">{label.start}</Label>)}
         <DatePicker
           date={startDate}
+          timeType={timeType}
+          open={startCalOpen}
+          onOpenChange={setStartCalOpen}
           onDateChange={(date) => handleDateChange({ type: 'start', date })}
           {...(isConfrimAlert
             ? {
@@ -191,13 +218,14 @@ function RangeDatePicker({
                   }),
                 conditionContent: (condDate) =>
                   customConfirmAlert ? (
-                    customConfirmAlert({ condDate, type: 'start' })
+                    customConfirmAlert({ condDate, type: 'start', timeType: timeType })
                   ) : (
                     <DefaultConfirmAlert
                       type="start"
                       condDate={condDate}
                       errorMessage={startErrorMessageRef.current}
                       selectedDate={startDate}
+                      timeType={timeType}
                     />
                   ),
               }
@@ -229,6 +257,20 @@ function RangeDatePicker({
               ),
               against: 'text-juiText-secondary',
             },
+            ...(timeType !== 'date' && {
+              closeButton: (
+                <div className="flex gap-2 ml-auto mt-1 mr-0">
+                  <Button
+                    onClick={() => {
+                      setStartCalOpen(false);
+                      setEndCalOpen(true);
+                    }}>
+                    다음
+                  </Button>
+                  <Button onClick={() => setStartCalOpen(false)}>시작 닫기</Button>
+                </div>
+              ),
+            }),
           }}
           {...datePickerProps}
         />
@@ -247,6 +289,9 @@ function RangeDatePicker({
           (typeof label.end === 'function' ? label.end : <Label className="text-[10px] px-1">{label.end}</Label>)}
         <DatePicker
           date={endDate}
+          timeType={timeType}
+          open={endCalOpen}
+          onOpenChange={setEndCalOpen}
           onDateChange={(date) => handleDateChange({ type: 'end', date })}
           {...(isConfrimAlert
             ? {
@@ -259,13 +304,14 @@ function RangeDatePicker({
                   }),
                 conditionContent: (condDate) =>
                   customConfirmAlert ? (
-                    customConfirmAlert({ condDate, type: 'end' })
+                    customConfirmAlert({ condDate, type: 'end', timeType: timeType })
                   ) : (
                     <DefaultConfirmAlert
                       type="end"
                       condDate={condDate}
                       errorMessage={endErrorMessageRef.current}
                       selectedDate={endDate}
+                      timeType={timeType}
                     />
                   ),
               }
@@ -297,6 +343,20 @@ function RangeDatePicker({
               ),
               against: 'text-juiText-secondary',
             },
+            ...(timeType !== 'date' && {
+              closeButton: (
+                <div className="flex gap-2 ml-auto mt-1 mr-0">
+                  <Button
+                    onClick={() => {
+                      setEndCalOpen(false);
+                      setStartCalOpen(true);
+                    }}>
+                    이전
+                  </Button>
+                  <Button onClick={() => setEndCalOpen(false)}>종료 닫기</Button>
+                </div>
+              ),
+            }),
           }}
           {...datePickerProps}
         />

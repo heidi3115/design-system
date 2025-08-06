@@ -43,6 +43,8 @@ function Calendar({
 }) {
   const defaultClassNames = getDefaultClassNames();
 
+  const currentYear = new Date().getFullYear();
+
   const dayButtonClassNames = props.modifiersClassNames;
 
   const navLayoutAdjust = navLayout === 'around' ? undefined : navLayout;
@@ -51,6 +53,8 @@ function Calendar({
     <DayPicker
       mode="single"
       locale={ko}
+      fromYear={currentYear - 100}
+      toYear={currentYear + 100}
       showOutsideDays={showOutsideDays}
       className={cn(
         'bg-juiBackground-popover group/calendar p-3',
@@ -69,7 +73,7 @@ function Calendar({
       classNames={{
         root: cn('w-fit', defaultClassNames.root),
         months: cn('flex gap-4 flex-col md:flex-row relative', defaultClassNames.months),
-        month: cn('flex flex-col w-full gap-4', defaultClassNames.month),
+        month: cn('inline-grid w-full gap-4', defaultClassNames.month),
         nav: cn(
           'flex items-center gap-1 absolute top-0 inset-x-0',
           navLayoutAdjust === undefined && 'w-full justify-between',
@@ -149,7 +153,7 @@ function Calendar({
           }, []);
 
           return (
-            <div ref={wrapperRef} className="relative h-fit w-fit translate-y-">
+            <div ref={wrapperRef} className="relative h-fit w-fit">
               <div data-slot="calendar" ref={rootRef} className={cn(rootClassName)} {...restRoot} />
               <ConfirmationDialog
                 open={dialogOpen ?? false}
@@ -195,7 +199,8 @@ function Calendar({
               value={String(value)}
               width="fit"
               className="min-w-0"
-              optionsClassName="min-w-0 text-center"
+              optionsClassName="min-w-0 justify-center"
+              itemClassName="justify-center"
               isContentFitTriggerWidth
               onValueChange={handleValueChange}
               options={
@@ -348,7 +353,7 @@ function ConfirmationDialog({
         <DialogContent className="absolute flex flex-col justify-center min-h-34 top-[50%] left-[50%] z-50 min-w-60 max-w-68 translate-x-[-50%] translate-y-[-50%] rounded-lg bg-juiBackground-popover p-4 shadow-lg">
           <DialogTitle className="sr-only">title</DialogTitle>
           <DialogDescription className="text-juiText-primary overflow-hidden break-all break-words text-center" asChild>
-            {dialogContent}
+            <span>{dialogContent}</span>
           </DialogDescription>
           <DialogClose className={cn(closeButton(), 'top-2.5 right-2.5 focus:ring-0 focus:ring-offset-0')}>
             <XIcon />
