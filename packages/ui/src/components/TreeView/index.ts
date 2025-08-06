@@ -1,4 +1,3 @@
-export * from './types';
 export { TreeViewRoot, TreeViewItem, TreeViewItemTrigger, TreeViewItemContent } from './TreeViewParts';
 export type {
   TreeViewRootProps,
