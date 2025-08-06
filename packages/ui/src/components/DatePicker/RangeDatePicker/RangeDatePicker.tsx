@@ -237,7 +237,6 @@ function RangeDatePicker({
           inputProps={{
             error: startError,
             helperText: startError && startErrorMessageRef.current,
-            tabIndex: -1,
           }}
           calendarProps={{
             style: { '--opposite-name': `"${oppositeSign.end.label ?? 'END'}"` } as CSSProperties,
@@ -324,7 +323,6 @@ function RangeDatePicker({
           inputProps={{
             error: endError,
             helperText: endError && endErrorMessageRef.current,
-            tabIndex: 0,
           }}
           calendarProps={{
             style: { '--opposite-name': `"${oppositeSign.start.label ?? 'START'}"` } as CSSProperties,
