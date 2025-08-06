@@ -12,6 +12,7 @@ import {
   responseStatusTreeData,
   sampleTreeData1,
 } from '../../../../__tests__/testTreeData.ts';
+import { DEFAULT_INDENT_SIZE } from '@common/ui/components/TreeView/TreeView.tsx';
 
 // 공통 스타일 클래스
 const flexRow = 'relative flex flex-row size-max gap-4 text-juiText-primary';
@@ -31,6 +32,14 @@ const meta: Meta<typeof TreeView> = {
     size: 'basic',
     variant: 'default',
     disabled: false,
+    multiSelect: false,
+    leafOnlySelect: false,
+    showIcons: true,
+    defaultIcon: undefined,
+    expandedIcon: undefined,
+    endIcon: undefined,
+    indentSize: DEFAULT_INDENT_SIZE,
+    showLineLevel: undefined,
     defaultSelectedIds: undefined,
     selectedIds: undefined,
     defaultExpandedIds: undefined,
@@ -41,13 +50,6 @@ const meta: Meta<typeof TreeView> = {
     onToggledNodes: undefined,
     onDisabledNodes: undefined,
     onTreeViewState: undefined,
-    multiSelect: false,
-    leafOnlySelect: false,
-    showIcons: true,
-    defaultIcon: undefined,
-    expandedIcon: undefined,
-    endIcon: undefined,
-    showLineLevel: undefined,
     nodeClassName: '',
     className: '',
     treeViewRef: undefined,
@@ -74,15 +76,6 @@ type TreeNodeProps<T> = {
         '예: [{ id: "1", name: "Parent", children: [{ id: "1-1", name: "Child" }] }, ...]',
       ].join('\n'),
     },
-    size: {
-      control: 'select',
-      options: sizeOptions,
-      table: { type: { summary: `${sizeOptions.join(' | ')}` }, defaultValue: { summary: 'basic' } },
-      description: [
-        'TreeView 전체의 크기 및 폰트, 아이콘, 패딩의 scale을 조절합니다.',
-        `기본값은 'basic' 이며, ${sizeOptions.join(' | ')} 등 다양한 옵션이 있습니다.`,
-      ].join('\n'),
-    },
     variant: {
       control: 'select',
       options: variantOptions,
@@ -92,12 +85,97 @@ type TreeNodeProps<T> = {
         '브랜드 컬러, 에러 컬러 등 다양한 variant로 스타일을 제어할 수 있습니다.',
       ].join('\n'),
     },
+    size: {
+      control: 'select',
+      options: sizeOptions,
+      table: { type: { summary: `${sizeOptions.join(' | ')}` }, defaultValue: { summary: 'basic' } },
+      description: [
+        'TreeView 전체의 크기 및 폰트, 아이콘, 패딩의 scale을 조절합니다.',
+        `기본값은 'basic' 이며, ${sizeOptions.join(' | ')} 등 다양한 옵션이 있습니다.`,
+      ].join('\n'),
+    },
     disabled: {
       control: 'boolean',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
       description: [
         '전체 TreeView 컴포넌트를 비활성화할지 여부입니다.',
         'true일 때 노드 선택/확장 등 모든 상호작용이 비활성화 됩니다.',
+      ].join('\n'),
+    },
+    multiSelect: {
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: [
+        'TreeView 컴포넌트에서 다중 선택 모드를 활성화합니다.',
+        'true로 활성화 시 여러 노드를 동시에 선택할 수 있습니다.',
+      ].join('\n'),
+    },
+    leafOnlySelect: {
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: [
+        'multiSelect가 true일 때 leaf 노드만 선택 가능하도록 제한합니다.',
+        'leaf 노드는 자식이 없는 노드를 의미합니다.',
+        'multiSelect가 false 일 경우 하나의 노드만이 선택 가능 할 때, 자식이 있는 노드는 선택이 불가합니다.',
+      ].join('\n'),
+    },
+    showIcons: {
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
+      description: [
+        '노드 이름 좌측에 아이콘을 표시할지 여부입니다.',
+        '아이콘은 기본적으로 제공되고 있으며, 각 노드 타입에 맞는 것으로 필요에 따라 defaultIcon, expandedIcon, endIcon 으로 별도로 설정할 수 있습니다.',
+        '별도로 아이콘이 지정 되어있어도 showIcons 이 false 면 아이콘이 보이지 않게 됩니다.',
+      ].join('\n'),
+    },
+    defaultIcon: {
+      control: false,
+      table: {
+        type: { summary: 'React.ReactNode' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '노드 중에서 자식이 있는 아이콘 일 경우, 노드 이름 좌측에 아이콘 중 기본적인 축소 상태일 때의 아이콘을 일컫습니다.',
+        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있으며, undefined로 지정하지 않을 경우 기본 아이콘으로 적용됩니다.',
+      ].join('\n'),
+    },
+    expandedIcon: {
+      control: false,
+      table: {
+        type: { summary: 'React.ReactNode' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '자식이 있는 아이콘 일 경우, 노드 이름 좌측에 아이콘 중 확장된 상태일 때의 아이콘을 일컫습니다.',
+        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있으며, undefined로 지정하지 않을 경우 기본 아이콘으로 적용됩니다.',
+      ].join('\n'),
+    },
+    endIcon: {
+      control: false,
+      table: {
+        type: { summary: 'React.ReactNode' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '자식이 없는 리프 노드(leaf node) 의 경우, 노드 이름 좌측에 있는 아이콘을 일컫습니다.',
+        '리프 노드의 경우 축소/확장 상태를 보여줄 필요가 없으므로 동일한 아이콘이 유지됩니다.',
+        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있으며, undefined로 지정하지 않을 경우 기본 아이콘으로 적용됩니다.',
+      ].join('\n'),
+    },
+    indentSize: {
+      control: 'number',
+      table: { type: { summary: 'number' }, defaultValue: { summary: `${DEFAULT_INDENT_SIZE}` } },
+      description: [
+        '추가적인 들여쓰기의 간격을 지정하실 수 있습니다.',
+        `기본값은 ${DEFAULT_INDENT_SIZE} 이며, px 단위로 추가적인 들여쓰기 간격을 지정하실 수 있습니다.`,
+      ].join('\n'),
+    },
+    showLineLevel: {
+      control: 'number',
+      table: { type: { summary: 'number | undefined' }, defaultValue: { summary: 'undefined' } },
+      description: [
+        '노드 간 연결선(수직선)을 적용할 depth 레벨을 지정합니다.',
+        '0일 때 root 부터, undefined 이면 연결선을 표시하지 않습니다.',
       ].join('\n'),
     },
     defaultSelectedIds: {
@@ -210,74 +288,7 @@ type TreeNodeProps<T> = {
         'Storybook 에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
       ].join('\n'),
     },
-    multiSelect: {
-      control: 'boolean',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-      description: [
-        'TreeView 컴포넌트에서 다중 선택 모드를 활성화합니다.',
-        'true로 활성화 시 여러 노드를 동시에 선택할 수 있습니다.',
-      ].join('\n'),
-    },
-    leafOnlySelect: {
-      control: 'boolean',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-      description: [
-        'multiSelect가 true일 때 leaf 노드만 선택 가능하도록 제한합니다.',
-        'leaf 노드는 자식이 없는 노드를 의미합니다.',
-        'multiSelect가 false 일 경우 하나의 노드만이 선택 가능 할 때, 자식이 있는 노드는 선택이 불가합니다.',
-      ].join('\n'),
-    },
-    showIcons: {
-      control: 'boolean',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
-      description: [
-        '노드 이름 좌측에 아이콘을 표시할지 여부입니다.',
-        '아이콘은 기본적으로 제공되고 있으며, 각 노드 타입에 맞는 것으로 필요에 따라 defaultIcon, expandedIcon, endIcon 으로 별도로 설정할 수 있습니다.',
-        '별도로 아이콘이 지정 되어있어도 showIcons 이 false 면 아이콘이 보이지 않게 됩니다.',
-      ].join('\n'),
-    },
-    defaultIcon: {
-      control: false,
-      table: {
-        type: { summary: 'React.ReactNode' },
-        defaultValue: { summary: 'undefined' },
-      },
-      description: [
-        '노드 중에서 자식이 있는 아이콘 일 경우, 노드 이름 좌측에 아이콘 중 기본적인 축소 상태일 때의 아이콘을 일컫습니다.',
-        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있으며, undefined로 지정하지 않을 경우 기본 아이콘으로 적용됩니다.',
-      ].join('\n'),
-    },
-    expandedIcon: {
-      control: false,
-      table: {
-        type: { summary: 'React.ReactNode' },
-        defaultValue: { summary: 'undefined' },
-      },
-      description: [
-        '자식이 있는 아이콘 일 경우, 노드 이름 좌측에 아이콘 중 확장된 상태일 때의 아이콘을 일컫습니다.',
-        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있으며, undefined로 지정하지 않을 경우 기본 아이콘으로 적용됩니다.',
-      ].join('\n'),
-    },
-    endIcon: {
-      control: false,
-      table: {
-        type: { summary: 'React.ReactNode' },
-        defaultValue: { summary: 'undefined' },
-      },
-      description: [
-        '자식이 없는 리프 노드(leaf node) 의 경우, 노드 이름 좌측에 있는 아이콘을 일컫습니다.',
-        '리프 노드의 경우 축소/확장 상태를 보여줄 필요가 없으므로 동일한 아이콘이 유지됩니다.',
-        '아이콘은 각 노드 타입에 맞는 것으로 매핑할 수 있으며, undefined로 지정하지 않을 경우 기본 아이콘으로 적용됩니다.',
-      ].join('\n'),
-    },
-    showLineLevel: {
-      control: 'number',
-      table: { type: { summary: 'number | undefined' }, defaultValue: { summary: 'undefined' } },
-      description: [
-        '노드 간 연결선(수직선)을 적용할 depth 레벨을 지정합니다.',
-        '0일 때 root 부터, undefined 이면 연결선을 표시하지 않습니다.',
-      ].join('\n'),
-    },
+
     nodeClassName: {
       control: 'text',
       table: { type: { summary: 'string' }, defaultValue: { summary: '' } },
@@ -334,6 +345,11 @@ export const Default: Story = {
       },
     },
   },
+  render: (args) => (
+    <div key={JSON.stringify(args)}>
+      <TreeView {...args} />
+    </div>
+  ),
 };
 
 export const Variants: Story = {
@@ -370,7 +386,7 @@ export const Variants: Story = {
     },
   },
   render: (args) => (
-    <div className={cn(flexRow, 'items-start justify-center py-25 text-juiText-primary')}>
+    <div className={cn(flexRow, 'items-start justify-center py-25 text-juiText-primary')} key={JSON.stringify(args)}>
       {variantOptions.map((variant) => (
         <div key={variant} className={cn(flexRow)}>
           <div className={'flex flex-col gap-1 mr-4'}>
@@ -415,7 +431,7 @@ export const Sizes: Story = {
     },
   },
   render: (args) => (
-    <div className={cn(flexCol, 'items-center justify-center')}>
+    <div className={cn(flexCol, 'items-center justify-center')} key={JSON.stringify(args)}>
       <div className={'relative grid grid-cols-3 gap-6'}>
         {sizeOptions.map((size) => (
           <div key={size} className={cn(flexCol, 'items-start')}>

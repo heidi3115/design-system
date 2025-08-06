@@ -54,6 +54,10 @@ export type CollapsibleProps = CollapsibleRootProps & {
    * className: 추가적인 CSS 클래스(Tailwind CSS 클래스 가능)를 지정할 수 있습니다.
    */
   className?: string;
+  /**
+   * contentClassName: Collapsible 의 content 에 추가적인 CSS 클래스(Tailwind CSS 클래스 가능)를 지정할 수 있습니다.
+   */
+  contentClassName?: string;
 };
 
 function Collapsible({
@@ -67,6 +71,7 @@ function Collapsible({
   preview,
   children,
   className,
+  contentClassName,
   openStatusRef,
   ...props
 }: CollapsibleProps) {
@@ -91,7 +96,7 @@ function Collapsible({
       open={currentOpen}
       onOpenChange={handleCollapsibleOpenChange}
       disabled={disabled}
-      className={cn(base(), rootVariant())}>
+      className={cn(base(), rootVariant(), className)}>
       <div data-slot="collapsible-trigger-wrapper" className={cn(base(), previewVariant())}>
         {showPreview && <div data-slot="collapsible-preview">{preview}</div>}
         {trigger && (
@@ -100,7 +105,7 @@ function Collapsible({
           </CollapsibleTrigger>
         )}
       </div>
-      <CollapsibleContent className={cn(base(), contentVariant(), className)}>{children}</CollapsibleContent>
+      <CollapsibleContent className={cn(base(), contentVariant(), contentClassName)}>{children}</CollapsibleContent>
     </CollapsibleRoot>
   );
 }

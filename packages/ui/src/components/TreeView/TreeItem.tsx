@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
 import { Collapsible } from '@common/ui';
-import { cn } from '@common/ui/lib/utils';
 import { CloseFolderFilledIcon, OpenFolderFilledIcon, PlayArrowIcon } from '@common/ui/icons';
+import { cn } from '@common/ui/lib/utils';
+import React from 'react';
+import { DEFAULT_INDENT_SIZE, type TreeViewStateType } from './TreeView';
 import { TreeViewItem, TreeViewItemContent, TreeViewItemTrigger } from './TreeViewParts';
-import { type TreeViewStateType } from './TreeView';
 import { treeViewVariants } from './treeViewVariants';
 
 /**
@@ -37,12 +37,14 @@ export type TreeItemProps<T> = {
   expandedIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   /* 스타일 */
-  size?: keyof typeof treeViewVariants.variants.size;
-  variant?: keyof typeof treeViewVariants.variants.variant;
-  /** children 의 선 보여줄 단계의 번호 undefined 시, 선이 보이지 않습니다.*/
-  showLineLevel?: number;
   /** 노드의 아이콘 표시 여부 (default: true) */
   showIcons?: boolean;
+  size?: keyof typeof treeViewVariants.variants.size;
+  variant?: keyof typeof treeViewVariants.variants.variant;
+  /** 들여쓰는 기준의 숫자. */
+  indentSize?: number;
+  /** children 의 선 보여줄 단계의 번호 undefined 시, 선이 보이지 않습니다.*/
+  showLineLevel?: number;
   /* 이벤트 핸들러 */
   /** 노드 선택 시 콜백  */
   onSelect?: (nodeId: string) => void;
@@ -60,22 +62,23 @@ export default function TreeItem<T = unknown>({
   defaultIcon = null,
   expandedIcon = null,
   endIcon = null,
-  size = 'basic',
-  variant = 'default',
   selected = false,
   expanded = false,
   disabled = false,
   showIcons = true,
+  size = 'basic',
+  variant = 'default',
+  indentSize = DEFAULT_INDENT_SIZE,
   showLineLevel,
   onSelect,
   onToggle,
   className,
   treeViewState,
-  ...props
 }: TreeItemProps<T>) {
   const hasChildren = Array.isArray(node?.children) && node.children.length > 0;
   const hasLineLevel = showLineLevel === undefined ? undefined : showLineLevel;
   const lineLevelNum = hasLineLevel ? showLineLevel || 0 : 0;
+
   const { base, common, items, itemTrigger, itemContent, icons } = treeViewVariants({
     size,
     variant,
@@ -83,11 +86,9 @@ export default function TreeItem<T = unknown>({
     itemSelected: selected,
     disabled,
   });
-
   const disabledClass = disabled ? base() : '';
   const variantClass = common();
   const itemsClass = items();
-  // TODO : 보여주는 선의 레벨인 경우의 구분을 위한 점 디자인 클래스인데 이게 필요할까? 개인적으로는 구분이 되서 좋긴 함.
   const lineDotClass =
     "after:content-['·'] after:text-[40px]/0 after:size-1 after:absolute after:left-0 after:bottom-0 after:-translate-x-1.5";
 
@@ -104,7 +105,6 @@ export default function TreeItem<T = unknown>({
 
   const renderTrigger = (nodeItem: BaseTreeNodeProps<T>) => (
     <TreeViewItemTrigger
-      {...props}
       data-slot="tree-item-trigger"
       data-active={selected}
       expanded={expanded}
@@ -133,7 +133,14 @@ export default function TreeItem<T = unknown>({
       expanded={expanded}
       disabled={disabled}
       onClick={(e: React.MouseEvent) => handleItemToggle(e, node.id)}
-      className={cn(variantClass, itemsClass, level === 0 && 'ml-0 pl-0', className)}>
+      className={cn(variantClass, itemsClass, level === 0 && 'ml-0 pl-0', className)}
+      style={
+        level > 0
+          ? {
+              marginLeft: `${indentSize}px`,
+            }
+          : {}
+      }>
       {hasChildren ? (
         <Collapsible
           open={expanded}
@@ -141,8 +148,8 @@ export default function TreeItem<T = unknown>({
           disabled={disabled}
           trigger={renderTrigger(node)}
           showPreview={false}
-          className={cn('w-full px-0 py-0 gap-y-0 shadow-none')}
-          style={{ rowGap: 0 }}
+          className={'w-full gap-y-0 p-0'}
+          contentClassName={'w-full px-0 py-0 shadow-none'}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}>
           <TreeViewItemContent
             className={cn(variantClass, itemContent(), level === lineLevelNum && lineDotClass)}
@@ -167,6 +174,7 @@ export default function TreeItem<T = unknown>({
                   expanded={isNodeExpanded}
                   disabled={isNodeDisabled}
                   showIcons={showIcons}
+                  indentSize={indentSize}
                   showLineLevel={showLineLevel}
                   onSelect={onSelect}
                   onToggle={onToggle}

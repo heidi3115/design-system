@@ -59,6 +59,8 @@ export type TreeViewProps<T = unknown> = {
   /** TreeView 의 상태 변화에 따라 호출되는 콜백으로 TreeViewStateType 형태로 반환 */
   onTreeViewState?: (TreeViewState: TreeViewStateType) => void;
 
+  /** 들여쓰는 사이즈의 기준(default : 4) */
+  indentSize?: number;
   /** 노드간 연결선 표시 여부 및 연결선을 보여줄 레벨 */
   showLineLevel?: number;
   /** 노드간 구분선 표시 여부 */
@@ -77,6 +79,8 @@ export type TreeViewProps<T = unknown> = {
   treeViewRef?: React.Ref<TreeViewStateType>;
 };
 
+export const DEFAULT_INDENT_SIZE = 0 as const;
+
 export default function TreeView<T>({
   treeData,
   variant = 'default',
@@ -88,7 +92,8 @@ export default function TreeView<T>({
   defaultIcon = null,
   expandedIcon = null,
   endIcon = null,
-  showLineLevel,
+  indentSize = DEFAULT_INDENT_SIZE,
+  showLineLevel = undefined,
   defaultSelectedIds,
   selectedIds,
   defaultExpandedIds,
@@ -259,17 +264,18 @@ export default function TreeView<T>({
           <TreeItem
             key={treeNode.id}
             node={treeNode}
-            size={size}
-            variant={variant}
             level={0}
-            showLineLevel={effectiveShowLineLevel}
-            showIcons={showIcons}
             defaultIcon={defaultIcon}
             expandedIcon={expandedIcon}
             endIcon={endIcon}
             selected={isNodeSelected}
             expanded={isNodeExpanded}
             disabled={isNodeDisabled}
+            size={size}
+            variant={variant}
+            indentSize={indentSize}
+            showLineLevel={effectiveShowLineLevel}
+            showIcons={showIcons}
             onSelect={handleTreeSelect}
             onToggle={handleTreeToggle}
             className={nodeClassName}
