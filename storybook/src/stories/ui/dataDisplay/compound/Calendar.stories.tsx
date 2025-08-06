@@ -141,12 +141,6 @@ const meta: Meta<typeof Calendar> = {
       defaultValue: 'label',
       description: '달력 캡션 영역의 레이아웃을 선택합니다.',
     },
-    navLayout: {
-      control: { type: 'radio' },
-      options: ['after', 'around'],
-      defaultValue: 'around',
-      description: '월의 nav의 포지션을 설정 합니다.',
-    },
     dialogOpen: {
       control: false,
       description: '달력 컴포넌트 내부의 dialog를 띄울때 사용 합니다.',
@@ -370,31 +364,6 @@ export const DefaultMonth: Story = {
       <section>
         <h3 className="mb-3 ml-2 font-semibold text-lg">DefaultMonth: 1979. 01</h3>
         <Calendar defaultMonth={new Date(1979, 0, 1)} />
-      </section>
-    </div>
-  ),
-};
-
-export const NavPosition: Story = {
-  name: 'Month Navigation Position',
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story: '월 네비게에션의 위치를 보여줍니다 /after',
-      },
-    },
-  },
-  render: () => (
-    <div className="flex gap-8">
-      <section>
-        <h3 className="mb-3 ml-2 font-semibold text-lg">Around Default</h3>
-        <Calendar navLayout="around" />
-      </section>
-
-      <section>
-        <h3 className="mb-3 ml-2 font-semibold text-lg">After</h3>
-        <Calendar navLayout="after" />
       </section>
     </div>
   ),

@@ -26,7 +26,6 @@ function Calendar({
   showOutsideDays = true,
   captionLayout = 'label',
   buttonVariant = 'transparent',
-  navLayout = 'around',
   formatters,
   components,
   dialogOpen,
@@ -44,8 +43,6 @@ function Calendar({
   const defaultClassNames = getDefaultClassNames();
 
   const dayButtonClassNames = props.modifiersClassNames;
-
-  const navLayoutAdjust = navLayout === 'around' ? undefined : navLayout;
 
   return (
     <DayPicker
@@ -65,17 +62,11 @@ function Calendar({
         formatMonthDropdown: (date) => date.toLocaleString('ko', { month: 'short' }),
         ...formatters,
       }}
-      navLayout={navLayoutAdjust}
       classNames={{
         root: cn('w-fit', defaultClassNames.root),
         months: cn('flex gap-4 flex-col md:flex-row relative', defaultClassNames.months),
         month: cn('flex flex-col w-full gap-4', defaultClassNames.month),
-        nav: cn(
-          'flex items-center gap-1 absolute top-0 inset-x-0',
-          navLayoutAdjust === undefined && 'w-full justify-between',
-          navLayoutAdjust === 'after' && 'w-fit ml-auto',
-          defaultClassNames.nav,
-        ),
+        nav: cn('flex items-center gap-1 w-full absolute top-0 inset-x-0 justify-between', defaultClassNames.nav),
         button_previous: cn(
           buttonVariants({ variant: buttonVariant }),
           'size-(--cell-size) aria-disabled:opacity-50 p-0 select-none',
@@ -87,13 +78,11 @@ function Calendar({
           defaultClassNames.button_next,
         ),
         month_caption: cn(
-          'flex items-center h-(--cell-size) w-full min-w-72',
-          navLayoutAdjust === undefined && 'justify-center px-(--cell-size)',
+          'flex items-center justify-center h-(--cell-size) w-full px-(--cell-size) min-w-72',
           defaultClassNames.month_caption,
         ),
         dropdowns: cn(
-          'w-full flex items-center text-sm font-medium h-(--cell-size) gap-1.5',
-          navLayoutAdjust === undefined && 'justify-center',
+          'w-full flex items-center text-sm font-medium justify-center h-(--cell-size) gap-1.5',
           defaultClassNames.dropdowns,
         ),
         dropdown_root: cn(
@@ -104,7 +93,7 @@ function Calendar({
         caption_label: cn(
           'select-none font-medium',
           captionLayout === 'label'
-            ? 'text-sm px-2'
+            ? 'text-sm'
             : 'rounded-md pl-2 pr-1 flex items-center gap-1 text-sm h-8 [&>svg]:text-juiText-secondary [&>svg]:size-3.5',
           defaultClassNames.caption_label,
         ),
@@ -113,7 +102,7 @@ function Calendar({
         weekday: cn(
           'text-juiText-primary font-medium rounded-md flex-1 text-[0.8rem] select-none',
           '[&:nth-child(1)]:text-juiError', // 일요일 (index 0 → 1번째 child)
-          '[&:nth-child(7)]:text-juiText-blue', // 토요일 (index 6 → 7번째 child)
+          '[&:nth-child(7)]:text-juiPrimary', // 토요일 (index 6 → 7번째 child)
           defaultClassNames.weekday,
         ),
         week: cn('flex w-full mt-2 rounded-md overflow-hidden', defaultClassNames.week),
@@ -149,7 +138,7 @@ function Calendar({
           }, []);
 
           return (
-            <div ref={wrapperRef} className="relative h-fit w-fit translate-y-">
+            <div ref={wrapperRef} className="relative h-fit w-fit">
               <div data-slot="calendar" ref={rootRef} className={cn(rootClassName)} {...restRoot} />
               <ConfirmationDialog
                 open={dialogOpen ?? false}
@@ -347,7 +336,7 @@ function ConfirmationDialog({
         <DialogOverlay className="absolute" />
         <DialogContent className="absolute flex flex-col justify-center min-h-34 top-[50%] left-[50%] z-50 min-w-60 max-w-68 translate-x-[-50%] translate-y-[-50%] rounded-lg bg-juiBackground-popover p-4 shadow-lg">
           <DialogTitle className="sr-only">title</DialogTitle>
-          <DialogDescription className="text-juiText-primary overflow-hidden break-all break-words text-center" asChild>
+          <DialogDescription className="text-juiText-primary overflow-hidden break-all break-words text-center">
             {dialogContent}
           </DialogDescription>
           <DialogClose className={cn(closeButton(), 'top-2.5 right-2.5 focus:ring-0 focus:ring-offset-0')}>
