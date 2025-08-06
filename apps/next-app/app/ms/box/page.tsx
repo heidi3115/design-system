@@ -17,6 +17,7 @@ import {
   Select,
   Separator,
   Skeleton,
+  Slider,
   SplitOtpInput,
   Switch,
   useConfirmDialog,
@@ -47,6 +48,13 @@ export default function BoxPages() {
     start: new Date(2025, 6, 1),
     end: new Date(2025, 6, 7),
   });
+
+  const formatMinutesToTimeLabel = (minutes: number) => {
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  };
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -114,6 +122,25 @@ export default function BoxPages() {
       />
 
       <RangeDatePicker timeType="minute" startPlaceholder="시작 날짜 선택" />
+
+      <div className="w-120">
+        <Slider
+          variant={'primary'}
+          showValueLabel="always"
+          min={0}
+          max={1439}
+          defaultValue={[0]}
+          onValueCommit={(val) => console.warn(val)}
+          onCustomTooltip={(val) => formatMinutesToTimeLabel(val)}
+          marks={[
+            { value: 0, label: '00:00' },
+            { value: 360, label: '06:00' },
+            { value: 720, label: '12:00' },
+            { value: 1080, label: '18:00' },
+            { value: 1439, label: '23:59' },
+          ]}
+        />
+      </div>
 
       <Switch defaultChecked />
       <Switch variant="secondary" defaultChecked />

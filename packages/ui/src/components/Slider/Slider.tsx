@@ -25,6 +25,7 @@ export type SliderMark = {
 export type SliderProps = SliderRootProps &
   VariantProps<typeof sliderVariants> & {
     showValueLabel?: 'always' | 'auto' | 'none';
+    onCustomTooltip?: (val: number) => string;
     marks?: boolean | SliderMark[];
     unitLabel?: string;
     sliderRef?: Ref<number[]>;
@@ -52,6 +53,7 @@ function Slider({
   value,
   onValueChange,
   onValueCommit,
+  onCustomTooltip,
   className,
   ...props
 }: SliderProps) {
@@ -166,8 +168,8 @@ function Slider({
   return (
     <div
       data-slot="slider-wrapper"
+      className="relative pointer-events-none z-0"
       data-orientation={orientation}
-      className={cn(rootClass)}
       style={{
         ...(marks
           ? isHorizontal
@@ -177,7 +179,7 @@ function Slider({
             ? { height: `${thumbSize / 2 + trackSize}px`, marginTop: `${thumbSize / 2}px` }
             : { width: `${thumbSize / 2 + trackSize}px`, marginLeft: `${thumbSize / 2}px` }),
       }}>
-      <div className={cn('absolute', isHorizontal ? 'w-full top-0' : 'h-full left-0')}>
+      <div className={cn('absolute pointer-events-none', isHorizontal ? 'w-full top-0' : 'h-full left-0')}>
         <SliderRoot
           disabled={disabled}
           inverted={inverted}
@@ -232,7 +234,9 @@ function Slider({
                 key={index}
                 side={isHorizontal ? 'top' : 'left'}
                 open={!disabled && isTooltipOpen}
-                contents={`${val.toFixed(decimalPlaces)} ${unitLabel ? unitLabel : ''}`}>
+                contents={
+                  onCustomTooltip ? onCustomTooltip(val) : `${val.toFixed(decimalPlaces)} ${unitLabel ? unitLabel : ''}`
+                }>
                 <SliderThumb
                   data-slot="slider-thumb"
                   ref={(el: HTMLSpanElement | null) => {
@@ -252,15 +256,15 @@ function Slider({
           })}
         </SliderRoot>
       </div>
-      {marks && (
+      {!!thumbSize && !!trackSize && marks && (
         <div
-          className={cn('relative flex m-auto -z-1', isHorizontal ? 'flex-col' : 'flex-row')}
+          className={cn('relative flex m-auto pointer-events-none', isHorizontal ? 'flex-col' : 'flex-row')}
           style={{
             ...(isHorizontal ? { width: `calc(100% - ${thumbSize}px)` } : { height: `calc(100% - ${thumbSize}px)` }),
           }}>
           {/* 마커 */}
           <div
-            className="relative w-full"
+            className="relative w-full -z-1"
             data-slot="slider-mark-area"
             style={{
               ...(isHorizontal ? { height: `${trackSize}px` } : { width: `${trackSize}px` }),
@@ -285,7 +289,7 @@ function Slider({
                       key={markValue}
                       data-value={markValue}
                       data-slot="slider-mark"
-                      className={cn('absolute block -z-1 size-max')}
+                      className={cn('absolute block size-max')}
                       style={markerStyle}>
                       <span
                         data-slot="mark-point"
