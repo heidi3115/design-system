@@ -254,7 +254,7 @@ function Slider({
       </div>
       {marks && (
         <div
-          className={cn('relative flex m-auto', isHorizontal ? 'flex-col' : 'flex-row')}
+          className={cn('relative flex m-auto -z-1', isHorizontal ? 'flex-col' : 'flex-row')}
           style={{
             ...(isHorizontal ? { width: `calc(100% - ${thumbSize}px)` } : { height: `calc(100% - ${thumbSize}px)` }),
           }}>
