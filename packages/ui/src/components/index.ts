@@ -266,6 +266,8 @@ export {
 
 export { Calendar, CalendarDayButton, type DateRange } from './Calendar';
 
+export { DatePicker, RangeDatePicker } from './DatePicker';
+
 export {
   treeViewVariants,
   TreeViewRoot,
@@ -283,5 +285,3 @@ export {
   type TreeViewProps,
   type TreeViewStateType,
 } from './TreeView';
-
-export { DatePicker } from './DatePicker';
