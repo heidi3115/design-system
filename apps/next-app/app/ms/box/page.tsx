@@ -50,11 +50,47 @@ export default function BoxPages() {
     end: new Date(2025, 6, 7),
   });
 
+  const [sliderDate, setSliderDate] = useState(new Date(2025, 7, 1, 9, 11));
+
+  const hourRef = useRef<HTMLInputElement>(null);
+  const minuteRef = useRef<HTMLInputElement>(null);
+
+  const convertDateToMinutes = ({
+    date,
+    returnType = 'slider',
+  }: {
+    date: Date;
+    returnType?: 'slider' | 'hour' | 'minute';
+  }) => {
+    if (returnType === 'slider') return date.getHours() * 60 + date.getMinutes();
+    if (returnType === 'hour') return date.getHours() ?? 0;
+    if (returnType === 'minute') return date.getMinutes() ?? 0;
+
+    return 0;
+  };
+
   const formatMinutesToTimeLabel = (minutes: number) => {
     const h = Math.floor(minutes / 60);
     const m = minutes % 60;
 
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  };
+
+  const updateSliderDateFromTime = (hour: number, minute: number) => {
+    const newDate = new Date(sliderDate);
+
+    newDate.setHours(hour);
+    newDate.setMinutes(minute);
+    newDate.setSeconds(0);
+    newDate.setMilliseconds(0);
+    setSliderDate(newDate);
+  };
+
+  const updateSliderDateFromMinutes = (minutes: number) => {
+    const hour = Math.floor(minutes / 60);
+    const minute = minutes % 60;
+
+    updateSliderDateFromTime(hour, minute);
   };
 
   return (
@@ -86,26 +122,6 @@ export default function BoxPages() {
         // isArrow
         // numberOfMonths={2}
         delimiter={<Link2Icon />}
-        // direction="vertical"
-        // label={{
-        //   start: '시작날짜',
-        //   end: <Switch />,
-        //   // labelDirection: 'side',
-        // }}
-        // oppositeSign={{
-        //   start: { show: true },
-        //   end: { show: false },
-        // }}
-        // customConfirmAlert={({ condDate, type }) => {
-        //   console.warn(condDate, type);
-
-        //   return (
-        //     <div>
-        //       {type} {condDate?.toLocaleDateString()} error
-        //     </div>
-        //   );
-        // }}
-        // isConfrimAlert={false}
       />
 
       <RangeDatePicker
@@ -123,34 +139,56 @@ export default function BoxPages() {
       />
 
       <RangeDatePicker timeType="minute" startPlaceholder="시작 날짜 선택" />
+      <RangeDatePicker timeType="second" startPlaceholder="시작 날짜 선택" />
 
       <div className="w-120">
         <div className="flex w-80 gap-2">
-          <input type="number" />
           <Input
             type="number"
-            defaultValue={0}
             min={0}
             max={23}
-            onChange={(e) => console.warn(e.target.value)}
+            ref={hourRef}
+            defaultValue={convertDateToMinutes({ date: sliderDate, returnType: 'hour' })}
+            onChange={(e) => {
+              const hour = Number(e.target.value);
+
+              updateSliderDateFromTime(hour, sliderDate.getMinutes());
+            }}
             onKeyDown={(e) => {
               if (e.key === '.' || e.key === 'e') {
                 e.preventDefault();
               }
+            }}
+            onBlur={(e) => {
+              const value = e.target.value.trim();
+              const padded = value.padStart(2, '0');
+
+              e.target.value = padded;
             }}
             underline="default"
             className="flex-1"
           />
           <Input
             type="number"
-            defaultValue={0}
             min={0}
             max={59}
-            onChange={(e) => console.warn(e.target.value)}
+            ref={minuteRef}
+            defaultValue={convertDateToMinutes({ date: sliderDate, returnType: 'minute' })}
+            onChange={(e) => {
+              const minute = Number(e.target.value);
+
+              updateSliderDateFromTime(sliderDate.getHours(), minute);
+            }}
             onKeyDown={(e) => {
               if (e.key === '.' || e.key === 'e') {
                 e.preventDefault();
               }
+            }}
+            onBlur={(e) => {
+              const value = e.target.value.trim();
+              const padded = value.padStart(2, '0');
+
+              e.target.value = padded;
             }}
             underline="default"
             className="flex-1"
@@ -158,12 +196,17 @@ export default function BoxPages() {
         </div>
         <Slider
           variant="primary"
-          size="medium"
           // showValueLabel="always"
           min={0}
           max={1439}
-          defaultValue={[0]}
-          onValueCommit={(val) => console.warn(val)}
+          value={[convertDateToMinutes({ date: sliderDate })]}
+          onValueCommit={([val]) => {
+            const h = Math.floor((val ?? 0) / 60);
+            const m = (val ?? 0) % 60;
+            if (hourRef.current) hourRef.current.value = String(h).padStart(2, '0');
+            if (minuteRef.current) minuteRef.current.value = String(m).padStart(2, '0');
+          }}
+          onValueChange={([val]) => updateSliderDateFromMinutes(val ?? 0)}
           onCustomTooltip={(val) => formatMinutesToTimeLabel(val)}
           marks={[
             { value: 0, label: '00:00' },

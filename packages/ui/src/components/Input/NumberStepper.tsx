@@ -30,12 +30,12 @@ function NumberStepper({ step = 1, inputValue, handleChange, min, max, disabled 
     const newValue = (currentValue + delta).toFixed(decimalLength);
     const newStringValue = String(newValue);
 
-    const event = {
+    const eventClick = {
       target: { value: newStringValue },
     } as ChangeEvent<HTMLInputElement>;
 
     if (!disabled) {
-      handleChange(event);
+      handleChange(eventClick);
     }
   };
 
@@ -48,13 +48,13 @@ function NumberStepper({ step = 1, inputValue, handleChange, min, max, disabled 
         disabled && 'cursor-not-allowed pointer-events-none opacity-60',
       )}>
       <ChevronUpIcon
-        className={`text-xs size-3 ${disabled ? 'cursor-not-allowed pointer-events-none opacity-60' : 'cursor-pointer'}`}
+        className={`text-xs size-3 ${disabled ? 'cursor-not-allowed pointer-events-none opacity-60' : 'cursor-pointer hover:stroke-juiText-primary'}`}
         onClick={() => {
           if (!disabled && canIncrease) onStep(step);
         }}
       />
       <ChevronDownIcon
-        className={`text-xs size-3 ${disabled ? 'cursor-not-allowed pointer-events-none opacity-60' : 'cursor-pointer'}`}
+        className={`text-xs size-3 ${disabled ? 'cursor-not-allowed pointer-events-none opacity-60' : 'cursor-pointer hover:stroke-juiText-primary'}`}
         onClick={() => {
           if (!disabled && canDecrease) onStep(-step);
         }}

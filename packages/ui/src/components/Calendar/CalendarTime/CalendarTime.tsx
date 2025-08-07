@@ -4,9 +4,10 @@ import { type ComponentProps, type ReactNode, useRef, useState } from 'react';
 import { format } from 'date-fns';
 
 import { ClockIcon } from '@common/ui/icons';
-import { Calendar } from './Calendar';
-import { Select, Separator } from '../../components';
-import { useTimeChangeHandler } from './hooks/useTimeChangeHandler';
+import { Calendar } from '../Calendar';
+import { Separator } from '../../../components';
+import TimeInput from './TimeInput';
+import { useTimeChangeHandler } from '../hooks/useTimeChangeHandler';
 import { cn } from '@common/ui/lib/utils';
 
 function CalendarTime({
@@ -28,12 +29,9 @@ function CalendarTime({
   const initialMinRef = useRef(String(selected?.getMinutes() ?? '0'));
   const initialSecRef = useRef(String(selected?.getSeconds() ?? '0'));
 
-  const hourRef = useRef('0');
-  const minRef = useRef('0');
-  const secRef = useRef('0');
-
-  const timeSelectClassName =
-    '!h-6 justify-center min-w-0 p-1 light:border-0 light:border-b-1 border-b-1 data-[state=open]:border-0 data-[state=open]:border-b-1';
+  const hourRef = useRef<HTMLInputElement>(null);
+  const minRef = useRef<HTMLInputElement>(null);
+  const secRef = useRef<HTMLInputElement>(null);
 
   const handleTimeChange = useTimeChangeHandler({
     dateTime,
@@ -44,23 +42,21 @@ function CalendarTime({
   const makeDateWithTime = (date: Date) => {
     const newDate = new Date(date);
 
-    newDate.setHours(parseInt(hourRef.current));
-    if (timeType !== 'hour') newDate.setMinutes(parseInt(minRef.current));
-    else newDate.setMinutes(0);
+    newDate.setHours(hourRef.current ? Number(hourRef.current.value) : 0);
 
-    if (timeType === 'second') newDate.setSeconds(parseInt(secRef.current));
-    else newDate.setSeconds(0);
+    if (timeType !== 'hour') {
+      newDate.setMinutes(minRef.current ? Number(minRef.current.value) : 0);
+    } else {
+      newDate.setMinutes(0);
+    }
+
+    if (timeType === 'second') {
+      newDate.setSeconds(secRef.current ? Number(secRef.current.value) : 0);
+    } else {
+      newDate.setSeconds(0);
+    }
 
     return newDate;
-  };
-
-  const generateTimeUnitOptions = (length: number) => {
-    return Array.from({ length }, (_, i) => {
-      return {
-        label: i.toString().padStart(2, '0'),
-        value: String(i),
-      };
-    });
   };
 
   return (
@@ -93,39 +89,35 @@ function CalendarTime({
       footer={
         <>
           <Separator />
-          <div className="flex items-center justify-between mt-2.5">
+          <div
+            className={cn(
+              'flex justify-between mt-2.5',
+              timeType === 'second' ? 'flex-col items-start gap-2' : 'items-center',
+            )}>
             <div className="flex items-center gap-2">
               <ClockIcon size="small" />
               <div className="flex items-center gap-1">
-                {/* Hour Select */}
-                <Select
-                  width={38}
-                  className={cn(timeSelectClassName)}
-                  optionsClassName="min-w-0 max-h-56"
-                  itemClassName="justify-center"
-                  isContentFitTriggerWidth
-                  defaultValue={String(dateTime?.getHours() ?? 0)}
-                  selectRef={hourRef}
-                  onValueChange={handleTimeChange('hour')}
-                  options={generateTimeUnitOptions(24)}
-                  isTriggerIcon={false}
+                {/* Hour Input */}
+                <TimeInput
+                  refObj={hourRef}
+                  defaultValue={String(dateTime?.getHours() ?? '0').padStart(2, '0')}
+                  min={0}
+                  max={23}
+                  timeType="hour"
+                  handleTimeChange={handleTimeChange}
                 />
 
                 {(timeType === 'minute' || timeType === 'second') && (
                   <>
                     <span>:</span>
-                    {/* Minute Select */}
-                    <Select
-                      width={38}
-                      className={cn(timeSelectClassName)}
-                      optionsClassName="min-w-0 max-h-56"
-                      itemClassName="justify-center"
-                      isContentFitTriggerWidth
-                      defaultValue={String(dateTime?.getMinutes() ?? 0)}
-                      selectRef={minRef}
-                      onValueChange={handleTimeChange('minute')}
-                      options={generateTimeUnitOptions(60)}
-                      isTriggerIcon={false}
+                    {/* Minute Input */}
+                    <TimeInput
+                      refObj={minRef}
+                      defaultValue={String(dateTime?.getMinutes() ?? '0').padStart(2, '0')}
+                      min={0}
+                      max={59}
+                      timeType="minute"
+                      handleTimeChange={handleTimeChange}
                     />
                   </>
                 )}
@@ -133,18 +125,14 @@ function CalendarTime({
                 {timeType === 'second' && (
                   <>
                     <span>:</span>
-                    {/* Second Select */}
-                    <Select
-                      width={38}
-                      className={cn(timeSelectClassName)}
-                      optionsClassName="min-w-0 max-h-56"
-                      itemClassName="justify-center"
-                      isContentFitTriggerWidth
-                      defaultValue={String(dateTime?.getSeconds() ?? 0)}
-                      selectRef={secRef}
-                      onValueChange={handleTimeChange('second')}
-                      options={generateTimeUnitOptions(60)}
-                      isTriggerIcon={false}
+                    {/* Second Input */}
+                    <TimeInput
+                      refObj={secRef}
+                      defaultValue={String(dateTime?.getSeconds() ?? '0').padStart(2, '0')}
+                      min={0}
+                      max={59}
+                      timeType="second"
+                      handleTimeChange={handleTimeChange}
                     />
                   </>
                 )}
