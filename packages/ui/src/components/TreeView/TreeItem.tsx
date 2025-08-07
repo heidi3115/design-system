@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Collapsible } from '@common/ui';
 import { cn } from '@common/ui/lib/utils';
+import { Collapsible } from '@common/ui';
 import { CloseFolderFilledIcon, OpenFolderFilledIcon, PlayArrowIcon } from '@common/ui/icons';
 import { DEFAULT_INDENT_SIZE, type TreeViewStateType } from './TreeView';
 import { TreeViewItem, TreeViewItemContent, TreeViewItemTrigger } from './TreeViewParts';
@@ -114,7 +114,7 @@ export default function TreeItem<T = unknown>({
       data-slot="tree-item-trigger"
       data-active={selected}
       expanded={expanded}
-      onClick={(e) => handleItemSelect(e, nodeItem.id)}
+      onClick={(e: React.MouseEvent) => handleItemSelect(e, nodeItem.id)}
       className={cn(variantClass, itemTrigger(), disabledClass)}>
       {showIcons && (
         <span data-slot="item-trigger-icon" data-active={selected} className={cn(variantClass, icons(), disabledClass)}>
@@ -125,7 +125,7 @@ export default function TreeItem<T = unknown>({
             : endIcon || <PlayArrowIcon />}
         </span>
       )}
-      <span data-slot="tree-item-label" className={cn('truncate', disabledClass)}>
+      <span data-slot="tree-item-label" className={cn('block w-full truncate', disabledClass)}>
         {nodeItem.name}
       </span>
     </TreeViewItemTrigger>
@@ -155,7 +155,7 @@ export default function TreeItem<T = unknown>({
           trigger={renderTrigger(node)}
           showPreview={false}
           className={'w-full gap-y-0 p-0'}
-          contentClassName={'w-full px-0 py-0 shadow-none'}
+          contentClassName={'overflow-hidden flex w-full min-w-0 px-0 py-0 shadow-none rounded-none'}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}>
           <TreeViewItemContent
             className={cn(variantClass, itemContent(), level === lineLevelNum && lineDotClass)}

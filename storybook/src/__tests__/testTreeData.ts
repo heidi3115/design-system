@@ -1275,7 +1275,7 @@ export const fileTypeTreeData = [
         children: [
           {
             id: '3-1',
-            name: 'video_3-1.avi',
+            name: 'video_3-1 with long text test video_3-1video_3-1video_3-1video_3-1 video_3-1 with long text test video_3-1video_3-1video_3-1video_3-1.avi',
             extension: 'avi',
             iconType: 'video',
           },

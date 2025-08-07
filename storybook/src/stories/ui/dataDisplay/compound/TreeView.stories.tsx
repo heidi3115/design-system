@@ -410,10 +410,12 @@ export const Variants: Story = {
     },
   },
   render: (args) => (
-    <div className={cn(flexRow, 'items-start justify-center py-25 text-juiText-primary')} key={JSON.stringify(args)}>
+    <div
+      className={cn(flexRow, 'items-start justify-center flex-wrap gap-10 w-screen py-25 text-juiText-primary')}
+      key={JSON.stringify(args)}>
       {variantOptions.map((variant) => (
-        <div key={variant} className={cn(flexRow)}>
-          <div className={'flex flex-col gap-1 mr-4'}>
+        <div key={variant} className={cn(flexCol, 'w-100')}>
+          <div className={'flex flex-col gap-1'}>
             <span className={'text-xs text-juiText-blue'}>variant : {variant}</span>
             <TreeView {...args} variant={variant} />
           </div>
@@ -930,10 +932,10 @@ function LeafOnlySelectRender(args: TreeViewProps) {
   ];
 
   return (
-    <div className={cn(flexCol, 'gap-6 text-juiText-primary')}>
+    <div className={cn(flexCol, 'gap-6 w-full text-juiText-primary')}>
       <h3 className={''}>Leaf Only Selection (multiSelect + leafOnlySelect)</h3>
       <p className={''}>multiSelect와 leafOnlySelect의 모든 조합별 TreeView 동작을 한 번에 비교할 수 있습니다.</p>
-      <div className={cn(flexRow, 'gap-6 flex-wrap items-start justify-center w-full')}>
+      <div className={cn(flexRow, 'gap-6 flex-wrap items-start justify-center w-fit')}>
         {cases.map(({ multiSelect, leafOnlySelect }, idx) => (
           <div
             key={idx}
