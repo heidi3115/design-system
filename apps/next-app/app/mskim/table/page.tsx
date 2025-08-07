@@ -25,20 +25,23 @@ export type GridType = {
 };
 
 export default function Page() {
-  const [serverData, setServerData] = useState([
-    {
-      scnrNm: '[QA-3560] 테스트 시나리오',
-      regUser: 'hycho',
-      regUserNm: '테스트이름',
-      regDt: '2025-03-26 15:48:46',
-    },
-    {
-      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
-      regUser: 'admin',
-      regUserNm: '관리자',
-      regDt: '2024-11-28 10:38:05',
-    },
-  ]);
+  const [serverData, setServerData] = useState({
+    totalCount: 20,
+    list: [
+      {
+        scnrNm: '[QA-3560] 테스트 시나리오',
+        regUser: 'hycho',
+        regUserNm: '테스트이름',
+        regDt: '2025-03-26 15:48:46',
+      },
+      {
+        scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
+        regUser: 'admin',
+        regUserNm: '관리자',
+        regDt: '2024-11-28 10:38:05',
+      },
+    ],
+  });
 
   const clientData = [
     {
@@ -116,7 +119,7 @@ export default function Page() {
   ];
 
   const dummyData = {
-    totalCount: 30,
+    totalCount: 20,
     list: [
       {
         scnrNm: '검색어로 필터링된 서버 데이터 예시',
@@ -164,6 +167,8 @@ export default function Page() {
   const [value, setValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
+  const [totalCount, setTotalCount] = useState(serverData.totalCount);
+
   const pageSize = 10; // pageSize 기능 구현 시 수정 예정
 
   const filterTable = useDebounce((val: string) => {
@@ -182,13 +187,13 @@ export default function Page() {
   useEffect(() => {
     if (value) {
       setCurrentPage(0);
-      setServerData(dummyData.list);
+      setServerData(dummyData);
     }
   }, [value]);
 
   useUpdateEffect(() => {
-    // console.log("혹시 데이터가 새로 바뀌어서..?")
-    // setServerData(dummyData.list);
+    setServerData(dummyData);
+    setTotalCount(dummyData.totalCount);
   }, [currentPage]);
 
   return (
@@ -197,12 +202,13 @@ export default function Page() {
         <span>서버사이드 필터링</span>
         <DataTable
           isUseQuickSearch
-          rows={serverData}
+          rows={serverData.list}
           columnFilterTrigger={<Button variant="transparent">커스텀필터목록</Button>}
           columns={columns}
           globalFilter={value}
-          totalCount={dummyData.totalCount}
+          totalCount={totalCount}
           onPageChange={setCurrentPage}
+          currentPage={currentPage}
           pageSize={pageSize}
           onGlobalFilterChange={(e) => setValue(e)}
           manualFiltering

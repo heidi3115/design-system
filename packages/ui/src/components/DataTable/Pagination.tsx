@@ -6,37 +6,59 @@ interface PaginationProps<TData> {
   table: Table<TData>;
   totalCount?: number;
   pageSize?: number;
+  serverPage?: number;
+  onPageChange?: (page: number) => void;
 }
 
-function Pagination<TData>({ table, totalCount, pageSize = 5 }: PaginationProps<TData>) {
-  const pageCount = totalCount ? totalCount / pageSize : table.getPageCount();
-  const currentPage = table.getState().pagination.pageIndex;
+function Pagination<TData>({ table, totalCount, pageSize = 5, serverPage, onPageChange }: PaginationProps<TData>) {
+  const pageCount = totalCount ? Math.ceil(totalCount / pageSize) : table.getPageCount();
+  const currentPage = serverPage ?? table.getState().pagination.pageIndex;
   const pages = Array.from({ length: pageCount }, (_, i) => i);
+  const isServer = serverPage !== undefined;
+
+  const handlePageChange = (page: number) => {
+    if (isServer) onPageChange?.(page);
+    table.setPageIndex(page);
+  };
 
   return (
     <div className="flex gap-2">
       <Button
-        className="border rounded-3xl p-1"
-        onClick={() => table.previousPage()}
-        disabled={!table.getCanPreviousPage()}
-        variant={'transparent'}>
+        className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
+        onClick={() => handlePageChange(0)}
+        disabled={currentPage <= 0}
+        variant="transparent">
+        {'<<'}
+      </Button>
+      <Button
+        className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage <= 0}
+        variant="transparent">
         {'<'}
       </Button>
       {pages.map((page) => (
         <Button
           key={page}
-          variant={currentPage === page ? 'primary' : 'transparent'}
-          className={'rounded-3xl p-1 w-8'}
-          onClick={() => table.setPageIndex(page)}>
+          variant={currentPage === page ? 'default' : 'transparent'}
+          className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
+          onClick={() => handlePageChange(page)}>
           {page + 1}
         </Button>
       ))}
       <Button
-        variant={'transparent'}
-        className="rounded-3xl border p-1"
-        onClick={() => table.nextPage()}
-        disabled={!table.getCanNextPage()}>
+        className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage >= pageCount - 1}
+        variant="transparent">
         {'>'}
+      </Button>
+      <Button
+        className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
+        onClick={() => handlePageChange(pageCount - 1)}
+        disabled={currentPage >= pageCount - 1}
+        variant="transparent">
+        {'>>'}
       </Button>
     </div>
   );

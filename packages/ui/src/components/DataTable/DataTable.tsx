@@ -54,6 +54,7 @@ type DataTableProps<T, V> = {
   pageSize?: number;
   onPageChange?: (pagination: number) => void;
   pageIndex?: number;
+  currentPage?: number;
 };
 
 export function DataTable<T, V = unknown>({
@@ -73,6 +74,7 @@ export function DataTable<T, V = unknown>({
   isUsePagination = true,
   onPageChange = undefined,
   pageIndex,
+  currentPage,
 }: DataTableProps<T, V>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -118,12 +120,6 @@ export function DataTable<T, V = unknown>({
 
     setGlobalFilter(searchValue ?? '');
   }, [isUseQuickSearch, searchValue, setGlobalFilter]);
-
-  useEffect(() => {
-    if (typeof onPageChange === 'function') {
-      onPageChange(table.getState().pagination.pageIndex);
-    }
-  }, [table.getState().pagination.pageIndex]);
 
   return (
     <div className="w-full flex flex-col min-h-50 gap-1">
@@ -243,7 +239,13 @@ export function DataTable<T, V = unknown>({
       </Table>
       {isUsePagination && (
         <div className="flex justify-center items-center gap-2">
-          <Pagination table={table} totalCount={totalCount} pageSize={pageSize} />
+          <Pagination
+            table={table}
+            totalCount={totalCount}
+            serverPage={currentPage}
+            onPageChange={onPageChange}
+            pageSize={pageSize}
+          />
         </div>
       )}
     </div>
