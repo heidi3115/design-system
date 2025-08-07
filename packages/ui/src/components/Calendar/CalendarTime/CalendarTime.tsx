@@ -4,10 +4,11 @@ import { type ComponentProps, type ReactNode, useRef, useState } from 'react';
 import { format } from 'date-fns';
 
 import { ClockIcon } from '@common/ui/icons';
-import { Calendar } from '../Calendar';
-import { Separator, Slider } from '../../../components';
-import TimeInput from './TimeInput';
 import { useTimeChangeHandler } from '../hooks/useTimeChangeHandler';
+import { Calendar } from '../Calendar';
+import { Separator } from '../../../components';
+import TimeInput from './TimeInput';
+import TimeSlider from './TimeSlider';
 import { cn } from '@common/ui/lib/utils';
 
 function CalendarTime({
@@ -59,13 +60,6 @@ function CalendarTime({
     }
 
     return newDate;
-  };
-
-  const formatMinutesToTimeLabel = (time: number) => {
-    const h = Math.floor(time / 60);
-    const m = time % 60;
-
-    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
   };
 
   return (
@@ -156,37 +150,7 @@ function CalendarTime({
           </div>
           <div className="flex gap-4">
             {isShowTimeSlide && (
-              <div className="flex-1 mt-2.5">
-                <Slider
-                  showValueLabel="auto"
-                  // size="default"
-                  min={0}
-                  max={1439}
-                  defaultValue={[(dateTime?.getHours() ?? 0) * 60 + (dateTime?.getMinutes() ?? 0)]}
-                  onValueCommit={([val]) => {
-                    const h = Math.floor((val ?? 0) / 60);
-                    const m = (val ?? 0) % 60;
-                    if (hourRef.current) hourRef.current.value = String(h).padStart(2, '0');
-                    if (minRef.current) minRef.current.value = String(m).padStart(2, '0');
-
-                    handleTimeChanges({ hour: h, minute: m });
-                  }}
-                  onCustomTooltip={(time) => formatMinutesToTimeLabel(time)}
-                  marks={[
-                    { value: 0, label: '00:00', labelClass: 'text-[10px]' },
-                    { value: 360, label: '06:00', labelClass: 'text-[10px]' },
-                    { value: 720, label: '12:00', labelClass: 'text-[10px]' },
-                    { value: 1080, label: '18:00', labelClass: 'text-[10px]' },
-                    { value: 1439, label: '23:59', labelClass: 'text-[10px]' },
-                  ]}
-                  tooltipProps={{
-                    className: 'z-51',
-                    side: 'bottom',
-                    isArrow: false,
-                    sideOffset: 4,
-                  }}
-                />
-              </div>
+              <TimeSlider dateTime={dateTime} hourRef={hourRef} minRef={minRef} handleTimeChanges={handleTimeChanges} />
             )}
             <div className="flex m-auto mr-0">{closeButton}</div>
           </div>
