@@ -263,13 +263,6 @@ export const Default: Story = {
       },
     },
   },
-  render: (args) => (
-    <div className={cn(flexCol, allCenter, 'size-full')}>
-      <div className={cn(flexCol, allCenter, 'w-100 h-100')}>
-        <Slider {...args} />
-      </div>
-    </div>
-  ),
 };
 
 export const Variants: Story = {
@@ -479,7 +472,7 @@ export const Labels: Story = {
           <h2 className={cn(blueTxt, titTxt)}>Vertical</h2>
           <div className={cn(flexRow, allCenter, 'gap-5 size-full')}>
             <div className={cn(flexCol, allCenter, 'gap-5 size-full')}>
-              <h3 className={cn(subTitTxt, 'mb-15')}>항상 보기</h3>
+              <h3 className={cn(subTitTxt, 'h-12')}>항상 보기</h3>
               <Slider
                 {...args}
                 orientation={'vertical'}
@@ -488,7 +481,7 @@ export const Labels: Story = {
               />
             </div>
             <div className={cn(flexCol, allCenter, 'gap-5 size-full')}>
-              <h3 className={cn(subTitTxt, 'mb-15')}>UnitLabel로 항상 보기</h3>
+              <h3 className={cn(subTitTxt, 'h-12')}>UnitLabel로 항상 보기</h3>
               <Slider
                 {...args}
                 orientation={'vertical'}
@@ -498,7 +491,7 @@ export const Labels: Story = {
               />
             </div>
             <div className={cn(flexCol, allCenter, 'gap-5 size-full')}>
-              <h3 className={cn(subTitTxt, 'mb-15')}>Auto (Hover/Drag)</h3>
+              <h3 className={cn(subTitTxt, 'h-12')}>Auto (Hover/Drag)</h3>
               <Slider
                 {...args}
                 orientation={'vertical'}
@@ -507,7 +500,7 @@ export const Labels: Story = {
               />
             </div>
             <div className={cn(flexCol, allCenter, 'gap-5 size-full')}>
-              <h3 className={cn(subTitTxt, 'mb-15')}>None</h3>
+              <h3 className={cn(subTitTxt, 'h-12')}>None</h3>
               <Slider {...args} orientation={'vertical'} showValueLabel="none" defaultValue={INT_DEFAULT_VALUE_ARR} />
             </div>
           </div>

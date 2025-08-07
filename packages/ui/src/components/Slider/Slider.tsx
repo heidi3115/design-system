@@ -168,7 +168,7 @@ function Slider({
   return (
     <div
       data-slot="slider-wrapper"
-      className="relative pointer-events-none z-0"
+      className={cn('relative pointer-events-none z-0', isHorizontal ? 'w-full' : 'h-full')}
       data-orientation={orientation}
       style={{
         ...(marks
@@ -256,104 +256,112 @@ function Slider({
           })}
         </SliderRoot>
       </div>
-      {!!thumbSize && !!trackSize && marks && (
+      {marks && (
         <div
           className={cn('relative flex m-auto pointer-events-none', isHorizontal ? 'flex-col' : 'flex-row')}
           style={{
-            ...(isHorizontal ? { width: `calc(100% - ${thumbSize}px)` } : { height: `calc(100% - ${thumbSize}px)` }),
+            ...(isHorizontal
+              ? { width: `calc(100% - ${thumbSize || 16}px)` }
+              : { height: `calc(100% - ${thumbSize || 16}px)` }),
           }}>
-          {/* 마커 */}
-          <div
-            className="relative w-full -z-1"
-            data-slot="slider-mark-area"
-            style={{
-              ...(isHorizontal ? { height: `${trackSize}px` } : { width: `${trackSize}px` }),
-            }}>
-            {!!processedMarks?.length &&
-              processedMarks.map(({ value: markValue }, idx) => {
-                const percentage = convertValueToPercentage({ value: markValue, min, max });
-                const markerStyle = isHorizontal
-                  ? {
-                      left: `${inverted ? 100 - percentage : percentage}%`,
-                      top: '50%',
-                    }
-                  : {
-                      top: `${inverted ? percentage : 100 - percentage}%`,
-                      left: '50%',
-                    };
+          {!!thumbSize && !!trackSize ? (
+            <>
+              {/* 마커 */}
+              <div
+                className="relative w-full -z-1"
+                data-slot="slider-mark-area"
+                style={{
+                  ...(isHorizontal ? { height: `${trackSize}px` } : { width: `${trackSize}px` }),
+                }}>
+                {!!processedMarks?.length &&
+                  processedMarks.map(({ value: markValue }, idx) => {
+                    const percentage = convertValueToPercentage({ value: markValue, min, max });
+                    const markerStyle = isHorizontal
+                      ? {
+                          left: `${inverted ? 100 - percentage : percentage}%`,
+                          top: '50%',
+                        }
+                      : {
+                          top: `${inverted ? percentage : 100 - percentage}%`,
+                          left: '50%',
+                        };
 
-                return (
-                  idx !== 0 &&
-                  idx !== processedMarks.length && (
-                    <span
-                      key={markValue}
-                      data-value={markValue}
-                      data-slot="slider-mark"
-                      className={cn('absolute block size-max')}
-                      style={markerStyle}>
-                      <span
-                        data-slot="mark-point"
-                        className={cn(
-                          'relative block size-1',
-                          '-translate-x-1/2 -translate-y-1/2',
-                          'rounded-full bg-juiText-primary/50',
-                        )}
-                      />
-                    </span>
-                  )
-                );
-              })}
-          </div>
+                    return (
+                      idx !== 0 &&
+                      idx !== processedMarks.length && (
+                        <span
+                          key={markValue}
+                          data-value={markValue}
+                          data-slot="slider-mark"
+                          className={cn('absolute block size-max')}
+                          style={markerStyle}>
+                          <span
+                            data-slot="mark-point"
+                            className={cn(
+                              'relative block size-1',
+                              '-translate-x-1/2 -translate-y-1/2',
+                              'rounded-full bg-juiText-primary/50',
+                            )}
+                          />
+                        </span>
+                      )
+                    );
+                  })}
+              </div>
 
-          {/* 라벨 */}
-          <div className="relative flex">
-            {isHorizontal ? (
-              <span
-                className="w-fit relative -translate-x-1/2 invisible"
-                style={{ marginTop: `${thumbSize / 2 - trackSize / 2 + LABEL_GAP}px` }}>
-                {processedMarks.filter((mark) => mark.label).slice(-1)[0]?.label}
-              </span>
-            ) : (
-              <span
-                className="h-fit relative -translate-y-1/2 invisible"
-                style={{ marginLeft: `${thumbSize / 2 - trackSize / 2 + LABEL_GAP}px` }}>
-                {processedMarks.filter((mark) => mark.label).slice(-1)[0]?.label}
-              </span>
-            )}
-            {!!processedMarks?.length &&
-              processedMarks
-                .filter((mark) => mark.label)
-                .map(({ value: markValue, label, labelClass }, idx) => {
-                  const isActiveMark = activeMarkIndex?.includes(markValue);
+              {/* 라벨 */}
+              <div className="relative flex">
+                {isHorizontal ? (
+                  <span
+                    className="w-fit relative -translate-x-1/2 invisible"
+                    style={{ marginTop: `${thumbSize / 2 - trackSize / 2 + LABEL_GAP}px` }}>
+                    {processedMarks.filter((mark) => mark.label).slice(-1)[0]?.label}
+                  </span>
+                ) : (
+                  <span
+                    className="h-fit relative -translate-y-1/2 invisible"
+                    style={{ marginLeft: `${thumbSize / 2 - trackSize / 2 + LABEL_GAP}px` }}>
+                    {processedMarks.filter((mark) => mark.label).slice(-1)[0]?.label}
+                  </span>
+                )}
+                {!!processedMarks?.length &&
+                  processedMarks
+                    .filter((mark) => mark.label)
+                    .map(({ value: markValue, label, labelClass }, idx) => {
+                      const isActiveMark = activeMarkIndex?.includes(markValue);
 
-                  const offset = `${thumbSize / 2 - trackSize / 2 + LABEL_GAP}px`;
-                  const percentage = convertValueToPercentage({ value: markValue, min, max });
+                      const offset = `${thumbSize / 2 - trackSize / 2 + LABEL_GAP}px`;
+                      const percentage = convertValueToPercentage({ value: markValue, min, max });
 
-                  const position = isHorizontal
-                    ? `${inverted ? 100 - percentage : percentage}%`
-                    : `${inverted ? percentage : 100 - percentage}%`;
+                      const position = isHorizontal
+                        ? `${inverted ? 100 - percentage : percentage}%`
+                        : `${inverted ? percentage : 100 - percentage}%`;
 
-                  const labelStyle = isHorizontal
-                    ? { marginTop: offset, left: position }
-                    : { marginLeft: offset, top: position };
+                      const labelStyle = isHorizontal
+                        ? { marginTop: offset, left: position }
+                        : { marginLeft: offset, top: position };
 
-                  return (
-                    <span
-                      key={idx}
-                      data-slot="mark-label"
-                      className={cn(
-                        'absolute block',
-                        isHorizontal ? '-translate-x-1/2' : '-translate-y-1/2',
-                        'w-max text-xs whitespace-nowrap',
-                        isActiveMark && 'font-bold',
-                        labelClass,
-                      )}
-                      style={labelStyle}>
-                      {label}
-                    </span>
-                  );
-                })}
-          </div>
+                      return (
+                        <span
+                          key={idx}
+                          data-slot="mark-label"
+                          className={cn(
+                            'absolute block',
+                            isHorizontal ? '-translate-x-1/2' : '-translate-y-1/2',
+                            'w-max text-xs whitespace-nowrap',
+                            isActiveMark && 'font-bold',
+                            labelClass,
+                          )}
+                          style={labelStyle}>
+                          {label}
+                        </span>
+                      );
+                    })}
+              </div>
+            </>
+          ) : (
+            <div className={cn(isHorizontal ? 'w-full h-8' : 'h-full w-8')}></div>
+          )}
         </div>
       )}
     </div>
