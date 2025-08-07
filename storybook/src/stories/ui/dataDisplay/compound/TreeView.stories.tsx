@@ -1,7 +1,17 @@
 import React, { useRef, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button, Separator, TreeView, type TreeViewProps, type TreeViewStateType, treeViewVariants } from '@common/ui';
-import { EyeIcon, EyeOffIcon, UserFilledIcon } from '@common/ui/icons';
+import {
+  AlertTriangleFilledIcon,
+  AlertTriangleIcon,
+  EyeIcon,
+  EyeOffIcon,
+  LogInIcon,
+  LogOutIcon,
+  MailIcon,
+  ShieldIcon,
+  UserFilledIcon,
+} from '@common/ui/icons';
 import { cn } from '@common/ui/lib/utils.ts';
 import { flattenTree, getAllNodeIds, isLeafNode } from '@common/ui/components/TreeView/utils.ts';
 import {
@@ -810,13 +820,29 @@ export const Controlled: Story = {
   },
 };
 
+const defaultIconArr = [
+  <EyeOffIcon key={'EyeOffIcon'} />,
+  <AlertTriangleFilledIcon key={'AlertTriangleFilledIcon'} />,
+  <LogInIcon key={'LogInIcon'} />,
+];
+const expandedIconArr = [
+  <EyeIcon key={'EyeIcon'} />,
+  <AlertTriangleIcon key={'AlertTriangleIcon'} />,
+  <LogOutIcon key={'LogOutIcon'} />,
+];
+const endIconArr = [
+  <UserFilledIcon key={'UserFilledIcon'} />,
+  <MailIcon key={'MailIcon'} />,
+  <ShieldIcon key={'ShieldIcon'} />,
+];
+
 export const IconAndLine: Story = {
   name: 'Icon/Line Overview',
   args: {
     treeData: responseStatusTreeData,
-    defaultIcon: <EyeIcon />,
-    expandedIcon: <EyeOffIcon />,
-    endIcon: <UserFilledIcon />,
+    defaultIcon: defaultIconArr[0],
+    expandedIcon: expandedIconArr[0],
+    endIcon: endIconArr[0],
     showLineLevel: 0,
   },
   argTypes: {
@@ -855,14 +881,20 @@ export const IconAndLine: Story = {
               <div className={blueTxt}>
                 <pre className={'w-full text-xs py-4 whitespace-pre-line'}>
                   {`지정된 아이콘 정보 :
-defaultIcon: <EyeIcon />
-    expandedIcon: <EyeOffIcon />
-    endIcon: <UserFilledIcon />`}
+defaultIcon: ${defaultIconArr[idx].key}
+    expandedIcon: ${expandedIconArr[idx].key}
+    endIcon: ${endIconArr[idx].key}`}
                 </pre>
               </div>
               <p className={blueTxt}>showLineLevel : {idx}</p>
             </div>
-            <TreeView {...args} showLineLevel={idx} />
+            <TreeView
+              {...args}
+              showLineLevel={idx}
+              defaultIcon={defaultIconArr[idx]}
+              expandedIcon={expandedIconArr[idx]}
+              endIcon={endIconArr[idx]}
+            />
           </div>
         ))}
       </div>

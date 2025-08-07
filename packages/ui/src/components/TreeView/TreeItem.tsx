@@ -89,7 +89,7 @@ export default function TreeItem<T = unknown>({
   const disabledClass = disabled ? base() : '';
   const variantClass = common();
   const itemsClass = items();
-  const lineDotClass = !hasLineLevel
+  const lineDotClass = hasLineLevel
     ? "after:content-['·'] after:text-[40px]/0 after:size-1 after:absolute after:left-0 after:bottom-0 after:-translate-x-1.5"
     : '';
 
