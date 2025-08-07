@@ -50,6 +50,10 @@ type DataTableProps<T, V> = {
   columnFilterTrigger?: ReactNode;
   onColumnStatusChange?: (status: ColumnType[]) => void;
   isUsePagination?: boolean;
+  totalCount?: number;
+  pageSize?: number;
+  onPageChange?: (pagination: number) => void;
+  pageIndex?: number;
 };
 
 export function DataTable<T, V = unknown>({
@@ -58,6 +62,8 @@ export function DataTable<T, V = unknown>({
   columns,
   manualFiltering = false, // true로 설정 시, 검색어 필터링 권한을 서버측으로 넘기고 해당 컴포넌트에서는 검색 필터링에 관여하지 않음.
   manualPagination = false, // 서버사이드 페이징이면 true로 설정
+  totalCount,
+  pageSize,
   globalFilter: externalGlobalFilter,
   onGlobalFilterChange,
   emptyState,
@@ -65,6 +71,8 @@ export function DataTable<T, V = unknown>({
   searchValue,
   columnFilterTrigger,
   isUsePagination = true,
+  onPageChange = undefined,
+  pageIndex,
 }: DataTableProps<T, V>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -87,18 +95,13 @@ export function DataTable<T, V = unknown>({
     onRowSelectionChange: setRowSelection,
     initialState: {
       pagination: {
-        pageSize: 5,
+        pageSize: pageSize ?? 5,
+        pageIndex: pageIndex ?? 0,
       },
     },
     state: { sorting, columnFilters, columnVisibility, rowSelection, globalFilter },
     onGlobalFilterChange: setGlobalFilter,
   });
-
-  useEffect(() => {
-    if (isUseQuickSearch) return;
-
-    setGlobalFilter(searchValue ?? '');
-  }, [isUseQuickSearch, searchValue, setGlobalFilter]);
 
   const [search, setSearch] = useState('');
   const filteredColumns = table
@@ -109,6 +112,18 @@ export function DataTable<T, V = unknown>({
         typeof column.columnDef.header === 'string' &&
         column.columnDef.header.toLowerCase().includes(search.toLowerCase()),
     );
+
+  useEffect(() => {
+    if (isUseQuickSearch) return;
+
+    setGlobalFilter(searchValue ?? '');
+  }, [isUseQuickSearch, searchValue, setGlobalFilter]);
+
+  useEffect(() => {
+    if (typeof onPageChange === 'function') {
+      onPageChange(table.getState().pagination.pageIndex);
+    }
+  }, [table.getState().pagination.pageIndex]);
 
   return (
     <div className="w-full flex flex-col min-h-50 gap-1">
@@ -228,7 +243,7 @@ export function DataTable<T, V = unknown>({
       </Table>
       {isUsePagination && (
         <div className="flex justify-center items-center gap-2">
-          <Pagination table={table} />
+          <Pagination table={table} totalCount={totalCount} pageSize={pageSize} />
         </div>
       )}
     </div>

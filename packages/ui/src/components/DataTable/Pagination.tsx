@@ -4,10 +4,12 @@ import { Table } from '@tanstack/react-table';
 
 interface PaginationProps<TData> {
   table: Table<TData>;
+  totalCount?: number;
+  pageSize?: number;
 }
 
-function Pagination<TData>({ table }: PaginationProps<TData>) {
-  const pageCount = table.getPageCount();
+function Pagination<TData>({ table, totalCount, pageSize = 5 }: PaginationProps<TData>) {
+  const pageCount = totalCount ? totalCount / pageSize : table.getPageCount();
   const currentPage = table.getState().pagination.pageIndex;
   const pages = Array.from({ length: pageCount }, (_, i) => i);
 
