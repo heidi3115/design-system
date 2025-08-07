@@ -6,13 +6,11 @@ type TimeUnit = 'hour' | 'minute' | 'second';
 type TimeInputProps = {
   refObj: RefObject<HTMLInputElement | null>;
   defaultValue: string;
-  min: number;
-  max: number;
   timeType: TimeUnit;
   handleTimeChange: (unit: TimeUnit) => (value: string) => void;
 };
 
-function TimeInput({ refObj, defaultValue, min, max, timeType, handleTimeChange }: TimeInputProps) {
+function TimeInput({ refObj, defaultValue, timeType, handleTimeChange }: TimeInputProps) {
   const isNotFocused = <T extends HTMLElement>(ref: RefObject<T | null>): ref is RefObject<T & { value: string }> => {
     return typeof window !== 'undefined' && ref.current !== null && ref.current !== document.activeElement;
   };
@@ -20,8 +18,8 @@ function TimeInput({ refObj, defaultValue, min, max, timeType, handleTimeChange 
   return (
     <Input
       type="number"
-      min={min}
-      max={max}
+      min={0}
+      max={timeType === 'hour' ? 23 : 59}
       ref={refObj}
       defaultValue={defaultValue}
       onKeyDown={(e) => {

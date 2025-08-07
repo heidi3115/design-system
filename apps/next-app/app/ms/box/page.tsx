@@ -132,14 +132,16 @@ export default function BoxPages() {
         }}
         minRangeDays={10}
         maxRangeDays={30}
+        numberOfMonths={2}
         onRangeChange={(newRange) => {
           console.warn('비제어 선택된 날짜 범위:', newRange);
         }}
         startPlaceholder="시작 날짜 선택"
+        isShowTimeSlide
       />
 
-      <RangeDatePicker timeType="minute" startPlaceholder="시작 날짜 선택" />
-      <RangeDatePicker timeType="second" startPlaceholder="시작 날짜 선택" />
+      <RangeDatePicker timeType="minute" startPlaceholder="시작 날짜 선택" isShowTimeSlide />
+      <RangeDatePicker timeType="second" startPlaceholder="시작 날짜 선택" isShowTimeSlide />
 
       <div className="w-120">
         <div className="flex w-80 gap-2">

@@ -12,7 +12,7 @@ import {
 } from 'react';
 import type { VariantProps } from 'tailwind-variants';
 import { cn } from '../../lib/utils';
-import { sliderVariants, Tooltip } from '@common/ui';
+import { sliderVariants, Tooltip, type TooltipProps } from '@common/ui';
 import useExtractClassName from '../../hooks/useExtractClassName';
 import { convertValueToPercentage, getDecimalPlaces, useRect } from '@common/utils';
 import { SliderRange, SliderRoot, type SliderRootProps, SliderThumb, SliderTrack } from './SliderParts';
@@ -30,6 +30,7 @@ export type SliderProps = SliderRootProps &
     marks?: boolean | SliderMark[];
     unitLabel?: string;
     sliderRef?: Ref<number[]>;
+    tooltipProps?: Omit<TooltipProps, 'open' | 'contents' | 'children' | 'trigger'>;
   };
 
 const MIN_INT_VALUE = 0 as const;
@@ -56,6 +57,7 @@ function Slider({
   onValueCommit,
   onCustomTooltip,
   className,
+  tooltipProps,
   ...props
 }: SliderProps) {
   const { base, root, track, range, thumb } = sliderVariants({ variant, size, orientation, disabled });
@@ -239,7 +241,8 @@ function Slider({
                 open={!disabled && isTooltipOpen}
                 contents={
                   onCustomTooltip ? onCustomTooltip(val) : `${val.toFixed(decimalPlaces)} ${unitLabel ? unitLabel : ''}`
-                }>
+                }
+                {...tooltipProps}>
                 <SliderThumb
                   data-slot="slider-thumb"
                   ref={(el: HTMLSpanElement | null) => {
