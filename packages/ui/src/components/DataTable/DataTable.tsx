@@ -55,6 +55,8 @@ type DataTableProps<T, V> = {
   onPageChange?: (pagination: number) => void;
   pageIndex?: number;
   currentPage?: number;
+  isShowFirstPageButton?: boolean;
+  isShowLastPageButton?: boolean;
 };
 
 export function DataTable<T, V = unknown>({
@@ -75,6 +77,8 @@ export function DataTable<T, V = unknown>({
   onPageChange = undefined,
   pageIndex,
   currentPage,
+  isShowFirstPageButton = true,
+  isShowLastPageButton = true,
 }: DataTableProps<T, V>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -245,6 +249,8 @@ export function DataTable<T, V = unknown>({
             serverPage={currentPage}
             onPageChange={onPageChange}
             pageSize={pageSize}
+            isShowFirstPageButton={isShowFirstPageButton}
+            isShowLastPageButton={isShowLastPageButton}
           />
         </div>
       )}

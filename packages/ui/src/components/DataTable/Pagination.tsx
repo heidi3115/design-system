@@ -8,9 +8,19 @@ interface PaginationProps<TData> {
   pageSize?: number;
   serverPage?: number;
   onPageChange?: (page: number) => void;
+  isShowFirstPageButton?: boolean;
+  isShowLastPageButton?: boolean;
 }
 
-function Pagination<TData>({ table, totalCount, pageSize = 5, serverPage, onPageChange }: PaginationProps<TData>) {
+function Pagination<TData>({
+  table,
+  totalCount,
+  pageSize = 5,
+  serverPage,
+  onPageChange,
+  isShowFirstPageButton,
+  isShowLastPageButton,
+}: PaginationProps<TData>) {
   const pageCount = totalCount ? Math.ceil(totalCount / pageSize) : table.getPageCount();
   const currentPage = serverPage ?? table.getState().pagination.pageIndex;
   const pages = Array.from({ length: pageCount }, (_, i) => i);
@@ -23,13 +33,15 @@ function Pagination<TData>({ table, totalCount, pageSize = 5, serverPage, onPage
 
   return (
     <div className="flex gap-2">
-      <Button
-        className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
-        onClick={() => handlePageChange(0)}
-        disabled={currentPage <= 0}
-        variant="transparent">
-        {'<<'}
-      </Button>
+      {isShowFirstPageButton && (
+        <Button
+          className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
+          onClick={() => handlePageChange(0)}
+          disabled={currentPage <= 0}
+          variant="transparent">
+          {'<<'}
+        </Button>
+      )}
       <Button
         className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
         onClick={() => handlePageChange(currentPage - 1)}
@@ -53,13 +65,15 @@ function Pagination<TData>({ table, totalCount, pageSize = 5, serverPage, onPage
         variant="transparent">
         {'>'}
       </Button>
-      <Button
-        className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
-        onClick={() => handlePageChange(pageCount - 1)}
-        disabled={currentPage >= pageCount - 1}
-        variant="transparent">
-        {'>>'}
-      </Button>
+      {isShowLastPageButton && (
+        <Button
+          className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
+          onClick={() => handlePageChange(pageCount - 1)}
+          disabled={currentPage >= pageCount - 1}
+          variant="transparent">
+          {'>>'}
+        </Button>
+      )}
     </div>
   );
 }
