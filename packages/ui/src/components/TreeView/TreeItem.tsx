@@ -45,6 +45,8 @@ export type TreeItemProps<T> = {
   indentSize?: number;
   /** children 의 선 보여줄 단계의 번호 undefined 시, 선이 보이지 않습니다.*/
   showLineLevel?: number;
+  /** showLineLevel 의 숫자부터 자식까지 선을 보여줄 지 여부. True 일 경우, showLineLevel의 숫자부터(ex. showLineLevel이 1이면 depth가 1인 경우부터 선에 계속 보임) (default:false) */
+  isAllLine?: boolean;
   /* 이벤트 핸들러 */
   /** 노드 선택 시 콜백  */
   onSelect?: (nodeId: string) => void;
@@ -70,6 +72,7 @@ export default function TreeItem<T = unknown>({
   variant = 'default',
   indentSize = DEFAULT_INDENT_SIZE,
   showLineLevel = undefined,
+  isAllLine = false,
   onSelect,
   onToggle,
   className,
@@ -77,15 +80,17 @@ export default function TreeItem<T = unknown>({
 }: TreeItemProps<T>) {
   const hasChildren = Array.isArray(node?.children) && node.children.length > 0;
   const hasLineLevel = !(showLineLevel === undefined);
-  const lineLevelNum = hasLineLevel ? showLineLevel || 0 : 0;
+  const lineLevelNum = hasLineLevel ? showLineLevel : 0;
+  const shouldShowLines = hasLineLevel ? (isAllLine ? level >= lineLevelNum : level === lineLevelNum) : false;
 
   const { base, common, items, itemTrigger, itemContent, icons } = treeViewVariants({
     size,
     variant,
-    showLines: hasLineLevel ? level === lineLevelNum : false,
+    showLines: shouldShowLines,
     itemSelected: selected,
     disabled,
   });
+
   const disabledClass = disabled ? base() : '';
   const variantClass = common();
   const itemsClass = items();
@@ -177,6 +182,7 @@ export default function TreeItem<T = unknown>({
                   showIcons={showIcons}
                   indentSize={indentSize}
                   showLineLevel={showLineLevel}
+                  isAllLine={isAllLine}
                   onSelect={onSelect}
                   onToggle={onToggle}
                   className={cn(className)}

@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
 import { Button, Separator, TreeView, type TreeViewProps, type TreeViewStateType, treeViewVariants } from '@common/ui';
+import { DEFAULT_INDENT_SIZE } from '@common/ui/components/TreeView/TreeView.tsx';
+import { flattenTree, getAllNodeIds, isLeafNode } from '@common/ui/components/TreeView/utils.ts';
 import {
   AlertTriangleFilledIcon,
   AlertTriangleIcon,
@@ -13,7 +13,8 @@ import {
   UserFilledIcon,
 } from '@common/ui/icons';
 import { cn } from '@common/ui/lib/utils.ts';
-import { flattenTree, getAllNodeIds, isLeafNode } from '@common/ui/components/TreeView/utils.ts';
+import type { Meta, StoryObj } from '@storybook/react';
+import React, { useRef, useState } from 'react';
 import {
   assetDivisionTreeData,
   basicTreeData1,
@@ -22,7 +23,6 @@ import {
   responseStatusTreeData,
   sampleTreeData1,
 } from '../../../../__tests__/testTreeData.ts';
-import { DEFAULT_INDENT_SIZE } from '@common/ui/components/TreeView/TreeView.tsx';
 
 // 공통 스타일 클래스
 const flexRow = 'relative flex flex-row size-max gap-4 text-juiText-primary';
@@ -50,6 +50,7 @@ const meta: Meta<typeof TreeView> = {
     endIcon: undefined,
     indentSize: DEFAULT_INDENT_SIZE,
     showLineLevel: undefined,
+    isAllLine: false,
     defaultSelectedIds: undefined,
     selectedIds: undefined,
     defaultExpandedIds: undefined,
@@ -187,6 +188,19 @@ type TreeNodeProps<T> = {
         '노드 간 연결선(수직선)을 적용할 depth 레벨을 지정합니다.',
         '0일 때 root 레벨에서 선이 보이며, 각 보이고 싶은 선의 레벨을 지정할 수 있고, undefined 이면 연결선을 표시하지 않습니다.',
       ].join('\n'),
+    },
+    isAllLine: {
+      control: { type: 'boolean' },
+      description: [
+        'showLineLevel 부터 자식까지 선을 보여줄 지 여부입니다. True 일 경우, showLineLevel의 숫자부터 선이 계속 보이게 됩니다.',
+        '예를 들어 showLineLevel 이 1이고, isAllLine 이 true 라면 depth 1부터 자식인 depth=2,3,4... 등 계속 이어져서 선이 전부 보이게 됩니다.',
+        'showLineLevel 이 undefined 라면, isAllLine이 true 여도 선이 보이지 않습니다.',
+      ].join('<br/>'),
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      if: { arg: 'showLineLevel', exists: true },
     },
     defaultSelectedIds: {
       control: false,
@@ -844,6 +858,7 @@ export const IconAndLine: Story = {
     expandedIcon: expandedIconArr[0],
     endIcon: endIconArr[0],
     showLineLevel: 0,
+    isAllLine: true,
   },
   argTypes: {
     treeData: { table: { disable: true } },
@@ -866,12 +881,15 @@ export const IconAndLine: Story = {
   parameters: {
     docs: {
       description: {
-        story: ['다양한 커스텀 된 iconMap의 예시들과, showLineLevel 의 예시를 확인할 수 있습니다.'].join('\n'),
+        story: [
+          '다양한 커스텀 된 iconMap의 예시들과, showLineLevel 의 예시를 확인할 수 있습니다.',
+          '또한 control 에서 isAllLine을 조절해서 선의 여부 차이도 확인해 보실 수 있습니다.',
+        ].join('\n'),
       },
     },
   },
   render: (args) => (
-    <div className={cn(flexCol, 'items-start justify-center size-full')}>
+    <div className={cn(flexCol, 'items-start justify-center size-full')} key={JSON.stringify(args)}>
       <div className={cn(flexRow, 'items-start gap-6 w-full')}>
         {Array.from({ length: 3 }, (_, idx) => (
           <div
@@ -887,6 +905,7 @@ defaultIcon: ${defaultIconArr[idx].key}
                 </pre>
               </div>
               <p className={blueTxt}>showLineLevel : {idx}</p>
+              <p className={blueTxt}>isAllLine : {`${args.isAllLine}`}</p>
             </div>
             <TreeView
               {...args}

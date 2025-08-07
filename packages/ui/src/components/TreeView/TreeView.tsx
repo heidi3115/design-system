@@ -63,8 +63,8 @@ export type TreeViewProps<T = unknown> = {
   indentSize?: number;
   /** 노드간 연결선 표시 여부 및 연결선을 보여줄 레벨 */
   showLineLevel?: number;
-  /** 노드간 구분선 표시 여부 */
-  // showSeparators?: boolean; // TODO : 넣을 지 말지 고민
+  /** showLineLevel 부터 자식까지 선을 보여줄 지 여부. True 일 경우, showLineLevel의 숫자부터(ex. showLineLevel이 1이면 depth가 1인 경우부터 선에 계속 보임) (default:false) */
+  isAllLine?: boolean;
   /** 노드의 아이콘 표시 여부 */
   showIcons?: boolean;
   /** 아이콘 타입별 커스텀 아이콘 매핑 */
@@ -94,6 +94,7 @@ export default function TreeView<T>({
   endIcon = null,
   indentSize = DEFAULT_INDENT_SIZE,
   showLineLevel = undefined,
+  isAllLine = false,
   defaultSelectedIds,
   selectedIds,
   defaultExpandedIds,
@@ -275,6 +276,7 @@ export default function TreeView<T>({
             variant={variant}
             indentSize={indentSize}
             showLineLevel={effectiveShowLineLevel}
+            isAllLine={isAllLine}
             showIcons={showIcons}
             onSelect={handleTreeSelect}
             onToggle={handleTreeToggle}
