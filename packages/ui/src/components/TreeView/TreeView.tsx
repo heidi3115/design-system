@@ -1,8 +1,8 @@
 'use client';
 
-import { flattenTree, isLeafNode, isSafeNode } from '@common/ui/components/TreeView/utils';
-import { cn } from '@common/ui/lib/utils';
 import React, { useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import { cn } from '@common/ui/lib/utils';
+import { flattenTree, isLeafNode, isSafeNode } from './utils';
 import TreeItem, { type BaseTreeNodeProps } from './TreeItem';
 import { TreeViewRoot } from './TreeViewParts';
 import { treeViewVariants } from './treeViewVariants';

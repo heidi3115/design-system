@@ -1,9 +1,9 @@
 'use client';
 
-import { Collapsible } from '@common/ui';
-import { CloseFolderFilledIcon, OpenFolderFilledIcon, PlayArrowIcon } from '@common/ui/icons';
-import { cn } from '@common/ui/lib/utils';
 import React from 'react';
+import { Collapsible } from '@common/ui';
+import { cn } from '@common/ui/lib/utils';
+import { CloseFolderFilledIcon, OpenFolderFilledIcon, PlayArrowIcon } from '@common/ui/icons';
 import { DEFAULT_INDENT_SIZE, type TreeViewStateType } from './TreeView';
 import { TreeViewItem, TreeViewItemContent, TreeViewItemTrigger } from './TreeViewParts';
 import { treeViewVariants } from './treeViewVariants';

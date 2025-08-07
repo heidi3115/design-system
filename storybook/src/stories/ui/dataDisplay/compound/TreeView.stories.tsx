@@ -1,6 +1,6 @@
 import { Button, Separator, TreeView, type TreeViewProps, type TreeViewStateType, treeViewVariants } from '@common/ui';
 import { DEFAULT_INDENT_SIZE } from '@common/ui/components/TreeView/TreeView.tsx';
-import { flattenTree, getAllNodeIds, isLeafNode } from '@common/ui/components/TreeView/utils.ts';
+import { flattenTree, getAllNodeIds, isLeafNode } from '@common/ui/components/TreeView/utils';
 import {
   AlertTriangleFilledIcon,
   AlertTriangleIcon,
