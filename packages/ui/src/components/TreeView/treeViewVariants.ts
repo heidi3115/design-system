@@ -12,7 +12,7 @@ const treeViewVariants = tv({
     itemTrigger: [
       'relative flex flex-row items-center justify-start w-full text-left',
       'hover:bg-[color-mix(in_srgb,var(--tree-view-color),transparent_60%)]',
-      '[&:(has:(data-slot=item-trigger-icon))]:bg-[var(--tree-view-color)]',
+      '[&:has([data-slot=item-trigger-icon])]:bg-[var(--tree-view-color)]',
     ],
     itemContent: 'relative flex flex-col w-auto select-none',
     icons: 'flex size-max flex-shrink-0 transition-transform duration-200 rounded-full', // rotate-90
