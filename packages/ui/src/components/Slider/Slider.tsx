@@ -13,6 +13,7 @@ import {
 import type { VariantProps } from 'tailwind-variants';
 import { cn } from '../../lib/utils';
 import { sliderVariants, Tooltip } from '@common/ui';
+import useExtractClassName from '../../hooks/useExtractClassName';
 import { convertValueToPercentage, getDecimalPlaces, useRect } from '@common/utils';
 import { SliderRange, SliderRoot, type SliderRootProps, SliderThumb, SliderTrack } from './SliderParts';
 
@@ -63,6 +64,8 @@ function Slider({
   const trackClass = track();
   const rangeClass = range();
   const thumbClass = thumb();
+
+  const thumbVariantsRadius = useExtractClassName(thumbClass, 'size-');
 
   const isHorizontal = orientation === 'horizontal';
   const isControlled = value !== undefined;
@@ -261,8 +264,8 @@ function Slider({
           className={cn('relative flex m-auto pointer-events-none', isHorizontal ? 'flex-col' : 'flex-row')}
           style={{
             ...(isHorizontal
-              ? { width: `calc(100% - ${thumbSize || 16}px)` }
-              : { height: `calc(100% - ${thumbSize || 16}px)` }),
+              ? { width: `calc(100% - ${thumbSize || Number(thumbVariantsRadius ?? 4) * 8}px)` }
+              : { height: `calc(100% - ${thumbSize || Number(thumbVariantsRadius ?? 4) * 8}px)` }),
           }}>
           {!!thumbSize && !!trackSize ? (
             <>
@@ -360,7 +363,12 @@ function Slider({
               </div>
             </>
           ) : (
-            <div className={cn(isHorizontal ? 'w-full h-8' : 'h-full w-8')}></div>
+            <div
+              className={cn(
+                isHorizontal
+                  ? `w-full h-${Number(thumbVariantsRadius ?? 4) * 2}`
+                  : `h-full w-h-${Number(thumbVariantsRadius ?? 4) * 2}`,
+              )}></div>
           )}
         </div>
       )}

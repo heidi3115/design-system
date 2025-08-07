@@ -1,9 +1,8 @@
 'use client';
 
-import { type ChangeEvent, type ComponentType, type ReactNode } from 'react';
+import { type ComponentType, type ReactNode } from 'react';
 import { type VariantProps } from 'tailwind-variants';
 import { AlertCircle2Icon, type IconProps } from '@common/ui/icons';
-import { sanitizeNumber } from '@common/utils';
 
 import inputVariants from './inputVariants';
 import { useInputValue } from '../../hooks/useInputValue';
@@ -35,26 +34,31 @@ function Input({
   helperText,
   iconProps,
   onChange,
+  onBlur,
   ...props
 }: InputProps) {
   const hasIconLeft = !!iconLeft;
   const hasIconRight = !!iconRight;
 
-  const { value: inputValue, handleChange } = useInputValue({
+  const {
+    value: inputValue,
+    handleChange,
+    handleBlur,
+  } = useInputValue({
     value,
     defaultValue,
+    type,
+    min: Number(props.min),
+    max: Number(props.max),
     onChange,
+    onBlur,
   });
 
   const IconLeft = iconLeft;
   const IconRight = iconRight;
 
-  const preventInvalidInput = (event: ChangeEvent<HTMLInputElement>) => {
-    event.target.value = sanitizeNumber(event.target.value);
-  };
-
   return (
-    <div data-slot="input-wrapper">
+    <div data-slot="input-wrapper" className={className}>
       <div className={cn('relative group min-h-7', underline !== 'none' && 'bg-juiBackground-input', className)}>
         {IconLeft && (
           <span
@@ -74,7 +78,7 @@ function Input({
           data-slot="input"
           value={inputValue}
           onChange={handleChange}
-          {...(type === 'number' && { type: 'text', onInput: preventInvalidInput })}
+          onBlur={handleBlur}
           className={cn(
             inputVariants({
               error,
@@ -114,7 +118,14 @@ function Input({
         )}
 
         {type === 'number' && !hasIconRight && !error && (
-          <NumberStepper inputValue={inputValue} step={step} handleChange={handleChange} disabled={disabled} />
+          <NumberStepper
+            inputValue={inputValue}
+            step={step}
+            max={Number(props.max)}
+            min={Number(props.min)}
+            handleChange={handleChange}
+            disabled={disabled}
+          />
         )}
       </div>
 

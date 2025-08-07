@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
   Checkbox,
+  Input,
   Popover,
   RadioGroup,
   RangeDatePicker,
@@ -124,9 +125,41 @@ export default function BoxPages() {
       <RangeDatePicker timeType="minute" startPlaceholder="시작 날짜 선택" />
 
       <div className="w-120">
+        <div className="flex w-80 gap-2">
+          <input type="number" />
+          <Input
+            type="number"
+            defaultValue={0}
+            min={0}
+            max={23}
+            onChange={(e) => console.warn(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === '.' || e.key === 'e') {
+                e.preventDefault();
+              }
+            }}
+            underline="default"
+            className="flex-1"
+          />
+          <Input
+            type="number"
+            defaultValue={0}
+            min={0}
+            max={59}
+            onChange={(e) => console.warn(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === '.' || e.key === 'e') {
+                e.preventDefault();
+              }
+            }}
+            underline="default"
+            className="flex-1"
+          />
+        </div>
         <Slider
-          variant={'primary'}
-          showValueLabel="always"
+          variant="primary"
+          size="medium"
+          // showValueLabel="always"
           min={0}
           max={1439}
           defaultValue={[0]}

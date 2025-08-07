@@ -7,13 +7,12 @@ interface NumberStepperProps {
   inputValue: string | number | readonly string[] | undefined;
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
   step?: number;
+  min?: number;
+  max?: number;
   disabled?: boolean;
 }
 
-function NumberStepper({ step = 1, inputValue, handleChange, disabled }: NumberStepperProps) {
-  const positiveStep = step;
-  const negativeStep = -step;
-
+function NumberStepper({ step = 1, inputValue, handleChange, min, max, disabled }: NumberStepperProps) {
   const getCurrentValue = (): number => {
     if (typeof inputValue === 'string') return parseFloat(inputValue);
     if (typeof inputValue === 'number') return inputValue;
@@ -21,9 +20,13 @@ function NumberStepper({ step = 1, inputValue, handleChange, disabled }: NumberS
     return 0;
   };
 
+  const currentValue = getCurrentValue();
+  const decimalLength = String(step).split('.')[1]?.length ?? 0;
+
+  const canIncrease = max === undefined || currentValue + step <= max;
+  const canDecrease = min === undefined || currentValue - step >= min;
+
   const onStep = (delta: number) => {
-    const currentValue = getCurrentValue();
-    const decimalLength = String(step).split('.')[1]?.length ?? 0;
     const newValue = (currentValue + delta).toFixed(decimalLength);
     const newStringValue = String(newValue);
 
@@ -46,11 +49,15 @@ function NumberStepper({ step = 1, inputValue, handleChange, disabled }: NumberS
       )}>
       <ChevronUpIcon
         className={`text-xs size-3 ${disabled ? 'cursor-not-allowed pointer-events-none opacity-60' : 'cursor-pointer'}`}
-        onClick={() => onStep(positiveStep)}
+        onClick={() => {
+          if (!disabled && canIncrease) onStep(step);
+        }}
       />
       <ChevronDownIcon
         className={`text-xs size-3 ${disabled ? 'cursor-not-allowed pointer-events-none opacity-60' : 'cursor-pointer'}`}
-        onClick={() => onStep(negativeStep)}
+        onClick={() => {
+          if (!disabled && canDecrease) onStep(-step);
+        }}
       />
     </div>
   );
