@@ -150,7 +150,14 @@ function CalendarTime({
           </div>
           <div className="flex gap-4">
             {isShowTimeSlide && (
-              <TimeSlider dateTime={dateTime} hourRef={hourRef} minRef={minRef} handleTimeChanges={handleTimeChanges} />
+              <TimeSlider
+                dateTime={dateTime}
+                timeType={timeType}
+                hourRef={hourRef}
+                minRef={minRef}
+                secRef={secRef}
+                handleTimeChanges={handleTimeChanges}
+              />
             )}
             <div className="flex m-auto mr-0">{closeButton}</div>
           </div>

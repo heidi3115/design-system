@@ -30,6 +30,7 @@ export type SliderProps = SliderRootProps &
     marks?: boolean | SliderMark[];
     unitLabel?: string;
     sliderRef?: Ref<number[]>;
+    wrapperClassName?: string;
     tooltipProps?: Omit<TooltipProps, 'open' | 'contents' | 'children' | 'trigger'>;
   };
 
@@ -57,6 +58,7 @@ function Slider({
   onValueCommit,
   onCustomTooltip,
   className,
+  wrapperClassName,
   tooltipProps,
   ...props
 }: SliderProps) {
@@ -173,7 +175,7 @@ function Slider({
   return (
     <div
       data-slot="slider-wrapper"
-      className={cn('relative pointer-events-none z-0', isHorizontal ? 'w-full' : 'h-full')}
+      className={cn('relative pointer-events-none z-0', isHorizontal ? 'w-full' : 'h-full', wrapperClassName)}
       data-orientation={orientation}
       style={{
         ...(marks
