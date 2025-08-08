@@ -76,6 +76,22 @@ const meta: Meta<typeof RangeDatePicker> = {
       control: false,
       description: 'range 콜백 함수 입니다.',
     },
+    isShowTimeSlide: {
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: 'timeType이 `Date`가 아닐때, 시간 설정 영역에서 Slider 컴포넌트로 시간을 설정할 수 있게 합니다.',
+    },
+    numberOfMonths: {
+      control: 'number',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: '1' },
+      },
+      description: '한 번에 렌더링할 달(month)의 개수를 지정합니다.',
+    },
   },
   parameters: {
     docs: {
@@ -161,14 +177,32 @@ export const NumberMonth: Story = {
       start: today,
       end: plus5days,
     },
-    calendarProps: {
-      numberOfMonths: 2,
-    },
+    numberOfMonths: 2,
   },
   parameters: {
     docs: {
       description: {
         story: 'numberOfMonths을 활용하여 2개의 캘린더를 보여주는 예시입니다.',
+      },
+    },
+  },
+};
+
+export const TimeSlider: Story = {
+  name: 'Time Slider',
+  args: {
+    timeType: 'minute',
+    defaultRange: {
+      start: today,
+      end: plus5days,
+    },
+    numberOfMonths: 2,
+    isShowTimeSlide: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '`isShowTimeSlide` prop을 통해 시간 설정에 Time Slider를 추가 할 수 있습니다.',
       },
     },
   },

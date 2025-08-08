@@ -159,7 +159,7 @@ function CalendarTime({
                 handleTimeChanges={handleTimeChanges}
               />
             )}
-            <div className="flex m-auto mr-0">{closeButton}</div>
+            {closeButton && <div className="flex m-auto mr-0">{closeButton}</div>}
           </div>
         </>
       }

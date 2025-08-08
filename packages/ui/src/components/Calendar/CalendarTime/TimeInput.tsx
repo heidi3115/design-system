@@ -43,7 +43,7 @@ function TimeInput({ refObj, defaultValue, timeType, handleTimeChange }: TimeInp
 
         requestAnimationFrame(() => {
           if (isNotFocused(refObj) && refObj.current) {
-            refObj.current.value = value.padStart(2, '0');
+            refObj.current.value = value.replace(/^0+/, '').padStart(2, '0');
           }
         });
       }}
