@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@common/ui';
 import { Table } from '@tanstack/react-table';
 
-interface PaginationProps<TData> {
+type PaginationProps<TData> = {
   table: Table<TData>;
   totalCount?: number;
   pageSize?: number;
@@ -10,7 +10,7 @@ interface PaginationProps<TData> {
   onPageChange?: (page: number) => void;
   isShowFirstPageButton?: boolean;
   isShowLastPageButton?: boolean;
-}
+};
 
 function Pagination<TData>({
   table,
