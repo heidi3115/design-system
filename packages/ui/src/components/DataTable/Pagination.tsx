@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@common/ui';
 import { Table } from '@tanstack/react-table';
+import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from '@common/ui/icons';
 
 type PaginationProps<TData> = {
   table: Table<TData>;
@@ -39,7 +40,7 @@ function Pagination<TData>({
           onClick={() => handlePageChange(0)}
           disabled={currentPage <= 0}
           variant="transparent">
-          {'<<'}
+          <ChevronsLeftIcon />
         </Button>
       )}
       <Button
@@ -47,7 +48,7 @@ function Pagination<TData>({
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage <= 0}
         variant="transparent">
-        {'<'}
+        <ChevronLeftIcon />
       </Button>
       {pages.map((page) => (
         <Button
@@ -63,7 +64,7 @@ function Pagination<TData>({
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage >= pageCount - 1}
         variant="transparent">
-        {'>'}
+        <ChevronRightIcon />
       </Button>
       {isShowLastPageButton && (
         <Button
@@ -71,7 +72,7 @@ function Pagination<TData>({
           onClick={() => handlePageChange(pageCount - 1)}
           disabled={currentPage >= pageCount - 1}
           variant="transparent">
-          {'>>'}
+          <ChevronsRightIcon />
         </Button>
       )}
     </div>

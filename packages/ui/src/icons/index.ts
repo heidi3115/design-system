@@ -99,6 +99,8 @@ export { ChevronLeftRightIcon } from './Icon/ChevronLeftRightIcon';
 export { ChevronRightLeftIcon } from './Icon/ChevronRightLeftIcon';
 export { ChevronUpDownIcon } from './Icon/ChevronUpDownIcon';
 export { ChevronDownUpIcon } from './Icon/ChevronDownUpIcon';
+export { ChevronsLeftIcon } from './Icon/ChevronsLeftIcon';
+export { ChevronsRightIcon } from './Icon/ChevronsRightIcon';
 export { CollapsePanelsIcon } from './Icon/CollapsePanelsIcon';
 export { ExpansionPanelsIcon } from './Icon/ExpansionPanelsIcon';
 export { CollapseContentIcon } from './Icon/CollapseContentIcon';
