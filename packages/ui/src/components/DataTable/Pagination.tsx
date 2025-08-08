@@ -42,7 +42,7 @@ function Pagination({
     <div className="flex gap-2">
       {isShowFirstPageButton && (
         <Button
-          className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
+          className="border-none hover:bg-juiGrey-200 rounded-2xl w-8 h-8"
           onClick={() => handlePageChange(0)}
           disabled={currentPage <= 0}
           variant="transparent">
@@ -50,7 +50,7 @@ function Pagination({
         </Button>
       )}
       <Button
-        className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
+        className="border-none hover:bg-juiGrey-200 rounded-2xl w-8 h-8"
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage <= 0}
         variant="transparent">
@@ -60,13 +60,13 @@ function Pagination({
         <Button
           key={page}
           variant={currentPage === page ? 'default' : 'transparent'}
-          className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
+          className="border-none hover:bg-juiGrey-200 rounded-2xl w-8 h-8"
           onClick={() => handlePageChange(page)}>
           {page + 1}
         </Button>
       ))}
       <Button
-        className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
+        className="border-none hover:bg-juiGrey-200 rounded-2xl w-8 h-8"
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage >= pageCount - 1}
         variant="transparent">
@@ -74,7 +74,7 @@ function Pagination({
       </Button>
       {isShowLastPageButton && (
         <Button
-          className="border-none hover:bg-juiGrey-200 rounded-2xl w-[32px] h-[32px]"
+          className="border-none hover:bg-juiGrey-200 rounded-2xl w-8 h-8"
           onClick={() => handlePageChange(pageCount - 1)}
           disabled={currentPage >= pageCount - 1}
           variant="transparent">

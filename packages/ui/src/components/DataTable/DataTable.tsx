@@ -74,7 +74,7 @@ export function DataTable<T, V = unknown>({
   searchValue,
   columnFilterTrigger,
   isUsePagination = true,
-  onPageChange = undefined,
+  onPageChange,
   pageIndex,
   currentPage,
   isShowFirstPageButton = true,
