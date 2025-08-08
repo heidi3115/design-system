@@ -140,7 +140,7 @@ export default function BoxPages() {
         isShowTimeSlide
       />
 
-      <RangeDatePicker timeType="minute" startPlaceholder="시작 날짜 선택" isShowTimeSlide />
+      <RangeDatePicker timeType="minute" startPlaceholder="시작 날짜 선택" />
       <RangeDatePicker timeType="second" startPlaceholder="시작 날짜 선택" isShowTimeSlide numberOfMonths={1} />
       <RangeDatePicker timeType="hour" startPlaceholder="시작 날짜 선택" isShowTimeSlide numberOfMonths={2} />
 

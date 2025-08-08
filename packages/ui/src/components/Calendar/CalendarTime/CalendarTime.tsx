@@ -10,6 +10,7 @@ import { Separator } from '../../../components';
 import TimeInput from './TimeInput';
 import TimeSlider from './TimeSlider';
 import { cn } from '@common/ui/lib/utils';
+import { useUpdateEffect } from '@common/utils';
 
 function CalendarTime({
   selected,
@@ -41,6 +42,12 @@ function CalendarTime({
     setDateTime,
     onSelect,
   });
+
+  useUpdateEffect(() => {
+    initialHourRef.current = String(selected?.getHours() ?? '0');
+    initialMinRef.current = String(selected?.getMinutes() ?? '0');
+    initialSecRef.current = String(selected?.getSeconds() ?? '0');
+  }, [selected]);
 
   const makeDateWithTime = (date: Date) => {
     const newDate = new Date(date);
