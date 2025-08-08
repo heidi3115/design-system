@@ -1,35 +1,41 @@
 import React from 'react';
 import { Button } from '@common/ui';
-import { Table } from '@tanstack/react-table';
 import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from '@common/ui/icons';
 
-type PaginationProps<TData> = {
-  table: Table<TData>;
+type PaginationProps = {
   totalCount?: number;
   pageSize?: number;
   serverPage?: number;
   onPageChange?: (page: number) => void;
+  onClientPageChange: (page: number) => void;
   isShowFirstPageButton?: boolean;
   isShowLastPageButton?: boolean;
+  clientPageCount: number;
+  clientCurrentPage: number;
 };
 
-function Pagination<TData>({
-  table,
+function Pagination({
+  clientPageCount,
+  clientCurrentPage,
   totalCount,
   pageSize = 5,
   serverPage,
   onPageChange,
+  onClientPageChange,
   isShowFirstPageButton,
   isShowLastPageButton,
-}: PaginationProps<TData>) {
-  const pageCount = totalCount ? Math.ceil(totalCount / pageSize) : table.getPageCount();
-  const currentPage = serverPage ?? table.getState().pagination.pageIndex;
+}: PaginationProps) {
+  const pageCount = totalCount ? Math.ceil(totalCount / pageSize) : clientPageCount;
+  const currentPage = serverPage ?? clientCurrentPage;
   const pages = Array.from({ length: pageCount }, (_, i) => i);
   const isServer = serverPage !== undefined;
 
   const handlePageChange = (page: number) => {
-    if (isServer) onPageChange?.(page);
-    table.setPageIndex(page);
+    if (isServer) {
+      onPageChange?.(page);
+    } else {
+      onClientPageChange(page);
+    }
   };
 
   return (

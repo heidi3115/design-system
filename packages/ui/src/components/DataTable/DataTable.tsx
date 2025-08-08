@@ -244,10 +244,12 @@ export function DataTable<T, V = unknown>({
       {isUsePagination && (
         <div className="flex justify-center items-center gap-2">
           <Pagination
-            table={table}
             totalCount={totalCount}
+            clientPageCount={table.getPageCount()}
+            clientCurrentPage={table.getState().pagination.pageIndex}
             serverPage={currentPage}
             onPageChange={onPageChange}
+            onClientPageChange={(page) => table.setPageIndex(page)}
             pageSize={pageSize}
             isShowFirstPageButton={isShowFirstPageButton}
             isShowLastPageButton={isShowLastPageButton}
