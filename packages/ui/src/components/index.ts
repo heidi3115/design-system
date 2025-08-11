@@ -276,6 +276,7 @@ export {
   TreeViewItemContent,
   TreeView,
   TreeItem,
+  TreeViewSearchInput,
   type TreeViewRootProps,
   type TreeViewItemProps,
   type TreeViewItemContentProps,
@@ -284,4 +285,5 @@ export {
   type BaseTreeNodeProps,
   type TreeViewProps,
   type TreeViewStateType,
+  type TreeViewSearchProps,
 } from './TreeView';

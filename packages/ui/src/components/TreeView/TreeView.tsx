@@ -1,11 +1,15 @@
 'use client';
 
 import React, { useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
+
 import { cn } from '@common/ui/lib/utils';
+
 import { flattenTree, isLeafNode, isSafeNode } from './utils';
+import { type SearchOptionsProps, useTreeSearch } from './hooks';
 import TreeItem, { type BaseTreeNodeProps } from './TreeItem';
 import { TreeViewRoot } from './TreeViewParts';
 import { treeViewVariants } from './treeViewVariants';
+import TreeViewSearchInput from './TreeViewSearchInput';
 
 export type TreeViewStateType = {
   selectedIds: Set<string>;
@@ -21,6 +25,22 @@ export type TreeViewStateType = {
   // checkedIds: Set<string>;
   // loadingIds: Set<string>;
   // draggingIds: Set<string>;
+};
+
+// TreeViewSearchProps 으로 검색 관련 type 추가
+export type TreeViewSearchProps = {
+  /** 검색 기능 활성화 여부 (기본값: false) */
+  searchEnabled?: boolean;
+  /** 검색창에 표시될 플레이스홀더 텍스트 */
+  searchPlaceholder?: string;
+  /** 검색어 값 (Controlled 모드에서 사용, searchEnabled가 true일 때만 유효) */
+  searchValue?: string;
+  /** 기본 검색어 값 (Uncontrolled 모드에서 사용, searchEnabled가 true일 때만 유효) */
+  defaultSearchValue?: string;
+  /** 검색어가 변경될 때 호출되는 핸들러 */
+  onSearchChange?: (value: string) => void;
+  /** 검색 동작 옵션 설정 (대소문자 구분, 일치 모드 등) */
+  searchOptions?: SearchOptionsProps;
 };
 
 export type TreeViewProps<T = unknown> = {
@@ -75,13 +95,14 @@ export type TreeViewProps<T = unknown> = {
   nodeClassName?: string;
   /** TreeView 컴포넌트 최상위 루트 div에 추가할 클래스명 */
   className?: string;
-  /** */
+  /** ref prop */
   treeViewRef?: React.Ref<TreeViewStateType>;
-};
+} & TreeViewSearchProps; // TreeViewSearchProps : 검색 관련 추가
 
 export const DEFAULT_INDENT_SIZE = 0 as const;
 
 export default function TreeView<T>({
+  // default props
   treeData,
   variant = 'default',
   size = 'basic',
@@ -108,6 +129,13 @@ export default function TreeView<T>({
   nodeClassName,
   className,
   treeViewRef,
+  // search
+  searchEnabled = false,
+  searchPlaceholder,
+  searchValue,
+  defaultSearchValue,
+  onSearchChange,
+  searchOptions,
 }: TreeViewProps<T>) {
   const { base, common, root } = treeViewVariants({ size, variant, disabled });
 
@@ -241,6 +269,35 @@ export default function TreeView<T>({
     [disabled, currentState, isControlsExpanded, onToggledNodes, flatTreeNodeMap],
   );
 
+  // 검색 데이터 메모이제이션 (성능 최적화)
+  const searchTreeData = useMemo(() => {
+    return searchEnabled ? treeData || [] : [];
+  }, [searchEnabled, treeData]);
+
+  // 검색 훅 실행
+  const searchHookResult = useTreeSearch({
+    treeData: searchTreeData,
+    searchOptions,
+  });
+
+  // 검색 상태에 따른 데이터 결정
+  const displayData = useMemo(() => {
+    if (!searchEnabled) return treeData;
+
+    return searchHookResult.isSearching ? searchHookResult.filteredTreeData : treeData;
+  }, [searchEnabled, searchHookResult.isSearching, searchHookResult.filteredTreeData, treeData]);
+
+  const handleSearchChange = useCallback(
+    (value: string) => {
+      if (searchEnabled) {
+        searchHookResult.setSearchQuery(value);
+      }
+
+      onSearchChange?.(value);
+    },
+    [searchEnabled, onSearchChange, searchHookResult],
+  );
+
   useEffect(() => {
     onTreeViewState?.(currentState);
   }, [currentState, onTreeViewState]);
@@ -256,7 +313,19 @@ export default function TreeView<T>({
         e.stopPropagation();
         e.preventDefault();
       }}>
-      {treeData.map((treeNode: BaseTreeNodeProps<T>) => {
+      {/* 검색 UI (조건부 렌더링) */}
+      {searchEnabled && (
+        <TreeViewSearchInput
+          searchValue={searchValue}
+          defaultSearchValue={defaultSearchValue}
+          onSearchChange={handleSearchChange}
+          searchPlaceholder={searchPlaceholder}
+          disabled={disabled}
+        />
+      )}
+
+      {/* 트리 렌더링 로직 */}
+      {displayData?.map((treeNode: BaseTreeNodeProps<T>) => {
         const isNodeSelected = currentState?.selectedIds.has(treeNode.id);
         const isNodeExpanded = currentState?.expandedIds.has(treeNode.id);
         const isNodeDisabled = disabled || currentState?.disabledIds?.has(treeNode.id) || false;

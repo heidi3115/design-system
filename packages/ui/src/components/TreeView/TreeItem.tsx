@@ -88,7 +88,7 @@ export default function TreeItem<T = unknown>({
     variant,
     showLines: shouldShowLines,
     itemSelected: selected,
-    disabled,
+    disabled: Boolean(disabled || node?.disabled) || false,
   });
 
   const disabledClass = disabled ? base() : '';
@@ -163,7 +163,8 @@ export default function TreeItem<T = unknown>({
             {node.children!.map((childNode: BaseTreeNodeProps) => {
               const isNodeSelected = treeViewState?.selectedIds.has(childNode.id);
               const isNodeExpanded = treeViewState?.expandedIds.has(childNode.id);
-              const isNodeDisabled = disabled || treeViewState?.disabledIds?.has(childNode.id) || false;
+              const isNodeDisabled =
+                disabled || Boolean(node?.disabled) || treeViewState?.disabledIds?.has(childNode.id) || false;
 
               return (
                 <TreeItem
