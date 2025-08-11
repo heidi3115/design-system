@@ -40,7 +40,7 @@ export type SearchResultProps<T = unknown> = {
 };
 
 /**
- * useTreeSearch 훅의 입력 props
+ * useTreeSearch hook 의 입력 props
  */
 export type UseTreeSearchProps<T = unknown> = {
   /** 검색할 트리 데이터 배열 */
@@ -50,7 +50,7 @@ export type UseTreeSearchProps<T = unknown> = {
 };
 
 /**
- * useTreeSearch 훅의 반환값
+ * useTreeSearch hook 의 반환값
  */
 export type UseTreeSearchReturnProps<T = unknown> = {
   /** 현재 검색어 */
