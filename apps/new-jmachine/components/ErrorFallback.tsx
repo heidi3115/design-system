@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@common/ui';
 import { ArrowLeftIcon } from '@common/ui/icons';
 
-export default function ErrorFallback({ message }: { message?: string }) {
+export default function ErrorFallback({ message, reset }: { message?: string; reset?: () => void }) {
   const router = useRouter();
 
   return (
@@ -17,9 +17,12 @@ export default function ErrorFallback({ message }: { message?: string }) {
             <h1 className="font-medium text-9xl">Error</h1>
             {message && <p className="text-sm">{message}</p>}
           </div>
-          <Button variant="gradient" onClick={() => router.back()}>
-            <ArrowLeftIcon /> Go Back
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="gradient" onClick={() => router.back()}>
+              <ArrowLeftIcon /> Go Back
+            </Button>
+            <Button onClick={reset}>재시도</Button>
+          </div>
         </div>
         <Image src="/images/error-right.png" alt="" width={513} height={316} />
       </div>

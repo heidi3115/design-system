@@ -37,9 +37,10 @@ export type GetScenariosRequest = {
 };
 
 export const getScenariosServerFetch = async (params: GetScenariosRequest, options?: ServerFetchOptions) => {
-  const response = await fetchServerApi<ScenariosResponse, GetScenariosRequest>(`/get/scenarios2`, params, {
+  const response = await fetchServerApi<ScenariosResponse, GetScenariosRequest>(`/get/scenarios`, params, {
     ...options,
   });
+
   if (response.code === '000000') return response.data;
 
   // 렌더 중 throw 되면 error.tsx 진입
