@@ -37,7 +37,7 @@ export type GetScenariosRequest = {
 };
 
 export const getScenariosServerFetch = async (params: GetScenariosRequest, options?: ServerFetchOptions) => {
-  const response = await fetchServerApi<ScenariosResponse, GetScenariosRequest>(`/get/scenarios`, params, {
+  const response = await fetchServerApi<ScenariosResponse, GetScenariosRequest>(`/get/scenarios2`, params, {
     ...options,
   });
   if (response.code === '000000') return response.data;
