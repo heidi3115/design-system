@@ -12,6 +12,12 @@ import TimeSlider from './TimeSlider';
 import { cn } from '@common/ui/lib/utils';
 import { useUpdateEffect } from '@common/utils';
 
+const TIME_FORMAT = {
+  hour: 'yyyy-MM-dd HH:00',
+  minute: 'yyyy-MM-dd HH:mm',
+  second: 'yyyy-MM-dd HH:mm:ss',
+} as const;
+
 function CalendarTime({
   selected,
   onSelect,
@@ -142,18 +148,7 @@ function CalendarTime({
                 )}
               </div>
             </div>
-            <span className="ml-auto mr-0">
-              {dateTime
-                ? format(
-                    dateTime,
-                    timeType === 'hour'
-                      ? 'yyyy-MM-dd HH:00'
-                      : timeType === 'minute'
-                        ? 'yyyy-MM-dd HH:mm'
-                        : 'yyyy-MM-dd HH:mm:ss',
-                  )
-                : ''}
-            </span>
+            <span className="ml-auto mr-0">{dateTime ? format(dateTime, TIME_FORMAT[timeType]) : ''}</span>
           </div>
           <div className="flex gap-4">
             {isShowTimeSlide && (
