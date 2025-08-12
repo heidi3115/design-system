@@ -40,10 +40,11 @@ export const getScenariosServerFetch = async (params: GetScenariosRequest, optio
   const response = await fetchServerApi<ScenariosResponse, GetScenariosRequest>(`/get/scenarios`, params, {
     ...options,
   });
+  // 2초 지연 추가
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   if (response.code === '000000') return response.data;
 
-  // 렌더 중 throw 되면 error.tsx 진입
   throw new Error(`${__filename} fetch failed: ${response.message}`);
 };
 
