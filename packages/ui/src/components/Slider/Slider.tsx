@@ -353,11 +353,17 @@ function Slider({
                         <span
                           key={idx}
                           data-slot="mark-label"
+                          onClick={() => {
+                            handleValueChange([...currentValues.slice(0, -1), markValue]);
+                            setActiveThumbIndex(null);
+                          }}
                           className={cn(
                             'absolute block',
                             isHorizontal ? '-translate-x-1/2' : '-translate-y-1/2',
                             'w-max text-xs whitespace-nowrap',
                             isActiveMark && 'font-bold',
+                            'pointer-events-auto cursor-pointer',
+                            'hover:font-bold',
                             labelClass,
                           )}
                           style={labelStyle}>
