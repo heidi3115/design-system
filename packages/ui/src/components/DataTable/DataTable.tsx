@@ -29,6 +29,7 @@ import {
 import { type ReactNode, useEffect, useState } from 'react';
 import { PlusCircleIcon, SearchIcon, ToggleLeftIcon, ToggleRightIcon } from '@common/ui/icons';
 import { useQuickSearch } from '@common/ui/hooks/useQuickSearch';
+import Pagination from '@common/ui/components/DataTable/Pagination';
 
 type ColumnType = {
   headerName: string;
@@ -40,6 +41,7 @@ type DataTableProps<T, V> = {
   rows: T[];
   columns: ColumnDef<T, V>[];
   manualFiltering?: boolean;
+  manualPagination?: boolean;
   globalFilter?: string;
   onGlobalFilterChange?: (value: string) => void;
   emptyState?: ReactNode;
@@ -47,6 +49,14 @@ type DataTableProps<T, V> = {
   searchValue?: string;
   columnFilterTrigger?: ReactNode;
   onColumnStatusChange?: (status: ColumnType[]) => void;
+  isUsePagination?: boolean;
+  totalCount?: number;
+  pageSize?: number;
+  onPageChange?: (pagination: number) => void;
+  pageIndex?: number;
+  currentPage?: number;
+  isShowFirstPageButton?: boolean;
+  isShowLastPageButton?: boolean;
 };
 
 export function DataTable<T, V = unknown>({
@@ -54,12 +64,21 @@ export function DataTable<T, V = unknown>({
   rows,
   columns,
   manualFiltering = false, // true로 설정 시, 검색어 필터링 권한을 서버측으로 넘기고 해당 컴포넌트에서는 검색 필터링에 관여하지 않음.
+  manualPagination = false, // 서버사이드 페이징이면 true로 설정
+  totalCount,
+  pageSize,
   globalFilter: externalGlobalFilter,
   onGlobalFilterChange,
   emptyState,
   isUseQuickSearch = false,
   searchValue,
   columnFilterTrigger,
+  isUsePagination = true,
+  onPageChange,
+  pageIndex,
+  currentPage,
+  isShowFirstPageButton = true,
+  isShowLastPageButton = true,
 }: DataTableProps<T, V>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -72,23 +91,23 @@ export function DataTable<T, V = unknown>({
     data: rows,
     columns,
     manualFiltering,
-    getFilteredRowModel: manualFiltering ? undefined : getFilteredRowModel(),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: manualFiltering ? undefined : getFilteredRowModel(),
+    getPaginationRowModel: manualPagination ? undefined : getPaginationRowModel(), // 클라이언트 페이징 용
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    initialState: {
+      pagination: {
+        pageSize: pageSize ?? 5,
+        pageIndex: pageIndex ?? 0,
+      },
+    },
     state: { sorting, columnFilters, columnVisibility, rowSelection, globalFilter },
     onGlobalFilterChange: setGlobalFilter,
   });
-
-  useEffect(() => {
-    if (isUseQuickSearch) return;
-
-    setGlobalFilter(searchValue ?? '');
-  }, [isUseQuickSearch, searchValue, setGlobalFilter]);
 
   const [search, setSearch] = useState('');
   const filteredColumns = table
@@ -99,6 +118,12 @@ export function DataTable<T, V = unknown>({
         typeof column.columnDef.header === 'string' &&
         column.columnDef.header.toLowerCase().includes(search.toLowerCase()),
     );
+
+  useEffect(() => {
+    if (isUseQuickSearch) return;
+
+    setGlobalFilter(searchValue ?? '');
+  }, [isUseQuickSearch, searchValue, setGlobalFilter]);
 
   return (
     <div className="w-full flex flex-col min-h-50 gap-1">
@@ -216,6 +241,21 @@ export function DataTable<T, V = unknown>({
           )}
         </TableBody>
       </Table>
+      {isUsePagination && (
+        <div className="flex justify-center items-center gap-2">
+          <Pagination
+            totalCount={totalCount}
+            clientPageCount={table.getPageCount()}
+            clientCurrentPage={table.getState().pagination.pageIndex}
+            serverPage={currentPage}
+            onPageChange={onPageChange}
+            onClientPageChange={(page) => table.setPageIndex(page)}
+            pageSize={pageSize}
+            isShowFirstPageButton={isShowFirstPageButton}
+            isShowLastPageButton={isShowLastPageButton}
+          />
+        </div>
+      )}
     </div>
   );
 }
