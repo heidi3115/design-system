@@ -151,7 +151,7 @@ export default function BoxPages() {
             min={0}
             max={23}
             ref={hourRef}
-            defaultValue={convertDateToMinutes({ date: sliderDate, returnType: 'hour' })}
+            value={convertDateToMinutes({ date: sliderDate, returnType: 'hour' })}
             onChange={(e) => {
               const hour = Number(e.target.value);
 
@@ -176,7 +176,7 @@ export default function BoxPages() {
             min={0}
             max={59}
             ref={minuteRef}
-            defaultValue={convertDateToMinutes({ date: sliderDate, returnType: 'minute' })}
+            value={convertDateToMinutes({ date: sliderDate, returnType: 'minute' })}
             onChange={(e) => {
               const minute = Number(e.target.value);
 
