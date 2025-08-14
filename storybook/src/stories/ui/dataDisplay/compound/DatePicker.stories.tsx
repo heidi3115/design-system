@@ -65,6 +65,22 @@ const meta: Meta<typeof DatePicker> = {
       control: false,
       description: 'Calendar 컴포넌트의 disabled의 범위를 설정 합니다.',
     },
+    isShowTimeSlide: {
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+      description: 'timeType이 `Date`가 아닐때, 시간 설정 영역에서 Slider 컴포넌트로 시간을 설정할 수 있게 합니다.',
+    },
+    numberOfMonths: {
+      control: 'number',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: '1' },
+      },
+      description: '한 번에 렌더링할 달(month)의 개수를 지정합니다.',
+    },
   },
   parameters: {
     controls: {
@@ -84,6 +100,8 @@ const meta: Meta<typeof DatePicker> = {
         'inputProps',
         'disabled',
         'disabledCalendar',
+        'isShowTimeSlide',
+        'numberOfMonths',
       ],
     },
     docs: {
@@ -178,6 +196,37 @@ export const Disabled: Story = {
     docs: {
       description: {
         story: '`disabled`를 사용해 Input 및 팝오버 전체를 비활성화하는 예시입니다.',
+      },
+    },
+  },
+};
+
+export const NumberMonth: Story = {
+  name: 'NumberMonth',
+  args: {
+    defaultDate: new Date(2025, 6, 10),
+    numberOfMonths: 2,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'numberOfMonths을 활용하여 2개의 캘린더를 보여주는 예시입니다.',
+      },
+    },
+  },
+};
+
+export const TimeSlider: Story = {
+  name: 'Time Slider',
+  args: {
+    timeType: 'minute',
+    defaultDate: new Date(2025, 6, 10, 14, 30),
+    isShowTimeSlide: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '`isShowTimeSlide` prop을 통해 시간 설정에 Time Slider를 추가 할 수 있습니다.',
       },
     },
   },

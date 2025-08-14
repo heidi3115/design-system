@@ -7,13 +7,12 @@ interface NumberStepperProps {
   inputValue: string | number | readonly string[] | undefined;
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
   step?: number;
+  min?: number;
+  max?: number;
   disabled?: boolean;
 }
 
-function NumberStepper({ step = 1, inputValue, handleChange, disabled }: NumberStepperProps) {
-  const positiveStep = step;
-  const negativeStep = -step;
-
+function NumberStepper({ step = 1, inputValue, handleChange, min, max, disabled }: NumberStepperProps) {
   const getCurrentValue = (): number => {
     if (typeof inputValue === 'string') return parseFloat(inputValue);
     if (typeof inputValue === 'number') return inputValue;
@@ -21,18 +20,22 @@ function NumberStepper({ step = 1, inputValue, handleChange, disabled }: NumberS
     return 0;
   };
 
+  const currentValue = getCurrentValue();
+  const decimalLength = String(step).split('.')[1]?.length ?? 0;
+
+  const canIncrease = max === undefined || currentValue + step <= max;
+  const canDecrease = min === undefined || currentValue - step >= min;
+
   const onStep = (delta: number) => {
-    const currentValue = getCurrentValue();
-    const decimalLength = String(step).split('.')[1]?.length ?? 0;
     const newValue = (currentValue + delta).toFixed(decimalLength);
     const newStringValue = String(newValue);
 
-    const event = {
+    const eventClick = {
       target: { value: newStringValue },
     } as ChangeEvent<HTMLInputElement>;
 
     if (!disabled) {
-      handleChange(event);
+      handleChange(eventClick);
     }
   };
 
@@ -45,12 +48,16 @@ function NumberStepper({ step = 1, inputValue, handleChange, disabled }: NumberS
         disabled && 'cursor-not-allowed pointer-events-none opacity-60',
       )}>
       <ChevronUpIcon
-        className={`text-xs size-3 ${disabled ? 'cursor-not-allowed pointer-events-none opacity-60' : 'cursor-pointer'}`}
-        onClick={() => onStep(positiveStep)}
+        className={`text-xs size-3 ${disabled ? 'cursor-not-allowed pointer-events-none opacity-60' : 'cursor-pointer hover:stroke-juiText-primary'}`}
+        onClick={() => {
+          if (!disabled && canIncrease) onStep(step);
+        }}
       />
       <ChevronDownIcon
-        className={`text-xs size-3 ${disabled ? 'cursor-not-allowed pointer-events-none opacity-60' : 'cursor-pointer'}`}
-        onClick={() => onStep(negativeStep)}
+        className={`text-xs size-3 ${disabled ? 'cursor-not-allowed pointer-events-none opacity-60' : 'cursor-pointer hover:stroke-juiText-primary'}`}
+        onClick={() => {
+          if (!disabled && canDecrease) onStep(-step);
+        }}
       />
     </div>
   );

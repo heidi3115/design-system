@@ -31,6 +31,7 @@ type DatePickerBaseProps = {
   onOpenChange?: (open: boolean) => void;
   isArrow?: ComponentProps<typeof Popover>['isArrow'];
   numberOfMonths?: ComponentProps<typeof Calendar>['numberOfMonths'];
+  isShowTimeSlide?: ComponentProps<typeof CalendarTime>['isShowTimeSlide'];
   className?: string;
   classNames?: {
     input?: string;
@@ -71,6 +72,7 @@ function DatePicker({
   onOpenChange: onOpenChangeProp,
   isArrow,
   numberOfMonths,
+  isShowTimeSlide,
   className,
   classNames,
   popoverProps,
@@ -255,6 +257,7 @@ function DatePicker({
         <CalendarComp
           mode="single"
           {...(timeType !== 'date' && { timeType: timeType })}
+          {...(timeType !== 'date' && { isShowTimeSlide: isShowTimeSlide })}
           selected={isInitDate ? undefined : date}
           onSelect={handleSelectDate}
           defaultMonth={isInitDate ? undefined : date}
