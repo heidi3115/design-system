@@ -1,9 +1,13 @@
 import { TabItemType, Tabs } from '@common/ui';
 import { ScenarioList } from './component/ScenarioList';
 import { getScenariosServerFetch } from '../../../../services/scenario/getScenarios';
+import { Suspense } from 'react';
+import PageLoading from '../../../../components/PageLoading';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorBoundaryFallback from '../../../../components/ErrorBoundaryFallback';
 
-export default async function ScenarioPage() {
-  const scenariosData = await getScenariosServerFetch({
+export default function ScenarioPage() {
+  const scenariosData = getScenariosServerFetch({
     dngrGrdList: ['012001', '012002', '012003', '012004', '012005'],
     scnrClsList: [],
     dttTypList: [],
@@ -13,7 +17,7 @@ export default async function ScenarioPage() {
     scnrTyp: '112001',
   });
 
-  const complexScenariosData = await getScenariosServerFetch({
+  const complexScenariosData = getScenariosServerFetch({
     dngrGrdList: ['012001', '012002', '012003', '012004', '012005'],
     scnrClsList: [],
     dttTypList: [],
@@ -44,5 +48,11 @@ export default async function ScenarioPage() {
     },
   ] satisfies TabItemType;
 
-  return <Tabs tabs={tabs} className="px-7" />;
+  return (
+    <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+      <Suspense fallback={<PageLoading />}>
+        <Tabs tabs={tabs} className="px-7" />
+      </Suspense>
+    </ErrorBoundary>
+  );
 }
