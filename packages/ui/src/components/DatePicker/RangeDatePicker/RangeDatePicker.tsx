@@ -271,6 +271,7 @@ function RangeDatePicker({
                 </div>
               ),
             }),
+            defaultMonth: startDate instanceof Date ? startDate : endDate instanceof Date ? endDate : new Date(),
           }}
           {...datePickerProps}
         />
@@ -357,6 +358,7 @@ function RangeDatePicker({
                 </div>
               ),
             }),
+            defaultMonth: endDate instanceof Date ? endDate : startDate instanceof Date ? startDate : new Date(),
           }}
           {...datePickerProps}
         />

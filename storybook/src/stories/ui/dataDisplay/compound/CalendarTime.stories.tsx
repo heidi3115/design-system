@@ -175,6 +175,13 @@ const meta: Meta<typeof CalendarTime> = {
       control: false,
       description: '달력 컴포넌트 내부의 dialog에서 콘텐츠를 표시할 때 사용합니다.',
     },
+    isShowTimeSlide: {
+      description: '달력 컴포넌트 시간 설정 영역에서 Slider 컴포넌트로 시간을 설정할 수 있게 합니다.',
+    },
+    closeButton: {
+      control: false,
+      description: '달력컴포넌트의 footer에 버튼을 위치 시킬수 있습니다.',
+    },
   },
   parameters: {
     docs: {
@@ -268,11 +275,27 @@ export const WithDialog: Story = {
 
 export const CloseButton: Story = {
   render: CloseButtonStory,
-  name: 'With Close Buttojn',
+  name: 'With Close Button',
   parameters: {
     docs: {
       description: {
         story: '`closeButton` prop을 통해 캘린더를 닫거나 동작을 제어 할 수 있습니다.',
+      },
+    },
+  },
+};
+
+export const TimeSlider: Story = {
+  name: 'Time Slider',
+  args: {
+    timeType: 'minute',
+    selected: new Date(2025, 6, 10, 14, 30),
+    isShowTimeSlide: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '`isShowTimeSlide` prop을 통해 시간 설정에 Time Slider를 추가 할 수 있습니다.',
       },
     },
   },
