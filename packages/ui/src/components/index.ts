@@ -285,3 +285,5 @@ export {
   type TreeViewProps,
   type TreeViewStateType,
 } from './TreeView';
+
+export { DataTable, type DataTableProps } from './DataTable';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from '@common/ui';
 import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from '@common/ui/icons';
 
