@@ -22,7 +22,7 @@ export function ScenarioList({
   const scenarioResolveData = use(scenariosData);
 
   return (
-    <div {...props} className="h-full  flex flex-col gap-2">
+    <div {...props} className="h-full flex flex-col gap-2">
       <ErrorBoundary FallbackComponent={ClientErrorBoundaryFallback}>
         <ScenarioListSearch
           scenarioType={scenarioType}
@@ -31,7 +31,7 @@ export function ScenarioList({
         />
       </ErrorBoundary>
       <Separator />
-      <div className="w-full flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto">
         <pre className="whitespace-pre-wrap break-all">{JSON.stringify(scenarioResolveData, null, 2)}</pre>
       </div>
     </div>

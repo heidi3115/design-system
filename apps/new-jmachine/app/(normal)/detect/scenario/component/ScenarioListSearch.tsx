@@ -13,20 +13,20 @@ type ScenarioListSearchProps = {
 
 export function ScenarioListSearch({ classesListData, scenarioSearchOptions }: ScenarioListSearchProps) {
   return (
-    <div className="grid grid-cols-[1fr_auto] gap-5">
-      <div className="grid grid-cols-2 gap-y-2 gap-x-7">
+    <div className="flex gap-5">
+      <div className="grid grid-cols-2 gap-y-2 gap-x-7 w-full">
         <div className="flex gap-2">
           <GreyPointText className="text-xs w-24 shrink-0">시나리오 등급</GreyPointText>
-          <div className="flex gap-1 flex-wrap items-center">
+          <div className="flex gap-1 flex-wrap items-center pl-0.5">
             {scenarioSearchOptions &&
               scenarioSearchOptions.riskLevel?.map((level) => (
-                <Checkbox key={level.cmcd} isBox label={level.cmcdNm} boxClassName="flex-1 w-24 min-w-fit" />
+                <Checkbox key={level.cmcd} isBox label={level.cmcdNm} boxClassName="flex-1 min-w-fit w-24" />
               ))}
           </div>
         </div>
         <div className="flex gap-2">
           <GreyPointText className="text-xs w-24 shrink-0">운영 상태</GreyPointText>
-          <div className="flex gap-1 flex-wrap items-center">
+          <div className="flex gap-1 flex-wrap items-center pl-0.5">
             {scenarioSearchOptions &&
               scenarioSearchOptions.operationState?.map((level) => (
                 <Checkbox key={level.cmcd} isBox label={level.cmcdNm} boxClassName="flex-1 min-w-fit w-24" />
@@ -35,7 +35,7 @@ export function ScenarioListSearch({ classesListData, scenarioSearchOptions }: S
         </div>
         <div className="flex gap-2">
           <GreyPointText className="text-xs w-24 shrink-0">소명 유형</GreyPointText>
-          <div className="flex gap-1 flex-wrap items-center">
+          <div className="flex gap-1 flex-wrap items-center pl-0.5">
             {scenarioSearchOptions &&
               scenarioSearchOptions.requestExplanation?.map((level) => (
                 <Checkbox key={level.cmcd} isBox label={level.cmcdNm} boxClassName="flex-1 min-w-fit w-24" />
@@ -44,14 +44,14 @@ export function ScenarioListSearch({ classesListData, scenarioSearchOptions }: S
         </div>
         <div className="flex gap-2">
           <GreyPointText className="text-xs w-24 shrink-0">대응 구분</GreyPointText>
-          <div className="flex gap-1 flex-wrap items-center">
+          <div className="flex gap-1 flex-wrap items-center pl-0.5">
             {scenarioSearchOptions &&
               scenarioSearchOptions.responseMode?.map((level) => (
                 <Checkbox key={level.cmcd} isBox label={level.cmcdNm} boxClassName="flex-1 min-w-fit w-24" />
               ))}
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <GreyPointText className="text-xs w-24 shrink-0">기본 정보</GreyPointText>
           <MultiSelect
             size="large"
@@ -64,7 +64,7 @@ export function ScenarioListSearch({ classesListData, scenarioSearchOptions }: S
             }
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <GreyPointText className="text-xs w-24 shrink-0">탐지 형태</GreyPointText>
           <MultiSelect
             size="large"
@@ -77,7 +77,7 @@ export function ScenarioListSearch({ classesListData, scenarioSearchOptions }: S
           />
         </div>
       </div>
-      <div className="flex items-end w-42">
+      <div className="flex items-end flex-1 basis-42 min-w-32 max-w-42">
         <Button variant="gradient" size="large" className="w-full">
           <SearchIcon />
           검색
