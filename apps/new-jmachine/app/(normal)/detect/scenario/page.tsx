@@ -79,6 +79,7 @@ export default async function ScenarioPage() {
         <ScenarioList
           scenarioType="normal"
           scenariosData={scenariosData}
+          currentSecnarioParams={scenarioListParam}
           classesListData={classesListData}
           scenarioSearchOptions={scenarioSearchOptions}
         />
@@ -89,13 +90,25 @@ export default async function ScenarioPage() {
     {
       value: 'complex',
       label: '복합 시나리오',
-      content: <ScenarioList className="p-4" scenarioType="complex" scenariosData={complexScenariosData} />,
+      content: (
+        <ScenarioList
+          scenarioType="complex"
+          scenariosData={complexScenariosData}
+          currentSecnarioParams={scenarioListParam}
+        />
+      ),
       contentBoxType: 'box',
     },
     {
       value: 'complex2',
       label: '복합 시나리오2',
-      content: <ScenarioList className="p-4" scenarioType="complex" scenariosData={complexScenariosData} />,
+      content: (
+        <ScenarioList
+          scenarioType="complex"
+          scenariosData={complexScenariosData}
+          currentSecnarioParams={scenarioListParam}
+        />
+      ),
     },
   ] satisfies TabItemType;
 

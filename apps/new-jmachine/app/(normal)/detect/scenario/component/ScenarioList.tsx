@@ -3,37 +3,34 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { ScenariosType } from '../../../../../services/scenario/getScenarios';
 import ClientErrorBoundaryFallback from '../../../../../components/ClientErrorBoundaryFallback';
-import { ScenarioListSearch } from './ScenarioListSearch';
-import { Separator } from '@common/ui';
+import { ScenarioListSearch } from './ScenarioListSearch/ScenarioListSearch';
+import { ScenarioListWrapper } from './ScenarioListWrapper';
 
 type ScenarioListProps = {
   scenarioType: string;
   scenariosData: Promise<ScenariosType[]>;
-} & ComponentProps<typeof ScenarioListSearch> &
-  ComponentProps<'div'>;
+} & Omit<ComponentProps<typeof ScenarioListSearch>, 'onSubmit'>;
 
 export function ScenarioList({
   scenarioType,
   scenariosData,
   classesListData,
   scenarioSearchOptions,
-  ...props
+  currentSecnarioParams,
 }: ScenarioListProps) {
   const scenarioResolveData = use(scenariosData);
 
   return (
-    <div {...props} className="h-full flex flex-col gap-2">
+    <div className="h-full flex flex-col gap-2">
       <ErrorBoundary FallbackComponent={ClientErrorBoundaryFallback}>
-        <ScenarioListSearch
+        <ScenarioListWrapper
           scenarioType={scenarioType}
+          currentSecnarioParams={currentSecnarioParams}
           scenarioSearchOptions={scenarioSearchOptions}
           classesListData={classesListData}
+          scenariosData={scenarioResolveData}
         />
       </ErrorBoundary>
-      <Separator />
-      <div className="flex-1 overflow-y-auto">
-        <pre className="whitespace-pre-wrap break-all">{JSON.stringify(scenarioResolveData, null, 2)}</pre>
-      </div>
     </div>
   );
 }
