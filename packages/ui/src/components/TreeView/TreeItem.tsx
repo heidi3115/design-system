@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
-import { cn } from '@common/ui/lib/utils';
 import { Collapsible } from '@common/ui';
 import { CloseFolderFilledIcon, OpenFolderFilledIcon, PlayArrowIcon } from '@common/ui/icons';
+import { cn } from '@common/ui/lib/utils';
+import React from 'react';
 import { DEFAULT_INDENT_SIZE, type TreeViewStateType } from './TreeView';
 import { TreeViewItem, TreeViewItemContent, TreeViewItemTrigger } from './TreeViewParts';
 import { treeViewVariants } from './treeViewVariants';
@@ -164,7 +164,7 @@ export default function TreeItem<T = unknown>({
               const isNodeSelected = treeViewState?.selectedIds.has(childNode.id);
               const isNodeExpanded = treeViewState?.expandedIds.has(childNode.id);
               const isNodeDisabled =
-                disabled || Boolean(node?.disabled) || treeViewState?.disabledIds?.has(childNode.id) || false;
+                Boolean(childNode?.disabled) || treeViewState?.disabledIds?.has(childNode.id) || false;
 
               return (
                 <TreeItem
