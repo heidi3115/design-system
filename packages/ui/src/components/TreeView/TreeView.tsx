@@ -176,16 +176,6 @@ export default function TreeView<T>({
     searchMode,
     externalValue: searchValue,
     onSearchValueChange: onInputSearchChange,
-    // onSearchValueChange: (value) => {
-    //   onInputSearchChange?.(value);
-
-    //   if (isInternalSearch && value.trim()) {
-    //     const searchedIds =
-    //       quickSearchEnabled && isSearchActive && isInternalSearch ? new Set(matchedIds) : new Set<string>();
-
-    //     handleSearchResultChange(searchedIds);
-    //   }
-    // },
     debounceMs,
   });
 
