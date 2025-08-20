@@ -1,15 +1,13 @@
-import React, { useRef, useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { cn } from '@common/ui/lib/utils.ts';
+import { Button, Separator, TreeView, treeViewVariants, type TreeViewProps, type TreeViewStateType } from '@common/ui';
 import {
-  Button,
-  Separator,
-  TreeView,
-  type TreeViewProps,
-  TreeViewSearchInput,
-  type TreeViewStateType,
-  treeViewVariants,
-} from '@common/ui';
+  DEFAULT_EXTERNAL_DEBOUNCE,
+  DEFAULT_INDENT_SIZE,
+  DEFAULT_INTERNAL_DEBOUNCE,
+  flattenTree,
+  getAllNodeIds,
+  isLeafNode,
+} from '@common/ui/components/TreeView';
+import type { SearchModeType } from '@common/ui/components/TreeView/TreeView.tsx';
 import {
   AlertTriangleFilledIcon,
   AlertTriangleIcon,
@@ -21,15 +19,17 @@ import {
   ShieldIcon,
   UserFilledIcon,
 } from '@common/ui/icons';
-import { DEFAULT_INDENT_SIZE, flattenTree, getAllNodeIds, isLeafNode } from '@common/ui/components/TreeView';
+import { cn } from '@common/ui/lib/utils.ts';
+import type { Meta, StoryObj } from '@storybook/react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   assetDivisionTreeData,
-  type AssetTreeNodeProps,
   basicTreeData1,
   fileTypeTreeData,
   highriskGroupTreeData,
   responseStatusTreeData,
   sampleTreeData1,
+  type AssetTreeNodeProps,
 } from '../../../../__tests__/testTreeData.ts';
 
 // 공통 스타일 클래스
@@ -72,6 +72,12 @@ const meta: Meta<typeof TreeView> = {
     nodeClassName: '',
     className: '',
     treeViewRef: undefined,
+    quickSearchEnabled: false,
+    searchPlaceholder: '검색어를 입력해주세요...',
+    debounceMs: DEFAULT_INTERNAL_DEBOUNCE,
+    searchValue: undefined,
+    searchOptions: undefined,
+    onInputSearchChange: undefined,
   },
   argTypes: {
     treeData: {
@@ -298,17 +304,17 @@ type TreeNodeProps<T> = {
         'Storybook 에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
       ].join('\n'),
     },
-    onDisabledNodes: {
-      control: false,
-      table: {
-        type: { summary: '(disabledIds?: string[], disabledNodes?: TreeNodeProps<T>[]) => void' },
-        defaultValue: { summary: 'undefined' },
-      },
-      description: [
-        '노드의 상태가 비활성화 될 시 호출되는 콜백 함수입니다.',
-        'Storybook 에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
-      ].join('\n'),
-    },
+    // onDisabledNodes: {
+    //   control: false,
+    //   table: {
+    //     type: { summary: '(disabledIds?: string[], disabledNodes?: TreeNodeProps<T>[]) => void' },
+    //     defaultValue: { summary: 'undefined' },
+    //   },
+    //   description: [
+    //     '노드의 상태가 비활성화 될 시 호출되는 콜백 함수입니다.',
+    //     'Storybook 에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
+    //   ].join('\n'),
+    // },
     onTreeViewState: {
       control: false,
       table: {
@@ -342,6 +348,94 @@ type TreeNodeProps<T> = {
         '부모 컴포넌트에서 트리의 선택/확장/비활성화 등 전체 상태를 실시간으로 조회하거나, 상태 기반 액션에 활용할 수 있습니다.',
         '예: 버튼 클릭 시 treeViewRef.current로 트리 상태 확인',
         'Storybook 에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
+      ].join('\n'),
+    },
+    quickSearchEnabled: {
+      control: 'boolean',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+      description: ['TreeView 의 검색을 할 지 여부를 결정합니다. true 면 검색 입력창이 보이게 됩니다.'].join('\n'),
+    },
+    searchValue: {
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+      },
+      description: [
+        'External 검색 모드에서 사용되는 제어된(controlled) 검색값입니다.',
+        // 'searchMode가 "external"일 때 부모 컴포넌트에서 이 값을 관리하며, 검색 입력창에 표시됩니다.',
+        'Internal 모드에서는 이 값이 무시되고 내부적으로 상태를 관리합니다.',
+      ].join('\n'),
+    },
+    searchPlaceholder: {
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '검색어를 입력하세요' },
+      },
+      description: [
+        '검색 입력창에 표시될 플레이스홀더 텍스트입니다.',
+        'quickSearchEnabled가 true일 때만 표시되며, 사용자에게 검색 방법을 안내하는 역할을 합니다.',
+        '예: "노드 이름으로 검색하세요", "부서명을 입력하세요" 등',
+      ].join('\n'),
+    },
+    debounceMs: {
+      control: 'number',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: `${DEFAULT_INTERNAL_DEBOUNCE}` },
+      },
+      description: [
+        '검색 입력 시 디바운스 지연 시간을 밀리초 단위로 설정합니다.',
+        'Internal 모드에서는 사용자 입력 후 이 시간만큼 대기한 후 검색을 실행합니다.',
+        'External 모드에서는 부모 컴포넌트의 onInputSearchChange 호출 시 적용됩니다.',
+        `기본값은 ${DEFAULT_INTERNAL_DEBOUNCE}ms이며, 성능과 사용자 경험을 고려하여 조정할 수 있습니다.`,
+      ].join('\n'),
+    },
+    searchOptions: {
+      control: false,
+      table: {
+        type: {
+          summary: 'SearchOptionsProps',
+          detail: `type SearchOptionsProps = {
+  searchFields?: string[]; // 검색 대상 필드명
+  caseSensitive?: boolean; // 대소문자 구분 여부
+  matchMode?: MatchModeType; // 검색 일치 모드
+        `,
+        },
+        defaultValue: {
+          summary: `
+{ 
+  matchedFields:['name'], 
+  caseSensitive = false, 
+  matchMode = 'partial' 
+}`,
+        },
+      },
+      description: [
+        'Internal 검색 모드에서 사용되는 검색 옵션 설정입니다.',
+        '• searchFields: 검색할 필드명 배열 (기본값: ["name"])',
+        '• caseSensitive: 대소문자 구분 여부 (기본값: false)',
+        '• matchMode: 검색 일치 모드',
+        '  - "partial": 부분 일치 검색 (기본값)',
+        '  - "exact": 정확한 일치 검색',
+        '  - "startsWith": 시작 문자열 일치 검색',
+        'External 모드에서는 이 옵션이 무시되고 서버에서 검색 로직을 처리합니다.',
+      ].join('\n'),
+    },
+    onInputSearchChange: {
+      control: false,
+      table: {
+        type: { summary: '(value: string) => void' },
+        defaultValue: { summary: 'undefined' },
+      },
+      description: [
+        '검색 입력값이 변경될 때 호출되는 콜백 함수입니다.',
+        'Internal 모드: 디바운스 처리 후 검색어가 변경되었을 때 알림 목적으로 호출됩니다.',
+        'External 모드: 사용자 입력 즉시 호출되며, 부모 컴포넌트에서 API 호출 등의 로직을 처리해야 합니다.',
+        '매개변수로 현재 검색어 문자열을 받습니다.',
+        'Storybook에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
       ].join('\n'),
     },
   },
@@ -534,21 +628,20 @@ function UncontrolledExample({ ...args }: TreeViewProps) {
             <TreeView
               {...args}
               treeViewRef={treeViewRef}
-              onTreeViewState={(state) => {
+              onTreeViewState={(state: TreeViewStateType) => {
                 setTreeState(state);
-                treeViewRef.current = state;
               }}
-              onSelectedNodes={(selectedIds) =>
-                setLastAction(`선택 변경: ${selectedIds?.length || 0}개 노드 [${selectedIds?.join(', ') || '없음'}]`)
-              }
-              onToggledNodes={(expandedIds) =>
-                setLastAction(`확장 변경: ${expandedIds?.length || 0}개 노드 [${expandedIds?.join(', ') || '없음'}]`)
-              }
-              onDisabledNodes={(disabledIds) =>
+              onSelectedNodes={(selectedIds?: string[]) => {
+                setLastAction(`선택 변경: ${selectedIds?.length || 0}개 노드 [${selectedIds?.join(', ') || '없음'}]`);
+              }}
+              onToggledNodes={(expandedIds?: string[]) => {
+                setLastAction(`확장 변경: ${expandedIds?.length || 0}개 노드 [${expandedIds?.join(', ') || '없음'}]`);
+              }}
+              onDisabledNodes={(disabledIds?: string[]) => {
                 setLastAction(
                   `비활성화 변경: ${disabledIds?.length || 0}개 노드 [${disabledIds?.join(', ') || '없음'}]`,
-                )
-              }
+                );
+              }}
             />
           </div>
         </div>
@@ -1006,167 +1099,220 @@ export const Selections: Story = {
 
 // 내부 검색 vs 외부 API 검색 시뮬레이션
 function DemoForInternalVsExternal() {
-  const [externalSearchQuery, setExternalSearchQuery] = useState('');
-  const [externalTreeData, setExternalTreeData] = useState<AssetTreeNodeProps[]>([]);
+  const debounceTimeoutRef = useRef<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchMode, setSearchMode] = useState<'internal' | 'external'>('internal');
+  const [searchMode, setSearchMode] = useState<SearchModeType>('internal');
 
-  // 시뮬레이션용 대용량 내부 데이터
+  // External 모드용 상태
+  const [externalSearchValue, setExternalSearchValue] = useState('');
+  const [externalTreeData, setExternalTreeData] = useState<AssetTreeNodeProps[]>(assetDivisionTreeData);
+
+  // 시뮬레이션용 데이터
   const internalTreeData = sampleTreeData1;
+  const originalExternalData = assetDivisionTreeData;
 
   // 외부 API 검색 시뮬레이션
-  const simulateExternalSearch = async (query: string) => {
+  const simulateExternalAPISearch = async (query: string) => {
+    if (!query.trim()) {
+      setExternalTreeData(originalExternalData);
+
+      return;
+    }
+
     setIsLoading(true);
 
-    // API 호출 시뮬레이션 (실제로는 fetch 호출)
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    // API 호출 시뮬레이션
+    await new Promise((resolve) => setTimeout(resolve, DEFAULT_EXTERNAL_DEBOUNCE));
 
-    // 검색 결과 시뮬레이션
-    const mockApiResults = assetDivisionTreeData || [];
+    const filteredData = originalExternalData
+      .map((parent) => {
+        if (parent.name.toLowerCase().includes(query.toLowerCase())) {
+          return parent;
+        }
 
-    setExternalTreeData(query ? mockApiResults : []);
+        const matchedChildren = parent.children?.filter((child) =>
+          child.name.toLowerCase().includes(query.toLowerCase()),
+        );
+
+        if (matchedChildren && matchedChildren.length > 0) {
+          return { ...parent, children: matchedChildren };
+        }
+
+        return null;
+      })
+      .filter(Boolean) as AssetTreeNodeProps[];
+
+    setExternalTreeData(filteredData);
     setIsLoading(false);
   };
 
-  const handleExternalSearch = (value: string) => {
-    setExternalSearchQuery(value);
+  // 🔧 디바운스 핸들러만 useCallback (실제로 필요한 곳)
+  const handleExternalSearchChange = useCallback((value: string) => {
+    setExternalSearchValue(value);
 
-    if (value.trim()) {
-      simulateExternalSearch(value);
-    } else {
-      setExternalTreeData([]);
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
     }
-  };
+
+    debounceTimeoutRef.current = setTimeout(() => {
+      simulateExternalAPISearch(value);
+    }, 300);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <div className="p-4 space-y-6">
-      <h2 className="text-lg font-bold">내부 검색 vs 외부 API 검색</h2>
+    <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-juiText-primary">내부 검색 vs 외부 API 검색</h2>
+        <p className="text-sm text-juiText-secondary mt-2">TreeView의 두 가지 검색 모드를 비교해보세요</p>
+      </div>
 
       {/* 모드 선택 */}
-      <div className="flex gap-4 p-4 bg-juiGrey-a700/40 rounded-lg">
-        <label className="flex items-center gap-2">
+      <div className="flex justify-center gap-6 p-4 bg-juiGrey-50 rounded-lg">
+        <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="radio"
             value="internal"
             checked={searchMode === 'internal'}
-            onChange={(e) => setSearchMode(e.target.value as 'internal')}
+            onChange={(e) => setSearchMode(e.target.value as SearchModeType)}
+            className="w-4 h-4"
           />
-          내부 검색 (클라이언트 필터링)
+          <div className="flex flex-col">
+            <span className="font-medium">내부 검색 (Internal)</span>
+            <span className="text-xs text-juiText-secondary">클라이언트에서 실시간 필터링</span>
+          </div>
         </label>
-        <label className="flex items-center gap-2">
+        <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="radio"
             value="external"
             checked={searchMode === 'external'}
-            onChange={(e) => setSearchMode(e.target.value as 'external')}
+            onChange={(e) => setSearchMode(e.target.value as SearchModeType)}
+            className="w-4 h-4"
           />
-          외부 검색 (API 호출)
+          <div className="flex flex-col">
+            <span className="font-medium">외부 검색 (External)</span>
+            <span className="text-xs text-juiText-secondary">서버 API를 통한 검색</span>
+          </div>
         </label>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* 내부 검색 */}
-        <div className={`border p-4 rounded-lg ${searchMode === 'internal' ? 'ring-2 ring-blue-200' : 'opacity-50'}`}>
-          <h3 className="font-semibold mb-4 text-juiText-blue">내부 검색 (클라이언트 필터링)</h3>
-          <div className="mb-4 p-3 bg-juiText-primary rounded text-sm">
-            <strong>특징:</strong>
-            <br />
-            • 모든 데이터가 미리 로드됨
-            <br />
-            • 실시간 필터링 (디바운싱)
-            <br />
-            • 빠른 응답 속도
-            <br />• 네트워크 요청 없음
+      {/* 비교 테이블 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* 내부 검색 (Internal Mode) */}
+        <div
+          className={`
+          border-2 p-6 rounded-lg transition-all duration-200
+          ${
+            searchMode === 'internal'
+              ? 'border-juiBorder-primary bg-juiBackground-paper shadow-lg'
+              : 'border-juiBorder-subtle bg-juiGrey-50 opacity-70'
+          }
+        `}>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-juiText-blue">🔍 Internal Search</h3>
+            <div className="flex items-center gap-2 text-xs">
+              <span className="px-2 py-1 bg-green-100 text-green-700 rounded">즉시 응답</span>
+              <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded">클라이언트</span>
+            </div>
           </div>
 
-          {searchMode === 'internal' && (
+          <div className="space-y-3 mb-4 text-sm">
+            <div className="flex justify-between">
+              <span>검색 방식:</span>
+              <span>실시간 클라이언트 필터링</span>
+            </div>
+            <div className="flex justify-between">
+              <span>네트워크:</span>
+              <span>없음</span>
+            </div>
+            <div className="flex justify-between">
+              <span>디바운스:</span>
+              <span>{DEFAULT_INTERNAL_DEBOUNCE}ms (내부 처리)</span>
+            </div>
+          </div>
+
+          <div className="h-96 border border-juiBorder-subtle rounded overflow-hidden">
             <TreeView
               treeData={internalTreeData}
-              searchEnabled={true}
-              searchPlaceholder="내부 데이터 검색..."
-              onSearchChange={(value) => {
-                console.warn('내부 검색:', value);
+              quickSearchEnabled={true}
+              // searchMode="internal"
+              searchPlaceholder="내부 데이터 검색 (실시간)..."
+              debounceMs={DEFAULT_INTERNAL_DEBOUNCE}
+              searchOptions={{
+                searchFields: ['name'],
+                caseSensitive: false,
+                matchMode: 'partial',
+              }}
+              onInputSearchChange={(value) => {
+                console.warn('🔍 Internal Search:', value);
               }}
               size="basic"
+              disabled={searchMode !== 'internal'}
             />
-          )}
+          </div>
         </div>
 
-        {/* 외부 API 검색 */}
-        <div className={`border p-4 rounded-lg ${searchMode === 'external' ? 'ring-2 ring-green-200' : 'opacity-50'}`}>
-          <h3 className="font-semibold mb-4 text-juiStatus-complete">외부 API 검색</h3>
-          <div className="mb-4 p-3 bg-juiGrey-a400 rounded text-sm">
-            <strong>특징:</strong>
-            <br />
-            • 검색 시마다 API 호출
-            <br />
-            • 서버 측 검색 및 필터링
-            <br />
-            • 로딩 상태 표시
-            <br />• 대용량 데이터 처리 가능
-          </div>
-
-          {searchMode === 'external' && (
-            <div>
-              {/* 외부 검색용 별도 입력창 */}
-              <div className="mb-4">
-                <TreeViewSearchInput
-                  searchValue={externalSearchQuery}
-                  onSearchChange={handleExternalSearch}
-                  searchPlaceholder="외부 API 검색..."
-                  disabled={isLoading}
-                />
-
-                {isLoading && (
-                  <div className="flex items-center gap-2 mt-2 text-sm text-gray-600">
-                    <div className="animate-spin h-4 w-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
-                    API에서 검색 중...
-                  </div>
-                )}
-              </div>
-
-              {/* API 검색 결과 */}
-              <div className="border rounded p-2 min-h-48">
-                {externalTreeData.length > 0 ? (
-                  <TreeView
-                    treeData={externalTreeData}
-                    searchEnabled={false} // 외부에서 이미 검색됨
-                    size="basic"
-                  />
-                ) : externalSearchQuery && !isLoading ? (
-                  <div className="text-center text-gray-500 py-8">
-                    {externalSearchQuery} 에 대한 검색 결과가 없습니다.
-                  </div>
-                ) : !externalSearchQuery ? (
-                  <div className="text-center text-gray-500 py-8">검색어를 입력하여 API에서 데이터를 가져오세요.</div>
-                ) : null}
-              </div>
+        {/* 외부 검색 (External Mode) */}
+        <div
+          className={`
+          border-2 p-6 rounded-lg transition-all duration-200 relative
+          ${
+            searchMode === 'external'
+              ? 'border-juiBorder-primary bg-juiBackground-paper shadow-lg'
+              : 'border-juiBorder-subtle bg-juiGrey-50 opacity-70'
+          }
+        `}>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-juiText-blue">🌐 External API Search</h3>
+            <div className="flex items-center gap-2 text-xs">
+              <span className="px-2 py-1 bg-orange-100 text-orange-700 rounded">API 호출</span>
+              <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded">서버</span>
+              {isLoading && (
+                <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded animate-pulse">로딩중...</span>
+              )}
             </div>
-          )}
-        </div>
-      </div>
-
-      {/* 성능 비교 */}
-      <div className="p-4 bg-yellow-50 rounded-lg">
-        <h4 className="font-semibold mb-2">성능 및 사용성 비교</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-          <div>
-            <strong className="text-blue-600">내부 검색 장점:</strong>
-            <ul className="list-disc list-inside ml-2 mt-1">
-              <li>즉시 검색 결과 표시</li>
-              <li>네트워크 비용 없음</li>
-              <li>오프라인에서도 동작</li>
-              <li>실시간 타이핑 피드백</li>
-            </ul>
           </div>
-          <div>
-            <strong className="text-green-600">외부 검색 장점:</strong>
-            <ul className="list-disc list-inside ml-2 mt-1">
-              <li>대용량 데이터 처리</li>
-              <li>서버 측 고급 검색 로직</li>
-              <li>실시간 데이터 반영</li>
-              <li>메모리 사용량 최적화</li>
-            </ul>
+
+          <div className="space-y-3 mb-4 text-sm">
+            <div className="flex justify-between">
+              <span>검색 방식:</span>
+              <span>서버 API 호출</span>
+            </div>
+            <div className="flex justify-between">
+              <span>네트워크:</span>
+              <span>{DEFAULT_EXTERNAL_DEBOUNCE}ms 지연 시뮬레이션</span>
+            </div>
+            <div className="flex justify-between">
+              <span>현재 검색어:</span>
+              <span className="font-mono bg-juiGrey-50 px-2 py-1 rounded">{externalSearchValue || '없음'}</span>
+            </div>
+          </div>
+
+          <div className="h-96 border border-juiBorder-subtle rounded overflow-hidden">
+            <TreeView
+              treeData={externalTreeData}
+              quickSearchEnabled={true}
+              // searchMode="external"
+              searchValue={externalSearchValue}
+              searchPlaceholder="외부 API 검색 (서버 호출)..."
+              debounceMs={DEFAULT_EXTERNAL_DEBOUNCE}
+              onInputSearchChange={(value) => {
+                console.warn('🌐 External Search:', value);
+                handleExternalSearchChange(value);
+              }}
+              size="basic"
+              disabled={searchMode !== 'external'}
+            />
           </div>
         </div>
       </div>
@@ -1175,237 +1321,18 @@ function DemoForInternalVsExternal() {
 }
 
 export const SearchInternalVsExternal: Story = {
-  name: 'Search: Internal vs External API',
+  name: 'Search: Internal vs External',
   parameters: {
     docs: {
       description: {
         story: [
-          'TreeView 컴포넌트내부 검색(클라이언트 필터링)과 외부 API 검색의 차이점을 비교할 수 있는 예시입니다.',
-          '내부 검색은 즉시 응답, 네트워크 비용 없으나, 외부 검색의 경우 API 호출, 로딩 상태, 대용량 데이터 처리 가능하도록 고려하고 있습니다.',
+          'TreeView의 Internal 검색과 External 검색 모드를 예시로 비교 체험할 수 있는 데모입니다.',
+          '• Internal Search: 클라이언트에서 실시간 필터링, 즉시 응답',
+          `• External Search: 서버 API 호출 시뮬레이션, ${DEFAULT_EXTERNAL_DEBOUNCE}ms 지연 + 로딩 상태`,
+          '각 모드의 장단점과 사용 권장 사항을 직접 확인해보세요.',
         ].join('\n'),
       },
     },
   },
   render: () => <DemoForInternalVsExternal />,
 };
-//
-// // TreeViewSearchInput 테스트 컴포넌트
-// function SearchInputTest() {
-//   const [controlledValue, setControlledValue] = useState('');
-//   const [testResults, setTestResults] = useState<string[]>([]);
-//
-//   const addResult = (test: string, result: boolean) => {
-//     setTestResults((prev) => [...prev, `${test}: ${result ? '✅ PASS' : '❌ FAIL'}`]);
-//   };
-//
-//   return (
-//     <div className="p-4 space-y-4">
-//       <h2 className="text-lg font-bold">TreeViewSearchInput 테스트</h2>
-//
-//       {/* Uncontrolled 모드 테스트 */}
-//       <div className="border p-4 rounded">
-//         <h3 className="font-semibold mb-2">1. Uncontrolled 모드</h3>
-//         <TreeViewSearchInput
-//           defaultSearchValue="기본값"
-//           onSearchChange={(value) => {
-//             addResult('Uncontrolled onChange', value.length >= 0);
-//           }}
-//           searchPlaceholder="Uncontrolled 테스트"
-//         />
-//       </div>
-//
-//       {/* Controlled 모드 테스트 */}
-//       <div className="border p-4 rounded">
-//         <h3 className="font-semibold mb-2">2. Controlled 모드</h3>
-//         <TreeViewSearchInput
-//           searchValue={controlledValue}
-//           onSearchChange={setControlledValue}
-//           searchPlaceholder="Controlled 테스트"
-//         />
-//         <p className="mt-2 text-sm">현재 값: {controlledValue}</p>
-//       </div>
-//
-//       {/* Disabled 상태 테스트 */}
-//       <div className="border p-4 rounded">
-//         <h3 className="font-semibold mb-2">3. Disabled 상태</h3>
-//         <TreeViewSearchInput disabled={true} searchPlaceholder="비활성화됨" />
-//       </div>
-//
-//       {/* 테스트 결과 */}
-//       <div className="border p-4 rounded bg-gray-10">
-//         <h3 className="font-semibold mb-2">테스트 결과</h3>
-//         {testResults.map((result, index) => (
-//           <div key={index} className="text-sm">
-//             {result}
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-//
-// // useTreeSearch 훅 테스트 컴포넌트
-// function SearchHookTest() {
-//   const mockTreeData = [
-//     {
-//       id: '1',
-//       name: 'Root Node',
-//       children: [
-//         { id: '1-1', name: 'Child 1' },
-//         {
-//           id: '1-2',
-//           name: 'Child 2',
-//           children: [{ id: '1-2-1', name: 'Grandchild 1' }],
-//         },
-//       ],
-//     },
-//     { id: '2', name: 'Second Root' },
-//   ];
-//
-//   const { searchQuery, setSearchQuery, searchResults, filteredTreeData, searchResultCount, isSearching, clearSearch } =
-//     useTreeSearch({ treeData: mockTreeData });
-//
-//   return (
-//     <div className="p-4 space-y-4">
-//       <h2 className="text-lg font-bold">useTreeSearch 훅 테스트</h2>
-//
-//       <div className="border p-4 rounded">
-//         <h3 className="font-semibold mb-2">검색 제어</h3>
-//         <div className="flex gap-2">
-//           <input
-//             type="text"
-//             value={searchQuery}
-//             onChange={(e) => setSearchQuery(e.target.value)}
-//             placeholder="검색어 입력"
-//             className="border p-2 rounded flex-1"
-//           />
-//           <Button onClick={clearSearch} variant="default" size="small">
-//             검색 해제
-//           </Button>
-//         </div>
-//       </div>
-//
-//       <div className="border p-4 rounded">
-//         <h3 className="font-semibold mb-2">검색 상태</h3>
-//         <div className="space-y-1 text-sm">
-//           <p>검색 중: {isSearching ? '✅' : '❌'}</p>
-//           <p>검색어: {searchQuery}</p>
-//           <p>결과 수: {searchResultCount}</p>
-//         </div>
-//       </div>
-//
-//       <div className="border p-4 rounded">
-//         <h3 className="font-semibold mb-2">검색 결과</h3>
-//         <div className="space-y-1 text-sm">
-//           {searchResults.map((result, index) => (
-//             <div key={index} className="ml-4">
-//               • {result.node.name} (경로: {result.path.join(' > ')})
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//
-//       <div className="border p-4 rounded">
-//         <h3 className="font-semibold mb-2">필터링된 트리 구조</h3>
-//         <pre className="text-xs bg-gray-100 p-2 rounded overflow-auto max-h-40">
-//           {JSON.stringify(filteredTreeData, null, 2)}
-//         </pre>
-//       </div>
-//     </div>
-//   );
-// }
-//
-// // TreeView 통합 테스트 컴포넌트
-// function SearchIntegrationTest() {
-//   const testTreeData = [
-//     {
-//       id: 'folder-1',
-//       name: 'Documents',
-//       children: [
-//         { id: 'file-1', name: 'resume.pdf' },
-//         { id: 'file-2', name: 'cover-letter.docx' },
-//       ],
-//     },
-//     {
-//       id: 'folder-2',
-//       name: 'Images',
-//       children: [
-//         { id: 'file-3', name: 'photo.jpg' },
-//         { id: 'file-4', name: 'screenshot.png' },
-//       ],
-//     },
-//     {
-//       id: 'folder-3',
-//       name: 'Projects',
-//       children: [
-//         { id: 'project-1', name: 'Website Design' },
-//         { id: 'project-2', name: 'Mobile App' },
-//       ],
-//     },
-//   ];
-//
-//   return (
-//     <div className="p-4 space-y-6">
-//       <h2 className="text-lg font-bold">TreeView 검색 통합 테스트</h2>
-//
-//       {/* 검색 비활성화 상태 */}
-//       <div className="border p-4 rounded">
-//         <h3 className="font-semibold mb-2">1. 검색 비활성화 (기존 기능 호환성)</h3>
-//         <TreeView treeData={testTreeData} searchEnabled={false} size="basic" />
-//       </div>
-//
-//       {/* 검색 활성화 상태 */}
-//       <div className="border p-4 rounded">
-//         <h3 className="font-semibold mb-2">2. 검색 활성화</h3>
-//         <TreeView
-//           treeData={testTreeData}
-//           searchEnabled={true}
-//           searchPlaceholder="파일 검색..."
-//           onSearchChange={(value) => {
-//             console.warn('검색어 변경:', value);
-//           }}
-//           size="basic"
-//         />
-//       </div>
-//
-//       {/* Controlled 검색 상태 */}
-//       <div className="border p-4 rounded">
-//         <h3 className="font-semibold mb-2">3. Controlled 검색</h3>
-//         <TreeView
-//           treeData={testTreeData}
-//           searchEnabled={true}
-//           searchValue="pdf"
-//           onSearchChange={(value) => {
-//             console.warn('Controlled 검색:', value);
-//           }}
-//           size="basic"
-//         />
-//       </div>
-//     </div>
-//   );
-// }
-//
-// export const SearchFunctionTest: Story = {
-//   name: 'Search Function Test',
-//   parameters: {
-//     docs: {
-//       description: {
-//         story: [
-//           'TreeView 검색 기능의 모든 컴포넌트와 훅을 종합 테스트할 수 있는 스토리입니다.',
-//           '- TreeViewSearchInput 컴포넌트 테스트 (Controlled/Uncontrolled)',
-//           '- useTreeSearch 훅 동작 테스트',
-//           '- TreeView 통합 검색 기능 테스트',
-//         ].join('\n'),
-//       },
-//     },
-//   },
-//   render: () => (
-//     <div className="space-y-8 max-w-full">
-//       <SearchInputTest />
-//       <Separator orientation="horizontal" />
-//       <SearchHookTest />
-//       <Separator orientation="horizontal" />
-//       <SearchIntegrationTest />
-//     </div>
-//   ),
-// };

@@ -1,45 +1,48 @@
 'use client';
 
-import React, { useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import React, { useImperativeHandle, useMemo, useState } from 'react';
 
+import { Input } from '@common/ui';
 import { cn } from '@common/ui/lib/utils';
 
-import { flattenTree, isLeafNode, isSafeNode } from './utils';
-import { type SearchOptionsProps, useTreeSearch } from './hooks';
+import { DEFAULT_INTERNAL_DEBOUNCE, type SearchOptionsProps, useDebouncedInput, useTreeQuickSearch } from './hooks';
 import TreeItem, { type BaseTreeNodeProps } from './TreeItem';
 import { TreeViewRoot } from './TreeViewParts';
 import { treeViewVariants } from './treeViewVariants';
-import TreeViewSearchInput from './TreeViewSearchInput';
+import { flattenTree, getAutoExpandedIds, isLeafNode, isSafeNode } from './utils';
 
 export type TreeViewStateType = {
   selectedIds: Set<string>;
   expandedIds: Set<string>;
   disabledIds: Set<string>;
+  searchedIds: Set<string>;
   totalNodes: number;
   lastSelectedId: string;
   selectedCount: number;
   expandedCount: number;
   disabledCount: number;
+  searchedCount: number;
   // 미래 확장용 (현재는 주석 처리)
-  // searchedIds: Set<string>;
   // checkedIds: Set<string>;
   // loadingIds: Set<string>;
   // draggingIds: Set<string>;
 };
 
+export type SearchModeType = 'internal' | 'external';
 // TreeViewSearchProps 으로 검색 관련 type 추가
 export type TreeViewSearchProps = {
-  /** 검색 기능 활성화 여부 (기본값: false) */
-  searchEnabled?: boolean;
-  /** 검색창에 표시될 플레이스홀더 텍스트 */
+  // 검색 모드 제어
+  quickSearchEnabled?: boolean; // true : 내부 검색, false : 외부검색
+  // 디바운스 커스텀
+  debounceMs?: number;
+  // 검색 값 관리
+  // 외부에서 전달하는 placeholder 값
   searchPlaceholder?: string;
-  /** 검색어 값 (Controlled 모드에서 사용, searchEnabled가 true일 때만 유효) */
+  // 외부에서 전달하는 검색값
   searchValue?: string;
-  /** 기본 검색어 값 (Uncontrolled 모드에서 사용, searchEnabled가 true일 때만 유효) */
-  defaultSearchValue?: string;
-  /** 검색어가 변경될 때 호출되는 핸들러 */
-  onSearchChange?: (value: string) => void;
-  /** 검색 동작 옵션 설정 (대소문자 구분, 일치 모드 등) */
+  // 검색값 변경 콜백
+  onInputSearchChange?: (searchValue: string) => void;
+  // 검색 조건
   searchOptions?: SearchOptionsProps;
 };
 
@@ -103,7 +106,7 @@ export const DEFAULT_INDENT_SIZE = 0 as const;
 
 export default function TreeView<T>({
   // default props
-  treeData,
+  treeData = [],
   variant = 'default',
   size = 'basic',
   disabled = false,
@@ -129,182 +132,241 @@ export default function TreeView<T>({
   nodeClassName,
   className,
   treeViewRef,
-  // search
-  searchEnabled = false,
-  searchPlaceholder,
-  searchValue,
-  defaultSearchValue,
-  onSearchChange,
-  searchOptions,
+  // search props
+  quickSearchEnabled = false,
+  debounceMs = DEFAULT_INTERNAL_DEBOUNCE,
+  searchPlaceholder = '검색어를 입력해주세요...',
+  searchValue = '',
+  searchOptions = { searchFields: ['name'], caseSensitive: false, matchMode: 'partial' },
+  onInputSearchChange,
 }: TreeViewProps<T>) {
   const { base, common, root } = treeViewVariants({ size, variant, disabled });
-
-  const hasValidTreeData = Array.isArray(treeData) && treeData.length > 0;
   const effectiveShowLineLevel = showIcons ? showLineLevel : undefined;
-
-  const isControlsSelected = selectedIds !== undefined;
-  const isControlsExpanded = expandedIds !== undefined;
-  const isControlsDisabled = disabledIds !== undefined;
+  const searchMode: SearchModeType = onInputSearchChange ? 'external' : 'internal';
+  const isInternalSearch = searchMode === 'internal';
 
   const [lastSelected, setLastSelected] = useState<string>('');
 
-  const flatTreeNodeMap = useMemo(() => {
-    return treeData ? flattenTree(treeData) : new Map<string, BaseTreeNodeProps<T>>();
-  }, [treeData]);
+  // Controlled/Uncontrolled 모드 판단
+  const isControlledSelected = selectedIds !== undefined;
+  const isControlledExpanded = expandedIds !== undefined;
+  const isControlledDisabled = disabledIds !== undefined;
 
-  // 내부 상태 관리 (Uncontrolled 모드용) & 초기값
+  // 내부 상태 (Uncontrolled 모드용 초기값 설정)
   const [internalState, setInternalState] = useState<TreeViewStateType>({
     selectedIds: new Set(defaultSelectedIds ?? []),
     expandedIds: new Set(defaultExpandedIds ?? []),
     disabledIds: new Set(defaultDisabledIds ?? []),
-    totalNodes: flatTreeNodeMap.size,
+    searchedIds: new Set(),
+    totalNodes: treeData.length,
     lastSelectedId: lastSelected,
-    selectedCount: new Set(defaultSelectedIds ?? []).size,
-    expandedCount: new Set(defaultExpandedIds ?? []).size,
-    disabledCount: new Set(defaultDisabledIds ?? []).size,
+    selectedCount: (defaultSelectedIds ?? []).length,
+    expandedCount: (defaultExpandedIds ?? []).length,
+    disabledCount: (defaultDisabledIds ?? []).length,
+    searchedCount: 0,
   });
 
-  // 현재 상태 계산 (Controlled vs Uncontrolled 우선순위 적용)
-  const currentState = useMemo<TreeViewStateType>(() => {
-    const currentSelectedIds = isControlsSelected ? new Set(selectedIds) : internalState.selectedIds;
-    const currentExpandedIds = isControlsExpanded ? new Set(expandedIds) : internalState.expandedIds;
-    const currentDisabledIds = isControlsDisabled ? new Set(disabledIds) : internalState.disabledIds;
+  // 평면화된 트리 맵 생성
+  const flatTreeNodeMap = useMemo(() => {
+    return treeData ? flattenTree(treeData) : new Map<string, BaseTreeNodeProps<T>>();
+  }, [treeData]);
 
-    return {
+  // useDebouncedInput: 입력 처리 + 디바운스만 담당
+  const { displayValue, debouncedValue, handleInputChange } = useDebouncedInput({
+    searchMode,
+    externalValue: searchValue,
+    onSearchValueChange: onInputSearchChange,
+    // onSearchValueChange: (value) => {
+    //   onInputSearchChange?.(value);
+
+    //   if (isInternalSearch && value.trim()) {
+    //     const searchedIds =
+    //       quickSearchEnabled && isSearchActive && isInternalSearch ? new Set(matchedIds) : new Set<string>();
+
+    //     handleSearchResultChange(searchedIds);
+    //   }
+    // },
+    debounceMs,
+  });
+
+  // useTreeQuickSearch: 트리 검색 처리 (내부 검색일 때만 활성화)
+  const { filteredTreeData, matchedIds, isSearchActive } = useTreeQuickSearch({
+    treeData: treeData || [],
+    flatTreeMap: flatTreeNodeMap,
+    searchValue: debouncedValue,
+    searchOptions,
+    enabled: quickSearchEnabled && isInternalSearch,
+  });
+
+  // 검색 여부에 따른 실제 계산된 노드 수
+  const totalNodesNumber = useMemo(() => {
+    if (!quickSearchEnabled && !isSearchActive) return treeData.length;
+    if (isInternalSearch) return filteredTreeData.length > 0 ? flattenTree(filteredTreeData).size : 0;
+
+    return treeData.length;
+  }, [isInternalSearch, isSearchActive, quickSearchEnabled, treeData, filteredTreeData]);
+
+  // 표시할 데이터 결정
+  const displayData = useMemo(() => {
+    if (!quickSearchEnabled || !isSearchActive) return treeData;
+
+    return isInternalSearch ? filteredTreeData : treeData;
+  }, [quickSearchEnabled, isSearchActive, isInternalSearch, filteredTreeData, treeData]);
+
+  // 상태값 결정 (controlled 우선)
+  const currentSelectedIds = useMemo(
+    () => (isControlledSelected ? new Set(selectedIds!) : internalState.selectedIds),
+    [isControlledSelected, internalState.selectedIds, selectedIds],
+  );
+  const currentExpandedIds = useMemo(
+    () => (isControlledExpanded ? new Set(expandedIds!) : internalState.expandedIds),
+    [isControlledExpanded, expandedIds, internalState.expandedIds],
+  );
+  const currentDisabledIds = useMemo(
+    () => (isControlledDisabled ? new Set(disabledIds!) : internalState.disabledIds),
+    [isControlledDisabled, disabledIds, internalState.disabledIds],
+  );
+  // 검색된 ID들 (내부 검색일 때만)
+  const currentSearchedIds = useMemo(
+    () => (quickSearchEnabled && isSearchActive && isInternalSearch ? new Set(matchedIds) : new Set<string>()),
+    [quickSearchEnabled, isSearchActive, isInternalSearch, matchedIds],
+  );
+
+  // 최종 확장 아이디는 기존 + 검색에 의한 자동 확장 노드 ID들의 합집합
+  const finalExpandedIds = useMemo(() => {
+    const searchExpandedIds =
+      currentSearchedIds.size > 0 ? new Set(getAutoExpandedIds(treeData, currentSearchedIds)) : new Set<string>();
+
+    return new Set([...currentExpandedIds, ...searchExpandedIds]);
+  }, [currentExpandedIds, currentSearchedIds, treeData]);
+
+  // 단일 상태 객체 구성
+  const currentState: TreeViewStateType = {
+    selectedIds: currentSelectedIds,
+    expandedIds: finalExpandedIds,
+    disabledIds: currentDisabledIds,
+    searchedIds: currentSearchedIds,
+    totalNodes: totalNodesNumber,
+    lastSelectedId: lastSelected,
+    selectedCount: currentSelectedIds.size,
+    expandedCount: finalExpandedIds.size,
+    disabledCount: currentDisabledIds.size,
+    searchedCount: currentSearchedIds.size,
+  };
+
+  const handleSelectNode = (nodeId: string) => {
+    if (disabled || currentState.disabledIds.has(nodeId)) return;
+
+    let nextSelected = new Set(currentState.selectedIds);
+
+    if (multiSelect && leafOnlySelect) {
+      const node = flatTreeNodeMap.get(nodeId);
+      if (!node || !isLeafNode(node)) return;
+    }
+
+    if (multiSelect) {
+      if (nextSelected.has(nodeId)) {
+        nextSelected.delete(nodeId);
+      } else {
+        nextSelected.add(nodeId);
+      }
+    } else {
+      nextSelected = new Set([nodeId]);
+    }
+
+    if (!isControlledSelected) {
+      setInternalState((prev) => ({
+        ...prev,
+        selectedIds: nextSelected,
+        selectedCount: nextSelected.size,
+      }));
+    }
+
+    const nextSelectedArr = Array.from(nextSelected)
+      .map((id) => flatTreeNodeMap.get(id))
+      .filter(isSafeNode);
+
+    onSelectedNodes?.(Array.from(nextSelected), nextSelectedArr);
+    setLastSelected(nodeId);
+
+    notifyStateChange({
+      selectedIds: nextSelected,
+      selectedCount: nextSelected.size,
+      lastSelectedId: nodeId,
+    });
+  };
+
+  const handleTreeToggle = (nodeId: string, expanded: boolean) => {
+    if (disabled || currentState.disabledIds.has(nodeId)) return;
+    const nextExpanded = new Set(currentState.expandedIds);
+
+    if (expanded) {
+      nextExpanded.add(nodeId);
+    } else {
+      nextExpanded.delete(nodeId);
+    }
+
+    if (!isControlledExpanded) {
+      setInternalState((prev) => ({
+        ...prev,
+        expandedIds: nextExpanded,
+        expandedCount: nextExpanded.size,
+      }));
+    }
+
+    const nextExpandedArr = [...nextExpanded].map((id) => flatTreeNodeMap.get(id)).filter(isSafeNode);
+
+    onToggledNodes?.(Array.from(nextExpanded), nextExpandedArr);
+
+    // 상태 변경 알림
+    notifyStateChange({
+      expandedIds: nextExpanded,
+      expandedCount: nextExpanded.size,
+    });
+  };
+
+  /**
+   * 상태 콜백 호출 헬퍼 함수
+   * 이벤트 발생 시점에만 호출되도록 명시적 분리
+   */
+  const notifyStateChange = (partialState: Partial<TreeViewStateType>) => {
+    if (!onTreeViewState) return;
+
+    const fullState: TreeViewStateType = {
       selectedIds: currentSelectedIds,
-      expandedIds: currentExpandedIds,
+      expandedIds: finalExpandedIds,
       disabledIds: currentDisabledIds,
-      totalNodes: flatTreeNodeMap.size,
+      searchedIds: currentSearchedIds,
+      totalNodes: totalNodesNumber,
       lastSelectedId: lastSelected,
       selectedCount: currentSelectedIds.size,
-      expandedCount: currentExpandedIds.size,
+      expandedCount: finalExpandedIds.size,
       disabledCount: currentDisabledIds.size,
+      searchedCount: currentSearchedIds.size,
+      ...partialState, // 변경된 부분만 오버라이드
     };
-  }, [
-    isControlsSelected,
-    isControlsExpanded,
-    isControlsDisabled,
-    selectedIds,
-    expandedIds,
-    disabledIds,
-    internalState.selectedIds,
-    internalState.expandedIds,
-    internalState.disabledIds,
-    flatTreeNodeMap.size,
-    lastSelected,
-  ]);
 
-  const handleTreeSelect = useCallback(
-    (nodeId: string) => {
-      if (disabled || currentState.disabledIds?.has(nodeId)) return;
-      let nextSelected = new Set(currentState.selectedIds);
+    onTreeViewState?.(fullState);
+  };
 
-      if (multiSelect && leafOnlySelect) {
-        const node = flatTreeNodeMap.get(nodeId);
-        if (!node || !isLeafNode(node)) return;
-      }
-
-      if (multiSelect) {
-        if (nextSelected.has(nodeId)) {
-          nextSelected.delete(nodeId);
-        } else {
-          nextSelected.add(nodeId);
-        }
-      } else {
-        nextSelected = new Set([nodeId]);
-      }
-
-      const nextSelectedArr = Array.from(nextSelected)
-        .map((id) => flatTreeNodeMap.get(id))
-        .filter(isSafeNode);
-
-      // Uncontrolled 모드에서만 내부 상태 업데이트
-      if (!isControlsSelected) {
-        setInternalState((prev) => ({
-          ...prev,
-          selectedIds: nextSelected,
-          selectedCount: nextSelected.size,
-        }));
-      }
-
-      onSelectedNodes?.(Array.from(nextSelected), nextSelectedArr);
-      setLastSelected(nodeId);
-    },
-    [
-      disabled,
-      currentState.disabledIds,
-      currentState.selectedIds,
-      multiSelect,
-      leafOnlySelect,
-      isControlsSelected,
-      onSelectedNodes,
-      flatTreeNodeMap,
-    ],
+  useImperativeHandle(
+    treeViewRef,
+    () => ({
+      selectedIds: currentSelectedIds,
+      expandedIds: finalExpandedIds,
+      disabledIds: currentDisabledIds,
+      searchedIds: currentSearchedIds,
+      totalNodes: totalNodesNumber,
+      lastSelectedId: lastSelected,
+      selectedCount: currentSelectedIds.size,
+      expandedCount: finalExpandedIds.size,
+      disabledCount: currentDisabledIds.size,
+      searchedCount: currentSearchedIds.size,
+    }),
+    [currentDisabledIds, currentSearchedIds, currentSelectedIds, finalExpandedIds, lastSelected, totalNodesNumber],
   );
 
-  const handleTreeToggle = useCallback(
-    (nodeId: string, expanded: boolean) => {
-      if (disabled) return;
-      const nextExpanded = new Set(currentState.expandedIds);
-
-      if (expanded) {
-        nextExpanded.add(nodeId);
-      } else {
-        nextExpanded.delete(nodeId);
-      }
-
-      const nextExpandedArr = [...nextExpanded].map((id) => flatTreeNodeMap.get(id)).filter(isSafeNode);
-
-      // Uncontrolled 모드에서만 내부 상태 업데이트
-      if (!isControlsExpanded) {
-        setInternalState((prev) => ({
-          ...prev,
-          expandedIds: nextExpanded,
-          expandedCount: nextExpanded.size,
-        }));
-      }
-
-      onToggledNodes?.(Array.from(nextExpanded), nextExpandedArr);
-    },
-    [disabled, currentState, isControlsExpanded, onToggledNodes, flatTreeNodeMap],
-  );
-
-  // 검색 데이터 메모이제이션 (성능 최적화)
-  const searchTreeData = useMemo(() => {
-    return searchEnabled ? treeData || [] : [];
-  }, [searchEnabled, treeData]);
-
-  // 검색 훅 실행
-  const searchHookResult = useTreeSearch({
-    treeData: searchTreeData,
-    searchOptions,
-  });
-
-  // 검색 상태에 따른 데이터 결정
-  const displayData = useMemo(() => {
-    if (!searchEnabled) return treeData;
-
-    return searchHookResult.isSearching ? searchHookResult.filteredTreeData : treeData;
-  }, [searchEnabled, searchHookResult.isSearching, searchHookResult.filteredTreeData, treeData]);
-
-  const handleSearchChange = useCallback(
-    (value: string) => {
-      if (searchEnabled) {
-        searchHookResult.setSearchQuery(value);
-      }
-
-      onSearchChange?.(value);
-    },
-    [searchEnabled, onSearchChange, searchHookResult],
-  );
-
-  useEffect(() => {
-    onTreeViewState?.(currentState);
-  }, [currentState, onTreeViewState]);
-
-  useImperativeHandle(treeViewRef, () => currentState, [currentState]);
-
-  if (!hasValidTreeData) return null;
+  if (!Array.isArray(treeData)) return null;
 
   return (
     <TreeViewRoot
@@ -313,15 +375,19 @@ export default function TreeView<T>({
         e.stopPropagation();
         e.preventDefault();
       }}>
-      {/* 검색 UI (조건부 렌더링) */}
-      {searchEnabled && (
-        <TreeViewSearchInput
-          searchValue={searchValue}
-          defaultSearchValue={defaultSearchValue}
-          onSearchChange={handleSearchChange}
-          searchPlaceholder={searchPlaceholder}
-          disabled={disabled}
-        />
+      {/* quickSearch */}
+      {quickSearchEnabled && (
+        <div className={'relative w-full mb-4'}>
+          <Input
+            type="text"
+            value={displayValue}
+            placeholder={searchPlaceholder}
+            onChange={handleInputChange}
+            error={Boolean(isSearchActive && currentState.searchedCount === 0)}
+            helperText={isSearchActive && currentState.searchedCount === 0 && '검색 결과가 존재하지 않습니다.'}
+            disabled={disabled}
+          />
+        </div>
       )}
 
       {/* 트리 렌더링 로직 */}
@@ -347,7 +413,7 @@ export default function TreeView<T>({
             showLineLevel={effectiveShowLineLevel}
             isAllLine={isAllLine}
             showIcons={showIcons}
-            onSelect={handleTreeSelect}
+            onSelect={handleSelectNode}
             onToggle={handleTreeToggle}
             className={nodeClassName}
             treeViewState={currentState}

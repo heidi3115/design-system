@@ -4,7 +4,7 @@ const treeViewVariants = tv({
   base: '',
   slots: {
     common: '',
-    root: 'relative overflow-hidden w-full min-h-max rounded-md shadow-md select-none',
+    root: 'relative overflow-y-auto w-full min-h-max h-full rounded-md shadow-md select-none',
     items: [
       'relative flex flex-col w-full',
       '[&_div:has([data-slot=collapsible])]:relative [&_div:has([data-slot=collapsible])]:gap-y-0',
