@@ -94,9 +94,6 @@ export default function TreeItem<T = unknown>({
   const disabledClass = disabled ? base() : '';
   const variantClass = common();
   const itemsClass = items();
-  const lineDotClass = hasLineLevel
-    ? "after:content-['·'] after:text-[40px]/0 after:size-1 after:absolute after:left-0 after:bottom-0 after:-translate-x-1.5"
-    : '';
 
   const handleItemToggle = (e: React.MouseEvent, nodeId: string) => {
     e.stopPropagation();
@@ -155,10 +152,17 @@ export default function TreeItem<T = unknown>({
           trigger={renderTrigger(node)}
           showPreview={false}
           className={'w-full gap-y-0 p-0'}
-          contentClassName={'overflow-hidden flex w-full min-w-0 px-0 py-0 shadow-none rounded-none'}
+          contentClassName={'overflow-hidden flex w-full min-w-0 px-0 py-0 pb-2 shadow-none rounded-none'}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+          {level === lineLevelNum && (
+            <span
+              className={'flex absolute left-3 bottom-1 size-1 font-bold text-[20px]/0 pointer-events-none'}
+              aria-hidden="true">
+              •
+            </span>
+          )}
           <TreeViewItemContent
-            className={cn(variantClass, itemContent(), level === lineLevelNum && lineDotClass)}
+            className={cn(variantClass, itemContent())} // level === lineLevelNum && lineDotClass
             onClick={(e: React.MouseEvent) => e.stopPropagation()}>
             {node.children!.map((childNode: BaseTreeNodeProps) => {
               const isNodeSelected = treeViewState?.selectedIds.has(childNode.id);

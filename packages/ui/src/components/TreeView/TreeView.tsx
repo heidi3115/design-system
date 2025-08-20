@@ -2,9 +2,10 @@
 
 import React, { useImperativeHandle, useMemo, useState } from 'react';
 
-import { Input } from '@common/ui';
 import { cn } from '@common/ui/lib/utils';
 
+import { AlertCircle2Icon } from '@common/ui/icons';
+import { inputVariants } from '../Input';
 import { DEFAULT_INTERNAL_DEBOUNCE, type SearchOptionsProps, useDebouncedInput, useTreeQuickSearch } from './hooks';
 import TreeItem, { type BaseTreeNodeProps } from './TreeItem';
 import { TreeViewRoot } from './TreeViewParts';
@@ -175,8 +176,8 @@ export default function TreeView<T>({
   const { displayValue, debouncedValue, handleInputChange } = useDebouncedInput({
     searchMode,
     externalValue: searchValue,
-    onSearchValueChange: onInputSearchChange,
     debounceMs,
+    onSearchValueChange: onInputSearchChange,
   });
 
   // useTreeQuickSearch: 트리 검색 처리 (내부 검색일 때만 활성화)
@@ -243,6 +244,10 @@ export default function TreeView<T>({
     disabledCount: currentDisabledIds.size,
     searchedCount: currentSearchedIds.size,
   };
+
+  const inputError = Boolean(isSearchActive && currentState.searchedCount === 0);
+  const inputHelperText =
+    isSearchActive && currentState.searchedCount === 0 ? '검색 결과가 존재하지 않습니다.' : undefined;
 
   const handleSelectNode = (nodeId: string) => {
     if (disabled || currentState.disabledIds.has(nodeId)) return;
@@ -367,16 +372,43 @@ export default function TreeView<T>({
       }}>
       {/* quickSearch */}
       {quickSearchEnabled && (
-        <div className={'relative w-full mb-4'}>
-          <Input
-            type="text"
-            value={displayValue}
-            placeholder={searchPlaceholder}
-            onChange={handleInputChange}
-            error={Boolean(isSearchActive && currentState.searchedCount === 0)}
-            helperText={isSearchActive && currentState.searchedCount === 0 && '검색 결과가 존재하지 않습니다.'}
+        <div data-slot="input-quick-search-wrapper" className={'relative w-full mb-4'}>
+          <input
+            type={'text'}
+            data-slot={'input-quick-search'}
             disabled={disabled}
+            placeholder={searchPlaceholder}
+            value={displayValue}
+            onChange={handleInputChange}
+            className={cn(
+              inputVariants({
+                size: 'default',
+                hasIconLeft: false,
+                hasIconRight: false,
+                error: inputError,
+                underline: 'none',
+              }),
+              'w-full',
+            )}
           />
+          {inputError && (
+            <span
+              data-slot={'icon-error'}
+              className={cn('absolute translate-y-1/2 right-2', disabled && 'opacity-50 cursor-not-allowed')}>
+              <AlertCircle2Icon variant="error" size="small" />
+            </span>
+          )}
+          {inputHelperText && (
+            <p
+              data-slot={'helper-text'}
+              className={cn(
+                'text-xs mx-1 mt-1',
+                inputError && 'text-juiError',
+                disabled && 'opacity-50 cursor-not-allowed',
+              )}>
+              {inputHelperText}
+            </p>
+          )}
         </div>
       )}
 

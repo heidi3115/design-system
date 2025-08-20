@@ -80,75 +80,74 @@ export const flattenTreeWithPath = <T>(
  * 단일 노드와 그 하위 트리를 반복적으로 필터링하는 헬퍼 함수
  *
  * @param rootNode
- * @param matchedIds
- * @returns
+ * @param requiredIds
+ * @returns 필터링된 노드 또는 null
  */
-function filterNodeIterative<T>(rootNode: BaseTreeNodeProps<T>, matchedIds: Set<string>): BaseTreeNodeProps<T> | null {
-  // 스택: { node: 원본노드, parent: 결과부모노드, processed: 처리된자식들 }
+function filterNodeIterative<T>(rootNode: BaseTreeNodeProps<T>, requiredIds: Set<string>): BaseTreeNodeProps<T> | null {
+  if (!requiredIds.has(rootNode.id)) {
+    return null;
+  }
+
+  // 스택: { node: 원본노드, filteredChildren: 필터링 처리된 자식들, allChildrenDone: 모든 자식 처리 완료 여부 }
   const stack: Array<{
     node: BaseTreeNodeProps<T>;
-    parent: BaseTreeNodeProps<T> | null;
-    processed: BaseTreeNodeProps<T>[];
+    filteredChildren: BaseTreeNodeProps<T>[];
+    allChildrenDone: boolean;
   }> = [];
 
-  const processedNodes = new Map<BaseTreeNodeProps<T>, BaseTreeNodeProps<T> | null>();
+  const completedNodes = new Map<BaseTreeNodeProps<T>, BaseTreeNodeProps<T> | null>();
 
   // 루트 노드부터 시작
-  stack.push({ node: rootNode, parent: null, processed: [] });
+  stack.push({ node: rootNode, filteredChildren: [], allChildrenDone: false });
 
   while (stack.length > 0) {
-    const current = stack[stack.length - 1]; // peek
+    const current = stack[stack.length - 1];
     if (!current) break;
-    const { node, parent, processed } = current;
 
-    // 이미 처리된 노드라면 스택에서 제거하고 결과 처리
-    if (processedNodes.has(node)) {
+    const { node, filteredChildren, allChildrenDone } = current;
+
+    // 모든 자식이 처리되었다면 현재 노드 완료
+    if (allChildrenDone) {
       stack.pop();
 
-      const processedNode = processedNodes.get(node)!;
+      const result: BaseTreeNodeProps<T> = {
+        ...node,
+        children: filteredChildren.length > 0 ? filteredChildren : undefined,
+      };
 
-      if (parent && processedNode) {
-        processed.push(processedNode);
+      completedNodes.set(node, result);
+
+      if (stack.length > 0) {
+        const parentItem = stack[stack.length - 1];
+
+        if (parentItem) {
+          parentItem.filteredChildren.push(result);
+        }
       }
 
       continue;
     }
 
-    // 자식이 있는 경우 자식들을 스택에 추가
-    if (node.children && node.children.length > 0) {
-      let hasUnprocessedChildren = false;
+    // 자식들을 처리해야 하는 경우
+    current.allChildrenDone = true;
 
-      // 자식들을 역순으로 스택에 추가 (순서 유지를 위해)
+    if (node.children && node.children.length > 0) {
+      // 포함할 자식들을 역순으로 스택에 추가 (원래 순서 유지)
       for (let i = node.children.length - 1; i >= 0; i--) {
         const child = node.children[i];
 
-        if (child && !processedNodes.has(child)) {
-          hasUnprocessedChildren = true;
-          stack.push({ node: child, parent: node, processed: [] });
+        if (child && requiredIds.has(child.id)) {
+          stack.push({
+            node: child,
+            filteredChildren: [],
+            allChildrenDone: false,
+          });
         }
       }
-
-      // 처리되지 않은 자식이 있다면 계속 처리
-      if (hasUnprocessedChildren) continue;
-    }
-
-    // 현재 노드 처리
-    const isMatched = matchedIds.has(node.id);
-    const hasMatchedChildren = processed.length > 0;
-
-    if (isMatched || hasMatchedChildren) {
-      const filteredNode: BaseTreeNodeProps<T> = {
-        ...node,
-        children: hasMatchedChildren ? processed : undefined,
-      };
-
-      processedNodes.set(node, filteredNode);
-    } else {
-      processedNodes.set(node, null); // null 처리
     }
   }
 
-  return processedNodes.get(rootNode) || null;
+  return completedNodes.get(rootNode) || null;
 }
 
 /**
@@ -160,14 +159,29 @@ function filterNodeIterative<T>(rootNode: BaseTreeNodeProps<T>, matchedIds: Set<
  * @returns 필터링된 트리 노드 배열
  */
 export function filterTree<T>(nodes: BaseTreeNodeProps<T>[], matchedIds: Set<string>): BaseTreeNodeProps<T>[] {
+  if (matchedIds.size === 0) return [];
   const result: BaseTreeNodeProps<T>[] = [];
+  const requiredIds = new Set<string>();
+  const flatMapWithPath = flattenTreeWithPath(nodes);
+
+  // 매칭된 노드의 경로에 있는 모든 조상 노드들을 포함 대상으로 설정
+  for (const { node, path } of flatMapWithPath) {
+    if (matchedIds.has(node.id)) {
+      // 경로상의 모든 노드 ID들을 포함 대상에 추가
+      for (const pathId of path) {
+        requiredIds.add(pathId);
+      }
+    }
+  }
 
   // 각 루트 노드에 대해 반복적으로 처리
   for (const rootNode of nodes) {
-    const filteredNode = filterNodeIterative(rootNode, matchedIds);
+    if (requiredIds.has(rootNode.id)) {
+      const filteredNode = filterNodeIterative(rootNode, requiredIds);
 
-    if (filteredNode) {
-      result.push(filteredNode);
+      if (filteredNode) {
+        result.push(filteredNode);
+      }
     }
   }
 
