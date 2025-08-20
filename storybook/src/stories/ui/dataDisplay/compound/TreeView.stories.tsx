@@ -140,8 +140,14 @@ type TreeNodeProps<T> = {
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
       description: [
         'multiSelect가 true일 때 leaf 노드만 선택 가능하도록 제한합니다.',
-        'leaf 노드는 자식이 없는 노드를 의미합니다.',
-        'multiSelect가 false 일 경우 하나의 노드만이 선택 가능 할 때, 자식이 있는 노드는 선택이 불가합니다.',
+        'leaf 노드(자식이 없는 노드)만 선택 가능하도록 제한하는 옵션입니다.',
+        '',
+        '**동작 방식:**',
+        '• multiSelect: true + leafOnlySelect: true → 여러 leaf 노드만 선택 가능',
+        '• multiSelect: false + leafOnlySelect: true → 단일 leaf 노드만 선택 가능',
+        '• multiSelect: false + leafOnlySelect: false → 모든 노드 단일 선택 가능',
+        '',
+        'leaf 노드는 children 속성이 없거나 빈 배열인 노드를 의미합니다.',
       ].join('\n'),
     },
     showIcons: {
@@ -304,17 +310,6 @@ type TreeNodeProps<T> = {
         'Storybook 에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
       ].join('\n'),
     },
-    // onDisabledNodes: {
-    //   control: false,
-    //   table: {
-    //     type: { summary: '(disabledIds?: string[], disabledNodes?: TreeNodeProps<T>[]) => void' },
-    //     defaultValue: { summary: 'undefined' },
-    //   },
-    //   description: [
-    //     '노드의 상태가 비활성화 될 시 호출되는 콜백 함수입니다.',
-    //     'Storybook 에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
-    //   ].join('\n'),
-    // },
     onTreeViewState: {
       control: false,
       table: {
@@ -355,7 +350,14 @@ type TreeNodeProps<T> = {
       table: {
         defaultValue: { summary: 'false' },
       },
-      description: ['TreeView 의 검색을 할 지 여부를 결정합니다. true 면 검색 입력창이 보이게 됩니다.'].join('\n'),
+      description: [
+        'TreeView에서 검색 기능을 활성화할지 여부를 결정합니다.',
+        'true로 설정하면 TreeView 상단에 검색 입력창이 표시됩니다.',
+        '',
+        '검색 모드는 onInputSearchChange 콜백 제공 여부에 따라 자동으로 결정됩니다:',
+        '• Internal 모드: onInputSearchChange 미제공시, 클라이언트에서 실시간 필터링',
+        '• External 모드: onInputSearchChange 제공시, 서버 API 호출을 통한 검색',
+      ].join('\n'),
     },
     searchValue: {
       control: 'text',
@@ -363,16 +365,17 @@ type TreeNodeProps<T> = {
         type: { summary: 'string' },
       },
       description: [
-        'External 검색 모드에서 사용되는 제어된(controlled) 검색값입니다.',
-        // 'searchMode가 "external"일 때 부모 컴포넌트에서 이 값을 관리하며, 검색 입력창에 표시됩니다.',
-        'Internal 모드에서는 이 값이 무시되고 내부적으로 상태를 관리합니다.',
+        '제어된(controlled) 검색 입력값입니다.',
+        'onInputSearchChange가 제공되면 External 모드로 동작하며, 이 값이 검색 입력창에 표시됩니다.',
+        'onInputSearchChange가 없으면 Internal 모드로 동작하며, 이 값은 무시되고 내부적으로 상태를 관리합니다.',
+        '주로 서버 검색이나 외부 상태 관리가 필요한 경우 onInputSearchChange와 함께 사용합니다.',
       ].join('\n'),
     },
     searchPlaceholder: {
       control: 'text',
       table: {
         type: { summary: 'string' },
-        defaultValue: { summary: '검색어를 입력하세요' },
+        defaultValue: { summary: '검색어를 입력해주세요...' },
       },
       description: [
         '검색 입력창에 표시될 플레이스홀더 텍스트입니다.',
@@ -388,9 +391,10 @@ type TreeNodeProps<T> = {
       },
       description: [
         '검색 입력 시 디바운스 지연 시간을 밀리초 단위로 설정합니다.',
-        'Internal 모드에서는 사용자 입력 후 이 시간만큼 대기한 후 검색을 실행합니다.',
-        'External 모드에서는 부모 컴포넌트의 onInputSearchChange 호출 시 적용됩니다.',
+        'onInputSearchChange가 제공되지 않으면 Internal 모드로 동작하며, 사용자 입력 후 이 시간만큼 대기한 후 내부 검색을 실행합니다.',
+        'onInputSearchChange가 제공되면 External 모드로 동작하며, 사용자 입력 후 이 시간만큼 대기한 후 콜백을 호출합니다.',
         `기본값은 ${DEFAULT_INTERNAL_DEBOUNCE}ms이며, 성능과 사용자 경험을 고려하여 조정할 수 있습니다.`,
+        '일반적으로 Internal 모드는 짧게(300ms), External 모드는 길게(500-800ms) 설정하는 것을 권장합니다.',
       ].join('\n'),
     },
     searchOptions: {
@@ -407,21 +411,23 @@ type TreeNodeProps<T> = {
         defaultValue: {
           summary: `
 { 
-  matchedFields:['name'], 
+  searchFields:['name'], 
   caseSensitive = false, 
   matchMode = 'partial' 
 }`,
         },
       },
       description: [
-        'Internal 검색 모드에서 사용되는 검색 옵션 설정입니다.',
+        'Internal 검색 모드에서만 사용되는 검색 옵션 설정입니다.',
+        'External 모드에서는 이 옵션이 무시되고 서버에서 검색 로직을 처리합니다.',
+        '',
+        '**설정 옵션:**',
         '• searchFields: 검색할 필드명 배열 (기본값: ["name"])',
         '• caseSensitive: 대소문자 구분 여부 (기본값: false)',
         '• matchMode: 검색 일치 모드',
         '  - "partial": 부분 일치 검색 (기본값)',
         '  - "exact": 정확한 일치 검색',
         '  - "startsWith": 시작 문자열 일치 검색',
-        'External 모드에서는 이 옵션이 무시되고 서버에서 검색 로직을 처리합니다.',
       ].join('\n'),
     },
     onInputSearchChange: {
@@ -432,9 +438,17 @@ type TreeNodeProps<T> = {
       },
       description: [
         '검색 입력값이 변경될 때 호출되는 콜백 함수입니다.',
-        'Internal 모드: 디바운스 처리 후 검색어가 변경되었을 때 알림 목적으로 호출됩니다.',
-        'External 모드: 사용자 입력 즉시 호출되며, 부모 컴포넌트에서 API 호출 등의 로직을 처리해야 합니다.',
-        '매개변수로 현재 검색어 문자열을 받습니다.',
+        '이 함수가 제공되면 External 모드로 동작하고, 제공되지 않으면 Internal 모드로 동작합니다.',
+        '',
+        '**External 모드 (이 함수 제공시):**',
+        '• 사용자 입력 후 debounceMs 시간 대기 후 호출됩니다',
+        '• 부모 컴포넌트에서 API 호출 등의 검색 로직을 처리해야 합니다',
+        '• searchValue prop으로 검색 입력창의 값을 제어해야 합니다',
+        '',
+        '**Internal 모드 (이 함수 미제공시):**',
+        '• 컴포넌트 내부에서 자동으로 검색을 처리합니다',
+        '• searchValue는 무시되고 내부 상태로 관리됩니다',
+        '',
         'Storybook에서는 직접 제어하지 않으므로 control을 비활성화합니다.',
       ].join('\n'),
     },
@@ -1245,7 +1259,6 @@ function DemoForInternalVsExternal() {
             <TreeView
               treeData={internalTreeData}
               quickSearchEnabled={true}
-              // searchMode="internal"
               searchPlaceholder="내부 데이터 검색 (실시간)..."
               debounceMs={DEFAULT_INTERNAL_DEBOUNCE}
               searchOptions={{
@@ -1302,7 +1315,6 @@ function DemoForInternalVsExternal() {
             <TreeView
               treeData={externalTreeData}
               quickSearchEnabled={true}
-              // searchMode="external"
               searchValue={externalSearchValue}
               searchPlaceholder="외부 API 검색 (서버 호출)..."
               debounceMs={DEFAULT_EXTERNAL_DEBOUNCE}
