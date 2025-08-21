@@ -79,7 +79,7 @@ export default function TreeItem<T = unknown>({
   treeViewState,
 }: TreeItemProps<T>) {
   const hasChildren = Array.isArray(node?.children) && node.children.length > 0;
-  const hasLineLevel = !(showLineLevel === undefined);
+  const hasLineLevel = showLineLevel !== undefined;
   const lineLevelNum = hasLineLevel ? showLineLevel : 0;
   const shouldShowLines = hasLineLevel ? (isAllLine ? level >= lineLevelNum : level === lineLevelNum) : false;
 
@@ -154,7 +154,7 @@ export default function TreeItem<T = unknown>({
           className={'w-full gap-y-0 p-0'}
           contentClassName={'overflow-hidden flex w-full min-w-0 px-0 py-0 pb-2 shadow-none rounded-none'}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}>
-          {level === lineLevelNum && (
+          {hasLineLevel && level === lineLevelNum && (
             <span
               className={'flex absolute left-3 bottom-1 size-1 font-bold text-[20px]/0 pointer-events-none'}
               aria-hidden="true">
