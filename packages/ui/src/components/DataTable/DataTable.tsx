@@ -25,6 +25,7 @@ import {
   Button,
   Switch,
   Label,
+  Checkbox,
 } from '@common/ui';
 import { type ReactNode, useEffect, useState } from 'react';
 import { PlusCircleIcon, SearchIcon, ToggleLeftIcon, ToggleRightIcon } from '@common/ui/icons';
@@ -87,9 +88,29 @@ export function DataTable<T, V = unknown>({
 
   const { globalFilter, setGlobalFilter, handleChange } = useQuickSearch(externalGlobalFilter, onGlobalFilterChange);
 
+  const addColumn: ColumnDef<T, unknown> = {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  };
+
   const table = useReactTable({
     data: rows,
-    columns,
+    columns: [addColumn, ...columns],
     manualFiltering,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
