@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 type InputLikeElement = HTMLInputElement | HTMLTextAreaElement;
 
@@ -23,12 +23,6 @@ export function useInputValue<T extends InputLikeElement = HTMLInputElement>({
   const [internalValue, setInternalValue] = useState(defaultValue?.toString() ?? '');
   const prevValidValue = useRef(internalValue);
 
-  useEffect(() => {
-    if (isControlled) {
-      setInternalValue(value as string);
-    }
-  }, [value, isControlled]);
-
   const handleChange = useCallback(
     (e: React.ChangeEvent<T>) => {
       const newValue = e.target.value;
@@ -46,13 +40,11 @@ export function useInputValue<T extends InputLikeElement = HTMLInputElement>({
         }
       }
 
-      if (!isControlled) {
-        setInternalValue(newValue);
-      }
+      setInternalValue(newValue);
 
       onChange?.(e);
     },
-    [isControlled, onChange, type, min, max],
+    [onChange, type, min, max],
   );
 
   const handleBlur = useCallback(
