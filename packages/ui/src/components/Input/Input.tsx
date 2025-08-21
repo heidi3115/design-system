@@ -121,8 +121,8 @@ function Input({
           <NumberStepper
             inputValue={inputValue}
             step={step}
-            max={Number(props.max)}
-            min={Number(props.min)}
+            {...(props.max && { max: Number(props.max) })}
+            {...(props.min && { min: Number(props.min) })}
             handleChange={handleChange}
             disabled={disabled}
           />
