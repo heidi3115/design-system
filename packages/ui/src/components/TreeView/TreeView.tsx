@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useImperativeHandle, useMemo, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
+import { Input } from '@common/ui';
 import { cn } from '@common/ui/lib/utils';
 
-import { AlertCircle2Icon } from '@common/ui/icons';
-import { inputVariants } from '../Input';
 import { DEFAULT_INTERNAL_DEBOUNCE, type SearchOptionsProps, useDebouncedTreeInput, useTreeQuickSearch } from './hooks';
 import TreeItem, { type BaseTreeNodeProps } from './TreeItem';
 import { TreeViewRoot } from './TreeViewParts';
@@ -145,7 +144,10 @@ export default function TreeView<T>({
   const effectiveShowLineLevel = showIcons ? showLineLevel : undefined;
   const searchMode: SearchModeType = onInputSearchChange ? 'external' : 'internal';
   const isInternalSearch = searchMode === 'internal';
+  const isExternalSearched = !isInternalSearch && searchValue.trim().length > 0;
+  const noResultTxt = '검색 결과가 존재하지 않습니다.';
 
+  const prevSearchStateRef = useRef<{ searchedIds: string; expandedIds: string } | null>(null);
   const [lastSelected, setLastSelected] = useState<string>('');
 
   // Controlled/Uncontrolled 모드 판단
@@ -244,10 +246,6 @@ export default function TreeView<T>({
     disabledCount: currentDisabledIds.size,
     searchedCount: currentSearchedIds.size,
   };
-
-  const inputError = Boolean(isSearchActive && currentState.searchedCount === 0);
-  const inputHelperText =
-    isSearchActive && currentState.searchedCount === 0 ? '검색 결과가 존재하지 않습니다.' : undefined;
 
   const handleSelectNode = (nodeId: string) => {
     if (disabled || currentState.disabledIds.has(nodeId)) return;
@@ -361,6 +359,22 @@ export default function TreeView<T>({
     [currentDisabledIds, currentSearchedIds, currentSelectedIds, finalExpandedIds, lastSelected, totalNodesNumber],
   );
 
+  useEffect(() => {
+    // 검색 결과에 대한 onTreeViewState 호출 처리 추가.
+    if (quickSearchEnabled && isInternalSearch && typeof onTreeViewState === 'function' && isSearchActive) {
+      const searchedIdsStr = Array.from(currentSearchedIds).join(',');
+      const expandedIdsStr = Array.from(finalExpandedIds).join(',');
+
+      const prev = prevSearchStateRef.current;
+
+      if (!prev || prev.searchedIds !== searchedIdsStr || prev.expandedIds !== expandedIdsStr) {
+        prevSearchStateRef.current = { searchedIds: searchedIdsStr, expandedIds: expandedIdsStr };
+        onTreeViewState?.(currentState);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSearchedIds]);
+
   if (!Array.isArray(treeData)) return null;
 
   return (
@@ -372,43 +386,28 @@ export default function TreeView<T>({
       }}>
       {/* quickSearch */}
       {quickSearchEnabled && (
-        <div data-slot="input-quick-search-wrapper" className={'relative w-full mb-4'}>
-          <input
+        <div data-slot={'quick-search-wrapper'} className={'relative w-full mb-4'}>
+          <Input
             type={'text'}
             data-slot={'input-quick-search'}
             disabled={disabled}
             placeholder={searchPlaceholder}
-            value={displayValue}
+            defaultValue={displayValue}
             onChange={handleInputChange}
-            className={cn(
-              inputVariants({
-                size: 'default',
-                hasIconLeft: false,
-                hasIconRight: false,
-                error: inputError,
-                underline: 'none',
-              }),
-              'w-full',
+            error={Boolean(
+              isSearchActive &&
+                (isInternalSearch
+                  ? isSearchActive && currentState.searchedCount === 0
+                  : isExternalSearched && treeData.length === 0),
             )}
+            helperText={
+              isInternalSearch
+                ? isSearchActive && currentState.searchedCount === 0 && noResultTxt
+                : isExternalSearched && treeData.length === 0
+                  ? isExternalSearched && treeData.length === 0 && noResultTxt
+                  : undefined
+            }
           />
-          {inputError && (
-            <span
-              data-slot={'icon-error'}
-              className={cn('absolute translate-y-1/2 right-2', disabled && 'opacity-50 cursor-not-allowed')}>
-              <AlertCircle2Icon variant="error" size="small" />
-            </span>
-          )}
-          {inputHelperText && (
-            <p
-              data-slot={'helper-text'}
-              className={cn(
-                'text-xs mx-1 mt-1',
-                inputError && 'text-juiError',
-                disabled && 'opacity-50 cursor-not-allowed',
-              )}>
-              {inputHelperText}
-            </p>
-          )}
         </div>
       )}
 

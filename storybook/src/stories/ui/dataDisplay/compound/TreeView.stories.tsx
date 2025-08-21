@@ -1,4 +1,12 @@
-import { Button, Separator, TreeView, treeViewVariants, type TreeViewProps, type TreeViewStateType } from '@common/ui';
+import {
+  Button,
+  CardSkeleton,
+  Separator,
+  TreeView,
+  treeViewVariants,
+  type TreeViewProps,
+  type TreeViewStateType,
+} from '@common/ui';
 import {
   DEFAULT_EXTERNAL_DEBOUNCE,
   DEFAULT_INDENT_SIZE,
@@ -394,7 +402,6 @@ type TreeNodeProps<T> = {
         'onInputSearchChange가 제공되지 않으면 Internal 모드로 동작하며, 사용자 입력 후 이 시간만큼 대기한 후 내부 검색을 실행합니다.',
         'onInputSearchChange가 제공되면 External 모드로 동작하며, 사용자 입력 후 이 시간만큼 대기한 후 콜백을 호출합니다.',
         `기본값은 ${DEFAULT_INTERNAL_DEBOUNCE}ms이며, 성능과 사용자 경험을 고려하여 조정할 수 있습니다.`,
-        '일반적으로 Internal 모드는 짧게(300ms), External 모드는 길게(500-800ms) 설정하는 것을 권장합니다.',
       ].join('\n'),
     },
     searchOptions: {
@@ -1112,7 +1119,7 @@ export const Selections: Story = {
 };
 
 // 내부 검색 vs 외부 API 검색 시뮬레이션
-function DemoForInternalVsExternal() {
+function DemoForInternalVsExternal({ ...args }: TreeViewProps) {
   const debounceTimeoutRef = useRef<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [searchMode, setSearchMode] = useState<SearchModeType>('internal');
@@ -1120,6 +1127,7 @@ function DemoForInternalVsExternal() {
   // External 모드용 상태
   const [externalSearchValue, setExternalSearchValue] = useState('');
   const [externalTreeData, setExternalTreeData] = useState<AssetTreeNodeProps[]>(assetDivisionTreeData);
+  const [externalExpandedIds, setExternalExpandedIds] = useState<string[]>([]);
 
   // 시뮬레이션용 데이터
   const internalTreeData = sampleTreeData1;
@@ -1127,18 +1135,20 @@ function DemoForInternalVsExternal() {
 
   // 외부 API 검색 시뮬레이션
   const simulateExternalAPISearch = async (query: string) => {
-    if (!query.trim()) {
-      setExternalTreeData(originalExternalData);
-
-      return;
-    }
-
     setIsLoading(true);
 
     // API 호출 시뮬레이션
     await new Promise((resolve) => setTimeout(resolve, DEFAULT_EXTERNAL_DEBOUNCE));
 
-    const filteredData = originalExternalData
+    if (!query.trim()) {
+      setExternalTreeData(originalExternalData);
+      setExternalExpandedIds([]);
+      setIsLoading(false);
+
+      return;
+    }
+
+    const filteredData: AssetTreeNodeProps[] = originalExternalData
       .map((parent) => {
         if (parent.name.toLowerCase().includes(query.toLowerCase())) {
           return parent;
@@ -1157,6 +1167,16 @@ function DemoForInternalVsExternal() {
       .filter(Boolean) as AssetTreeNodeProps[];
 
     setExternalTreeData(filteredData);
+
+    // 외부 결과에 대한 처리 추가
+    const flattenFilteredTreeData = flattenTree(filteredData);
+    const filteredArray = Array.from(flattenFilteredTreeData.values());
+    const expanded = filteredArray
+      .filter((node: AssetTreeNodeProps) => node.children && node.children.length > 0)
+      .map((node: AssetTreeNodeProps) => node.id);
+
+    setExternalExpandedIds(expanded);
+
     setIsLoading(false);
   };
 
@@ -1170,7 +1190,7 @@ function DemoForInternalVsExternal() {
 
     debounceTimeoutRef.current = setTimeout(() => {
       simulateExternalAPISearch(value);
-    }, 300);
+    }, DEFAULT_EXTERNAL_DEBOUNCE);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -1254,9 +1274,9 @@ function DemoForInternalVsExternal() {
               <span>{DEFAULT_INTERNAL_DEBOUNCE}ms (내부 처리)</span>
             </div>
           </div>
-
           <div className="h-96 border border-juiBorder-subtle rounded overflow-hidden">
             <TreeView
+              {...args}
               treeData={internalTreeData}
               quickSearchEnabled={true}
               searchPlaceholder="내부 데이터 검색 (실시간)..."
@@ -1266,11 +1286,11 @@ function DemoForInternalVsExternal() {
                 caseSensitive: false,
                 matchMode: 'partial',
               }}
-              onInputSearchChange={(value) => {
-                console.warn('🔍 Internal Search:', value);
-              }}
               size="basic"
-              disabled={searchMode !== 'internal'}
+              disabled={args.disabled || searchMode !== 'internal'}
+              onTreeViewState={(state) => {
+                console.warn('Internal Tree state\n', { state });
+              }}
             />
           </div>
         </div>
@@ -1310,21 +1330,26 @@ function DemoForInternalVsExternal() {
               <span className="font-mono bg-juiGrey-50 px-2 py-1 rounded">{externalSearchValue || '없음'}</span>
             </div>
           </div>
-
           <div className="h-96 border border-juiBorder-subtle rounded overflow-hidden">
-            <TreeView
-              treeData={externalTreeData}
-              quickSearchEnabled={true}
-              searchValue={externalSearchValue}
-              searchPlaceholder="외부 API 검색 (서버 호출)..."
-              debounceMs={DEFAULT_EXTERNAL_DEBOUNCE}
-              onInputSearchChange={(value) => {
-                console.warn('🌐 External Search:', value);
-                handleExternalSearchChange(value);
-              }}
-              size="basic"
-              disabled={searchMode !== 'external'}
-            />
+            {isLoading ? (
+              <CardSkeleton />
+            ) : (
+              <TreeView
+                {...args}
+                treeData={externalTreeData} // externalSearchedIds
+                expandedIds={externalExpandedIds}
+                quickSearchEnabled={true}
+                searchValue={externalSearchValue}
+                searchPlaceholder="외부 API 검색 (서버 호출)..."
+                debounceMs={DEFAULT_EXTERNAL_DEBOUNCE}
+                onInputSearchChange={(value) => {
+                  console.warn('🌐 External Search:', value);
+                  handleExternalSearchChange(value);
+                }}
+                size="basic"
+                disabled={args.disabled || searchMode !== 'external'}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -1334,6 +1359,33 @@ function DemoForInternalVsExternal() {
 
 export const SearchInternalVsExternal: Story = {
   name: 'Search: Internal vs External',
+  args: {
+    showLineLevel: 0,
+    isAllLine: false,
+    disabled: true,
+  },
+  argTypes: {
+    treeData: { table: { disable: true } },
+    defaultIcon: { table: { disable: true } },
+    expandedIcon: { table: { disable: true } },
+    endIcon: { table: { disable: true } },
+    defaultSelectedIds: { table: { disable: true } },
+    selectedIds: { table: { disable: true } },
+    defaultExpandedIds: { table: { disable: true } },
+    expandedIds: { table: { disable: true } },
+    defaultDisabledIds: { table: { disable: true } },
+    disabledIds: { table: { disable: true } },
+    onSelectedNodes: { table: { disable: true } },
+    onToggledNodes: { table: { disable: true } },
+    onDisabledNodes: { table: { disable: true } },
+    onTreeViewState: { table: { disable: true } },
+    treeViewRef: { table: { disable: true } },
+    quickSearchEnabled: { table: { disable: true } },
+    searchPlaceholder: { table: { disable: true } },
+    debounceMs: { table: { disable: true } },
+    searchOptions: { table: { disable: true } },
+    onInputSearchChange: { table: { disable: true } },
+  },
   parameters: {
     docs: {
       description: {
@@ -1346,5 +1398,5 @@ export const SearchInternalVsExternal: Story = {
       },
     },
   },
-  render: () => <DemoForInternalVsExternal />,
+  render: (args) => <DemoForInternalVsExternal {...args} />,
 };

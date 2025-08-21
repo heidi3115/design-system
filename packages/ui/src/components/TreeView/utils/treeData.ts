@@ -83,67 +83,66 @@ export const flattenTreeWithPath = <T>(
  * @param requiredIds
  * @returns 필터링 된 노드 또는 null
  */
-function filterNodeIterative<T>(rootNode: BaseTreeNodeProps<T>, requiredIds: Set<string>): BaseTreeNodeProps<T> | null {
+export function filterNodeIterative<T>(
+  rootNode: BaseTreeNodeProps<T>,
+  requiredIds: Set<string>,
+): BaseTreeNodeProps<T> | null {
   if (!requiredIds.has(rootNode.id)) {
     return null;
   }
 
-  // 스택: { node: 원본노드, filteredChildren: 필터링 처리된 자식들, allChildrenDone: 모든 자식 처리 완료 여부 }
-  const stack: Array<{
+  // 스택: { node: 현재 노드, parent: 현재 노드의 부모, childIdx:현재 노드의 자식 중 처리 중인 인덱스 기억용, filteredChildren: 필터링 처리된 자식들}
+  type StackItem = {
     node: BaseTreeNodeProps<T>;
+    childIdx: number;
     filteredChildren: BaseTreeNodeProps<T>[];
-    allChildrenDone: boolean;
-  }> = [];
+  };
 
-  const completedNodes = new Map<BaseTreeNodeProps<T>, BaseTreeNodeProps<T> | null>();
+  const stack: StackItem[] = [];
+  const nodeMap = new Map<string, BaseTreeNodeProps<T>>();
 
-  stack.push({ node: rootNode, filteredChildren: [], allChildrenDone: false });
+  stack.push({
+    node: rootNode,
+    childIdx: 0,
+    filteredChildren: [],
+  });
 
   while (stack.length > 0) {
-    const current = stack[stack.length - 1];
-    if (!current) break;
+    const current = stack[stack.length - 1]!;
 
-    const { node, filteredChildren, allChildrenDone } = current;
+    const children = current.node.children ?? [];
 
-    if (allChildrenDone) {
+    if (current.childIdx < children.length) {
+      const child = children[current.childIdx];
+
+      current.childIdx += 1;
+
+      if (child && requiredIds.has(child.id)) {
+        stack.push({
+          node: child,
+          childIdx: 0,
+          filteredChildren: [],
+        });
+      }
+    } else {
       stack.pop();
 
-      const result: BaseTreeNodeProps<T> = {
-        ...node,
-        children: filteredChildren.length > 0 ? filteredChildren : undefined,
+      const rebuilt: BaseTreeNodeProps<T> = {
+        ...current.node,
+        children: current.filteredChildren.length > 0 ? current.filteredChildren : undefined,
       };
 
-      completedNodes.set(node, result);
+      nodeMap.set(current.node.id, rebuilt);
 
       if (stack.length > 0) {
-        const parentItem = stack[stack.length - 1];
+        const parentItem = stack[stack.length - 1]!;
 
-        if (parentItem) {
-          parentItem.filteredChildren.push(result);
-        }
-      }
-
-      continue;
-    }
-
-    current.allChildrenDone = true;
-
-    if (node.children && node.children.length > 0) {
-      for (let i = node.children.length - 1; i >= 0; i--) {
-        const child = node.children[i];
-
-        if (child && requiredIds.has(child.id)) {
-          stack.push({
-            node: child,
-            filteredChildren: [],
-            allChildrenDone: false,
-          });
-        }
+        parentItem.filteredChildren.push(rebuilt);
       }
     }
   }
 
-  return completedNodes.get(rootNode) || null;
+  return nodeMap.get(rootNode.id) ?? null;
 }
 
 /**
