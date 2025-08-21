@@ -1,26 +1,36 @@
 import { ComponentProps, use } from 'react';
-import { ScenariosType } from '../../../../../services/scenario/getScenarios';
-import ClientErrorTest from './ClientErrorTest';
 import { ErrorBoundary } from 'react-error-boundary';
+
+import { ScenariosType } from '../../../../../services/scenario/getScenarios';
 import ClientErrorBoundaryFallback from '../../../../../components/ClientErrorBoundaryFallback';
+import { ScenarioListSearch } from './ScenarioListSearch/ScenarioListSearch';
+import { ScenarioListWrapper } from './ScenarioListWrapper';
 
 type ScenarioListProps = {
   scenarioType: string;
   scenariosData: Promise<ScenariosType[]>;
-} & ComponentProps<'div'>;
+} & Omit<ComponentProps<typeof ScenarioListSearch>, 'onSubmit'>;
 
-export function ScenarioList({ scenarioType, scenariosData, ...props }: ScenarioListProps) {
+export function ScenarioList({
+  scenarioType,
+  scenariosData,
+  classesListData,
+  scenarioSearchOptions,
+  currentSecnarioParams,
+}: ScenarioListProps) {
   const scenarioResolveData = use(scenariosData);
 
   return (
-    <div {...props}>
-      <div className="p-4 border rounded">
-        <ErrorBoundary FallbackComponent={ClientErrorBoundaryFallback}>
-          <ClientErrorTest />
-        </ErrorBoundary>
-      </div>
-      <h1 className="text-4xl font-bold">{scenarioType} 시나리오 리스트 데이터</h1>
-      <pre className="whitespace-pre-wrap break-all">{JSON.stringify(scenarioResolveData, null, 2)}</pre>
+    <div className="h-full flex flex-col gap-2">
+      <ErrorBoundary FallbackComponent={ClientErrorBoundaryFallback}>
+        <ScenarioListWrapper
+          scenarioType={scenarioType}
+          currentSecnarioParams={currentSecnarioParams}
+          scenarioSearchOptions={scenarioSearchOptions}
+          classesListData={classesListData}
+          scenariosData={scenarioResolveData}
+        />
+      </ErrorBoundary>
     </div>
   );
 }
