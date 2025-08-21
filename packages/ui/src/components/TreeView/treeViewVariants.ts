@@ -4,7 +4,7 @@ const treeViewVariants = tv({
   base: '',
   slots: {
     common: '',
-    root: 'relative overflow-y-auto w-full min-h-max h-full rounded-md shadow-md select-none',
+    root: 'relative overflow-y-auto size-full rounded-md shadow-md select-none',
     items: [
       'relative flex flex-col w-full',
       '[&_div:has([data-slot=collapsible])]:relative [&_div:has([data-slot=collapsible])]:gap-y-0',
@@ -14,7 +14,7 @@ const treeViewVariants = tv({
       'hover:bg-[color-mix(in_srgb,var(--tree-view-color),transparent_60%)]',
       'hover:[&_span[data-slot=item-trigger-icon]]:bg-[var(--tree-view-color)]',
     ],
-    itemContent: 'relative flex flex-col w-full min-w-0 select-none truncate',
+    itemContent: 'relative flex flex-col z-1 w-full min-w-0 select-none truncate',
     icons: 'flex size-max flex-shrink-0 transition-transform duration-200 rounded-full', // rotate-90
   },
   variants: {
