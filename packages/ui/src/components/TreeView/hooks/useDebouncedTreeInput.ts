@@ -1,16 +1,18 @@
+'use client';
+
 import { useDebounce } from '@common/utils';
 import { useCallback, useEffect, useState } from 'react';
 import type { SearchModeType } from '../TreeView';
 import { DEFAULT_INTERNAL_DEBOUNCE } from './useTreeQuickSearch';
 
-export type UseDebouncedInputParams = {
+export type UseDebouncedTreeInputParams = {
   searchMode: SearchModeType; // 검색 모드 (내부/외부)
   externalValue?: string; // 외부에서 전달받는 검색값
   onSearchValueChange?: (value: string) => void; // 외부로 검색값 전달하는 콜백
   debounceMs?: number; // 디바운스 지연 시간
 };
 
-export type UseDebouncedInputResultType = {
+export type UseDebouncedTreeInputResultType = {
   displayValue: string;
   debouncedValue: string;
   handleInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -21,12 +23,12 @@ export type UseDebouncedInputResultType = {
  * - internal 모드: 내부 상태 관리 + 디바운스 적용
  * - external 모드: 외부 상태 동기화 + 즉시 콜백 호출
  */
-export default function useDebouncedInput({
+export default function useDebouncedTreeInput({
   searchMode = 'internal',
   externalValue = '',
   onSearchValueChange,
   debounceMs = DEFAULT_INTERNAL_DEBOUNCE,
-}: UseDebouncedInputParams): UseDebouncedInputResultType {
+}: UseDebouncedTreeInputParams): UseDebouncedTreeInputResultType {
   const isInternalMode = searchMode === 'internal';
   const [internalValue, setInternalValue] = useState(externalValue || '');
   const [debouncedInternalValue, setDebouncedInternalValue] = useState(externalValue || '');

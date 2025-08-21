@@ -1,3 +1,5 @@
+'use client';
+
 import { useMemo } from 'react';
 import type { BaseTreeNodeProps } from '../TreeItem';
 import { filterTree, isMatched } from '../utils';

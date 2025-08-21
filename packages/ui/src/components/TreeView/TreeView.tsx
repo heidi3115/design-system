@@ -6,7 +6,7 @@ import { cn } from '@common/ui/lib/utils';
 
 import { AlertCircle2Icon } from '@common/ui/icons';
 import { inputVariants } from '../Input';
-import { DEFAULT_INTERNAL_DEBOUNCE, type SearchOptionsProps, useDebouncedInput, useTreeQuickSearch } from './hooks';
+import { DEFAULT_INTERNAL_DEBOUNCE, type SearchOptionsProps, useDebouncedTreeInput, useTreeQuickSearch } from './hooks';
 import TreeItem, { type BaseTreeNodeProps } from './TreeItem';
 import { TreeViewRoot } from './TreeViewParts';
 import { treeViewVariants } from './treeViewVariants';
@@ -172,8 +172,8 @@ export default function TreeView<T>({
     return treeData ? flattenTree(treeData) : new Map<string, BaseTreeNodeProps<T>>();
   }, [treeData]);
 
-  // useDebouncedInput: 입력 처리 + 디바운스만 담당
-  const { displayValue, debouncedValue, handleInputChange } = useDebouncedInput({
+  // useDebouncedTreeInput: 입력 처리 + 디바운스만 담당
+  const { displayValue, debouncedValue, handleInputChange } = useDebouncedTreeInput({
     searchMode,
     externalValue: searchValue,
     debounceMs,
