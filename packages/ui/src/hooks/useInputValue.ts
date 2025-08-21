@@ -40,11 +40,13 @@ export function useInputValue<T extends InputLikeElement = HTMLInputElement>({
         }
       }
 
-      setInternalValue(newValue);
+      if (!isControlled) {
+        setInternalValue(newValue);
+      }
 
       onChange?.(e);
     },
-    [onChange, type, min, max],
+    [isControlled, onChange, type, min, max],
   );
 
   const handleBlur = useCallback(
@@ -67,7 +69,7 @@ export function useInputValue<T extends InputLikeElement = HTMLInputElement>({
   );
 
   return {
-    value: internalValue,
+    value: isControlled ? value : internalValue,
     handleChange,
     handleBlur,
   };

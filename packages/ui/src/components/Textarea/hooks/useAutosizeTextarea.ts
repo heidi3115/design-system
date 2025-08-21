@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 type UseAutosizeTextareaProps = {
   textAreaRef: React.RefObject<HTMLTextAreaElement | null>;
-  triggerAutoSize: string;
+  triggerAutoSize: string | number | readonly string[];
 };
 
 export const useAutosizeTextarea = ({ textAreaRef, triggerAutoSize }: UseAutosizeTextareaProps) => {
