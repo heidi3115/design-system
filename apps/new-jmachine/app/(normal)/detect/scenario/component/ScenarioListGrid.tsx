@@ -26,9 +26,11 @@ type ScenarioListGridProps = {
 };
 
 export function ScenarioListGrid({ scenarioType, scenariosData, params }: ScenarioListGridProps) {
+  const getInitData = async () => scenariosData;
+
   const { data } = useSuspenseQuery({
     queryKey: ['scenarioList', scenarioType, params],
-    queryFn: () => getScenariosClientFetch(params!),
+    queryFn: params ? () => getScenariosClientFetch(params!) : () => getInitData(),
     initialData: params ? undefined : scenariosData,
   });
 
