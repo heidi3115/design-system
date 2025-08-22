@@ -7,6 +7,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useDebounce, useUpdateEffect } from '@common/utils';
 
 type Scenario = {
+  scnrIdx: string;
   scnrNm: string;
   regUser: string;
   regUserNm: string;
@@ -121,13 +122,16 @@ export default function Page() {
     }));
   }
 
-  const columns = createColumnsFromRaw(columnData.cols);
+  const columns = createColumnsFromRaw<Scenario>(columnData.cols);
 
   const testData: Scenario[] = [];
   const [value, setValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [totalCount, setTotalCount] = useState(serverData.totalCount);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  console.warn(selectedIds);
 
   const pageSize = 10; // pageSize 기능 구현 시 수정 예정
 
@@ -163,6 +167,8 @@ export default function Page() {
         <DataTable
           isUseQuickSearch
           rows={serverData.list}
+          // getRowId={(row: Scenario) => row.scnrIdx}
+          onSelectRows={setSelectedIds}
           columnFilterTrigger={<Button variant="transparent">커스텀필터목록</Button>}
           columns={columns}
           globalFilter={value}
@@ -182,6 +188,7 @@ export default function Page() {
         <Input placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
         <DataTable
           rows={clientData}
+          onSelectRows={setSelectedIds}
           searchValue={searchValue}
           isUseQuickSearch={false}
           columns={columns}
@@ -190,11 +197,17 @@ export default function Page() {
       </div>
       <div className="w-200 flex flex-col gap-2">
         <span>클라이언트사이드 필터링(내부Input)</span>
-        <DataTable rows={clientData} isUseQuickSearch columns={columns} emptyState={<div>검색 결과 없음</div>} />
+        <DataTable
+          rows={clientData}
+          isUseQuickSearch
+          columns={columns}
+          emptyState={<div>검색 결과 없음</div>}
+          onSelectRows={setSelectedIds}
+        />
       </div>
       <div className="w-200 flex flex-col gap-2">
         <span>결과 없음</span>
-        <DataTable rows={testData} isUseQuickSearch columns={columns} />
+        <DataTable rows={testData} isUseQuickSearch columns={columns} enableRowSelection={false} />
       </div>
     </section>
   );

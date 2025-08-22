@@ -44,6 +44,8 @@ type DataTableProps<T, V> = {
   manualFiltering?: boolean;
   manualPagination?: boolean;
   enableRowSelection?: boolean;
+  onSelectRows?: (selectedIds: string[]) => void;
+  getRowId?: (row: T) => string;
   globalFilter?: string;
   onGlobalFilterChange?: (value: string) => void;
   emptyState?: ReactNode;
@@ -64,8 +66,10 @@ type DataTableProps<T, V> = {
 export function DataTable<T, V = unknown>({
   onColumnStatusChange,
   rows,
+  getRowId,
   columns,
   enableRowSelection = true,
+  onSelectRows,
   manualFiltering = false, // true로 설정 시, 검색어 필터링 권한을 서버측으로 넘기고 해당 컴포넌트에서는 검색 필터링에 관여하지 않음.
   manualPagination = false, // 서버사이드 페이징이면 true로 설정
   totalCount,
@@ -131,6 +135,12 @@ export function DataTable<T, V = unknown>({
     state: { sorting, columnFilters, columnVisibility, rowSelection, globalFilter },
     onGlobalFilterChange: setGlobalFilter,
   });
+
+  useEffect(() => {
+    const selectedIds = table.getSelectedRowModel().rows.map((row) => (getRowId ? getRowId(row.original) : row.id));
+
+    onSelectRows?.(selectedIds);
+  }, [rowSelection, table, onSelectRows, getRowId]);
 
   const [search, setSearch] = useState('');
   const filteredColumns = table
@@ -268,7 +278,7 @@ export function DataTable<T, V = unknown>({
           )}
         </TableBody>
       </Table>
-      {isUsePagination && (
+      {isUsePagination && rows.length > 0 && (
         <div className="flex justify-center items-center gap-2">
           <Pagination
             totalCount={totalCount}
