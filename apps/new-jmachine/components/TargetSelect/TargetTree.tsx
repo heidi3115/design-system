@@ -3,14 +3,16 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { TreeView } from '@common/ui';
-import { getSearchDeptClientFetch } from '../../services/common/getSearchDept';
+import { DeptsType, getSearchDeptClientFetch } from '../../services/common/getSearchDept';
 import { useSetDeptTreeData } from './hooks/useSetDeptTreeData';
 
 type TargetTreeProps = {
+  type?: 'user' | 'dept';
   onSelectedNodeId?: (id: string) => void;
+  onSelectedNode?: (data: DeptsType[]) => void;
 };
 
-export default function TargetTree({ onSelectedNodeId }: TargetTreeProps) {
+export default function TargetTree({ type = 'user', onSelectedNodeId, onSelectedNode }: TargetTreeProps) {
   const { data } = useSuspenseQuery({
     queryKey: ['seach', 'depts'],
     queryFn: () => getSearchDeptClientFetch(),
@@ -27,9 +29,14 @@ export default function TargetTree({ onSelectedNodeId }: TargetTreeProps) {
         treeData={treeData}
         onSelectedNodes={(selectedIds) => {
           const targetId = selectedIds?.at(0);
+          const targetData = data.filter((tree) => tree.deptCd === targetId || tree.pdeptCd === targetId);
 
-          if (targetId) {
+          if (type === 'user' && targetId) {
             onSelectedNodeId?.(targetId);
+          }
+
+          if (type === 'dept' && targetData) {
+            onSelectedNode?.(targetData);
           }
         }}
       />

@@ -3,9 +3,10 @@
 import { TabItemType, Tabs } from '@common/ui';
 import TargetSelectContent from './TargetSelectContent';
 import { EmployeeType } from '../../services/common/getSearchUsers';
+import { DeptsType } from '../../services/common/getSearchDept';
 
 type TargetSelectProps = {
-  onSelectedData?: (data: EmployeeType) => void;
+  onSelectedData?: (data: EmployeeType | DeptsType) => void;
 };
 
 export default function TargetSelect({ onSelectedData }: TargetSelectProps) {
@@ -13,13 +14,13 @@ export default function TargetSelect({ onSelectedData }: TargetSelectProps) {
     {
       value: 'user',
       label: '임직원',
-      content: <TargetSelectContent onSelectedData={(data) => onSelectedData?.(data)} />,
+      content: <TargetSelectContent type="user" onSelectedData={(data) => onSelectedData?.(data)} />,
       boxClassName: 'p-4',
     },
     {
       value: 'depts',
       label: '부서',
-      content: <TargetSelectContent onSelectedData={(data) => onSelectedData?.(data)} />,
+      content: <TargetSelectContent type="dept" onSelectedData={(data) => onSelectedData?.(data)} />,
       boxClassName: 'p-4',
     },
   ] satisfies TabItemType;

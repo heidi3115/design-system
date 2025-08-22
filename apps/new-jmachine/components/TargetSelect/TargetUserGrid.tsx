@@ -1,15 +1,16 @@
 'use client';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
+
 import { Button, DataTable, DataTableProps } from '@common/ui';
 import { EmployeeType, getSearchUsersClientFetch } from '../../services/common/getSearchUsers';
 
-type TargetGridProps = {
+type TargetUserGridProps = {
   targetId: string;
   onSelectedData?: (data: EmployeeType) => void;
 };
 
-export default function TargetGrid({ targetId, onSelectedData }: TargetGridProps) {
+export default function TargetUserGrid({ targetId, onSelectedData }: TargetUserGridProps) {
   const { data } = useSuspenseQuery({
     queryKey: ['seach', 'users', targetId],
     queryFn: () =>

@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { BaseTreeNodeProps } from '@common/ui';
 import { DeptsType } from '../../../services/common/getSearchDept';
 
-export function useSetDeptTreeData(items: DeptsType[]): BaseTreeNodeProps[] {
+export function useSetDeptTreeData(items: DeptsType[]): BaseTreeNodeProps<DeptsType>[] {
   return useMemo(() => {
     const map = new Map<string, BaseTreeNodeProps>();
 

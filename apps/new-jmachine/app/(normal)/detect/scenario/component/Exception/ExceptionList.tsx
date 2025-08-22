@@ -8,13 +8,14 @@ import { SearchIcon, UserPlusIcon, XIcon } from '@common/ui/icons';
 import ClientErrorBoundaryFallback from '../../../../../../components/ClientErrorBoundaryFallback';
 import TargetSelect from '../../../../../../components/TargetSelect/TargetSelect';
 import { EmployeeType } from '../../../../../../services/common/getSearchUsers';
+import { DeptsType } from '../../../../../../services/common/getSearchDept';
 
 type ExceptionListProps = {
   scenarioType: string;
 };
 
 export function ExceptionList({ scenarioType }: ExceptionListProps) {
-  const [target, setTarget] = useState<EmployeeType | null>(null);
+  const [target, setTarget] = useState<EmployeeType | DeptsType | null>(null);
   const dialogHandleRef = useRef<DialogHandleRefType>(null);
 
   const ClearTargetIcon = () => (
@@ -39,7 +40,7 @@ export function ExceptionList({ scenarioType }: ExceptionListProps) {
                 type="button"
                 iconLeft={SearchIcon}
                 {...(target && { iconRight: ClearTargetIcon })}
-                value={target?.epyeNm}
+                value={target ? ('epyeNm' in target ? target.epyeNm : target.deptNm) : ''}
                 className="group"
               />
             }
