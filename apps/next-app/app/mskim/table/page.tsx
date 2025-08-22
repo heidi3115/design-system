@@ -29,12 +29,14 @@ export default function Page() {
     totalCount: 20,
     list: [
       {
+        scnrIdx: 'oPcU8M0kSfYD8qV1dvKoFQ==',
         scnrNm: '[QA-3560] 테스트 시나리오',
         regUser: 'hycho',
         regUserNm: '테스트이름',
         regDt: '2025-03-26 15:48:46',
       },
       {
+        scnrIdx: 'SxYduENFkYl1vXBNrsdL5Q==',
         scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
         regUser: 'admin',
         regUserNm: '관리자',
@@ -45,74 +47,30 @@ export default function Page() {
 
   const clientData = [
     {
-      scnrNm: '[QA-3560] 테스트 시나리오',
-      regUser: 'hycho',
-      regUserNm: '테스트이름',
-      regDt: '2025-03-26 15:48:46',
-    },
-    {
-      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
-      regUser: 'admin',
-      regUserNm: '관리자',
-      regDt: '2024-11-28 10:38:05',
-    },
-    {
-      scnrNm: '[QA-3560] 테스트 시나리오',
-      regUser: 'test',
-      regUserNm: '테스트이름',
-      regDt: '2025-03-26 15:48:46',
-    },
-    {
-      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
-      regUser: 'test2',
-      regUserNm: '관리자',
-      regDt: '2024-11-28 10:38:05',
-    },
-    {
-      scnrNm: '[QA-3560] 테스트 시나리오',
-      regUser: 'test3',
-      regUserNm: '테스트이름',
-      regDt: '2025-03-26 15:48:46',
-    },
-    {
-      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
-      regUser: 'test4',
-      regUserNm: '관리자',
-      regDt: '2024-11-28 10:38:05',
-    },
-    {
+      scnrIdx: 'oPcU8M0kSfYD8qV1dvKoFQ==',
       scnrNm: '[QA-3560] 테스트 시나리오',
       regUser: 'test5',
       regUserNm: '테스트이름',
       regDt: '2025-03-26 15:48:46',
     },
     {
+      scnrIdx: 'SxYduENFkYl1vXBNrsdL5Q==',
       scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
       regUser: 'test6',
       regUserNm: '관리자',
       regDt: '2024-11-28 10:38:05',
     },
     {
+      scnrIdx: '7fafnrLzKgisDhs98tVOew==',
       scnrNm: '[QA-3560] 테스트 시나리오',
       regUser: 'test7',
       regUserNm: '테스트이름',
       regDt: '2025-03-26 15:48:46',
     },
     {
+      scnrIdx: 'DS9QzTVSQACrXP1lLKGf6w==',
       scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
       regUser: 'test8',
-      regUserNm: '관리자',
-      regDt: '2024-11-28 10:38:05',
-    },
-    {
-      scnrNm: '[QA-3560] 테스트 시나리오',
-      regUser: 'test9',
-      regUserNm: '테스트이름',
-      regDt: '2025-03-26 15:48:46',
-    },
-    {
-      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
-      regUser: 'test10',
       regUserNm: '관리자',
       regDt: '2024-11-28 10:38:05',
     },
@@ -122,12 +80,14 @@ export default function Page() {
     totalCount: 20,
     list: [
       {
+        scnrIdx: 'KfgofzASdDT/CQd0q4e37Q==',
         scnrNm: '검색어로 필터링된 서버 데이터 예시',
         regUser: 'hycho',
         regUserNm: '새로운데이터',
         regDt: '2025-03-26 15:48:46',
       },
       {
+        scnrIdx: 'orIAA5m67XK+n4PSTaeznA==',
         scnrNm: '검색어로 필터링된 서버 데이터 예시2',
         regUser: 'admin',
         regUserNm: '새로운데이터2',
