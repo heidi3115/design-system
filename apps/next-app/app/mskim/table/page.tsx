@@ -167,7 +167,7 @@ export default function Page() {
         <DataTable
           isUseQuickSearch
           rows={serverData.list}
-          // getRowId={(row: Scenario) => row.scnrIdx}
+          getRowId={(row: Scenario) => row.scnrIdx}
           onSelectRows={setSelectedIds}
           columnFilterTrigger={<Button variant="transparent">커스텀필터목록</Button>}
           columns={columns}
@@ -188,6 +188,7 @@ export default function Page() {
         <Input placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
         <DataTable
           rows={clientData}
+          getRowId={(row: Scenario) => row.scnrIdx}
           onSelectRows={setSelectedIds}
           searchValue={searchValue}
           isUseQuickSearch={false}
@@ -199,6 +200,7 @@ export default function Page() {
         <span>클라이언트사이드 필터링(내부Input)</span>
         <DataTable
           rows={clientData}
+          getRowId={(row: Scenario) => row.scnrIdx}
           isUseQuickSearch
           columns={columns}
           emptyState={<div>검색 결과 없음</div>}
