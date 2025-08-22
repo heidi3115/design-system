@@ -6,11 +6,12 @@ import { GetScenariosRequest, getScenariosServerFetch } from '../../../../servic
 import { getMultiCodesServerFetch } from '../../../../services/common/getMultiCodes';
 
 import { TabItemType, Tabs } from '@common/ui';
-import { ScenarioList } from './component/ScenarioList';
+import { ScenarioList } from './component/Scenario/ScenarioList';
 import PageLoading from '../../../../components/PageLoading';
 import ErrorBoundaryFallback from '../../../../components/ErrorBoundaryFallback';
 import { majorCategoryValueMap } from '../../../../lib/mapper/majorCategoryTypeMap';
 import { minorCategoryValueMap } from '../../../../lib/mapper/minorCategoryTypeMap';
+import { ExceptionList } from './component/Exception/ExceptionList';
 
 export default async function ScenarioPage() {
   // common data
@@ -100,15 +101,11 @@ export default async function ScenarioPage() {
       contentBoxType: 'box',
     },
     {
-      value: 'complex2',
-      label: '복합 시나리오2',
-      content: (
-        <ScenarioList
-          scenarioType="complex"
-          scenariosData={complexScenariosData}
-          currentSecnarioParams={scenarioListParam}
-        />
-      ),
+      value: 'exception',
+      label: '예외대상 관리',
+      content: <ExceptionList scenarioType="exception" />,
+      contentBoxType: 'inBox',
+      boxClassName: 'p-8',
     },
   ] satisfies TabItemType;
 

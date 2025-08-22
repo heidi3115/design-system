@@ -38,7 +38,7 @@ function Pagination({
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 m-auto">
       {isShowFirstPageButton && (
         <Button
           className="border-none hover:bg-juiGrey-200 rounded-2xl w-8 h-8"

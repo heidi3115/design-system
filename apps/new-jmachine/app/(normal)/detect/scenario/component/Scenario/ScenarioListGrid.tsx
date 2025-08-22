@@ -8,8 +8,8 @@ import {
   getScenariosClientFetch,
   GetScenariosRequest,
   ScenariosType,
-} from '../../../../../services/scenario/getScenarios';
-import { minorCategoryValueMap } from '../../../../../lib/mapper/minorCategoryTypeMap';
+} from '../../../../../../services/scenario/getScenarios';
+import { minorCategoryValueMap } from '../../../../../../lib/mapper/minorCategoryTypeMap';
 
 const RISK_LEVEL = {
   [minorCategoryValueMap.urgentRiskLevel]: 'urgency',

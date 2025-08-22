@@ -242,7 +242,7 @@ function DataTable<T, V = unknown>({
         </TableBody>
       </Table>
       {isUsePagination && (
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex gap-2 m-auto w-full overflow-auto">
           <Pagination
             totalCount={totalCount}
             clientPageCount={table.getPageCount()}

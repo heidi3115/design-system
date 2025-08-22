@@ -4,9 +4,9 @@ import { ComponentProps, Suspense, useState } from 'react';
 import { Separator } from '@common/ui';
 
 import { ScenarioListSearch } from './ScenarioListSearch/ScenarioListSearch';
-import { GetScenariosRequest, ScenariosType } from '../../../../../services/scenario/getScenarios';
+import { GetScenariosRequest, ScenariosType } from '../../../../../../services/scenario/getScenarios';
 import { ScenarioListGrid } from './ScenarioListGrid';
-import PageLoading from '../../../../../components/PageLoading';
+import PageLoading from '../../../../../../components/PageLoading';
 
 type ScenarioListWrapperProps = {
   scenarioType: string;

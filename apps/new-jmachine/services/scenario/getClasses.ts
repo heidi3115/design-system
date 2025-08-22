@@ -3,7 +3,7 @@ import { ServerFetchOptions } from '../../lib/fetch/commonApi';
 import { fetchServerApi } from '../../lib/fetch/serverApi';
 
 export const getClassesServerFetch = async (options?: ServerFetchOptions) => {
-  const response = await fetchServerApi<string[]>(`/get/scenario/classes`, {
+  const response = await fetchServerApi<string[]>(`/get/scenario/classes`, undefined, {
     ...options,
   });
 
