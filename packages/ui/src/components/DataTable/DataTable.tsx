@@ -43,6 +43,7 @@ type DataTableProps<T, V> = {
   columns: ColumnDef<T, V>[];
   manualFiltering?: boolean;
   manualPagination?: boolean;
+  enableRowSelection?: boolean;
   globalFilter?: string;
   onGlobalFilterChange?: (value: string) => void;
   emptyState?: ReactNode;
@@ -64,6 +65,7 @@ export function DataTable<T, V = unknown>({
   onColumnStatusChange,
   rows,
   columns,
+  enableRowSelection = true,
   manualFiltering = false, // true로 설정 시, 검색어 필터링 권한을 서버측으로 넘기고 해당 컴포넌트에서는 검색 필터링에 관여하지 않음.
   manualPagination = false, // 서버사이드 페이징이면 true로 설정
   totalCount,
@@ -110,7 +112,7 @@ export function DataTable<T, V = unknown>({
 
   const table = useReactTable({
     data: rows,
-    columns: [addColumn, ...columns],
+    columns: enableRowSelection ? [addColumn, ...columns] : columns,
     manualFiltering,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -215,11 +217,15 @@ export function DataTable<T, V = unknown>({
         {manualFiltering && (
           <Button
             onClick={() => {
-              const status = table.getAllColumns().map((col) => ({
-                field: col.id,
-                hide: !col.getIsVisible(),
-                headerName: typeof col.columnDef.header === 'string' ? col.columnDef.header : '',
-              }));
+              // 체크박스 컬럼 제외
+              const status = table
+                .getAllColumns()
+                .filter((col) => col.id !== 'select')
+                .map((col) => ({
+                  field: col.id,
+                  hide: !col.getIsVisible(),
+                  headerName: typeof col.columnDef.header === 'string' ? col.columnDef.header : '',
+                }));
 
               if (onColumnStatusChange) {
                 onColumnStatusChange(status);
