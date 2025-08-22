@@ -3,7 +3,7 @@
 import { DataTable } from '@common/ui/components/DataTable/DataTable';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { Button, Input } from '@common/ui';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useDebounce, useUpdateEffect } from '@common/utils';
 
 type Scenario = {
@@ -160,6 +160,8 @@ export default function Page() {
     setTotalCount(dummyData.totalCount);
   }, [currentPage]);
 
+  const getRowId = useCallback((row: Scenario) => row.scnrIdx.toString(), []);
+
   return (
     <section className="flex flex-col gap-20 items-center justify-center w-full min-h-svh">
       <div className="w-200 flex flex-col gap-2">
@@ -167,7 +169,7 @@ export default function Page() {
         <DataTable
           isUseQuickSearch
           rows={serverData.list}
-          getRowId={(row: Scenario) => row.scnrIdx}
+          getRowId={getRowId}
           onSelectRows={setSelectedIds}
           columnFilterTrigger={<Button variant="transparent">커스텀필터목록</Button>}
           columns={columns}
@@ -188,7 +190,7 @@ export default function Page() {
         <Input placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
         <DataTable
           rows={clientData}
-          getRowId={(row: Scenario) => row.scnrIdx}
+          getRowId={getRowId}
           onSelectRows={setSelectedIds}
           searchValue={searchValue}
           isUseQuickSearch={false}
@@ -200,7 +202,7 @@ export default function Page() {
         <span>클라이언트사이드 필터링(내부Input)</span>
         <DataTable
           rows={clientData}
-          getRowId={(row: Scenario) => row.scnrIdx}
+          getRowId={getRowId}
           isUseQuickSearch
           columns={columns}
           emptyState={<div>검색 결과 없음</div>}
