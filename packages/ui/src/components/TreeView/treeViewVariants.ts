@@ -1,6 +1,6 @@
 import { tv } from 'tailwind-variants';
 
-const treeViewVariants = tv({
+export const treeViewVariants = tv({
   base: '',
   slots: {
     common: '',
@@ -83,5 +83,3 @@ const treeViewVariants = tv({
     },
   },
 });
-
-export { treeViewVariants };

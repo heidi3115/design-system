@@ -44,6 +44,10 @@ export type TreeViewSearchProps = {
   onInputSearchChange?: (searchValue: string) => void;
   // 검색 조건
   searchOptions?: SearchOptionsProps;
+  // 하이라이팅 여부
+  isHightLighting?: boolean;
+  // 하이라이팅의 추가 클래스
+  highlightClassName?: string;
 };
 
 export type TreeViewProps<T = unknown> = {
@@ -138,6 +142,8 @@ export default function TreeView<T>({
   searchPlaceholder = '검색어를 입력해주세요...',
   searchValue = '',
   searchOptions = { searchFields: ['name'], caseSensitive: false, matchMode: 'partial' },
+  isHightLighting,
+  highlightClassName = '',
   onInputSearchChange,
 }: TreeViewProps<T>) {
   const { base, common, root } = treeViewVariants({ size, variant, disabled });
@@ -434,6 +440,11 @@ export default function TreeView<T>({
             showLineLevel={effectiveShowLineLevel}
             isAllLine={isAllLine}
             showIcons={showIcons}
+            isHightLighting={
+              isHightLighting ? (isInternalSearch ? isSearchActive : searchValue.trim().length > 0) : undefined
+            }
+            searchQuery={isSearchActive ? (isInternalSearch ? debouncedValue : searchValue) : undefined}
+            highlightClassName={highlightClassName}
             onSelect={handleSelectNode}
             onToggle={handleTreeToggle}
             className={nodeClassName}

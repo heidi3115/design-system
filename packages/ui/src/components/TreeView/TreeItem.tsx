@@ -1,12 +1,14 @@
 'use client';
 
+import React from 'react';
+
+import { cn } from '@common/ui/lib/utils';
 import { Collapsible } from '@common/ui';
 import { CloseFolderFilledIcon, OpenFolderFilledIcon, PlayArrowIcon } from '@common/ui/icons';
-import { cn } from '@common/ui/lib/utils';
-import React from 'react';
 import { DEFAULT_INDENT_SIZE, type TreeViewStateType } from './TreeView';
 import { TreeViewItem, TreeViewItemContent, TreeViewItemTrigger } from './TreeViewParts';
 import { treeViewVariants } from './treeViewVariants';
+import { HighlightedText } from './components';
 
 /**
  * 기본 트리 노드 인터페이스
@@ -47,6 +49,11 @@ export type TreeItemProps<T> = {
   showLineLevel?: number;
   /** showLineLevel 의 숫자부터 자식까지 선을 보여줄 지 여부. True 일 경우, showLineLevel의 숫자부터(ex. showLineLevel이 1이면 depth가 1인 경우부터 선에 계속 보임) (default:false) */
   isAllLine?: boolean;
+  /* 검색 관련 */
+  /** 검색어 (하이라이팅용) */
+  isHightLighting?: boolean;
+  searchQuery?: string;
+  highlightClassName?: string;
   /* 이벤트 핸들러 */
   /** 노드 선택 시 콜백  */
   onSelect?: (nodeId: string) => void;
@@ -73,6 +80,9 @@ export default function TreeItem<T = unknown>({
   indentSize = DEFAULT_INDENT_SIZE,
   showLineLevel = undefined,
   isAllLine = false,
+  isHightLighting = false,
+  searchQuery = '',
+  highlightClassName = '',
   onSelect,
   onToggle,
   className,
@@ -122,8 +132,13 @@ export default function TreeItem<T = unknown>({
             : endIcon || <PlayArrowIcon />}
         </span>
       )}
-      <span data-slot="tree-item-label" className={cn('block w-full truncate', disabledClass)}>
-        {nodeItem.name}
+      <span data-slot="tree-item-label" className={cn('block w-full truncate select-none', disabledClass)}>
+        <HighlightedText
+          text={nodeItem.name}
+          isHightLighting={isHightLighting}
+          searchQuery={searchQuery}
+          className={highlightClassName}
+        />
       </span>
     </TreeViewItemTrigger>
   );
@@ -162,7 +177,7 @@ export default function TreeItem<T = unknown>({
             </span>
           )}
           <TreeViewItemContent
-            className={cn(variantClass, itemContent())} // level === lineLevelNum && lineDotClass
+            className={cn(variantClass, itemContent())}
             onClick={(e: React.MouseEvent) => e.stopPropagation()}>
             {node.children!.map((childNode: BaseTreeNodeProps) => {
               const isNodeSelected = treeViewState?.selectedIds.has(childNode.id);
@@ -188,6 +203,9 @@ export default function TreeItem<T = unknown>({
                   indentSize={indentSize}
                   showLineLevel={showLineLevel}
                   isAllLine={isAllLine}
+                  isHightLighting={isHightLighting}
+                  searchQuery={searchQuery}
+                  highlightClassName={highlightClassName}
                   onSelect={onSelect}
                   onToggle={onToggle}
                   className={cn(className)}

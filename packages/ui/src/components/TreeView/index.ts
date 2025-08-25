@@ -1,4 +1,6 @@
 export * from './hooks';
+export * from './utils';
+export * from './components';
 export { default as TreeItem, type BaseTreeNodeProps, type TreeItemProps } from './TreeItem';
 export {
   DEFAULT_INDENT_SIZE,
@@ -15,4 +17,3 @@ export type {
   TreeViewRootProps,
 } from './TreeViewParts';
 export { treeViewVariants } from './treeViewVariants';
-export * from './utils';
