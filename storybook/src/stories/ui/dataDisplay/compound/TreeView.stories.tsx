@@ -1496,8 +1496,8 @@ const HighlightingComparisonDemo = (args: TreeViewProps) => {
   }, []);
 
   return (
-    <div className={flexCol}>
-      <div className={'mb-4'}>
+    <div className={cn(flexCol, 'w-full')}>
+      <div className={'mb-4 size-full'}>
         <label htmlFor="comparison-search" className={'block text-xl font-bold mb-2'}>
           검색어 입력 (두 TreeView 동시 적용)
         </label>
@@ -1517,9 +1517,10 @@ const HighlightingComparisonDemo = (args: TreeViewProps) => {
         />
       </div>
 
-      <div className={'grid grid-cols-2 gap-6'}>
-        {/* 하이라이팅 없는 TreeView */}
-        <div className={'space-y-2'}>
+      <div className={'grid grid-cols-1 gap-6 w-full'}>
+        <div className={'space-y-2 w-full'}>
+          {/* 하이라이팅 없는 TreeView */}
+
           <h3 className={'text-lg font-semibold'}>하이라이팅 없음</h3>
           <p className={blueTxt}>isHightLighting=false</p>
           <div className={'border border-gray-200 rounded-md p-4'}>
@@ -1539,25 +1540,54 @@ const HighlightingComparisonDemo = (args: TreeViewProps) => {
           </div>
         </div>
         {/* 하이라이팅 있는 TreeView */}
-        <div className={'space-y-2'}>
-          <h3 className={'text-lg font-semibold'}>하이라이팅 적용</h3>
-          <p className={blueTxt}>{`isHightLighting=true, highlightClassName="${customClass}"`}</p>
-          <div className={'border border-gray-200 rounded-md p-4'}>
-            {isLoading ? (
-              <CardSkeleton />
-            ) : (
-              <TreeView
-                {...args}
-                treeData={externalTreeData}
-                quickSearchEnabled={false}
-                expandedIds={externalExpandedIds.length > 0 ? externalExpandedIds : undefined}
-                searchValue={searchValue}
-                onInputSearchChange={handleExternalSearchChange}
-                debounceMs={DEFAULT_INTERNAL_DEBOUNCE}
-                isHightLighting={true}
-                highlightClassName={customClass}
-              />
-            )}
+        <div className={'space-y-2 w-full'}>
+          <div className={'space-y-2 flex flex-row gap-6 justify-between'}>
+            <div className={'flex flex-col flex-1'}>
+              <h3 className={'text-lg font-semibold'}>하이라이팅 있음(기본)</h3>
+              <p className={blueTxt}>isHightLighting=true</p>
+              <p>기본 적용 효과 : font-bold bg-juiText-primary/30</p>
+              <div className={'border border-gray-200 rounded-md p-4'}>
+                {isLoading ? (
+                  <CardSkeleton />
+                ) : (
+                  <TreeView
+                    {...args}
+                    treeData={externalTreeData}
+                    quickSearchEnabled={false}
+                    expandedIds={externalExpandedIds.length > 0 ? externalExpandedIds : undefined}
+                    searchValue={searchValue}
+                    onInputSearchChange={handleExternalSearchChange}
+                    isHightLighting={true}
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className={'flex flex-col flex-1'}>
+              <h3 className={'text-lg font-semibold'}>하이라이팅 커스텀 적용</h3>
+              <p className={blueTxt}>
+                {`isHightLighting=true, highlightClassName="${customClass}"`}
+                <br />
+                <br />
+              </p>
+              <div className={'border border-gray-200 rounded-md p-4'}>
+                {isLoading ? (
+                  <CardSkeleton />
+                ) : (
+                  <TreeView
+                    {...args}
+                    treeData={externalTreeData}
+                    quickSearchEnabled={false}
+                    expandedIds={externalExpandedIds.length > 0 ? externalExpandedIds : undefined}
+                    searchValue={searchValue}
+                    onInputSearchChange={handleExternalSearchChange}
+                    debounceMs={DEFAULT_INTERNAL_DEBOUNCE}
+                    isHightLighting={true}
+                    highlightClassName={customClass}
+                  />
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
