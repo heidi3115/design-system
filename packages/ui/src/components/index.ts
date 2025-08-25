@@ -66,6 +66,7 @@ export {
   DialogRoot,
   DialogTitle,
   DialogTrigger,
+  type DialogHandleRefType,
 } from './Dialog';
 export { Label } from './Label';
 export { CardSkeleton, Skeleton } from './Skeleton';
@@ -286,3 +287,5 @@ export {
   type TreeViewSearchProps,
   type TreeViewStateType,
 } from './TreeView';
+
+export { DataTable, type DataTableProps } from './DataTable';

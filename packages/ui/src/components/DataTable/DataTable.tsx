@@ -1,16 +1,16 @@
 'use client';
 
 import {
-  ColumnDef,
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
-  VisibilityState,
+  type ColumnDef,
+  type ColumnFiltersState,
+  type SortingState,
+  type VisibilityState,
 } from '@tanstack/react-table';
 
 import {
@@ -37,7 +37,7 @@ type ColumnType = {
   field: string;
 };
 
-type DataTableProps<T, V> = {
+export type DataTableProps<T, V> = {
   rows: T[];
   columns: ColumnDef<T, V>[];
   manualFiltering?: boolean;
@@ -59,7 +59,7 @@ type DataTableProps<T, V> = {
   isShowLastPageButton?: boolean;
 };
 
-export function DataTable<T, V = unknown>({
+function DataTable<T, V = unknown>({
   onColumnStatusChange,
   rows,
   columns,
@@ -242,7 +242,7 @@ export function DataTable<T, V = unknown>({
         </TableBody>
       </Table>
       {isUsePagination && (
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex gap-2 m-auto w-full overflow-auto">
           <Pagination
             totalCount={totalCount}
             clientPageCount={table.getPageCount()}
@@ -259,3 +259,5 @@ export function DataTable<T, V = unknown>({
     </div>
   );
 }
+
+export default DataTable;
