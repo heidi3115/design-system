@@ -1362,7 +1362,6 @@ export const SearchInternalVsExternal: Story = {
   args: {
     showLineLevel: 0,
     isAllLine: false,
-    disabled: true,
   },
   argTypes: {
     treeData: { table: { disable: true } },
