@@ -1421,13 +1421,13 @@ export const SearchInternalVsExternal: Story = {
 // 하이라이팅 비교 컴포넌트
 const HighlightingComparisonDemo = (args: TreeViewProps) => {
   const customClass = 'bg-yellow-200 text-gray-900 font-semibold';
-  const originalExternalData = basicTreeData1;
+  const originalExternalData = sampleTreeData1;
 
   const debounceTimeoutRef = useRef<number | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const [externalTreeData, setExternalTreeData] = useState<AssetTreeNodeProps[]>(basicTreeData1);
+  const [externalTreeData, setExternalTreeData] = useState<AssetTreeNodeProps[]>(sampleTreeData1);
   const [externalExpandedIds, setExternalExpandedIds] = useState<string[]>([]);
 
   const simulateExternalAPISearch = async (query: string) => {
