@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, DataTable, DataTableProps } from '@common/ui';
-import { DeptsType } from '../../services/common/getSearchDept';
+import { DeptsType } from '../../../services/common/getSearchDept';
 
 type TargetDeptGridProps = {
   targetData: DeptsType[];

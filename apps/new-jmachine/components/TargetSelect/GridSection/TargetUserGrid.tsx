@@ -3,7 +3,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { Button, DataTable, DataTableProps } from '@common/ui';
-import { EmployeeType, getSearchUsersClientFetch } from '../../services/common/getSearchUsers';
+import { EmployeeType, getSearchUsersClientFetch } from '../../../services/common/getSearchUsers';
 import { useState } from 'react';
 
 const DEFAULT_PAGE_SIZE = 15 as const;

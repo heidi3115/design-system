@@ -3,7 +3,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { TreeView } from '@common/ui';
-import { DeptsType, getSearchDeptClientFetch } from '../../services/common/getSearchDept';
+import { DeptsType, getSearchDeptClientFetch } from '../../../services/common/getSearchDept';
 import { useSetDeptTreeData } from './hooks/useSetDeptTreeData';
 
 type TargetTreeProps = {
@@ -19,6 +19,7 @@ export default function TargetTree({ type = 'user', onSelectedNodeId, onSelected
   });
 
   const treeData = useSetDeptTreeData(data);
+  const firstTreeData = treeData.filter((tree) => tree.lvl === 1);
 
   return (
     <div className="overflow-auto h-full">
@@ -26,7 +27,9 @@ export default function TargetTree({ type = 'user', onSelectedNodeId, onSelected
         variant="primary"
         size="small"
         showIcons
+        showLineLevel={0}
         treeData={treeData}
+        defaultExpandedIds={firstTreeData.flatMap((parents) => (parents.deptCd ? [parents.deptCd] : []))}
         onSelectedNodes={(selectedIds) => {
           const targetId = selectedIds?.at(0);
           const targetData = data.filter((tree) => tree.deptFullPath.split('>').includes(targetId ?? ''));
