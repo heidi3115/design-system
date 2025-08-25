@@ -4,6 +4,9 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { Button, DataTable, DataTableProps } from '@common/ui';
 import { EmployeeType, getSearchUsersClientFetch } from '../../services/common/getSearchUsers';
+import { useState } from 'react';
+
+const DEFAULT_PAGE_SIZE = 15 as const;
 
 type TargetUserGridProps = {
   targetId: string;
@@ -11,12 +14,17 @@ type TargetUserGridProps = {
 };
 
 export default function TargetUserGrid({ targetId, onSelectedData }: TargetUserGridProps) {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [globalFilter, setGlobalFilter] = useState('');
+
   const { data } = useSuspenseQuery({
-    queryKey: ['seach', 'users', targetId],
+    queryKey: ['seach', 'users', targetId, currentPage, globalFilter],
     queryFn: () =>
       getSearchUsersClientFetch({
         deptCd2: targetId,
-        limit: 10000,
+        limit: 15,
+        offset: currentPage + 1,
+        searchText2: globalFilter,
       }),
   });
 
@@ -24,7 +32,7 @@ export default function TargetUserGrid({ targetId, onSelectedData }: TargetUserG
     {
       accessorKey: 'id',
       header: 'No',
-      cell: (ctx) => <div>{data.employeeList.length - ctx.row.index}</div>,
+      cell: (ctx) => <div>{data.totalCount - DEFAULT_PAGE_SIZE * currentPage - ctx.row.index}</div>,
     },
     {
       accessorKey: 'epyeNm',
@@ -65,7 +73,22 @@ export default function TargetUserGrid({ targetId, onSelectedData }: TargetUserG
 
   return (
     <div className="overflow-auto h-ful w-full">
-      <DataTable rows={data.employeeList} columns={columns} pageSize={15} isUseQuickSearch />
+      <DataTable
+        rows={data.employeeList}
+        totalCount={data.totalCount}
+        currentPage={currentPage}
+        onPageChange={(page) => setCurrentPage(page)}
+        columns={columns}
+        pageSize={DEFAULT_PAGE_SIZE}
+        isUseQuickSearch
+        globalFilter={globalFilter}
+        onGlobalFilterChange={(filter) => {
+          setCurrentPage(0);
+          setGlobalFilter(filter);
+        }}
+        manualFiltering
+        manualPagination
+      />
     </div>
   );
 }

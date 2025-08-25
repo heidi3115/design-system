@@ -29,7 +29,7 @@ export default function TargetTree({ type = 'user', onSelectedNodeId, onSelected
         treeData={treeData}
         onSelectedNodes={(selectedIds) => {
           const targetId = selectedIds?.at(0);
-          const targetData = data.filter((tree) => tree.deptCd === targetId || tree.pdeptCd === targetId);
+          const targetData = data.filter((tree) => tree.deptFullPath.split('>').includes(targetId ?? ''));
 
           if (type === 'user' && targetId) {
             onSelectedNodeId?.(targetId);

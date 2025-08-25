@@ -16,7 +16,7 @@ export default function TargetDeptGrid({ targetData, onSelectedData }: TargetDep
       cell: (ctx) => <div>{targetData.length - ctx.row.index}</div>,
     },
     {
-      accessorKey: 'deptNm',
+      accessorKey: 'deptNmFullPath',
       header: '부서명',
     },
     {
