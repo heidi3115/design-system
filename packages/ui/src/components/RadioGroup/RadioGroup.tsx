@@ -49,11 +49,11 @@ function RadioGroup({
   useImperativeHandle(valueRef, () => currentValue);
 
   const handleChange = (val: string) => {
-    if (isControlled) {
-      onValueChange?.(val);
-    } else {
+    if (!isControlled) {
       setUncontrolledValue(val);
     }
+
+    onValueChange?.(val);
   };
 
   return (

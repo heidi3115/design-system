@@ -9,22 +9,16 @@ type ExceptionManageGroupsRequest = {
 export type ExceptionGroupsType = {
   id: string;
   name: string;
-  children?: string[];
+  children?: ExceptionGroupsType[];
   pid?: string;
   scnrExpGrupTrgCnt?: number;
-};
-
-type ExceptionGroupsResponse = {
-  id: string;
-  name: string;
-  children?: ExceptionGroupsType[];
 };
 
 export const getExceptionManageGroupsServerFetch = async (
   params?: ExceptionManageGroupsRequest,
   options?: ServerFetchOptions,
 ) => {
-  const response = await fetchServerApi<ExceptionGroupsResponse>(`/get/scenario/exceptionManagement/groups`, params, {
+  const response = await fetchServerApi<ExceptionGroupsType>(`/get/scenario/exceptionManagement/groups`, params, {
     ...options,
   });
 
@@ -34,7 +28,7 @@ export const getExceptionManageGroupsServerFetch = async (
 };
 
 export const getExceptionManageGroupsClientFetch = async (params?: ExceptionManageGroupsRequest) => {
-  const response = await fetchClientApi<ExceptionGroupsResponse>(`/get/scenario/exceptionManagement/groups`, params);
+  const response = await fetchClientApi<ExceptionGroupsType>(`/get/scenario/exceptionManagement/groups`, params);
   if (response.code === '000000') return response.data;
 
   throw new Error(`${__filename} fetch failed: ${response.message}`);

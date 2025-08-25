@@ -8,13 +8,20 @@ import { SearchIcon, UserFilledIcon, XIcon } from '@common/ui/icons';
 import { EmployeeType } from '../../services/common/getSearchUsers';
 import { DeptsType } from '../../services/common/getSearchDept';
 import { ExceptionGroupsType } from '../../services/scenario/getExceptionManageGroups';
+import { minorCategoryValueMap } from '../../lib/mapper/minorCategoryTypeMap';
+import { useUpdateEffect } from '@common/utils';
+import { AssetType } from '../../services/asset/getAssets';
 
 type TargetSelectDialogProps = {
-  onTargetData?: (target: EmployeeType | DeptsType | ExceptionGroupsType | null) => void;
+  targetType: string;
+  onTargetData?: (target: EmployeeType | DeptsType | ExceptionGroupsType | AssetType | null) => void;
 };
 
-export default function TargetSelectDialog({ onTargetData }: TargetSelectDialogProps) {
-  const [target, setTarget] = useState<EmployeeType | DeptsType | ExceptionGroupsType | null>(null);
+export default function TargetSelectDialog({
+  targetType = minorCategoryValueMap.employeeTargetType,
+  onTargetData,
+}: TargetSelectDialogProps) {
+  const [target, setTarget] = useState<EmployeeType | DeptsType | ExceptionGroupsType | AssetType | null>(null);
   const dialogHandleRef = useRef<DialogHandleRefType>(null);
 
   const ClearTargetIcon = () => (
@@ -27,6 +34,12 @@ export default function TargetSelectDialog({ onTargetData }: TargetSelectDialogP
     />
   );
 
+  useUpdateEffect(() => {
+    if (targetType) {
+      setTarget(null);
+    }
+  }, [targetType]);
+
   return (
     <Dialog
       handleRef={dialogHandleRef}
@@ -37,7 +50,17 @@ export default function TargetSelectDialog({ onTargetData }: TargetSelectDialogP
           type="button"
           iconLeft={SearchIcon}
           {...(target && { iconRight: ClearTargetIcon })}
-          value={target ? ('epyeNm' in target ? target.epyeNm : 'deptNm' in target ? target.deptNm : target.name) : ''}
+          value={
+            target
+              ? 'epyeNm' in target
+                ? target.epyeNm
+                : 'deptNm' in target
+                  ? target.deptNm
+                  : 'asstNm' in target
+                    ? target.asstNm
+                    : target.name
+              : ''
+          }
           className="group"
         />
       }
@@ -46,6 +69,7 @@ export default function TargetSelectDialog({ onTargetData }: TargetSelectDialogP
       buttons={['cancel']}
       isDraggable>
       <TargetSelect
+        targetType={targetType}
         onSelectedData={(data) => {
           setTarget(data);
           onTargetData?.(data);
