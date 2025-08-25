@@ -21,7 +21,7 @@ export type BaseTreeNodeProps<T = unknown> = {
   children?: BaseTreeNodeProps<T>[];
   /** 확장을 위한 인덱스 시그니처 */
   [key: string]: unknown;
-};
+} & Partial<T>;
 
 export type TreeItemProps<T> = {
   /** 트리 노드 데이터 */

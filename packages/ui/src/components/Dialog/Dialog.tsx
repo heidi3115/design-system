@@ -14,14 +14,21 @@ import { SaveIcon, XIcon, CheckIcon } from '@common/ui/icons';
 import {
   useState,
   isValidElement,
+  useImperativeHandle,
   type ReactElement,
   type ReactNode,
   type FormEvent,
   type MouseEvent,
   type ButtonHTMLAttributes,
+  type Ref,
 } from 'react';
 import { type VariantProps } from 'tailwind-variants';
 import { cn } from '../../lib/utils';
+
+export type DialogHandleRefType = {
+  close: () => void;
+  open: () => void;
+};
 
 type CustomButtonProps = VariantProps<typeof Button> &
   ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -47,6 +54,7 @@ type DialogProps = {
   showCloseButton?: boolean;
   isDraggable?: boolean;
   isKeepOffset?: boolean;
+  handleRef?: Ref<DialogHandleRefType>;
 };
 
 const defaultButtonMap: Record<DefaultButtonType, { icon?: ReactNode; label: string }> = {
@@ -70,8 +78,14 @@ const Dialog = ({
   onSubmit,
   showCloseButton = true,
   isDraggable = false,
+  handleRef,
 }: DialogProps) => {
   const [open, setOpen] = useState(false);
+
+  useImperativeHandle(handleRef, () => ({
+    open: () => setOpen(true),
+    close: () => setOpen(false),
+  }));
 
   if (!isValidElement(trigger)) {
     console.warn('Dialog: trigger는 유효한 React element여야 합니다.');
@@ -96,6 +110,7 @@ const Dialog = ({
             e.preventDefault();
             onSubmit?.(e, () => setOpen(false));
           }}
+          className="overflow-auto"
           id="baseDialog">
           <DialogHeader isDraggable={isDraggable}>
             <DialogTitle className="flex gap-2 items-center mx-0 my-auto text-white">
@@ -105,7 +120,7 @@ const Dialog = ({
           </DialogHeader>
           <div
             className={cn(
-              'p-4 text-juiText-secondary text-sm overflow-auto',
+              'p-4 text-sm overflow-auto',
               Array.isArray(buttons) && buttons.length > 0 ? 'max-h-[calc(100lvh-150px)]' : 'max-h-[calc(100lvh-90px)]',
             )}
             style={{ maxHeight }}>
@@ -113,7 +128,7 @@ const Dialog = ({
           </div>
           {Array.isArray(buttons) && buttons.length > 0 && (
             <div className="p-1.5">
-              <Separator orientation="horizontal" className="h-px bg-juiGrey-300 light:bg-juiBorder-primary m-0" />
+              <Separator orientation="horizontal" className="h-px m-0 opacity-50" />
               <DialogFooter footerLocate={footerLocate}>
                 {buttons.map((btn, i) => {
                   if (typeof btn === 'string' && btn in defaultButtonMap) {

@@ -4,9 +4,9 @@ import { SubmitHandler, useController, useForm } from 'react-hook-form';
 import { Button, Checkbox, MultiSelect, useConfirmDialog } from '@common/ui';
 import { SearchIcon } from '@common/ui/icons';
 
-import { CodesType } from '../../../../../../services/common/getMultiCodes';
-import GreyPointText from '../../../../../../components/typography/GreyPointText';
-import { GetScenariosRequest } from '../../../../../../services/scenario/getScenarios';
+import { CodesType } from '../../../../../../../services/common/getMultiCodes';
+import GreyPointText from '../../../../../../../components/typography/GreyPointText';
+import { GetScenariosRequest } from '../../../../../../../services/scenario/getScenarios';
 import { useToggleArray } from './hooks/useToggleArray';
 
 type ScenarioListSearchProps = {

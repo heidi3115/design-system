@@ -55,6 +55,7 @@ export {
   DialogTitle,
   DialogTrigger,
   Dialog,
+  type DialogHandleRefType,
 } from './Dialog';
 export { Switch } from './Switch';
 export { Skeleton, CardSkeleton } from './Skeleton';
