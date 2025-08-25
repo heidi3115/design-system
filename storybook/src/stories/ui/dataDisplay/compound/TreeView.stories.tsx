@@ -85,6 +85,8 @@ const meta: Meta<typeof TreeView> = {
     debounceMs: DEFAULT_INTERNAL_DEBOUNCE,
     searchValue: undefined,
     searchOptions: undefined,
+    isHightLighting: false,
+    highlightClassName: '',
     onInputSearchChange: undefined,
   },
   argTypes: {
@@ -437,6 +439,22 @@ type TreeNodeProps<T> = {
         '  - "startsWith": 시작 문자열 일치 검색',
       ].join('\n'),
     },
+    isHightLighting: {
+      control: 'boolean',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+      description: ['TreeItem에서 검색어와 일치하는 부분에 대해 하이라이팅을 표시할 지 여부입니다.'].join('\n'),
+    },
+    highlightClassName: {
+      control: 'text',
+      table: {
+        defaultValue: { summary: '' },
+      },
+      description: [
+        'TreeItem 에서 별도로 하이라이트 할 부분에 추가할 CSS 클래스명입니다. Tailwind CSS 클래스를 사용할 수 있습니다.',
+      ].join('\n'),
+    },
     onInputSearchChange: {
       control: false,
       table: {
@@ -467,7 +485,7 @@ type TreeNodeProps<T> = {
           'TreeView 컴포넌트는 계층적/트리 구조 데이터를 시각적으로 탐색하거나 관리할 수 있도록 도와는 UI 요소입니다.',
           '폴더, 조직도, 네비게이션, 분류, 설정 트리 등 다양한 곳에 활용할 수 있습니다.',
           '트리 노드 데이터는 `id`, `name`속성이 필수이며, 필요시  `children`(재귀) 를 이용하여 확장 필드를 사용할 수 있습니다.',
-        ].join('\n\n'),
+        ].join('\n'),
       },
     },
   },
@@ -603,7 +621,7 @@ function UncontrolledExample({ ...args }: TreeViewProps) {
 
   return (
     <div className={cn(flexCol, 'items-center justify-center size-full')} key={JSON.stringify(args)}>
-      <h3 className="text-lg font-semibold">비제어 (Uncontrolled)</h3>
+      <h3 className={'text-lg font-semibold'}>비제어 (Uncontrolled)</h3>
       <div className={cn(flexRow, 'relative items-start justify-center gap-6 size-full')}>
         <div className={cn(flexCol, 'gap-4 flex-1 text-xs')}>
           <h2 className={'[&_b]:text-juiText-blue'}>
@@ -733,7 +751,7 @@ function ControlledExample({ ...args }: TreeViewProps) {
 
   return (
     <div className={cn(flexCol, 'items-center justify-center size-full')} key={JSON.stringify(args)}>
-      <h3 className="text-lg font-semibold">제어 (Controlled)</h3>
+      <h3 className={'text-lg font-semibold'}>제어 (Controlled)</h3>
       <div className={cn(flexRow, 'relative items-start justify-center gap-6 size-full')}>
         <div className={cn(flexCol, 'gap-4 flex-1 text-xs max-w-1/2')}>
           <h2 className={'[&_b]:text-juiText-blue'}>
@@ -1204,44 +1222,44 @@ function DemoForInternalVsExternal({ ...args }: TreeViewProps) {
   }, []);
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl mx-auto">
-      <div className="text-center">
-        <h2 className="text-2xl font-bold text-juiText-primary">내부 검색 vs 외부 API 검색</h2>
-        <p className="text-sm text-juiText-secondary mt-2">TreeView의 두 가지 검색 모드를 비교해보세요</p>
+    <div className={'p-6 space-y-6 max-w-7xl mx-auto'}>
+      <div className={'text-center'}>
+        <h2 className={'text-2xl font-bold text-juiText-primary'}>내부 검색 vs 외부 API 검색</h2>
+        <p className={'text-sm text-juiText-secondary mt-2'}>TreeView의 두 가지 검색 모드를 비교해보세요</p>
       </div>
 
       {/* 모드 선택 */}
-      <div className="flex justify-center gap-6 p-4 bg-juiGrey-50 rounded-lg">
-        <label className="flex items-center gap-3 cursor-pointer">
+      <div className={'flex justify-center gap-6 p-4 bg-juiGrey-50 rounded-lg'}>
+        <label className={'flex items-center gap-3 cursor-pointer'}>
           <input
             type="radio"
             value="internal"
             checked={searchMode === 'internal'}
             onChange={(e) => setSearchMode(e.target.value as SearchModeType)}
-            className="w-4 h-4"
+            className={'w-4 h-4'}
           />
-          <div className="flex flex-col">
-            <span className="font-medium">내부 검색 (Internal)</span>
-            <span className="text-xs text-juiText-secondary">클라이언트에서 실시간 필터링</span>
+          <div className={'flex flex-col'}>
+            <span className={'font-medium'}>내부 검색 (Internal)</span>
+            <span className={'text-xs text-juiText-secondary'}>클라이언트에서 실시간 필터링</span>
           </div>
         </label>
-        <label className="flex items-center gap-3 cursor-pointer">
+        <label className={'flex items-center gap-3 cursor-pointer'}>
           <input
             type="radio"
             value="external"
             checked={searchMode === 'external'}
             onChange={(e) => setSearchMode(e.target.value as SearchModeType)}
-            className="w-4 h-4"
+            className={'w-4 h-4'}
           />
-          <div className="flex flex-col">
-            <span className="font-medium">외부 검색 (External)</span>
-            <span className="text-xs text-juiText-secondary">서버 API를 통한 검색</span>
+          <div className={'flex flex-col'}>
+            <span className={'font-medium'}>외부 검색 (External)</span>
+            <span className={'text-xs text-juiText-secondary'}>서버 API를 통한 검색</span>
           </div>
         </label>
       </div>
 
       {/* 비교 테이블 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className={'grid grid-cols-1 lg:grid-cols-2 gap-8'}>
         {/* 내부 검색 (Internal Mode) */}
         <div
           className={`
@@ -1252,29 +1270,29 @@ function DemoForInternalVsExternal({ ...args }: TreeViewProps) {
               : 'border-juiBorder-subtle bg-juiGrey-50 opacity-70'
           }
         `}>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-juiText-blue">🔍 Internal Search</h3>
-            <div className="flex items-center gap-2 text-xs">
-              <span className="px-2 py-1 bg-green-100 text-green-700 rounded">즉시 응답</span>
-              <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded">클라이언트</span>
+          <div className={'flex items-center justify-between mb-4'}>
+            <h3 className={'text-lg font-semibold text-juiText-blue'}>🔍 Internal Search</h3>
+            <div className={'flex items-center gap-2 text-xs'}>
+              <span className={'px-2 py-1 bg-green-100 text-green-700 rounded'}>즉시 응답</span>
+              <span className={'px-2 py-1 bg-blue-100 text-blue-700 rounded'}>클라이언트</span>
             </div>
           </div>
 
-          <div className="space-y-3 mb-4 text-sm">
-            <div className="flex justify-between">
+          <div className={'space-y-3 mb-4 text-sm'}>
+            <div className={'flex justify-between'}>
               <span>검색 방식:</span>
               <span>실시간 클라이언트 필터링</span>
             </div>
-            <div className="flex justify-between">
+            <div className={'flex justify-between'}>
               <span>네트워크:</span>
               <span>없음</span>
             </div>
-            <div className="flex justify-between">
+            <div className={'flex justify-between'}>
               <span>디바운스:</span>
               <span>{DEFAULT_INTERNAL_DEBOUNCE}ms (내부 처리)</span>
             </div>
           </div>
-          <div className="h-96 border border-juiBorder-subtle rounded overflow-hidden">
+          <div className={'h-96 border border-juiBorder-subtle rounded overflow-hidden'}>
             <TreeView
               {...args}
               treeData={internalTreeData}
@@ -1305,32 +1323,32 @@ function DemoForInternalVsExternal({ ...args }: TreeViewProps) {
               : 'border-juiBorder-subtle bg-juiGrey-50 opacity-70'
           }
         `}>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-juiText-blue">🌐 External API Search</h3>
-            <div className="flex items-center gap-2 text-xs">
-              <span className="px-2 py-1 bg-orange-100 text-orange-700 rounded">API 호출</span>
-              <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded">서버</span>
+          <div className={'flex items-center justify-between mb-4'}>
+            <h3 className={'text-lg font-semibold text-juiText-blue'}>🌐 External API Search</h3>
+            <div className={'flex items-center gap-2 text-xs'}>
+              <span className={'px-2 py-1 bg-orange-100 text-orange-700 rounded'}>API 호출</span>
+              <span className={'px-2 py-1 bg-purple-100 text-purple-700 rounded'}>서버</span>
               {isLoading && (
-                <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded animate-pulse">로딩중...</span>
+                <span className={'px-2 py-1 bg-yellow-100 text-yellow-700 rounded animate-pulse'}>로딩중...</span>
               )}
             </div>
           </div>
 
-          <div className="space-y-3 mb-4 text-sm">
-            <div className="flex justify-between">
+          <div className={'space-y-3 mb-4 text-sm'}>
+            <div className={'flex justify-between'}>
               <span>검색 방식:</span>
               <span>서버 API 호출</span>
             </div>
-            <div className="flex justify-between">
+            <div className={'flex justify-between'}>
               <span>네트워크:</span>
               <span>{DEFAULT_EXTERNAL_DEBOUNCE}ms 지연 시뮬레이션</span>
             </div>
-            <div className="flex justify-between">
+            <div className={'flex justify-between'}>
               <span>현재 검색어:</span>
-              <span className="font-mono bg-juiGrey-50 px-2 py-1 rounded">{externalSearchValue || '없음'}</span>
+              <span className={'font-mono bg-juiGrey-50 px-2 py-1 rounded'}>{externalSearchValue || '없음'}</span>
             </div>
           </div>
-          <div className="h-96 border border-juiBorder-subtle rounded overflow-hidden">
+          <div className={'h-96 border border-juiBorder-subtle rounded overflow-hidden'}>
             {isLoading ? (
               <CardSkeleton />
             ) : (
@@ -1398,4 +1416,196 @@ export const SearchInternalVsExternal: Story = {
     },
   },
   render: (args) => <DemoForInternalVsExternal {...args} />,
+};
+
+// 하이라이팅 비교 컴포넌트
+const HighlightingComparisonDemo = (args: TreeViewProps) => {
+  const customClass = 'bg-yellow-200 text-gray-900 font-semibold';
+  const originalExternalData = basicTreeData1;
+
+  const debounceTimeoutRef = useRef<number | null>(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [externalTreeData, setExternalTreeData] = useState<AssetTreeNodeProps[]>(basicTreeData1);
+  const [externalExpandedIds, setExternalExpandedIds] = useState<string[]>([]);
+
+  const simulateExternalAPISearch = async (query: string) => {
+    setIsLoading(true);
+
+    await new Promise((resolve) => setTimeout(resolve, args.debounceMs));
+
+    if (!query.trim()) {
+      setExternalTreeData(originalExternalData);
+      setExternalExpandedIds([]);
+      setIsLoading(false);
+
+      return;
+    }
+
+    const filteredData: AssetTreeNodeProps[] = originalExternalData
+      .map((parent) => {
+        if (parent.name.toLowerCase().includes(query.toLowerCase())) {
+          return parent;
+        }
+
+        const matchedChildren = parent.children?.filter((child) =>
+          child.name.toLowerCase().includes(query.toLowerCase()),
+        );
+
+        if (matchedChildren && matchedChildren.length > 0) {
+          return { ...parent, children: matchedChildren };
+        }
+
+        return null;
+      })
+      .filter(Boolean) as AssetTreeNodeProps[];
+
+    setExternalTreeData(filteredData);
+
+    const flattenFilteredTreeData = flattenTree(filteredData);
+    const filteredArray = Array.from(flattenFilteredTreeData.values());
+    const expanded = filteredArray
+      .filter((node: AssetTreeNodeProps) => node.children && node.children.length > 0)
+      .map((node: AssetTreeNodeProps) => node.id);
+
+    setExternalExpandedIds(expanded);
+
+    setIsLoading(false);
+  };
+
+  const handleExternalSearchChange = useCallback((value: string) => {
+    setSearchValue(value);
+
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+
+    debounceTimeoutRef.current = setTimeout(() => {
+      simulateExternalAPISearch(value);
+    }, args?.debounceMs);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div className={flexCol}>
+      <div className={'mb-4'}>
+        <label htmlFor="comparison-search" className={'block text-xl font-bold mb-2'}>
+          검색어 입력 (두 TreeView 동시 적용)
+        </label>
+        <input
+          id="comparison-search"
+          type="text"
+          value={searchValue}
+          onChange={(e) => {
+            const value = e.target.value;
+
+            handleExternalSearchChange(value);
+          }}
+          placeholder={args.searchPlaceholder}
+          className={
+            'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+          }
+        />
+      </div>
+
+      <div className={'grid grid-cols-2 gap-6'}>
+        {/* 하이라이팅 없는 TreeView */}
+        <div className={'space-y-2'}>
+          <h3 className={'text-lg font-semibold'}>하이라이팅 없음</h3>
+          <p className={blueTxt}>isHightLighting=false</p>
+          <div className={'border border-gray-200 rounded-md p-4'}>
+            {isLoading ? (
+              <CardSkeleton />
+            ) : (
+              <TreeView
+                {...args}
+                treeData={externalTreeData}
+                quickSearchEnabled={false}
+                expandedIds={externalExpandedIds.length > 0 ? externalExpandedIds : undefined}
+                searchValue={searchValue}
+                onInputSearchChange={handleExternalSearchChange}
+                isHightLighting={false}
+              />
+            )}
+          </div>
+        </div>
+        {/* 하이라이팅 있는 TreeView */}
+        <div className={'space-y-2'}>
+          <h3 className={'text-lg font-semibold'}>하이라이팅 적용</h3>
+          <p className={blueTxt}>{`isHightLighting=true, highlightClassName="${customClass}"`}</p>
+          <div className={'border border-gray-200 rounded-md p-4'}>
+            {isLoading ? (
+              <CardSkeleton />
+            ) : (
+              <TreeView
+                {...args}
+                treeData={externalTreeData}
+                quickSearchEnabled={false}
+                expandedIds={externalExpandedIds.length > 0 ? externalExpandedIds : undefined}
+                searchValue={searchValue}
+                onInputSearchChange={handleExternalSearchChange}
+                debounceMs={DEFAULT_INTERNAL_DEBOUNCE}
+                isHightLighting={true}
+                highlightClassName={customClass}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className={'mt-6 p-4 bg-blue-50 rounded-md'}>
+        <h4 className={'text-sm font-semibold text-juiText-blue mb-2'}>예시</h4>
+        <ul className={'text-sm text-juiText-blue space-y-1'}>
+          <li>• 검색어를 입력하면 두 TreeView에 동시에 적용됩니다</li>
+          <li>• 왼쪽은 일반 텍스트, 오른쪽은 매칭된 부분이 노란색으로 하이라이팅됩니다</li>
+          <li>• highlightClassName으로 하이라이팅 스타일을 커스터마이징할 수 있습니다</li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export const HighlightingComparison: Story = {
+  argTypes: {
+    // 컨트롤에서 불필요한 props 숨기기
+    treeData: { table: { disable: true } },
+    selectedIds: { table: { disable: true } },
+    expandedIds: { table: { disable: true } },
+    disabledIds: { table: { disable: true } },
+    onSelectedNodes: { table: { disable: true } },
+    onToggledNodes: { table: { disable: true } },
+    onDisabledNodes: { table: { disable: true } },
+    onTreeViewState: { table: { disable: true } },
+    quickSearchEnabled: { table: { disable: true } },
+    searchPlaceholder: { table: { disable: true } },
+    debounceMs: { table: { disable: true } },
+    searchValue: { table: { disable: true } },
+    searchOptions: { table: { disable: true } },
+    onInputSearchChange: { table: { disable: true } },
+    isHightLighting: { table: { disable: true } },
+    highlightClassName: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'TreeView의 하이라이팅 기능을 비교해볼 수 있는 데모입니다.',
+          '• 왼쪽: 하이라이팅 없는 일반 TreeView',
+          '• 오른쪽: 검색어 매칭 부분을 하이라이팅하는 TreeView',
+          '• 하나의 검색 입력으로 두 TreeView를 동시에 제어합니다',
+          '• highlightClassName을 통해 하이라이팅 스타일을 커스터마이징할 수 있습니다',
+        ].join('\n'),
+      },
+    },
+  },
+  render: (args) => <HighlightingComparisonDemo {...args} />,
 };

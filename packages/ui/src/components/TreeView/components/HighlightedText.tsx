@@ -26,7 +26,7 @@ export default function HighlightedText({
   // isHightLighting이 false이거나 검색어가 없는 경우 일반 텍스트 반환
   if (!isHightLighting || !searchQuery || !searchQuery.trim()) {
     return (
-      <span data-matched={false} className={cn(className, 'select-none')}>
+      <span data-matched={false} className={cn('select-none')}>
         {text}
       </span>
     );
@@ -53,7 +53,7 @@ export default function HighlightedText({
             <span
               key={index}
               data-matched={true}
-              className={cn('select-none', 'font-bold bg-juiText-primary/30', className)}>
+              className={cn('select-none', 'font-bold bg-juiText-primary/30', isHightLighting && className)}>
               {part}
             </span>
           ) : (
@@ -67,7 +67,7 @@ export default function HighlightedText({
     console.warn('HighlightedText: Invalid search query', error);
 
     return (
-      <span data-matched={false} className={cn(className, 'select-none')}>
+      <span data-matched={false} className={cn('select-none')}>
         {text}
       </span>
     );
