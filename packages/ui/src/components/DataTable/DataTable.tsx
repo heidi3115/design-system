@@ -94,7 +94,7 @@ function DataTable<T, V = unknown>({
 
   const { globalFilter, setGlobalFilter, handleChange } = useQuickSearch(externalGlobalFilter, onGlobalFilterChange);
 
-  const addColumn: ColumnDef<T, unknown> = {
+  const addCheckboxColumn: ColumnDef<T, unknown> = {
     id: 'select',
     header: ({ table }) => (
       <Checkbox
@@ -116,7 +116,7 @@ function DataTable<T, V = unknown>({
 
   const table = useReactTable({
     data: rows,
-    columns: enableRowSelection ? [addColumn, ...columns] : columns,
+    columns: enableRowSelection ? [addCheckboxColumn, ...columns] : columns,
     manualFiltering,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
