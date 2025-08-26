@@ -7,7 +7,7 @@ import { DeptsType } from '../../../../services/common/getSearchDept';
 
 export function useSetDeptTreeData(items: DeptsType[]): BaseTreeNodeProps<DeptsType>[] {
   return useMemo(() => {
-    const map = new Map<string, BaseTreeNodeProps>();
+    const map = new Map<string, BaseTreeNodeProps<DeptsType>>();
 
     items.forEach((item) => {
       map.set(item.deptCd, {
@@ -37,7 +37,7 @@ export function useSetDeptTreeData(items: DeptsType[]): BaseTreeNodeProps<DeptsT
 
         return node;
       })
-      .filter((node): node is BaseTreeNodeProps => node !== null)
+      .filter((node): node is BaseTreeNodeProps<DeptsType> => node !== null)
       .sort((a, b) => (a.ord as number) - (b.ord as number)); // root 정렬
 
     return roots;

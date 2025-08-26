@@ -19,10 +19,10 @@ export type BaseTreeNodeProps<T = unknown> = {
   id: string;
   /** 트리 노드의 표시명 */
   name: string;
+  /** 노드 비활성화 여부 */
+  disabled?: boolean;
   /** 자식 노드들 (재귀적 구조) */
   children?: BaseTreeNodeProps<T>[];
-  /** 확장을 위한 인덱스 시그니처 */
-  [key: string]: unknown;
 } & Partial<T>;
 
 export type TreeItemProps<T> = {
