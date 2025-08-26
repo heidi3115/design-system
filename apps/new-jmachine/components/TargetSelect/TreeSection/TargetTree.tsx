@@ -78,7 +78,7 @@ export default function TargetTree({
         variant="primary"
         size="small"
         showIcons
-        showLineLevel={0}
+        isAllLine
         treeData={isInfra ? assetData : treeData}
         defaultExpandedIds={
           isInfra

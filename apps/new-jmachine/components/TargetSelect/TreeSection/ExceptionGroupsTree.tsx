@@ -37,7 +37,7 @@ export default function ExceptionGroupsTree({
         variant="primary"
         size="small"
         showIcons
-        showLineLevel={0}
+        isAllLine
         treeData={treeData}
         defaultExpandedIds={[data.id]}
         onSelectedNodes={(selectedIds) => {

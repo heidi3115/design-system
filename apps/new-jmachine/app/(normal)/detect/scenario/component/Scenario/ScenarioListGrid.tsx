@@ -68,7 +68,7 @@ export function ScenarioListGrid({ scenarioType, scenariosData, params }: Scenar
       accessorKey: 'scnrCls',
       header: '분류',
       cell: (ctx) => {
-        const value = ctx.cell.getValue() as string | undefined;
+        const value = ctx.cell.getValue();
 
         if (!value) return null;
 
@@ -86,14 +86,41 @@ export function ScenarioListGrid({ scenarioType, scenariosData, params }: Scenar
     {
       accessorKey: 'alrmYn',
       header: '알림 사용',
+      cell: (ctx) => {
+        const value = ctx.cell.getValue();
+
+        return (
+          <Badge status={value === 'Y' ? 'primary' : 'default'} className="w-21 h-5">
+            {value === 'Y' ? '사용' : '미사용'}
+          </Badge>
+        );
+      },
     },
     {
       accessorKey: 'explnUseYn',
       header: '소명 요청',
+      cell: (ctx) => {
+        const value = ctx.cell.getValue();
+
+        return (
+          <Badge status={value === 'Y' ? 'primary' : 'default'} className="w-21 h-5">
+            {value === 'Y' ? '사용' : '미사용'}
+          </Badge>
+        );
+      },
     },
     {
       accessorKey: 'oprStt',
       header: '운영 상태',
+      cell: (ctx) => {
+        const value = ctx.cell.getValue();
+
+        return (
+          <Badge status={value === minorCategoryValueMap.operateUse ? 'primary' : 'default'} className="w-21 h-5">
+            {value === minorCategoryValueMap.operateUse ? '사용' : '미사용'}
+          </Badge>
+        );
+      },
     },
     {
       accessorKey: 'regUser',

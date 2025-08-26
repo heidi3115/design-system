@@ -81,7 +81,7 @@ export default function TreeItem<T = unknown>({
   const hasChildren = Array.isArray(node?.children) && node.children.length > 0;
   const hasLineLevel = !(showLineLevel === undefined);
   const lineLevelNum = hasLineLevel ? showLineLevel : 0;
-  const shouldShowLines = hasLineLevel ? (isAllLine ? level >= lineLevelNum : level === lineLevelNum) : false;
+  const shouldShowLines = isAllLine ? level >= lineLevelNum : hasLineLevel ? level === lineLevelNum : undefined;
 
   const { base, common, items, itemTrigger, itemContent, icons } = treeViewVariants({
     size,

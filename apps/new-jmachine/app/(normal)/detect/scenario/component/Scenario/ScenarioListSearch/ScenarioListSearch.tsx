@@ -172,7 +172,7 @@ export function ScenarioListSearch({
         </div>
         <div className="flex gap-2">
           <GreyPointText className="text-xs w-24 shrink-0">대응 구분</GreyPointText>
-          <div className="flex gap-1 w-full flex-nowrap items-center pl-0.5">
+          <div className="flex gap-1 w-full flex-wrap items-center pl-0.5">
             {scenarioSearchOptions &&
               scenarioSearchOptions.responseMode?.map((level) => (
                 <Checkbox
