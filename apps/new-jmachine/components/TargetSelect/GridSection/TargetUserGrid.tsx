@@ -1,12 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { Button, DataTable, DataTableProps } from '@common/ui';
 import { EmployeeType, getSearchUsersClientFetch } from '../../../services/common/getSearchUsers';
-import { useState } from 'react';
-
-const DEFAULT_PAGE_SIZE = 15 as const;
+import { DEFAULT_PAGE_SIZE } from './constant';
 
 type TargetUserGridProps = {
   targetId: string;
@@ -22,7 +21,7 @@ export default function TargetUserGrid({ targetId, onSelectedData }: TargetUserG
     queryFn: () =>
       getSearchUsersClientFetch({
         deptCd2: targetId,
-        limit: 15,
+        limit: DEFAULT_PAGE_SIZE,
         offset: currentPage + 1,
         searchText2: globalFilter,
       }),

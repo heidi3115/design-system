@@ -10,17 +10,17 @@ import {
 import { minorCategoryValueMap } from '../../../lib/mapper/minorCategoryTypeMap';
 
 type ExceptionGroupsTreeProps = {
-  targetType?: string;
+  detectTargetType?: string;
   onSelectedGroupData?: (data: ExceptionGroupsType) => void;
 };
 
 export default function ExceptionGroupsTree({
-  targetType = minorCategoryValueMap.employeeTargetType,
+  detectTargetType = minorCategoryValueMap.employeeTargetType,
   onSelectedGroupData,
 }: ExceptionGroupsTreeProps) {
   const { data } = useSuspenseQuery({
-    queryKey: ['scenario', 'exceptionManagement', 'groups', targetType],
-    queryFn: () => getExceptionManageGroupsClientFetch({ dttTrgTyp: targetType }),
+    queryKey: ['scenario', 'exceptionManagement', 'groups', detectTargetType],
+    queryFn: () => getExceptionManageGroupsClientFetch({ dttTrgTyp: detectTargetType }),
   });
 
   const treeData = [

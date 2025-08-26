@@ -5,20 +5,18 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { RadioGroup } from '@common/ui';
 import ClientErrorBoundaryFallback from '../../../../../../components/ClientErrorBoundaryFallback';
-import { EmployeeType } from '../../../../../../services/common/getSearchUsers';
-import { DeptsType } from '../../../../../../services/common/getSearchDept';
-import { ExceptionGroupsType } from '../../../../../../services/scenario/getExceptionManageGroups';
-import TargetSelectDialog from '../../../../../../components/TargetSelect/TargetSelectDialog';
+import TargetSelectDialog, {
+  type TargetEntityType,
+} from '../../../../../../components/TargetSelect/TargetSelectDialog';
 import { minorCategoryValueMap } from '../../../../../../lib/mapper/minorCategoryTypeMap';
-import { AssetType } from '../../../../../../services/asset/getAssets';
 
 type ExceptionListProps = {
   scenarioType: string;
 };
 
 export function ExceptionList({ scenarioType }: ExceptionListProps) {
-  const [targetType, setTargetType] = useState<string>(minorCategoryValueMap.employeeTargetType);
-  const [target, setTarget] = useState<EmployeeType | DeptsType | ExceptionGroupsType | AssetType | null>(null);
+  const [detectTargetType, setDetectTargetType] = useState<string>(minorCategoryValueMap.employeeTargetType);
+  const [target, setTarget] = useState<TargetEntityType>(null);
 
   return (
     <div className="h-full flex flex-col gap-2">
@@ -29,9 +27,9 @@ export function ExceptionList({ scenarioType }: ExceptionListProps) {
         <div className="flex gap-4">
           <RadioGroup
             direction="horizontal"
-            defaultValue={targetType}
+            defaultValue={detectTargetType}
             onValueChange={(value) => {
-              setTargetType(value);
+              setDetectTargetType(value);
               setTarget(null);
             }}
             options={[
@@ -46,7 +44,7 @@ export function ExceptionList({ scenarioType }: ExceptionListProps) {
             ]}
           />
           <div className="w-72">
-            <TargetSelectDialog targetType={targetType} onTargetData={(data) => setTarget(data)} />
+            <TargetSelectDialog detectTargetType={detectTargetType} onTargetData={(data) => setTarget(data)} />
           </div>
         </div>
       </ErrorBoundary>

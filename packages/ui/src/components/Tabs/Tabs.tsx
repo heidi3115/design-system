@@ -54,7 +54,7 @@ function Tabs<T extends TabItemType>({
   restScreenHeight = DEFAULT_REST_HEIGHT,
   onValueChange,
 }: TabsProps<T>) {
-  const { content, underline, tabsAlign, list, firstForderTab } = tabsTriggerVariants({
+  const { content, underline, tabsAlign, list, firstFolderTab } = tabsTriggerVariants({
     variant,
     shape,
     size,
@@ -97,7 +97,7 @@ function Tabs<T extends TabItemType>({
             index === 0 && shape === 'folder' ? (
               <TabsTrigger
                 key={value}
-                className={cn(firstForderTab(), className)}
+                className={cn(firstFolderTab(), className)}
                 style={{ maxWidth: `${maxWidth}px` }}
                 value={value}
                 disabled={disabled}>

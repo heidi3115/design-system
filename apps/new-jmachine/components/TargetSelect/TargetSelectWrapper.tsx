@@ -1,0 +1,62 @@
+'use client';
+
+import { TabItemType, Tabs } from '@common/ui';
+import TargetSelectContent, { TargetCategoryType } from './TargetSelectContent';
+import { type TargetEntityType } from './TargetSelectDialog';
+
+type TargetSelectProps = {
+  detectTargetType: string;
+  targetTabList?: TargetCategoryType[];
+  onSelectedData?: (data: TargetEntityType) => void;
+};
+
+export default function TargetSelectWrapper({
+  targetTabList = ['user'],
+  detectTargetType,
+  onSelectedData,
+}: TargetSelectProps) {
+  const allTabs = [
+    {
+      value: 'user',
+      label: '임직원',
+      content: <TargetSelectContent type="user" onSelectedData={(data) => onSelectedData?.(data)} />,
+      boxClassName: 'p-4',
+    },
+    {
+      value: 'depts',
+      label: '부서',
+      content: <TargetSelectContent type="depts" onSelectedData={(data) => onSelectedData?.(data)} />,
+      boxClassName: 'p-4',
+    },
+    {
+      value: 'asset',
+      label: '자산',
+      content: <TargetSelectContent type="asset" onSelectedData={(data) => onSelectedData?.(data)} />,
+      boxClassName: 'p-4',
+    },
+    {
+      value: 'assetGroup',
+      label: '자산 그룹',
+      content: <TargetSelectContent type="assetGroup" onSelectedData={(data) => onSelectedData?.(data)} />,
+      boxClassName: 'p-4',
+    },
+    {
+      value: 'exceptionGroup',
+      label: '예외대상 그릅',
+      content: (
+        <TargetSelectContent
+          type="exceptionGroup"
+          detectTargetType={detectTargetType}
+          onSelectedData={(data) => onSelectedData?.(data)}
+        />
+      ),
+      boxClassName: 'p-4',
+    },
+  ] satisfies TabItemType;
+
+  const tabs = allTabs.filter((tab): tab is (typeof allTabs)[number] & { value: TargetCategoryType } =>
+    targetTabList.includes(tab.value as TargetCategoryType),
+  );
+
+  return <Tabs tabs={tabs} className="pb-4 px-8" />;
+}
