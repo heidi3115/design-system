@@ -3,7 +3,7 @@
 import { cn } from '@common/ui/lib/utils';
 import React from 'react';
 
-interface HighlightedTextProps {
+export type HighlightedTextProps = {
   /** 하이라이팅 여부 */
   isHightLighting?: boolean;
   /** 표시할 텍스트 */
@@ -12,7 +12,7 @@ interface HighlightedTextProps {
   searchQuery?: string;
   /** 추가 하이라이트 CSS 클래스 */
   className?: string;
-}
+};
 
 /**
  * 검색어와 일치하는 부분을 하이라이팅하는 텍스트 컴포넌트
