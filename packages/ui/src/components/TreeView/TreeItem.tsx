@@ -171,7 +171,9 @@ export default function TreeItem<T = unknown>({
           onClick={(e: React.MouseEvent) => e.stopPropagation()}>
           {hasLineLevel && level === lineLevelNum && (
             <span
-              className={'flex absolute left-3 bottom-1 size-1 font-bold text-[20px]/0 pointer-events-none'}
+              className={
+                'flex absolute left-3 bottom-1 size-1 font-bold text-[20px]/0 text-juiBorder-primary pointer-events-none'
+              }
               aria-hidden="true">
               •
             </span>

@@ -58,7 +58,7 @@ export const treeViewVariants = tv({
     },
     showLines: {
       true: {
-        itemContent: 'border-juiText-primary/70',
+        itemContent: 'border-juiBorder-primary',
       },
       false: {
         itemContent: 'border-transparent',
