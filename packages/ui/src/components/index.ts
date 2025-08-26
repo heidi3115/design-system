@@ -55,6 +55,7 @@ export {
   DialogTitle,
   DialogTrigger,
   Dialog,
+  type DialogHandleRefType,
 } from './Dialog';
 export { Switch } from './Switch';
 export { Skeleton, CardSkeleton } from './Skeleton';
@@ -264,4 +265,26 @@ export {
   breadcrumbVariants,
 } from './Breadcrumb';
 
-export { Calendar, CalendarDayButton, type DateRange } from './Calendar';
+export { Calendar, CalendarTime, CalendarDayButton, type DateRange } from './Calendar';
+
+export { DatePicker, RangeDatePicker } from './DatePicker';
+
+export {
+  treeViewVariants,
+  TreeViewRoot,
+  TreeViewItem,
+  TreeViewItemTrigger,
+  TreeViewItemContent,
+  TreeView,
+  TreeItem,
+  type TreeViewRootProps,
+  type TreeViewItemProps,
+  type TreeViewItemContentProps,
+  type TreeViewItemTriggerProps,
+  type TreeItemProps,
+  type BaseTreeNodeProps,
+  type TreeViewProps,
+  type TreeViewStateType,
+} from './TreeView';
+
+export { DataTable, type DataTableProps } from './DataTable';

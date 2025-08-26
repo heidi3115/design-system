@@ -1,7 +1,14 @@
 'use client';
 
 import * as React from 'react';
-import { DayButton, DayPicker, getDefaultClassNames, type DateRange } from 'react-day-picker';
+import {
+  DayButton,
+  DayPicker,
+  getDefaultClassNames,
+  type Modifiers,
+  type ModifiersClassNames,
+  type DateRange,
+} from 'react-day-picker';
 import { ko } from 'date-fns/locale';
 
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, XIcon } from '@common/ui/icons';
@@ -19,6 +26,7 @@ function Calendar({
   showOutsideDays = true,
   captionLayout = 'label',
   buttonVariant = 'transparent',
+  navLayout = 'around',
   formatters,
   components,
   dialogOpen,
@@ -35,15 +43,23 @@ function Calendar({
 }) {
   const defaultClassNames = getDefaultClassNames();
 
+  const currentYear = new Date().getFullYear();
+
+  const dayButtonClassNames = props.modifiersClassNames;
+
+  const navLayoutAdjust = navLayout === 'around' ? undefined : navLayout;
+
   return (
     <DayPicker
       mode="single"
       locale={ko}
+      fromYear={currentYear - 100}
+      toYear={currentYear + 100}
       showOutsideDays={showOutsideDays}
       className={cn(
         'bg-juiBackground-popover group/calendar p-3',
         '[--cell-size:--spacing(8)]',
-        '[[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent',
+        '[[data-slot=card-content]_&]:bg-transparent',
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className,
@@ -53,11 +69,17 @@ function Calendar({
         formatMonthDropdown: (date) => date.toLocaleString('ko', { month: 'short' }),
         ...formatters,
       }}
+      navLayout={navLayoutAdjust}
       classNames={{
         root: cn('w-fit', defaultClassNames.root),
         months: cn('flex gap-4 flex-col md:flex-row relative', defaultClassNames.months),
-        month: cn('flex flex-col w-full gap-4', defaultClassNames.month),
-        nav: cn('flex items-center gap-1 w-full absolute top-0 inset-x-0 justify-between', defaultClassNames.nav),
+        month: cn('inline-grid w-full gap-4', defaultClassNames.month),
+        nav: cn(
+          'flex items-center gap-1 absolute top-0 inset-x-0',
+          navLayoutAdjust === undefined && 'w-full justify-between',
+          navLayoutAdjust === 'after' && 'w-fit ml-auto',
+          defaultClassNames.nav,
+        ),
         button_previous: cn(
           buttonVariants({ variant: buttonVariant }),
           'size-(--cell-size) aria-disabled:opacity-50 p-0 select-none',
@@ -69,11 +91,13 @@ function Calendar({
           defaultClassNames.button_next,
         ),
         month_caption: cn(
-          'flex items-center justify-center h-(--cell-size) w-full px-(--cell-size) min-w-72',
+          'flex items-center h-(--cell-size) w-full min-w-72',
+          navLayoutAdjust === undefined && 'justify-center px-(--cell-size)',
           defaultClassNames.month_caption,
         ),
         dropdowns: cn(
-          'w-full flex items-center text-sm font-medium justify-center h-(--cell-size) gap-1.5',
+          'w-full flex items-center text-sm font-medium h-(--cell-size) gap-1.5',
+          navLayoutAdjust === undefined && 'justify-center',
           defaultClassNames.dropdowns,
         ),
         dropdown_root: cn(
@@ -84,7 +108,7 @@ function Calendar({
         caption_label: cn(
           'select-none font-medium',
           captionLayout === 'label'
-            ? 'text-sm'
+            ? 'text-sm px-2'
             : 'rounded-md pl-2 pr-1 flex items-center gap-1 text-sm h-8 [&>svg]:text-juiText-secondary [&>svg]:size-3.5',
           defaultClassNames.caption_label,
         ),
@@ -93,7 +117,7 @@ function Calendar({
         weekday: cn(
           'text-juiText-primary font-medium rounded-md flex-1 text-[0.8rem] select-none',
           '[&:nth-child(1)]:text-juiError', // 일요일 (index 0 → 1번째 child)
-          '[&:nth-child(7)]:text-juiPrimary', // 토요일 (index 6 → 7번째 child)
+          '[&:nth-child(7)]:text-juiText-blue', // 토요일 (index 6 → 7번째 child)
           defaultClassNames.weekday,
         ),
         week: cn('flex w-full mt-2 rounded-md overflow-hidden', defaultClassNames.week),
@@ -153,7 +177,7 @@ function Calendar({
 
           return <ChevronDownIcon className={cn('size-4', chevronClassName)} {...restChevron} />;
         },
-        DayButton: CalendarDayButton,
+        DayButton: (buttonProps) => CalendarDayButton({ ...buttonProps, customClassNames: dayButtonClassNames }),
         WeekNumber: ({ children, ...restWeekNumber }) => {
           return (
             <td {...restWeekNumber}>
@@ -175,7 +199,8 @@ function Calendar({
               value={String(value)}
               width="fit"
               className="min-w-0"
-              optionsClassName="min-w-0 text-center"
+              optionsClassName="min-w-0 justify-center"
+              itemClassName="justify-center"
               isContentFitTriggerWidth
               onValueChange={handleValueChange}
               options={
@@ -197,7 +222,15 @@ function Calendar({
   );
 }
 
-function CalendarDayButton({ className, day, modifiers, ...props }: React.ComponentProps<typeof DayButton>) {
+function CalendarDayButton({
+  className,
+  day,
+  modifiers,
+  customClassNames,
+  ...props
+}: React.ComponentProps<typeof DayButton> & {
+  customClassNames?: ModifiersClassNames;
+}) {
   const defaultClassNames = getDefaultClassNames();
 
   const ref = React.useRef<HTMLButtonElement>(null);
@@ -205,6 +238,13 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
   React.useEffect(() => {
     if (modifiers.focused) ref.current?.focus();
   }, [modifiers.focused]);
+
+  const getModifiersClassName = (modifierObj: Modifiers, modifiersClassNames?: ModifiersClassNames) => {
+    return Object.entries(modifierObj)
+      .filter(([key, isActive]) => isActive && modifiersClassNames?.[key])
+      .map(([key]) => modifiersClassNames![key])
+      .join(' ');
+  };
 
   return (
     <Button
@@ -221,7 +261,7 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
       data-today={modifiers.today}
       className={cn(
         // 버튼 색상 초기화
-        'text-inherit',
+        'text-inherit font-normal',
 
         // ✅ 선택 상태
         'data-[selected-single=true]:bg-juiPrimary',
@@ -269,7 +309,6 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
         'm-auto',
         'gap-1',
         'leading-none',
-        'font-normal',
         'hover:font-bold',
         'hover:bg-current/20',
         'hover:rounded-full',
@@ -280,9 +319,9 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
         '[&>span]:opacity-70',
 
         // ✅ 외부 전달 props
-        defaultClassNames.day,
         'rounded-full',
-
+        defaultClassNames.day,
+        customClassNames && getModifiersClassName(modifiers, customClassNames),
         className,
       )}
       {...props}
@@ -313,8 +352,8 @@ function ConfirmationDialog({
         <DialogOverlay className="absolute" />
         <DialogContent className="absolute flex flex-col justify-center min-h-34 top-[50%] left-[50%] z-50 min-w-60 max-w-68 translate-x-[-50%] translate-y-[-50%] rounded-lg bg-juiBackground-popover p-4 shadow-lg">
           <DialogTitle className="sr-only">title</DialogTitle>
-          <DialogDescription className="text-juiText-primary overflow-hidden break-all break-words text-center">
-            {dialogContent}
+          <DialogDescription className="text-juiText-primary overflow-hidden break-all break-words text-center" asChild>
+            <span>{dialogContent}</span>
           </DialogDescription>
           <DialogClose className={cn(closeButton(), 'top-2.5 right-2.5 focus:ring-0 focus:ring-offset-0')}>
             <XIcon />

@@ -27,7 +27,7 @@ export function useConfirmDialog() {
 
       // 렌더링 이후로 unmount 지연
       queueMicrotask(() => {
-        rootRef.current?.unmount();
+        // rootRef.current?.unmount();
         container.remove();
       });
     };

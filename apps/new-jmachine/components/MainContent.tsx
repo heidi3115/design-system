@@ -1,6 +1,7 @@
 'use client';
 
 import { ComponentProps } from 'react';
+import { cn } from '@common/ui/lib';
 
 export function MainContent({
   children,
@@ -14,13 +15,13 @@ export function MainContent({
 }) {
   return (
     <div
-      className={`
-        flex-col overflow-auto
-        ${(contentType === 'box' || contentType === 'inBox') && 'p-7'}
-        ${contentType === 'tabs' && 'px-7 pb-7'}
-        ${contentType === 'flex' && 'p-0'}
-        ${className}
-    `}
+      className={cn(
+        'flex-col overflow-auto',
+        (contentType === 'box' || contentType === 'inBox') && 'p-7',
+        contentType === 'tabs' && 'px-7 pb-7',
+        contentType === 'flex' && 'p-0',
+        className,
+      )}
       style={{ height: `calc(100svh - ${headerHeight}px)` }}
       {...props}>
       <section className="layout-min-width h-full overflow-auto">

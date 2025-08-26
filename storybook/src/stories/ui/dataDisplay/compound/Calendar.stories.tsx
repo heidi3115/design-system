@@ -71,7 +71,7 @@ function DisabledFromToCalendarStory(props: React.ComponentProps<typeof Calendar
 // 6. 다이얼로그 열림 상태 관리 컴포넌트
 function DialogCalendarStory(props: React.ComponentProps<typeof Calendar>) {
   const [selected, setSelected] = React.useState<Date | undefined>(undefined);
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   return (
     <div>
@@ -97,7 +97,7 @@ function DialogCalendarStory(props: React.ComponentProps<typeof Calendar>) {
 }
 
 const meta: Meta<typeof Calendar> = {
-  title: 'UI/DataDisplay/Compound/Calendar',
+  title: 'UI/DataDisplay/Compound/Calendar/Calendar',
   component: Calendar,
   args: {
     mode: 'single',
@@ -140,6 +140,12 @@ const meta: Meta<typeof Calendar> = {
       options: ['label', 'dropdown', 'dropdown-months', 'dropdown-years'],
       defaultValue: 'label',
       description: '달력 캡션 영역의 레이아웃을 선택합니다.',
+    },
+    navLayout: {
+      control: { type: 'radio' },
+      options: ['after', 'around'],
+      defaultValue: 'around',
+      description: '월의 nav의 포지션을 설정 합니다.',
     },
     dialogOpen: {
       control: false,
@@ -367,4 +373,58 @@ export const DefaultMonth: Story = {
       </section>
     </div>
   ),
+};
+
+export const NavPosition: Story = {
+  name: 'Month Navigation Position',
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story: '월 네비게에션의 위치를 보여줍니다 /after',
+      },
+    },
+  },
+  render: () => (
+    <div className="flex gap-8">
+      <section>
+        <h3 className="mb-3 ml-2 font-semibold text-lg">Around Default</h3>
+        <Calendar navLayout="around" />
+      </section>
+
+      <section>
+        <h3 className="mb-3 ml-2 font-semibold text-lg">After</h3>
+        <Calendar navLayout="after" />
+      </section>
+    </div>
+  ),
+};
+
+export const WithModifiersAndClassNames: Story = {
+  name: 'With Modifiers and ModifiersClassNames',
+  parameters: {
+    docs: {
+      controls: { disable: true },
+      description: {
+        story: '`modifiers`와 `modifiersClassNames`를 사용하여 특정 날짜에 커스텀 클래스를 적용하는 예시입니다.',
+      },
+    },
+  },
+  render: () => {
+    const modifiers = {
+      highlight: [new Date(2024, 6, 3), new Date(2024, 6, 4)],
+    };
+    const modifiersClassNames = {
+      highlight: 'font-bold text-juiError text-lg',
+    };
+
+    return (
+      <Calendar
+        mode="single"
+        modifiers={modifiers}
+        modifiersClassNames={modifiersClassNames}
+        defaultMonth={new Date(2024, 6, 1)}
+      />
+    );
+  },
 };

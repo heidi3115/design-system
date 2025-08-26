@@ -5,6 +5,7 @@ export const sliderVariants = tv({
   slots: {
     root: [
       'relative flex items-center',
+      'pointer-events-auto cursor-pointer',
       'data-[orientation=horizontal]:w-full data-[orientation=horizontal]:h-max',
       'data-[orientation=vertical]:w-max data-[orientation=vertical]:h-full',
     ],

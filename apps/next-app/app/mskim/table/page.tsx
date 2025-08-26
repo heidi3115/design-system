@@ -1,6 +1,6 @@
 'use client';
 
-import { DataTable } from '@common/ui/components/DataTable/DataTable';
+import { DataTable } from '@common/ui';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { Button, Input } from '@common/ui';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
