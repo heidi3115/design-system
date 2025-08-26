@@ -3,7 +3,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 
-import { DataTable, DataTableProps, GradeBadge } from '@common/ui';
+import { Badge, DataTable, DataTableProps, GradeBadge, Tooltip } from '@common/ui';
 import {
   getScenariosClientFetch,
   GetScenariosRequest,
@@ -67,6 +67,21 @@ export function ScenarioListGrid({ scenarioType, scenariosData, params }: Scenar
     {
       accessorKey: 'scnrCls',
       header: '분류',
+      cell: (ctx) => {
+        const value = ctx.cell.getValue() as string | undefined;
+
+        if (!value) return null;
+
+        return (
+          <div className="flex gap-1">
+            {value.split('|').map((item, idx) => (
+              <Tooltip key={idx} contents={item}>
+                <Badge className="h-5 font-normal">{item}</Badge>
+              </Tooltip>
+            ))}
+          </div>
+        );
+      },
     },
     {
       accessorKey: 'alrmYn',
