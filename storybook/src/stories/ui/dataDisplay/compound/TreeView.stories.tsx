@@ -1606,11 +1606,13 @@ const HighlightingComparisonDemo = (args: TreeViewProps) => {
 
 export const HighlightingComparison: Story = {
   argTypes: {
-    // 컨트롤에서 불필요한 props 숨기기
     treeData: { table: { disable: true } },
     selectedIds: { table: { disable: true } },
     expandedIds: { table: { disable: true } },
     disabledIds: { table: { disable: true } },
+    defaultIcon: { table: { disable: true } },
+    expandedIcon: { table: { disable: true } },
+    endIcon: { table: { disable: true } },
     onSelectedNodes: { table: { disable: true } },
     onToggledNodes: { table: { disable: true } },
     onDisabledNodes: { table: { disable: true } },
