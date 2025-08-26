@@ -1094,7 +1094,17 @@ function LeafOnlySelectRender(args: TreeViewProps) {
                     : '모든 노드 단일 선택 가능'}
               </p>
             </div>
-            <TreeView {...args} multiSelect={multiSelect} leafOnlySelect={leafOnlySelect} />
+            <TreeView
+              {...args}
+              multiSelect={multiSelect}
+              leafOnlySelect={leafOnlySelect}
+              onToggledNodes={(expandedIds, expandedNodes) => {
+                console.warn('onToggledNodes\n', { idx }, '\n', { expandedIds, expandedNodes });
+              }}
+              onSelectedNodes={(selectedIds, selectedNodes) => {
+                console.warn('onSelectedNodes', { idx }, '\n', { selectedIds, selectedNodes });
+              }}
+            />
           </div>
         ))}
       </div>

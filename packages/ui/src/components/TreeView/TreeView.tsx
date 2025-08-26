@@ -258,7 +258,7 @@ export default function TreeView<T>({
 
     let nextSelected = new Set(currentState.selectedIds);
 
-    if (multiSelect && leafOnlySelect) {
+    if (leafOnlySelect) {
       const node = flatTreeNodeMap.get(nodeId);
       if (!node || !isLeafNode(node)) return;
     }
