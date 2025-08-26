@@ -30,7 +30,7 @@ export type TreeViewStateType = {
 
 export type SearchModeType = 'internal' | 'external';
 // TreeViewSearchProps 으로 검색 관련 type 추가
-export type TreeViewSearchProps = {
+export type TreeViewSearchProps<T> = {
   // 검색 모드 제어
   quickSearchEnabled?: boolean; // true : 내부 검색, false : 외부검색
   // 디바운스 커스텀
@@ -43,7 +43,7 @@ export type TreeViewSearchProps = {
   // 검색값 변경 콜백
   onInputSearchChange?: (searchValue: string) => void;
   // 검색 조건
-  searchOptions?: SearchOptionsProps;
+  searchOptions?: SearchOptionsProps<T>;
   // 하이라이팅 여부
   isHightLighting?: boolean;
   // 하이라이팅의 추가 클래스
@@ -63,6 +63,11 @@ export type TreeViewProps<T = unknown> = {
   multiSelect?: boolean;
   /** Leaf Node 만 선택할 것인지 여부 (default: false) */
   leafOnlySelect?: boolean;
+
+  /** 초기 렌더링 시 모든 노드 확장 여부 (default: false) */
+  defaultExpandAll?: boolean;
+  /** 외부에서 모든 노드를 확장/축소 제어 (true: 모두 확장, false: 모두 축소) */
+  expandAll?: boolean;
 
   /** 기본 선택된 노드 ID들 (Uncontrolled 모드용) */
   defaultSelectedIds?: string[];
@@ -104,7 +109,7 @@ export type TreeViewProps<T = unknown> = {
   className?: string;
   /** ref prop */
   treeViewRef?: React.Ref<TreeViewStateType>;
-} & TreeViewSearchProps; // TreeViewSearchProps : 검색 관련 추가
+} & TreeViewSearchProps<T>; // TreeViewSearchProps : 검색 관련 추가
 
 export const DEFAULT_INDENT_SIZE = 0 as const;
 
@@ -123,12 +128,15 @@ export default function TreeView<T>({
   indentSize = DEFAULT_INDENT_SIZE,
   showLineLevel = undefined,
   isAllLine = false,
+  defaultExpandAll = false,
+  expandAll,
   defaultSelectedIds,
   selectedIds,
   defaultExpandedIds,
   expandedIds,
   defaultDisabledIds,
   disabledIds,
+  // onExpandAllChange,
   onSelectedNodes,
   onToggledNodes,
   // onDisabledNodes,
@@ -146,6 +154,7 @@ export default function TreeView<T>({
   highlightClassName = '',
   onInputSearchChange,
 }: TreeViewProps<T>) {
+  const safeTreeData = treeData.filter(isSafeNode);
   const { base, common, root } = treeViewVariants({ size, variant, disabled });
   const effectiveShowLineLevel = showIcons ? showLineLevel : undefined;
   const searchMode: SearchModeType = onInputSearchChange ? 'external' : 'internal';
@@ -153,32 +162,24 @@ export default function TreeView<T>({
   const isExternalSearched = !isInternalSearch && searchValue.trim().length > 0;
   const noResultTxt = '검색 결과가 존재하지 않습니다.';
 
-  const prevSearchStateRef = useRef<{ searchedIds: string; expandedIds: string } | null>(null);
-  const [lastSelected, setLastSelected] = useState<string>('');
-
   // Controlled/Uncontrolled 모드 판단
   const isControlledSelected = selectedIds !== undefined;
   const isControlledExpanded = expandedIds !== undefined;
   const isControlledDisabled = disabledIds !== undefined;
+  const isControlledExpandAll = expandAll !== undefined;
 
-  // 내부 상태 (Uncontrolled 모드용 초기값 설정)
-  const [internalState, setInternalState] = useState<TreeViewStateType>({
-    selectedIds: new Set(defaultSelectedIds ?? []),
-    expandedIds: new Set(defaultExpandedIds ?? []),
-    disabledIds: new Set(defaultDisabledIds ?? []),
-    searchedIds: new Set(),
-    totalNodes: treeData.length,
-    lastSelectedId: lastSelected,
-    selectedCount: (defaultSelectedIds ?? []).length,
-    expandedCount: (defaultExpandedIds ?? []).length,
-    disabledCount: (defaultDisabledIds ?? []).length,
-    searchedCount: 0,
-  });
+  const prevSearchStateRef = useRef<{ searchedIds: string; expandedIds: string } | null>(null);
+  const [lastSelected, setLastSelected] = useState<string>('');
 
   // 평면화된 트리 맵 생성
   const flatTreeNodeMap = useMemo(() => {
-    return treeData ? flattenTree(treeData) : new Map<string, BaseTreeNodeProps<T>>();
-  }, [treeData]);
+    return safeTreeData ? flattenTree(safeTreeData) : new Map<string, BaseTreeNodeProps<T>>();
+  }, [safeTreeData]);
+
+  // 전체 노드 ID들을 미리 계산
+  const allNodeIds = useMemo(() => {
+    return Array.from(flatTreeNodeMap.keys());
+  }, [flatTreeNodeMap]);
 
   // useDebouncedTreeInput: 입력 처리 + 디바운스만 담당
   const { displayValue, debouncedValue, handleInputChange } = useDebouncedTreeInput({
@@ -190,7 +191,7 @@ export default function TreeView<T>({
 
   // useTreeQuickSearch: 트리 검색 처리 (내부 검색일 때만 활성화)
   const { filteredTreeData, matchedIds, isSearchActive } = useTreeQuickSearch({
-    treeData: treeData || [],
+    treeData: safeTreeData || [],
     flatTreeMap: flatTreeNodeMap,
     searchValue: debouncedValue,
     searchOptions,
@@ -199,18 +200,42 @@ export default function TreeView<T>({
 
   // 검색 여부에 따른 실제 계산된 노드 수
   const totalNodesNumber = useMemo(() => {
-    if (!quickSearchEnabled && !isSearchActive) return treeData.length;
+    if (!quickSearchEnabled && !isSearchActive) return safeTreeData.length;
     if (isInternalSearch) return filteredTreeData.length > 0 ? flattenTree(filteredTreeData).size : 0;
 
-    return treeData.length;
-  }, [isInternalSearch, isSearchActive, quickSearchEnabled, treeData, filteredTreeData]);
+    return safeTreeData.length;
+  }, [isInternalSearch, isSearchActive, quickSearchEnabled, safeTreeData, filteredTreeData]);
 
   // 표시할 데이터 결정
   const displayData = useMemo(() => {
-    if (!quickSearchEnabled || !isSearchActive) return treeData;
+    if (!quickSearchEnabled || !isSearchActive) return safeTreeData;
 
-    return isInternalSearch ? filteredTreeData : treeData;
-  }, [quickSearchEnabled, isSearchActive, isInternalSearch, filteredTreeData, treeData]);
+    return isInternalSearch ? filteredTreeData : safeTreeData;
+  }, [quickSearchEnabled, isSearchActive, isInternalSearch, filteredTreeData, safeTreeData]);
+
+  // defaultExpandAll을 고려한 초기 확장 상태 계산(expandAll > expandedIds > defaultExpandAll > defaultExpandedIds 순으로 전체 여부와 제어(controlled)를 우선으로 처리)
+  const initialExpandedIds = useMemo(() => {
+    if (isControlledExpandAll) return new Set(allNodeIds);
+    if (isControlledExpanded) return new Set(expandedIds);
+    if (defaultExpandAll) return new Set(allNodeIds ?? []);
+    if (defaultExpandedIds) return new Set(defaultExpandedIds ?? []);
+
+    return new Set<string>();
+  }, [isControlledExpandAll, isControlledExpanded, defaultExpandAll, defaultExpandedIds, expandedIds, allNodeIds]);
+
+  // 내부 상태 (Uncontrolled 모드용 초기값 설정)
+  const [internalState, setInternalState] = useState<TreeViewStateType>({
+    selectedIds: new Set(defaultSelectedIds ?? []),
+    expandedIds: initialExpandedIds,
+    disabledIds: new Set(defaultDisabledIds ?? []),
+    searchedIds: new Set(),
+    totalNodes: safeTreeData.length,
+    lastSelectedId: lastSelected,
+    selectedCount: (defaultSelectedIds ?? []).length,
+    expandedCount: initialExpandedIds.size,
+    disabledCount: (defaultDisabledIds ?? []).length,
+    searchedCount: 0,
+  });
 
   // 상태값 결정 (controlled 우선)
   const currentSelectedIds = useMemo(
@@ -218,8 +243,13 @@ export default function TreeView<T>({
     [isControlledSelected, internalState.selectedIds, selectedIds],
   );
   const currentExpandedIds = useMemo(
-    () => (isControlledExpanded ? new Set(expandedIds!) : internalState.expandedIds),
-    [isControlledExpanded, expandedIds, internalState.expandedIds],
+    () =>
+      isControlledExpandAll
+        ? new Set(expandAll ? allNodeIds : [])
+        : isControlledExpanded
+          ? new Set(expandedIds ?? [])
+          : internalState.expandedIds,
+    [isControlledExpanded, isControlledExpandAll, expandAll, expandedIds, internalState.expandedIds, allNodeIds],
   );
   const currentDisabledIds = useMemo(
     () => (isControlledDisabled ? new Set(disabledIds!) : internalState.disabledIds),
@@ -234,10 +264,10 @@ export default function TreeView<T>({
   // 최종 확장 아이디는 기존 + 검색에 의한 자동 확장 노드 ID들의 합집합
   const finalExpandedIds = useMemo(() => {
     const searchExpandedIds =
-      currentSearchedIds.size > 0 ? new Set(getAutoExpandedIds(treeData, currentSearchedIds)) : new Set<string>();
+      currentSearchedIds.size > 0 ? new Set(getAutoExpandedIds(safeTreeData, currentSearchedIds)) : new Set<string>();
 
     return new Set([...currentExpandedIds, ...searchExpandedIds]);
-  }, [currentExpandedIds, currentSearchedIds, treeData]);
+  }, [currentExpandedIds, currentSearchedIds, safeTreeData]);
 
   // 단일 상태 객체 구성
   const currentState: TreeViewStateType = {
@@ -253,7 +283,7 @@ export default function TreeView<T>({
     searchedCount: currentSearchedIds.size,
   };
 
-  const handleSelectNode = (nodeId: string) => {
+  const handleNodeSelect = (nodeId: string) => {
     if (disabled || currentState.disabledIds.has(nodeId)) return;
 
     let nextSelected = new Set(currentState.selectedIds);
@@ -295,8 +325,9 @@ export default function TreeView<T>({
     });
   };
 
-  const handleTreeToggle = (nodeId: string, expanded: boolean) => {
+  const handleNodeToggle = (nodeId: string, expanded: boolean) => {
     if (disabled || currentState.disabledIds.has(nodeId)) return;
+
     const nextExpanded = new Set(currentState.expandedIds);
 
     if (expanded) {
@@ -305,7 +336,7 @@ export default function TreeView<T>({
       nextExpanded.delete(nodeId);
     }
 
-    if (!isControlledExpanded) {
+    if (!isControlledExpandAll && !isControlledExpanded) {
       setInternalState((prev) => ({
         ...prev,
         expandedIds: nextExpanded,
@@ -317,7 +348,6 @@ export default function TreeView<T>({
 
     onToggledNodes?.(Array.from(nextExpanded), nextExpandedArr);
 
-    // 상태 변경 알림
     notifyStateChange({
       expandedIds: nextExpanded,
       expandedCount: nextExpanded.size,
@@ -381,7 +411,7 @@ export default function TreeView<T>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSearchedIds]);
 
-  if (!Array.isArray(treeData)) return null;
+  if (!Array.isArray(safeTreeData)) return null;
 
   return (
     <TreeViewRoot
@@ -404,13 +434,13 @@ export default function TreeView<T>({
               isSearchActive &&
                 (isInternalSearch
                   ? isSearchActive && currentState.searchedCount === 0
-                  : isExternalSearched && treeData.length === 0),
+                  : isExternalSearched && safeTreeData.length === 0),
             )}
             helperText={
               isInternalSearch
                 ? isSearchActive && currentState.searchedCount === 0 && noResultTxt
-                : isExternalSearched && treeData.length === 0
-                  ? isExternalSearched && treeData.length === 0 && noResultTxt
+                : isExternalSearched && safeTreeData.length === 0
+                  ? isExternalSearched && safeTreeData.length === 0 && noResultTxt
                   : undefined
             }
           />
@@ -445,8 +475,8 @@ export default function TreeView<T>({
             }
             searchQuery={isSearchActive ? (isInternalSearch ? debouncedValue : searchValue) : undefined}
             highlightClassName={highlightClassName}
-            onSelect={handleSelectNode}
-            onToggle={handleTreeToggle}
+            onSelect={handleNodeSelect}
+            onToggle={handleNodeToggle}
             className={nodeClassName}
             treeViewState={currentState}
           />

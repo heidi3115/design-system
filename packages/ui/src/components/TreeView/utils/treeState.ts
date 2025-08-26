@@ -23,28 +23,13 @@ export const isSafeNode = <T>(treeNode: BaseTreeNodeProps<T> | undefined): treeN
   !!treeNode && Boolean(treeNode.id) && Boolean(treeNode.name);
 
 /**
- * 두 Set의 차이(prevSet 에서 제거된 값, nextSet 에서 추가된 값)를 계산합니다.
- * @param prevSet 이전 Set
- * @param nextSet 다음 Set
- * @returns { removed, added }
- *   - removed: prevSet 에는 있었지만 nextSet 에는 없는 값들의 배열
- *   - added: nextSet 에는 있지만 prevSet 에는 없었던 값들의 배열
+ * 트리 노드에서 동적 필드 안전하게 가져오기
+ * @param node 트리 노드 객체
+ * @param key 동적으로 접근할 필드명
  */
-export const getNodesDifferences = (
-  prevSet: Set<string>,
-  nextSet: Set<string>,
-): {
-  removed: string[];
-  added: string[];
-} => {
-  const prev = prevSet ?? new Set<string>();
-  const next = nextSet ?? new Set<string>();
-
-  const removed = Array.from(prev).filter((x) => !next.has(x));
-  const added = Array.from(next).filter((x) => !prev.has(x));
-
-  return { removed, added };
-};
+export function getNodeField<T>(node: BaseTreeNodeProps<T>, key: string): unknown {
+  return (node as Record<string, unknown>)[key];
+}
 
 /**
  * 주어진 값이 검색 키워드와 매칭되는지 확인
@@ -69,3 +54,27 @@ export function isMatched(value: unknown, keyword: string, caseSensitive: boolea
       return source.includes(target);
   }
 }
+
+/**
+ * 두 Set의 차이(prevSet 에서 제거된 값, nextSet 에서 추가된 값)를 계산합니다.
+ * @param prevSet 이전 Set
+ * @param nextSet 다음 Set
+ * @returns { removed, added }
+ *   - removed: prevSet 에는 있었지만 nextSet 에는 없는 값들의 배열
+ *   - added: nextSet 에는 있지만 prevSet 에는 없었던 값들의 배열
+ */
+export const getNodesDifferences = (
+  prevSet: Set<string>,
+  nextSet: Set<string>,
+): {
+  removed: string[];
+  added: string[];
+} => {
+  const prev = prevSet ?? new Set<string>();
+  const next = nextSet ?? new Set<string>();
+
+  const removed = Array.from(prev).filter((x) => !next.has(x));
+  const added = Array.from(next).filter((x) => !prev.has(x));
+
+  return { removed, added };
+};
