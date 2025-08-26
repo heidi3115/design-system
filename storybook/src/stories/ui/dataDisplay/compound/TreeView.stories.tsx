@@ -1451,7 +1451,7 @@ function DemoForInternalVsExternal({ ...args }: TreeViewProps) {
             ) : (
               <TreeView
                 {...args}
-                treeData={externalTreeData} // externalSearchedIds
+                treeData={externalTreeData}
                 expandedIds={externalExpandedIds}
                 quickSearchEnabled={true}
                 searchValue={externalSearchValue}

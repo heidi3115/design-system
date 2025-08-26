@@ -136,7 +136,6 @@ export default function TreeView<T>({
   expandedIds,
   defaultDisabledIds,
   disabledIds,
-  // onExpandAllChange,
   onSelectedNodes,
   onToggledNodes,
   // onDisabledNodes,
