@@ -13,24 +13,12 @@ import {
   type VisibilityState,
 } from '@tanstack/react-table';
 
-import {
-  TableHeader,
-  Table,
-  TableRow,
-  TableHead,
-  TableCell,
-  TableBody,
-  Input,
-  Popover,
-  Button,
-  Switch,
-  Label,
-  Checkbox,
-} from '@common/ui';
+import { TableHeader, Table, TableRow, TableHead, TableCell, TableBody, Input, Checkbox } from '@common/ui';
 import { type ReactNode, useEffect, useState } from 'react';
-import { PlusCircleIcon, SearchIcon, ToggleLeftIcon, ToggleRightIcon } from '@common/ui/icons';
+import { SearchIcon } from '@common/ui/icons';
 import { useQuickSearch } from '@common/ui/hooks/useQuickSearch';
 import Pagination from '@common/ui/components/DataTable/Pagination';
+import CustomToolbar from '@common/ui/components/DataTable/CustomToolbar';
 
 type ColumnType = {
   headerName: string;
@@ -142,16 +130,6 @@ function DataTable<T, V = unknown>({
     onSelectRows?.(selectedIds);
   }, [rowSelection, table, onSelectRows, getRowId]);
 
-  const [search, setSearch] = useState('');
-  const filteredColumns = table
-    .getAllColumns()
-    .filter((column) => column.getCanHide())
-    .filter(
-      (column) =>
-        typeof column.columnDef.header === 'string' &&
-        column.columnDef.header.toLowerCase().includes(search.toLowerCase()),
-    );
-
   useEffect(() => {
     if (isUseQuickSearch) return;
 
@@ -164,86 +142,12 @@ function DataTable<T, V = unknown>({
         {isUseQuickSearch && (
           <Input iconLeft={SearchIcon} placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
         )}
-        <Popover
-          className="rounded-none bg-juiBackground-solidPaper flex flex-col gap-2 p-0 w-[238px]"
-          trigger={
-            columnFilterTrigger ?? (
-              <Button variant="transparent">
-                <PlusCircleIcon /> 필드 목록
-              </Button>
-            )
-          }>
-          <Input
-            iconLeft={SearchIcon}
-            placeholder="카테고리 명을 검색하세요"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <div className="flex flex-col gap-2 p-2 h-[248px] overflow-auto">
-            {filteredColumns.length > 0 ? (
-              filteredColumns.map((column) => (
-                <div key={column.id} className="capitalize flex items-center gap-2">
-                  <Switch
-                    id={column.id}
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                  />
-                  <Label htmlFor={column.id}>
-                    {typeof column.columnDef.header === 'string' && column.columnDef.header}
-                  </Label>
-                </div>
-              ))
-            ) : (
-              <div className="text-sm text-muted-foreground px-2 py-4 text-center">데이터가 없습니다.</div>
-            )}
-          </div>
-          <div className="flex">
-            <Button
-              onClick={() => {
-                table.getAllColumns().forEach((column) => {
-                  if (column.getCanHide()) {
-                    column.toggleVisibility(false);
-                  }
-                });
-              }}
-              className="w-1/2 h-10">
-              <ToggleLeftIcon />
-              전체 숨기기
-            </Button>
-            <Button
-              onClick={() => {
-                table.getAllColumns().forEach((column) => {
-                  if (column.getCanHide()) {
-                    column.toggleVisibility(true);
-                  }
-                });
-              }}
-              className="w-1/2 h-10"
-              variant="primary">
-              <ToggleRightIcon />
-              전체 보기
-            </Button>
-          </div>
-        </Popover>
-        {manualFiltering && (
-          <Button
-            onClick={() => {
-              // 체크박스 컬럼 제외
-              const status = table
-                .getAllColumns()
-                .filter((col) => col.id !== 'select')
-                .map((col) => ({
-                  field: col.id,
-                  hide: !col.getIsVisible(),
-                  headerName: typeof col.columnDef.header === 'string' ? col.columnDef.header : '',
-                }));
-
-              if (onColumnStatusChange) {
-                onColumnStatusChange(status);
-              }
-            }}>
-            필드 저장
-          </Button>
-        )}
+        <CustomToolbar
+          columnFilterTrigger={columnFilterTrigger}
+          table={table}
+          manualFiltering={manualFiltering}
+          onColumnStatusChange={onColumnStatusChange}
+        />
       </div>
 
       <Table>
