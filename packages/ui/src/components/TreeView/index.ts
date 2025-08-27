@@ -1,5 +1,14 @@
+export * from './hooks';
+export * from './utils';
+export * from './components';
 export { default as TreeItem, type BaseTreeNodeProps, type TreeItemProps } from './TreeItem';
-export { default as TreeView, type TreeViewProps, type TreeViewStateType } from './TreeView';
+export {
+  DEFAULT_INDENT_SIZE,
+  default as TreeView,
+  type TreeViewProps,
+  type TreeViewSearchProps,
+  type TreeViewStateType,
+} from './TreeView';
 export { TreeViewItem, TreeViewItemContent, TreeViewItemTrigger, TreeViewRoot } from './TreeViewParts';
 export type {
   TreeViewItemContentProps,
@@ -8,4 +17,3 @@ export type {
   TreeViewRootProps,
 } from './TreeViewParts';
 export { treeViewVariants } from './treeViewVariants';
-export * from './utils';
