@@ -39,7 +39,8 @@ export default function ExceptionGroupsTree({
         showIcons
         isAllLine
         treeData={treeData}
-        defaultExpandedIds={[data.id]}
+        defaultExpandAll
+        quickSearchEnabled
         onSelectedNodes={(selectedIds) => {
           const targetId = selectedIds?.at(0);
 
