@@ -27,25 +27,21 @@ export default function TargetSelectWrapper({
       value: 'user',
       label: '임직원',
       content: <TargetSelectContent type="user" onSelectedData={(data) => onSelectedData?.(data)} />,
-      boxClassName: 'p-4',
     },
     {
       value: 'depts',
       label: '부서',
       content: <TargetSelectContent type="depts" onSelectedData={(data) => onSelectedData?.(data)} />,
-      boxClassName: 'p-4',
     },
     {
       value: 'asset',
       label: '자산',
       content: <TargetSelectContent type="asset" onSelectedData={(data) => onSelectedData?.(data)} />,
-      boxClassName: 'p-4',
     },
     {
       value: 'assetGroup',
       label: '자산 그룹',
       content: <TargetSelectContent type="assetGroup" onSelectedData={(data) => onSelectedData?.(data)} />,
-      boxClassName: 'p-4',
     },
     {
       value: 'exceptionGroup',
@@ -57,7 +53,6 @@ export default function TargetSelectWrapper({
           onSelectedData={(data) => onSelectedData?.(data)}
         />
       ),
-      boxClassName: 'p-4',
     },
   ] satisfies TabItemType;
 
