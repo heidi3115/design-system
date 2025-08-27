@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { TreeView } from '@common/ui';
@@ -39,7 +39,6 @@ export default function TargetTree({
   });
 
   const treeData = useSetDeptTreeData(data);
-  const firstTreeData = useMemo(() => treeData.filter((tree) => tree.lvl === 1), [treeData]);
 
   const flattenAssetTree = (nodes: AssetDivisionTreeType[]): Omit<AssetDivisionTreeType, 'children'>[] =>
     nodes.flatMap(({ children, ...rest }) => [rest, ...(children ? flattenAssetTree(children) : [])]);
@@ -80,11 +79,7 @@ export default function TargetTree({
         showIcons
         isAllLine
         treeData={isInfra ? assetData : treeData}
-        defaultExpandedIds={
-          isInfra
-            ? assetData.map((asset) => asset.id)
-            : firstTreeData.flatMap((parents) => (parents.deptCd ? [parents.deptCd] : []))
-        }
+        defaultExpandAll
         onSelectedNodes={(selectedIds) => handleSelectedNodes(selectedIds)}
       />
     </div>
