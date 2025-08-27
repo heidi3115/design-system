@@ -8,6 +8,7 @@ import { DeptsType } from '../../../../services/common/getSearchDept';
 export function useSetDeptTreeData(items: DeptsType[]): BaseTreeNodeProps<DeptsType>[] {
   return useMemo(() => {
     const map = new Map<string, BaseTreeNodeProps<DeptsType>>();
+    const map = new Map<string, BaseTreeNodeProps<DeptsType>>();
 
     items.forEach((item) => {
       map.set(item.deptCd, {

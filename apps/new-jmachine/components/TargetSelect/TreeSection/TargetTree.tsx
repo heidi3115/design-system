@@ -4,10 +4,10 @@ import { useCallback, useMemo } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { TreeView } from '@common/ui';
-import { DeptsType, getSearchDeptClientFetch } from '../../../services/common/getSearchDept';
+import { type DeptsType, getSearchDeptClientFetch } from '../../../services/common/getSearchDept';
 import { useSetDeptTreeData } from './hooks/useSetDeptTreeData';
-import { AssetDivisionTreeType, getDivisionTreeClientFetch } from '../../../services/asset/getDivisionTree';
-import { TargetCategoryType } from '../TargetSelectContent';
+import { type AssetDivisionTreeType, getDivisionTreeClientFetch } from '../../../services/asset/getDivisionTree';
+import { type TargetCategoryType } from '../TargetSelectContent';
 
 type TargetTreeProps = {
   type?: Exclude<TargetCategoryType, 'exceptionGroup'>;
