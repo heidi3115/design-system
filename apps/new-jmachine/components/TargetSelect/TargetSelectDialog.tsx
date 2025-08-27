@@ -5,28 +5,24 @@ import { useRef, useState } from 'react';
 import { Dialog, DialogHandleRefType, Input } from '@common/ui';
 import { SearchIcon, UserFilledIcon, XIcon } from '@common/ui/icons';
 import { useUpdateEffect } from '@common/utils';
-import { EmployeeType } from '../../services/common/getSearchUsers';
-import { DeptsType } from '../../services/common/getSearchDept';
-import { ExceptionGroupsType } from '../../services/scenario/getExceptionManageGroups';
-import { minorCategoryValueMap } from '../../lib/mapper/minorCategoryTypeMap';
-import { AssetType } from '../../services/asset/getAssets';
 import TargetSelectWrapper from './TargetSelectWrapper';
-import { TargetCategoryType } from './TargetSelectContent';
-
-const TABS_MAP: Record<string, TargetCategoryType[]> = {
-  [minorCategoryValueMap.employeeTargetType]: ['user', 'depts', 'exceptionGroup'],
-  [minorCategoryValueMap.infraTargetType]: ['asset', 'assetGroup', 'exceptionGroup'],
-} as const;
+import { type EmployeeType } from '../../services/common/getSearchUsers';
+import { type DeptsType } from '../../services/common/getSearchDept';
+import { type ExceptionGroupsType } from '../../services/scenario/getExceptionManageGroups';
+import { type AssetType } from '../../services/asset/getAssets';
+import { type TargetCategoryType } from './TargetSelectContent';
 
 export type TargetEntityType = EmployeeType | DeptsType | ExceptionGroupsType | AssetType | null;
 
 type TargetSelectDialogProps = {
   detectTargetType: string;
+  targetCategory?: TargetCategoryType | TargetCategoryType[];
   onTargetData?: (target: TargetEntityType) => void;
 };
 
 export default function TargetSelectDialog({
-  detectTargetType = minorCategoryValueMap.employeeTargetType,
+  detectTargetType,
+  targetCategory = 'user',
   onTargetData,
 }: TargetSelectDialogProps) {
   const [target, setTarget] = useState<TargetEntityType>(null);
@@ -79,7 +75,7 @@ export default function TargetSelectDialog({
       isDraggable>
       <TargetSelectWrapper
         detectTargetType={detectTargetType}
-        targetTabList={TABS_MAP[detectTargetType]}
+        {...(Array.isArray(targetCategory) ? { targetTabList: targetCategory } : { targetType: targetCategory })}
         onSelectedData={(data) => {
           setTarget(data);
           onTargetData?.(data);

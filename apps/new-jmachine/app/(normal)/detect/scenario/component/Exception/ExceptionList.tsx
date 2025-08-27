@@ -9,6 +9,12 @@ import TargetSelectDialog, {
   type TargetEntityType,
 } from '../../../../../../components/TargetSelect/TargetSelectDialog';
 import { minorCategoryValueMap } from '../../../../../../lib/mapper/minorCategoryTypeMap';
+import { type TargetCategoryType } from '../../../../../../components/TargetSelect/TargetSelectContent';
+
+const TABS_MAP: Record<string, TargetCategoryType[]> = {
+  [minorCategoryValueMap.employeeTargetType]: ['user', 'depts', 'exceptionGroup'],
+  [minorCategoryValueMap.infraTargetType]: ['asset', 'assetGroup', 'exceptionGroup'],
+} as const;
 
 type ExceptionListProps = {
   scenarioType: string;
@@ -44,7 +50,11 @@ export function ExceptionList({ scenarioType }: ExceptionListProps) {
             ]}
           />
           <div className="w-72">
-            <TargetSelectDialog detectTargetType={detectTargetType} onTargetData={(data) => setTarget(data)} />
+            <TargetSelectDialog
+              targetCategory={TABS_MAP[detectTargetType]}
+              detectTargetType={detectTargetType}
+              onTargetData={(data) => setTarget(data)}
+            />
           </div>
         </div>
       </ErrorBoundary>

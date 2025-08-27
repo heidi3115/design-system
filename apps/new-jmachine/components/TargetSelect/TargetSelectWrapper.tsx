@@ -4,17 +4,24 @@ import { TabItemType, Tabs } from '@common/ui';
 import TargetSelectContent, { TargetCategoryType } from './TargetSelectContent';
 import { type TargetEntityType } from './TargetSelectDialog';
 
-type TargetSelectProps = {
+type TargetSelectBaseProps = {
   detectTargetType: string;
-  targetTabList?: TargetCategoryType[];
   onSelectedData?: (data: TargetEntityType) => void;
 };
 
+type TargetSelectProps = OnlyOne<{ targetTabList: TargetCategoryType[] }, { targetType: TargetCategoryType }> &
+  TargetSelectBaseProps;
+
 export default function TargetSelectWrapper({
-  targetTabList = ['user'],
+  targetType,
+  targetTabList,
   detectTargetType,
   onSelectedData,
 }: TargetSelectProps) {
+  if (targetType) {
+    return <TargetSelectContent type={targetType} onSelectedData={(data) => onSelectedData?.(data)} />;
+  }
+
   const allTabs = [
     {
       value: 'user',
