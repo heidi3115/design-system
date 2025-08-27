@@ -39,6 +39,8 @@ type TabsProps<T extends TabItemType> = {
   tabs: T;
   maxWidth?: number;
   restScreenHeight?: number;
+  contentClassName?: string;
+  maxContentHeight?: number;
 } & ComponentProps<typeof TabsRoot> &
   VariantProps<typeof tabsTriggerVariants>;
 
@@ -49,6 +51,8 @@ function Tabs<T extends TabItemType>({
   align,
   maxWidth,
   className,
+  contentClassName,
+  maxContentHeight,
   shape = 'underline',
   size = 'default',
   restScreenHeight = DEFAULT_REST_HEIGHT,
@@ -140,8 +144,8 @@ function Tabs<T extends TabItemType>({
             <TabsContent
               key={value}
               value={value}
-              style={{ maxHeight: `calc(100svh - ${restScreenHeight}px)` }}
-              className={cn(contentBoxType === 'inBox' ? `overflow-hidden` : `overflow-auto`)}>
+              style={{ maxHeight: maxContentHeight ? `${maxContentHeight}px` : `calc(100svh - ${restScreenHeight}px)` }}
+              className={cn(contentBoxType === 'inBox' ? `overflow-hidden` : `overflow-auto`, contentClassName)}>
               {contentBoxType === 'flex' && contents}
               {contentBoxType === 'box' && (
                 <div

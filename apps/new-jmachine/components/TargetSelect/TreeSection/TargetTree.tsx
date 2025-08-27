@@ -80,6 +80,7 @@ export default function TargetTree({
         isAllLine
         treeData={isInfra ? assetData : treeData}
         defaultExpandAll
+        quickSearchEnabled
         onSelectedNodes={(selectedIds) => handleSelectedNodes(selectedIds)}
       />
     </div>

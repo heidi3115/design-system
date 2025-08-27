@@ -421,7 +421,7 @@ export default function TreeView<T>({
       }}>
       {/* quickSearch */}
       {quickSearchEnabled && (
-        <div data-slot={'quick-search-wrapper'} className={'relative w-full mb-4'}>
+        <div data-slot={'quick-search-wrapper'} className={'relative mb-2 w-full'}>
           <Input
             type={'text'}
             data-slot={'input-quick-search'}
@@ -447,40 +447,44 @@ export default function TreeView<T>({
       )}
 
       {/* 트리 렌더링 로직 */}
-      {displayData?.map((treeNode: BaseTreeNodeProps<T>) => {
-        const isNodeSelected = currentState?.selectedIds.has(treeNode.id);
-        const isNodeExpanded = currentState?.expandedIds.has(treeNode.id);
-        const isNodeDisabled = disabled || currentState?.disabledIds?.has(treeNode.id) || false;
+      <div
+        data-slot="treeview-list-wrapper"
+        className={cn(quickSearchEnabled ? 'overflow-auto max-h-[calc(100%-theme(space.10))]' : 'h-full')}>
+        {displayData?.map((treeNode: BaseTreeNodeProps<T>) => {
+          const isNodeSelected = currentState?.selectedIds.has(treeNode.id);
+          const isNodeExpanded = currentState?.expandedIds.has(treeNode.id);
+          const isNodeDisabled = disabled || currentState?.disabledIds?.has(treeNode.id) || false;
 
-        return (
-          <TreeItem
-            key={treeNode.id}
-            node={treeNode}
-            level={0}
-            defaultIcon={defaultIcon}
-            expandedIcon={expandedIcon}
-            endIcon={endIcon}
-            selected={isNodeSelected}
-            expanded={isNodeExpanded}
-            disabled={isNodeDisabled}
-            size={size}
-            variant={variant}
-            indentSize={indentSize}
-            showLineLevel={effectiveShowLineLevel}
-            isAllLine={isAllLine}
-            showIcons={showIcons}
-            isHightLighting={
-              isHightLighting ? (isInternalSearch ? isSearchActive : searchValue.trim().length > 0) : undefined
-            }
-            searchQuery={isSearchActive ? (isInternalSearch ? debouncedValue : searchValue) : undefined}
-            highlightClassName={highlightClassName}
-            onSelect={handleNodeSelect}
-            onToggle={handleNodeToggle}
-            className={nodeClassName}
-            treeViewState={currentState}
-          />
-        );
-      })}
+          return (
+            <TreeItem
+              key={treeNode.id}
+              node={treeNode}
+              level={0}
+              defaultIcon={defaultIcon}
+              expandedIcon={expandedIcon}
+              endIcon={endIcon}
+              selected={isNodeSelected}
+              expanded={isNodeExpanded}
+              disabled={isNodeDisabled}
+              size={size}
+              variant={variant}
+              indentSize={indentSize}
+              showLineLevel={effectiveShowLineLevel}
+              isAllLine={isAllLine}
+              showIcons={showIcons}
+              isHightLighting={
+                isHightLighting ? (isInternalSearch ? isSearchActive : searchValue.trim().length > 0) : undefined
+              }
+              searchQuery={isSearchActive ? (isInternalSearch ? debouncedValue : searchValue) : undefined}
+              highlightClassName={highlightClassName}
+              onSelect={handleNodeSelect}
+              onToggle={handleNodeToggle}
+              className={nodeClassName}
+              treeViewState={currentState}
+            />
+          );
+        })}
+      </div>
     </TreeViewRoot>
   );
 }

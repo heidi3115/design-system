@@ -60,5 +60,5 @@ export default function TargetSelectWrapper({
     targetTabList.includes(tab.value as TargetCategoryType),
   );
 
-  return <Tabs tabs={tabs} className="pb-4 px-8" />;
+  return <Tabs tabs={tabs} className="pb-4 px-8" restScreenHeight={266} />;
 }
