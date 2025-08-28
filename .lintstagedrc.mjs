@@ -1,6 +1,6 @@
 const lintstagedrc = {
   '*.{md,css,scss}': ['prettier --write'],
-  'packages/ui/**/*.{ts,tsx,js,jsx}': ['pnpm ui lint', 'pnpm ui test'],
+  'packages/ui/**/*.{ts,tsx,js,jsx}': ['pnpm ui lint', 'pnpm ui test --config ../../jest.config.cjs'],
   'packages/utils/**/*.{ts,tsx,js,jsx}': ['pnpm utils lint'],
   'apps/next-app/**/*.{ts,tsx,js,jsx}': ['pnpm next-app eslint'],
   'apps/react-app/**/*.{ts,tsx,js,jsx}': ['pnpm react-app lint'],

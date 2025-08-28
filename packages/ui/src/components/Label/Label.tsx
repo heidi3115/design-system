@@ -19,9 +19,8 @@ function Label({ className, ...props }: React.ComponentProps<typeof LabelPrimiti
         ],
         className,
       )}
-      {...props}>
-      test
-    </LabelPrimitive.Root>
+      {...props}
+    />
   );
 }
 

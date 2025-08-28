@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "eslint --ext=.ts,.tsx,.jsx",
     "typecheck": "tsc --noEmit",
-    "test": "pnpm exec jest --config ../../jest.config.cjs --passWithNoTests --findRelatedTests"
+    "test": "pnpm exec jest --passWithNoTests --findRelatedTests"
   },
   "dependencies": {
     "@common/tokens": "workspace:*",
