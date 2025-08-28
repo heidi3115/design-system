@@ -7,8 +7,8 @@
   "scripts": {
     "lint": "eslint --ext=.ts,.tsx,.jsx",
     "typecheck": "tsc --noEmit",
-    "test": "pnpm exec jest --config ../../jest.config.cjs",
-    "test:lint": "pnpm exec jest --passWithNoTests --findRelatedTests"
+    "test": "pnpm exec jest --config ../../jest.config.ts",
+    "test:lintStage": "pnpm exec jest --config ../../jest.config.ts --passWithNoTests --findRelatedTests"
   },
   "dependencies": {
     "@common/tokens": "workspace:*",
