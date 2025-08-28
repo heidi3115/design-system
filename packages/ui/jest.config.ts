@@ -2,10 +2,10 @@ import type { Config } from 'jest';
 
 import baseConfig from '@common/jest-config';
 
-const appConfig: Config = {
+const config: Config = {
   ...baseConfig,
   rootDir: './',
-  testMatch: ['<rootDir>/src/**/*.test.{ts,tsx}'],
+  testMatch: ['<rootDir>/src/**/*.(test|spec).{ts,tsx}'],
 };
 
-export default appConfig;
+export default config;

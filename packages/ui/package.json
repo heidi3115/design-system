@@ -8,7 +8,7 @@
     "lint": "eslint --ext=.ts,.tsx,.jsx",
     "typecheck": "tsc --noEmit",
     "test": "pnpm exec jest",
-    "test:lintStage": "pnpm exec jest --passWithNoTests --findRelatedTests"
+    "test:lintstage": "pnpm exec jest --passWithNoTests --findRelatedTests"
   },
   "dependencies": {
     "@common/tokens": "workspace:*",

@@ -26,7 +26,6 @@
     "prepare": "husky install",
     "test:type": "turbo run typecheck",
     "test": "pnpm turbo run test",
-    "test:changed": "pnpm exec jest --onlyChanged",
     "generate:palette": "ts-node --transpile-only -P tsconfig.ts-node.json scripts/generateCss.ts",
     "generate:icon": "ts-node --transpile-only -P tsconfig.ts-node.json scripts/generateIconAnnotation.ts"
   },
