@@ -2,6 +2,7 @@
 
 import { Button, DataTable, DataTableProps } from '@common/ui';
 import { DeptsType } from '../../../services/common/getSearchDept';
+import { DEFAULT_PAGE_SIZE } from './constant';
 
 type TargetDeptGridProps = {
   targetData: DeptsType[];
@@ -38,7 +39,7 @@ export default function TargetDeptGrid({ targetData, onSelectedData }: TargetDep
 
   return (
     <div className="overflow-auto h-ful w-full">
-      <DataTable rows={targetData} columns={columns} pageSize={15} isUseQuickSearch />
+      <DataTable rows={targetData} columns={columns} pageSize={DEFAULT_PAGE_SIZE} isUseQuickSearch />
     </div>
   );
 }

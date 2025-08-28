@@ -56,7 +56,7 @@ function DataTable<T, V = unknown>({
   rows,
   getRowId,
   columns,
-  enableRowSelection = true,
+  enableRowSelection = false,
   onSelectRows,
   manualFiltering = false, // true로 설정 시, 검색어 필터링 권한을 서버측으로 넘기고 해당 컴포넌트에서는 검색 필터링에 관여하지 않음.
   manualPagination = false, // 서버사이드 페이징이면 true로 설정

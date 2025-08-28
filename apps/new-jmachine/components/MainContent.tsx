@@ -16,7 +16,7 @@ export function MainContent({
   return (
     <div
       className={cn(
-        'flex-col overflow-auto',
+        'relative flex-col overflow-auto',
         (contentType === 'box' || contentType === 'inBox') && 'p-7',
         contentType === 'tabs' && 'px-7 pb-7',
         contentType === 'flex' && 'p-0',
