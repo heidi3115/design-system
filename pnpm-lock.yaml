@@ -312,6 +312,8 @@ importers:
         specifier: ^8.32.1
         version: 8.34.0(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)
 
+  packages/jest-config: {}
+
   packages/tokens:
     devDependencies:
       typescript:
@@ -452,6 +454,9 @@ importers:
       '@common/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@common/jest-config':
+        specifier: workspace:^
+        version: link:../jest-config
       '@common/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config

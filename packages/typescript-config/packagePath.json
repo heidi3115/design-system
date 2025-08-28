@@ -6,6 +6,7 @@
       "@common/ui/*": ["../../packages/ui/src/*"],
       "@common/typescript-config": ["../../packages/typescript-config"],
       "@common/eslint-config": ["../../packages/eslint-config"],
+      "@common/jest-config": ["../../packages/jest-config"],
       "@common/utils": ["../../packages/utils/src"],
       "@common/types": ["../../packages/types/src"],
       "@common/tokens": ["../../packages/tokens/src"]

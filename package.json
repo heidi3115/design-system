@@ -19,6 +19,7 @@
     "tokens": "pnpm --filter @common/tokens",
     "typescript-config": "pnpm --filter @common/typescript-config",
     "eslint-config": "pnpm --filter @common/eslint-config",
+    "jest-config": "pnpm --filter @common/jest-config",
     "ui": "pnpm --filter @common/ui",
     "storybook": "pnpm --filter storybook",
     "storybook:dev": "pnpm --filter storybook storybook",
