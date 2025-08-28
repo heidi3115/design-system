@@ -2,8 +2,7 @@ import { render, screen } from '@testing-library/react';
 import Card, { CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './Card';
 
 describe('Card 컴포넌트', () => {
-  test('Card 기본 렌더링 (Arrange & Act & Assert)', () => {
-    // Arrange & Act
+  test('Card 기본 렌더링', () => {
     render(<Card data-testid="card">내용</Card>);
 
     // Assert
