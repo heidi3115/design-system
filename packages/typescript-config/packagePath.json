@@ -12,6 +12,6 @@
       "@common/tokens": ["../../packages/tokens/src"]
     },
 
-    "types": ["@common/types"]
+    "types": ["@common/types", "jest", "@testing-library/jest-dom"]
   }
 }

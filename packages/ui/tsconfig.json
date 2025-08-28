@@ -4,8 +4,7 @@
     "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "node",
-    "esModuleInterop": true,
-    "types": ["jest", "@testing-library/jest-dom", "@common/types"]
+    "esModuleInterop": true
   },
   "include": ["src/**/*", "scripts"],
   "exclude": ["node_modules", "dist"]
