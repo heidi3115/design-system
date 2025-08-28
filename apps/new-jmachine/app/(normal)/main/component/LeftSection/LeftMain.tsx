@@ -1,3 +1,5 @@
+'use client';
+
 import { Suspense, use } from 'react';
 
 import { StatsDangerGradeType } from '../../../../../services/stats/getStatsDangerGrade';

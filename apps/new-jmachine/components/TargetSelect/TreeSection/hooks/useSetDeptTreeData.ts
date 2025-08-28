@@ -37,7 +37,7 @@ export function useSetDeptTreeData(items: DeptsType[]): BaseTreeNodeProps<DeptsT
 
         return node;
       })
-      .filter((node): node is BaseTreeNodeProps<DeptsType> => node !== null)
+      .filter((node) => node !== null)
       .sort((a, b) => (a.ord as number) - (b.ord as number)); // root 정렬
 
     return roots;

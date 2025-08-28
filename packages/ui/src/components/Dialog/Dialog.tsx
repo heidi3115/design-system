@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose,
+  DialogDescription,
 } from './DialogParts';
 import { Separator, Button } from '@common/ui';
 import { SaveIcon, XIcon, CheckIcon } from '@common/ui/icons';
@@ -101,10 +102,10 @@ const Dialog = ({
       <DialogContent
         open={open}
         isKeepOffset={isKeepOffset}
+        showCloseButton={showCloseButton}
         portalContainer={portalContainer}
         className={className}
-        size={contentSize}
-        showCloseButton={showCloseButton}>
+        size={contentSize}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -117,6 +118,7 @@ const Dialog = ({
               {titleIcon}
               {title}
             </DialogTitle>
+            <DialogDescription className="sr-only" />
           </DialogHeader>
           <div
             className={cn(

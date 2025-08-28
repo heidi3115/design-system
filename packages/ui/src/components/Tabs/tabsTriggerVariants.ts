@@ -22,17 +22,17 @@ const tabsTriggerVariants = tv({
     underline: '',
     tabsAlign: '',
     list: '',
-    firstForderTab: '',
+    firstFolderTab: '',
   },
   variants: {
     variant: {
-      primary: { content: '', underline: 'bg-juiPrimary' },
-      secondary: { content: '', underline: 'bg-juiSecondary' },
-      error: { content: '', underline: 'bg-juiError' },
-      ghost: { content: '', underline: '' },
+      primary: { content: 'hover:text-juiText-blue/70', underline: 'bg-juiPrimary' },
+      secondary: { content: 'hover:text-juiText-purple/70', underline: 'bg-juiSecondary' },
+      error: { content: 'hover:text-juiError/70', underline: 'bg-juiError' },
+      ghost: { content: 'hover:text-juiText-primary/70', underline: '' },
     },
     size: {
-      default: { list: 'min-h-11  text-sm' },
+      default: { list: 'min-h-11 text-sm' },
       small: { list: 'min-h-5 text-xs' },
       medium: { list: 'min-h-12 text-base' },
       large: { list: 'min-h-14 text-lg' },

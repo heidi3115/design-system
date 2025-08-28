@@ -4,6 +4,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { Button, DataTable, DataTableProps } from '@common/ui';
 import { AssetType, getAssetsClientFetch } from '../../../services/asset/getAssets';
+import { DEFAULT_PAGE_SIZE } from './constant';
 
 type TargetAssetGridProps = {
   targetId: string;
@@ -72,7 +73,7 @@ export default function TargetAssetGrid({ targetId, onSelectedData }: TargetAsse
 
   return (
     <div className="overflow-auto h-ful w-full">
-      <DataTable rows={data} columns={columns} isUseQuickSearch />
+      <DataTable rows={data} columns={columns} pageSize={DEFAULT_PAGE_SIZE} isUseQuickSearch />
     </div>
   );
 }

@@ -1,9 +1,10 @@
 'use client';
 
 import { SubmitHandler, useController, useForm } from 'react-hook-form';
+
 import { Button, Checkbox, MultiSelect, useConfirmDialog } from '@common/ui';
 import { SearchIcon } from '@common/ui/icons';
-
+import { cn } from '@common/ui/lib/utils';
 import { CodesType } from '../../../../../../../services/common/getMultiCodes';
 import GreyPointText from '../../../../../../../components/typography/GreyPointText';
 import { GetScenariosRequest } from '../../../../../../../services/scenario/getScenarios';
@@ -18,6 +19,7 @@ type ScenarioListSearchProps = {
 };
 
 export function ScenarioListSearch({
+  scenarioType,
   classesListData,
   scenarioSearchOptions,
   currentSecnarioParams,
@@ -64,10 +66,14 @@ export function ScenarioListSearch({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-5">
-      <div className="grid grid-cols-2 gap-y-2 gap-x-7 w-full">
+      <div
+        className={cn(
+          'grid gap-y-2 gap-x-7 w-full',
+          scenarioType === 'complex' ? 'grid-cols-[auto_auto_auto]' : 'grid-cols-2',
+        )}>
         <div className="flex gap-2">
           <GreyPointText className="text-xs w-24 shrink-0">시나리오 등급</GreyPointText>
-          <div className="flex gap-1 flex-wrap items-center pl-0.5">
+          <div className="flex gap-1 w-full flex-nowrap items-center pl-0.5">
             {scenarioSearchOptions &&
               scenarioSearchOptions.riskLevel?.map((level) => (
                 <Checkbox
@@ -93,14 +99,14 @@ export function ScenarioListSearch({
 
                     riskLevelField.onChange(newArray);
                   }}
-                  boxClassName="flex-1 min-w-fit w-24"
+                  boxClassName="flex-1 min-w-fit max-w-24 basis-24"
                 />
               ))}
           </div>
         </div>
         <div className="flex gap-2">
           <GreyPointText className="text-xs w-24 shrink-0">운영 상태</GreyPointText>
-          <div className="flex gap-1 flex-wrap items-center pl-0.5">
+          <div className="flex gap-1 w-full flex-nowrap items-center pl-0.5">
             {scenarioSearchOptions &&
               scenarioSearchOptions.operationState?.map((level) => (
                 <Checkbox
@@ -126,14 +132,14 @@ export function ScenarioListSearch({
 
                     oprSttListField.onChange(newArray);
                   }}
-                  boxClassName="flex-1 min-w-fit w-24"
+                  boxClassName="flex-1 min-w-fit max-w-24 basis-24"
                 />
               ))}
           </div>
         </div>
         <div className="flex gap-2">
           <GreyPointText className="text-xs w-24 shrink-0">소명 유형</GreyPointText>
-          <div className="flex gap-1 flex-wrap items-center pl-0.5">
+          <div className="flex gap-1 w-full flex-nowrap items-center pl-0.5">
             {scenarioSearchOptions &&
               scenarioSearchOptions.requestExplanation?.map((level) => (
                 <Checkbox
@@ -159,14 +165,14 @@ export function ScenarioListSearch({
 
                     explnCdListField.onChange(newArray);
                   }}
-                  boxClassName="flex-1 min-w-fit w-24"
+                  boxClassName="flex-1 min-w-fit max-w-24 basis-24"
                 />
               ))}
           </div>
         </div>
         <div className="flex gap-2">
           <GreyPointText className="text-xs w-24 shrink-0">대응 구분</GreyPointText>
-          <div className="flex gap-1 flex-wrap items-center pl-0.5">
+          <div className="flex gap-1 w-full flex-wrap items-center pl-0.5">
             {scenarioSearchOptions &&
               scenarioSearchOptions.responseMode?.map((level) => (
                 <Checkbox
@@ -192,12 +198,12 @@ export function ScenarioListSearch({
 
                     respModeListField.onChange(newArray);
                   }}
-                  boxClassName="flex-1 min-w-fit w-24"
+                  boxClassName="flex-1 min-w-fit max-w-24 basis-24"
                 />
               ))}
           </div>
         </div>
-        <div className="flex gap-2 items-center">
+        <div className={cn('flex gap-2 items-center', scenarioType === 'complex' && 'col-span-2')}>
           <GreyPointText className="text-xs w-24 shrink-0">기본 정보</GreyPointText>
           <MultiSelect
             size="large"
@@ -211,20 +217,22 @@ export function ScenarioListSearch({
             }
           />
         </div>
-        <div className="flex gap-2 items-center">
-          <GreyPointText className="text-xs w-24 shrink-0">탐지 형태</GreyPointText>
-          <MultiSelect
-            size="large"
-            value={dttTypListField.value}
-            onValueChange={(value) => dttTypListField.onChange(value)}
-            options={
-              scenarioSearchOptions?.detectionType?.map((detect) => ({
-                label: detect.cmcdNm,
-                value: detect.cmcd,
-              })) ?? []
-            }
-          />
-        </div>
+        {scenarioType === 'normal' && (
+          <div className="flex gap-2 items-center">
+            <GreyPointText className="text-xs w-24 shrink-0">탐지 형태</GreyPointText>
+            <MultiSelect
+              size="large"
+              value={dttTypListField.value}
+              onValueChange={(value) => dttTypListField.onChange(value)}
+              options={
+                scenarioSearchOptions?.detectionType?.map((detect) => ({
+                  label: detect.cmcdNm,
+                  value: detect.cmcd,
+                })) ?? []
+              }
+            />
+          </div>
+        )}
       </div>
       <div className="flex items-end flex-1 basis-42 min-w-32 max-w-42">
         <Button type="submit" variant="gradient" size="large" className="w-full">
