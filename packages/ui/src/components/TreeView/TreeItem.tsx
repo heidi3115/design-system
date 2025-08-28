@@ -90,10 +90,10 @@ export default function TreeItem<T = unknown>({
 }: TreeItemProps<T>) {
   const hasChildren = Array.isArray(node?.children) && node.children.length > 0;
   const hasLineLevel = showLineLevel !== undefined;
-  const lineLevelNum = hasLineLevel ? showLineLevel : 0;
+  const lineLevelNum = hasLineLevel ? (showLineLevel ?? 0) : 0;
   const shouldShowLines = isAllLine ? level >= lineLevelNum : hasLineLevel ? level === lineLevelNum : undefined;
 
-  const { base, common, items, itemTrigger, itemContent, icons } = treeViewVariants({
+  const { base, common, items, itemTrigger, itemContent, icons, lineDot } = treeViewVariants({
     size,
     variant,
     showLines: shouldShowLines,
@@ -169,12 +169,8 @@ export default function TreeItem<T = unknown>({
           className={'w-full gap-y-0 p-0'}
           contentClassName={'overflow-hidden flex w-full min-w-0 px-0 py-0 pb-2 shadow-none rounded-none'}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}>
-          {hasLineLevel && level === lineLevelNum && (
-            <span
-              className={
-                'flex absolute left-3 bottom-1 size-1 font-bold text-[20px]/0 text-juiBorder-primary pointer-events-none'
-              }
-              aria-hidden="true">
+          {(isAllLine || (hasLineLevel && level === lineLevelNum)) && (
+            <span className={cn(lineDot())} aria-hidden="true">
               •
             </span>
           )}
