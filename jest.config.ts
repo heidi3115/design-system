@@ -1,5 +1,6 @@
-// eslint-disable-next-line no-undef
-module.exports = {
+import type { Config } from 'jest';
+
+const config: Config = {
   preset: 'ts-jest/presets/js-with-ts',
   testEnvironment: 'jest-environment-jsdom',
   roots: ['<rootDir>/packages/ui'],
@@ -10,3 +11,5 @@ module.exports = {
     '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.jest.json' }],
   },
 };
+
+export default config;
