@@ -1,5 +1,6 @@
-import baseConfig from '@common/jest-config';
 import type { Config } from 'jest';
+
+import baseConfig from '@common/jest-config';
 
 const appConfig: Config = {
   ...baseConfig,
