@@ -74,11 +74,14 @@ export default function TargetUserGrid({ targetId, onSelectedData }: TargetUserG
     <div className="overflow-auto h-ful w-full">
       <DataTable
         rows={data.employeeList}
-        totalCount={data.totalCount}
-        currentPage={currentPage}
-        onPageChange={(page) => setCurrentPage(page)}
+        pagination={{
+          totalCount: data.totalCount,
+          onPageChange: setCurrentPage,
+          currentPage: currentPage,
+          pageSize: DEFAULT_PAGE_SIZE,
+          manualPagination: true,
+        }}
         columns={columns}
-        pageSize={DEFAULT_PAGE_SIZE}
         isUseQuickSearch
         globalFilter={globalFilter}
         onGlobalFilterChange={(filter) => {
@@ -86,7 +89,6 @@ export default function TargetUserGrid({ targetId, onSelectedData }: TargetUserG
           setGlobalFilter(filter);
         }}
         manualFiltering
-        manualPagination
       />
     </div>
   );

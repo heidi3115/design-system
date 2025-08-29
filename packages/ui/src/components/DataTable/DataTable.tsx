@@ -26,11 +26,15 @@ type ColumnType = {
   field: string;
 };
 
+type CustomToolbarProps = {
+  columnFilterTrigger?: ReactNode;
+  onColumnStatusChange?: (status: ColumnType[]) => void;
+};
+
 export type DataTableProps<T, V> = {
   rows: T[];
   columns: ColumnDef<T, V>[];
   manualFiltering?: boolean;
-  manualPagination?: boolean;
   enableRowSelection?: boolean;
   onSelectRows?: (selectedIds: string[]) => void;
   getRowId?: (row: T) => string;
@@ -39,42 +43,51 @@ export type DataTableProps<T, V> = {
   emptyState?: ReactNode;
   isUseQuickSearch?: boolean;
   searchValue?: string;
-  columnFilterTrigger?: ReactNode;
-  onColumnStatusChange?: (status: ColumnType[]) => void;
-  isUsePagination?: boolean;
-  totalCount?: number;
-  pageSize?: number;
-  onPageChange?: (pagination: number) => void;
-  pageIndex?: number;
-  currentPage?: number;
+  toolbar?: CustomToolbarProps;
+  pagination?: PaginationProps;
   isShowFirstPageButton?: boolean;
   isShowLastPageButton?: boolean;
 };
 
+type PaginationProps = {
+  manualPagination?: boolean;
+  totalCount?: number;
+  isUsePagination?: boolean;
+  pageSize?: number;
+  onPageChange?: (pagination: number) => void;
+  pageIndex?: number;
+  currentPage?: number;
+};
+
+const defaultPagination: PaginationProps = {
+  pageSize: 3,
+  isUsePagination: true,
+  pageIndex: 0,
+};
+
 function DataTable<T, V = unknown>({
-  onColumnStatusChange,
+  toolbar,
+  pagination,
   rows,
   getRowId,
   columns,
   enableRowSelection = false,
   onSelectRows,
   manualFiltering = false, // true로 설정 시, 검색어 필터링 권한을 서버측으로 넘기고 해당 컴포넌트에서는 검색 필터링에 관여하지 않음.
-  manualPagination = false, // 서버사이드 페이징이면 true로 설정
-  totalCount,
-  pageSize,
   globalFilter: externalGlobalFilter,
   onGlobalFilterChange,
   emptyState,
   isUseQuickSearch = false,
   searchValue,
-  columnFilterTrigger,
-  isUsePagination = true,
-  onPageChange,
-  pageIndex,
-  currentPage,
   isShowFirstPageButton = true,
   isShowLastPageButton = true,
 }: DataTableProps<T, V>) {
+  const mergedPagination: PaginationProps = {
+    ...defaultPagination,
+    ...pagination,
+  };
+  const { pageSize, pageIndex, currentPage, isUsePagination, manualPagination, onPageChange, totalCount } =
+    mergedPagination;
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -143,10 +156,10 @@ function DataTable<T, V = unknown>({
           <Input iconLeft={SearchIcon} placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
         )}
         <CustomToolbar
-          columnFilterTrigger={columnFilterTrigger}
+          columnFilterTrigger={toolbar?.columnFilterTrigger}
           table={table}
           manualFiltering={manualFiltering}
-          onColumnStatusChange={onColumnStatusChange}
+          onColumnStatusChange={toolbar?.onColumnStatusChange}
         />
       </div>
 

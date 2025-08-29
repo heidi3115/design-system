@@ -39,7 +39,14 @@ export default function TargetDeptGrid({ targetData, onSelectedData }: TargetDep
 
   return (
     <div className="overflow-auto h-ful w-full">
-      <DataTable rows={targetData} columns={columns} pageSize={DEFAULT_PAGE_SIZE} isUseQuickSearch />
+      <DataTable
+        rows={targetData}
+        columns={columns}
+        pagination={{
+          pageSize: DEFAULT_PAGE_SIZE,
+        }}
+        isUseQuickSearch
+      />
     </div>
   );
 }

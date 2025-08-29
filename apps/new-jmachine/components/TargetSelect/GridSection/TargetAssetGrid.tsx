@@ -73,7 +73,14 @@ export default function TargetAssetGrid({ targetId, onSelectedData }: TargetAsse
 
   return (
     <div className="overflow-auto h-ful w-full">
-      <DataTable rows={data} columns={columns} pageSize={DEFAULT_PAGE_SIZE} isUseQuickSearch />
+      <DataTable
+        rows={data}
+        columns={columns}
+        pagination={{
+          pageSize: DEFAULT_PAGE_SIZE,
+        }}
+        isUseQuickSearch
+      />
     </div>
   );
 }
