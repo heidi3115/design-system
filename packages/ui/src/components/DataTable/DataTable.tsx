@@ -45,8 +45,6 @@ export type DataTableProps<T, V> = {
   searchValue?: string;
   toolbar?: CustomToolbarProps;
   pagination?: PaginationProps;
-  isShowFirstPageButton?: boolean;
-  isShowLastPageButton?: boolean;
 };
 
 type PaginationProps = {
@@ -57,12 +55,16 @@ type PaginationProps = {
   onPageChange?: (pagination: number) => void;
   pageIndex?: number;
   currentPage?: number;
+  isShowFirstPageButton?: boolean;
+  isShowLastPageButton?: boolean;
 };
 
 const defaultPagination: PaginationProps = {
   pageSize: 3,
   isUsePagination: true,
   pageIndex: 0,
+  isShowFirstPageButton: true,
+  isShowLastPageButton: true,
 };
 
 function DataTable<T, V = unknown>({
@@ -79,15 +81,22 @@ function DataTable<T, V = unknown>({
   emptyState,
   isUseQuickSearch = false,
   searchValue,
-  isShowFirstPageButton = true,
-  isShowLastPageButton = true,
 }: DataTableProps<T, V>) {
   const mergedPagination: PaginationProps = {
     ...defaultPagination,
     ...pagination,
   };
-  const { pageSize, pageIndex, currentPage, isUsePagination, manualPagination, onPageChange, totalCount } =
-    mergedPagination;
+  const {
+    pageSize,
+    pageIndex,
+    currentPage,
+    isUsePagination,
+    manualPagination,
+    onPageChange,
+    totalCount,
+    isShowFirstPageButton,
+    isShowLastPageButton,
+  } = mergedPagination;
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
