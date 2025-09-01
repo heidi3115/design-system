@@ -144,7 +144,14 @@ export function ScenarioListGrid({ scenarioType, scenariosData, params }: Scenar
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <DataTable rows={data} columns={columns} pageSize={20} isUseQuickSearch />
+      <DataTable
+        rows={data}
+        columns={columns}
+        pagination={{
+          pageSize: 20,
+        }}
+        isUseQuickSearch
+      />
     </div>
   );
 }

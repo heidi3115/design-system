@@ -171,17 +171,21 @@ export default function Page() {
           rows={serverData.list}
           getRowId={getRowId}
           onSelectRows={setSelectedIds}
-          columnFilterTrigger={<Button variant="transparent">커스텀필터목록</Button>}
+          toolbar={{
+            columnFilterTrigger: <Button variant="transparent">커스텀필터목록</Button>,
+            onColumnStatusChange: handleColumnStatusChange,
+          }}
           columns={columns}
           globalFilter={value}
-          totalCount={totalCount}
-          onPageChange={setCurrentPage}
-          currentPage={currentPage}
-          pageSize={pageSize}
+          pagination={{
+            totalCount: totalCount,
+            onPageChange: setCurrentPage,
+            currentPage: currentPage,
+            pageSize: pageSize,
+            manualPagination: true,
+          }}
           onGlobalFilterChange={(e) => setValue(e)}
           manualFiltering
-          manualPagination
-          onColumnStatusChange={handleColumnStatusChange}
           emptyState={<div>검색 결과 없음</div>}
         />
       </div>
