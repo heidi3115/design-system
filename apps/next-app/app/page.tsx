@@ -65,7 +65,7 @@ export default function Page() {
   return (
     <section className="flex items-center justify-center w-full min-h-svh">
       <ThemeToggle />
-      <div className="flex flex-col gap-4 items-center justify-center">
+      <div className="flex flex-col gap-6 items-center justify-center">
         <h1 className="text-juiGrey-400 text-5xl font-bold hover:text-white">JUI Design Gallery</h1>
         <div className={'flex flex-col gap-4 items-center justify-center'}>
           <h2 className={'text-juiText-blue'}>Buttons</h2>
@@ -77,6 +77,18 @@ export default function Page() {
           <h2 className={'text-juiText-blue'}>Badges</h2>
           <Button asChild variant={'primary'} size={'large'}>
             <Link href="/osy/badge">to Badges Gallery</Link>
+          </Button>
+        </div>
+        <div className={'flex flex-col gap-4 items-center justify-center'}>
+          <h2 className={'text-juiText-blue'}>Tooltips</h2>
+          <Button asChild variant={'secondary'} size={'large'}>
+            <Link href="/osy/tooltip">to Tooltip Gallery</Link>
+          </Button>
+        </div>
+        <div className={'flex flex-col gap-4 items-center justify-center'}>
+          <h2 className={'text-juiText-blue'}>Collapsible Components(Accordion, Collapsible)</h2>
+          <Button asChild variant={'primary'} size={'large'}>
+            <Link href="/osy/collapsibles">to Collapsible Gallery</Link>
           </Button>
         </div>
         <div className="flex justify-between items-center gap-5">

@@ -1,0 +1,43 @@
+{
+  "name": "new-jmachine",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 next dev --turbopack",
+    "build": "NODE_TLS_REJECT_UNAUTHORIZED=0 next build",
+    "start": "NODE_TLS_REJECT_UNAUTHORIZED=0 next start",
+    "lint": "next lint --ext=.ts,.tsx,.jsx",
+    "eslint": "eslint --ext=.ts,.tsx,.jsx",
+    "lint:fix": "next lint --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@common/tokens": "workspace:^",
+    "@common/ui": "workspace:*",
+    "@common/utils": "workspace:*",
+    "@dnd-kit/core": "^6.3.1",
+    "@tanstack/react-query": "^5.83.0",
+    "@tanstack/react-query-devtools": "^5.83.0",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.475.0",
+    "next": "^15.2.3",
+    "next-auth": "^4.24.11",
+    "next-themes": "^0.4.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-error-boundary": "^6.0.0",
+    "react-hook-form": "^7.57.0",
+    "sonner": "^2.0.5"
+  },
+  "devDependencies": {
+    "@common/eslint-config": "workspace:^",
+    "@common/typescript-config": "workspace:*",
+    "@svgr/webpack": "^8.1.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}

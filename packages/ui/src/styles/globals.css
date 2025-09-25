@@ -10,6 +10,8 @@
 @source "../**/*.{ts,tsx}";
 
 @custom-variant light (&:is(.light *));
+@custom-variant orientation-vertical (&:where(table[data-orientation="vertical"] *));
+@custom-variant orientation-horizontal (&:where(table[data-orientation="horizontal"] *));
 
 @layer base {
   * {
@@ -23,5 +25,17 @@
   button,
   input {
     @apply overflow-visible;
+  }
+}
+
+@theme {
+  --animate-progress-bar: progressBar 2s linear;
+  @keyframes progressBar {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 100%;
+    }
   }
 }

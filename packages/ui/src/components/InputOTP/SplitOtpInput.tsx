@@ -1,7 +1,7 @@
 'use client';
 
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@common/ui';
-import { type ComponentProps } from 'react';
+import { type ComponentProps, type Ref, useImperativeHandle, useState } from 'react';
 import { type VariantProps } from 'tailwind-variants';
 
 import splitOtpInputVariants from './splitOtpInputVariants';
@@ -21,13 +21,39 @@ type SplitOtpInputProps = Omit<
   VariantProps<typeof splitOtpInputVariants> & {
     maxLength?: number;
     inputType?: 'digit' | 'character' | 'both' | 'all';
+    otpRef?: Ref<string>;
   };
 
-function SplitOtpInput({ maxLength = 6, inputType = 'digit', variant, size, className, ...props }: SplitOtpInputProps) {
+function SplitOtpInput({
+  value,
+  defaultValue,
+  onChange,
+  otpRef,
+  maxLength = 6,
+  inputType = 'digit',
+  variant,
+  size,
+  className,
+  ...props
+}: SplitOtpInputProps) {
   const safeLength = Math.max(1, maxLength); // 0 이면 1로 보정한다
 
+  const [internalValue, setInternalValue] = useState(defaultValue?.toString() ?? '');
+  const isControlled = value !== undefined;
+  const currentValue = isControlled ? value : internalValue;
+
+  useImperativeHandle(otpRef, () => currentValue);
+
   return (
-    <InputOTP maxLength={safeLength} {...(inputType && { pattern: PATTERN_MAP[inputType] })} {...props}>
+    <InputOTP
+      maxLength={safeLength}
+      value={currentValue}
+      onChange={(newValue) => {
+        if (!isControlled) setInternalValue(newValue);
+        onChange?.(newValue);
+      }}
+      {...(inputType && { pattern: PATTERN_MAP[inputType] })}
+      {...props}>
       {[...Array(safeLength)].map((_, index) => (
         <InputOTPGroup key={index}>
           <InputOTPSlot index={index} className={cn(splitOtpInputVariants({ variant, size, className }))} />

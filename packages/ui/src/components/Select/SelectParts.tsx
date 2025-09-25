@@ -21,10 +21,12 @@ function SelectValue({ ...props }: ComponentProps<typeof SelectPrimitive.Value>)
 function SelectTrigger({
   className,
   size = 'default',
+  isTriggerIcon = true,
   children,
   ...props
 }: ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: 'small' | 'default' | 'large';
+  isTriggerIcon?: boolean;
 }) {
   return (
     <SelectPrimitive.Trigger
@@ -32,11 +34,11 @@ function SelectTrigger({
       data-size={size}
       className={cn(
         // 레이아웃 및 플렉스 관련
-        'flex min-w-24 items-center justify-between gap-2 whitespace-nowrap',
+        'relative flex min-w-24 items-center justify-between gap-2 whitespace-nowrap',
 
         // 박스 모델 (패딩, 보더, 라운드, 쉐도우)
         'px-3 py-2 light:border light:border-juiBorder-primary shadow-xs',
-        'data-[state=open]:border data-[state=open]:border-juiBorder-primary light:data-[state=open]:border-juiText-secondary',
+        'data-[state=open]:border data-[state=open]:border-juiText-primary light:data-[state=open]:border-juiText-secondary',
 
         // 색상 및 배경색
         'bg-juiBackground-input',
@@ -70,9 +72,11 @@ function SelectTrigger({
       )}
       {...props}>
       {children}
-      <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50 transition-transform duration-200" />
-      </SelectPrimitive.Icon>
+      {isTriggerIcon && (
+        <SelectPrimitive.Icon asChild>
+          <ChevronDownIcon className="size-4 opacity-50 transition-transform duration-200" />
+        </SelectPrimitive.Icon>
+      )}
     </SelectPrimitive.Trigger>
   );
 }
@@ -80,13 +84,13 @@ function SelectTrigger({
 function SelectContent({
   className,
   children,
-  isContentfitTriggerWidth,
+  isContentFitTriggerWidth,
   position = 'popper',
   container,
   ...props
 }: ComponentProps<typeof SelectPrimitive.Content> & {
-  isContentfitTriggerWidth?: boolean;
-  container?: HTMLElement;
+  isContentFitTriggerWidth?: boolean;
+  container?: HTMLElement | null;
 }) {
   const [mounted, setMounted] = useState(false);
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
@@ -116,8 +120,8 @@ function SelectContent({
           // 위치 관련
           'relative z-50',
 
-          // 크기 관련(외부에서 wrapptr 만들면 검토)
-          'max-h-96 min-w-32',
+          // 크기 관련(외부에서 wrapper 만들면 검토)
+          'max-h-96 min-w-24',
 
           // 트랜스폼 원점
           'origin-top-left',
@@ -128,8 +132,8 @@ function SelectContent({
           // 박스 스타일
           'shadow-md',
 
-          // isContentfitTriggerWidth 이 true 이면 트리거 input의 넓이에 맞추고 아니면 option의 길이에 맞춤
-          isContentfitTriggerWidth ? 'w-[var(--radix-select-trigger-width)]' : 'w-fit',
+          // isContentFitTriggerWidth 이 true 이면 트리거 input의 넓이에 맞추고 아니면 option의 길이에 맞춤
+          isContentFitTriggerWidth ? 'w-[var(--radix-select-trigger-width)]' : 'w-fit',
 
           // 포지션이 popper일 때 위치 보정
           position === 'popper' &&
@@ -180,13 +184,13 @@ function SelectItem({
       data-size={size}
       className={cn(
         // 상태 및 상호작용 관련
-        'focus:bg-current/5 focus:text-juiText-primary',
+        'focus:bg-current/10 focus:text-juiText-primary',
         'data-[state=checked]:bg-juiPrimary/15',
         'data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
 
         // 레이아웃 및 정렬
         'relative flex w-full items-center gap-2 pr-2 pl-2 py-1.5',
-        isSelectIndicator && 'pr-8',
+        isSelectIndicator && 'data-[state=checked]:pr-8',
 
         // 타이포그래피 및 사용자 선택
         'text-sm select-none',
@@ -216,7 +220,7 @@ function SelectItem({
           </SelectPrimitive.ItemIndicator>
         </span>
       )}
-      <div className="block overflow-hidden text-ellipsis">
+      <div className="block truncate">
         <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
       </div>
     </SelectPrimitive.Item>
@@ -227,7 +231,7 @@ function SelectSeparator({ className, ...props }: ComponentProps<typeof SelectPr
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn('bg-juiText-secondary pointer-events-none mx-1 my-1 h-px', className)}
+      className={cn('bg-juiBorder-primary pointer-events-none my-1 h-px', className)}
       {...props}
     />
   );

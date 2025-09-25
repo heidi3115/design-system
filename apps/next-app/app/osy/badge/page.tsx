@@ -1,15 +1,28 @@
 'use client';
 
 import { useState } from 'react';
-import { badgeVariants, Button, ScoringBadge } from '@common/ui';
-import { AlertCircleIcon, AlertTriangleFilledIcon, CalendarIcon, CornerDownLeftIcon } from '@common/ui/icons';
 import Link from 'next/link';
-import ThemeToggle from '../../../components/ThemeToggle';
-import { Badge, CountBadge, StateBadge } from '@common/ui/components/Badge';
-import GradeBadge from '@common/ui/src/components/Badge/GradeBadge';
-import TextBadge from '@common/ui/src/components/Badge/TextBadge';
+import { cn } from '@common/ui/lib/utils';
+import {
+  Badge,
+  badgeVariants,
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbWrapper,
+  CountBadge,
+  GradeBadge,
+  ScoringBadge,
+  StateBadge,
+  TextBadge,
+} from '@common/ui';
+import { AlertCircleIcon, AlertTriangleFilledIcon, CalendarIcon, FolderFilledIcon, FolderIcon } from '@common/ui/icons';
 
-const Line = () => <hr className={'mt-4 mb-4 text-juiText-primary'} style={{ width: '80%', height: '2px' }} />;
+const Line = () => <hr className="mt-4 mb-4 text-juiText-primary w-4/5 h-0.5" />;
 
 export default function BadgePage() {
   const MAX_VAL = 20;
@@ -26,16 +39,131 @@ export default function BadgePage() {
 
   const [count, setCount] = useState(0);
 
+  const mixArr = [
+    {
+      value: '0',
+      label: 'Root',
+      href: '/',
+      className: 'text-red-500',
+      icon: <FolderFilledIcon />,
+      iconPosition: 'right',
+    },
+    {
+      value: '1',
+      label: 'Home',
+      href: '/',
+      icon: <FolderIcon />,
+      className: 'text-blue-500',
+    },
+    {
+      label: 'Electronics',
+      value: 'electronics',
+      href: '',
+    },
+    {
+      label: 'Clothing',
+      value: 'clothing',
+      href: '/osy/badge',
+      target: '_self',
+    },
+    {
+      label: 'linkGroup1',
+      value: '',
+      href: '/osy/button',
+      disabled: true,
+    },
+    {
+      label: 'linkGroup2',
+      value: '1',
+      href: '/osy/badge',
+      target: '_blank',
+    },
+    {
+      value: '2',
+      label: 'Current Category',
+      href: '/osy/tooltip',
+      isPage: true,
+    },
+  ];
+
+  const noTypeArr = [
+    {
+      label: 'Root',
+      value: 'root',
+      href: '/',
+      className: 'text-red-500',
+      icon: <FolderFilledIcon />,
+      iconPosition: 'right',
+    },
+    {
+      label: 'Home',
+      value: 'home1',
+      href: '/',
+      icon: <FolderIcon />,
+      className: 'text-blue-500',
+    },
+    { label: 'Electronics', value: 'electronics', href: '' },
+    { label: 'Clothing', value: 'clothing', href: '/osy/badge', target: '_self' },
+    { label: 'linkGroup', value: '', href: '/osy/button', target: '_blank', isPage: true },
+    { label: 'Clothing2', value: 'clothing22', href: '/osy/badge', target: '_blank' },
+    {
+      label: 'Electronics2-child',
+      value: 'electronics22',
+      href: '/osy/tooltip',
+      children: [
+        {
+          label: 'ChildLinkGroup',
+          value: 'child-linkGroup',
+          href: '/osy/button',
+          target: '_blank',
+        },
+        { label: 'ChildClothing', value: 'child-clothing', href: '/osy/badge', target: '_self' },
+        { label: 'ChildElectronics', value: 'child-electronics', href: '/osy/badge', target: '_target' },
+      ],
+    },
+    { label: 'linkGroup2', value: 'linkGroup22', href: '/osy/badge', target: '_blank', isPage: true, disabled: true },
+    { label: 'Current Category!!', value: '', href: '/osy/tooltip', isPage: false },
+  ]; // length = 9
+
   return (
     <section>
-      <div>
-        <Button asChild variant={'transparent'} size={'large'}>
-          <Link href="/" title={'to main'}>
-            <CornerDownLeftIcon size={'small'} /> to main
-          </Link>
-        </Button>
-        <ThemeToggle />
+      <div className={cn('flex flex-col gap-10')}>
+        <div className={cn('w-auto mt-100')}>
+          <p>maxItems = null</p>
+          <Breadcrumb
+            items={noTypeArr}
+            maxItems={null}
+            ellipsisPosition={'center'}
+            dropdownProps={{ size: 4, side: 'top' }}
+          />
+          <p>maxItems = 7</p>
+          <Breadcrumb
+            items={noTypeArr}
+            maxItems={7}
+            ellipsisPosition={'center'}
+            dropdownProps={{ size: 4, side: 'top' }}
+          />
+          <Breadcrumb items={mixArr} ellipsisPosition={'end'} />
+        </div>
+        <BreadcrumbWrapper className={cn('flex flex-row gap-4 items-center')}>
+          <BreadcrumbList className={cn('flex flex-row gap-4 items-center justify-center')}>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/osy/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbEllipsis />
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/osy/badge">Badge</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>CurrentPage</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </BreadcrumbWrapper>
       </div>
+
       <div className={'flex flex-col gap-4 items-center justify-center w-full'}>
         <h2 className={'text-juiText-blue text-4xl font-bold'}>Badges - 기본과 컴포넌트 별 분리</h2>
         <span className={'text-xl'}>
@@ -47,7 +175,7 @@ export default function BadgePage() {
           </span>
         </span>
         <h3 className={'text-juiText-primary text-2xl font-bold text-center'}>
-          Count badges : 기본 Badge들의 예시
+          Count badges : 기본 Badge 들의 예시
           <strong className={'block text-sm'}>기본 Badge만 asChild가 가능하니 유념해주세요.</strong>
         </h3>
         <div className={'flex flex-row gap-2'}>
@@ -516,7 +644,7 @@ export default function BadgePage() {
         <div className={'flex flex-col gap-5 w-3/4 *:w-full'}>
           <h4 className={'space-y-4 text-juiGrey-a400 text-sm text-center'}>
             TextBadge 는 variant가 text 로 고정이며, children 이 필수값, textOnly, onClick 이 옵션값이며 이들만 받을 수
-            있고, children은 문자열만 가능합니다. textOnly 의 기본값은 false입니다.
+            있고, children은 문자열만 가능합니다. textOnly 의 기본값은 false 입니다.
           </h4>
           <div className={'flex flex-col gap-4'}>
             <h5 className={'text-base font-bold'}>TextBadge - Default</h5>

@@ -12,7 +12,7 @@ const badgeVariants = tv({
       scoring: '',
       grading: 'text-juiText-primary rounded-none ',
       count: 'z-2', // absolute 대비
-      text: ['text-juiText-primary bg-juiGrey-50 rounded-xs border-juiText-secondary'],
+      text: ['text-juiText-primary bg-juiGrey-50 rounded-xs border-juiBorder-primary'],
     },
     /**
      * status : variant 가 state 일 때. StateBadge 에는 status 별로 스타일을 처리하고 있습니다.
@@ -31,7 +31,7 @@ const badgeVariants = tv({
       urgency: 'bg-juiStatus-urgency',
     },
     /**
-     * score : variant 가 scoring 일 때. ScoringBadge 에는 score 에 대한 scoreVal이 있고 그에 대한 스타일로서 score 별로 처리하고 있습니다.
+     * score : variant 가 scoring 일 때. ScoringBadge 에는 score 에 대한 scoreVal이 있고 그에 대한 스타일로 score 별로 처리하고 있습니다.
      */
     score: {
       veryLow: 'bg-juiScore-veryLow',

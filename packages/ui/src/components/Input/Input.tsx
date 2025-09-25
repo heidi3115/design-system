@@ -1,12 +1,11 @@
 'use client';
 
-import { type ChangeEvent, type ComponentType, type ReactNode } from 'react';
+import { type ComponentType, type ReactNode } from 'react';
 import { type VariantProps } from 'tailwind-variants';
 import { AlertCircle2Icon, type IconProps } from '@common/ui/icons';
-import { sanitizeNumber } from '@common/utils';
 
 import inputVariants from './inputVariants';
-import { useInputValue } from '../hooks/useInputValue';
+import { useInputValue } from '../../hooks/useInputValue';
 import NumberStepper from './NumberStepper';
 import { cn } from '../../lib/utils';
 
@@ -16,6 +15,8 @@ type InputProps = Omit<React.ComponentProps<'input'>, 'size'> &
     iconRight?: ComponentType<IconProps>;
     error?: boolean;
     helperText?: ReactNode;
+    step?: number;
+    iconProps?: IconProps;
   };
 
 function Input({
@@ -25,39 +26,49 @@ function Input({
   iconLeft,
   iconRight,
   disabled,
+  underline,
   value,
   defaultValue,
+  step,
   error,
   helperText,
+  iconProps,
   onChange,
+  onBlur,
   ...props
 }: InputProps) {
   const hasIconLeft = !!iconLeft;
   const hasIconRight = !!iconRight;
 
-  const { value: inputValue, handleChange } = useInputValue({
+  const {
+    value: inputValue,
+    handleChange,
+    handleBlur,
+  } = useInputValue({
     value,
     defaultValue,
+    type,
+    min: Number(props.min),
+    max: Number(props.max),
     onChange,
+    onBlur,
   });
 
   const IconLeft = iconLeft;
-  const IconRitght = iconRight;
-
-  const preventInvalidInput = (event: ChangeEvent<HTMLInputElement>) => {
-    event.target.value = sanitizeNumber(event.target.value);
-  };
+  const IconRight = iconRight;
 
   return (
-    <div>
-      <div className={cn('relative group min-h-7', className)}>
+    <div data-slot="input-wrapper" className={className}>
+      <div className={cn('relative group min-h-7', underline !== 'none' && 'bg-juiBackground-input', className)}>
         {IconLeft && (
           <span
             className={cn(
-              'absolute left-3 top-1/2 -translate-y-1/2 text-current pointer-events-none',
+              'absolute left-3 top-1/2 -translate-y-1/2 text-current',
+              !iconProps && 'pointer-events-none',
+              iconProps && 'hover:text-current/50',
               disabled && 'opacity-50 cursor-not-allowed',
             )}>
-            <IconLeft size="small" />
+            <IconLeft size="small" {...iconProps} />
           </span>
         )}
 
@@ -67,7 +78,7 @@ function Input({
           data-slot="input"
           value={inputValue}
           onChange={handleChange}
-          {...(type === 'number' && { type: 'text', onInput: preventInvalidInput })}
+          onBlur={handleBlur}
           className={cn(
             inputVariants({
               error,
@@ -75,8 +86,10 @@ function Input({
               hasIconLeft,
               hasIconRight,
               disabled,
+              underline,
               className,
             }),
+            'w-full',
           )}
           {...props}
         />
@@ -92,18 +105,27 @@ function Input({
           </span>
         )}
 
-        {IconRitght && (
+        {IconRight && (
           <span
             className={cn(
-              'absolute right-3 top-1/2 -translate-y-1/2 text-current pointer-events-none',
+              'absolute right-3 top-1/2 -translate-y-1/2 text-current',
+              !iconProps && 'pointer-events-none',
+              iconProps && 'hover:text-current/50',
               disabled && 'opacity-50 cursor-not-allowed',
             )}>
-            <IconRitght size="small" />
+            <IconRight size="small" {...iconProps} />
           </span>
         )}
 
         {type === 'number' && !hasIconRight && !error && (
-          <NumberStepper inputValue={inputValue} handleChange={handleChange} />
+          <NumberStepper
+            inputValue={inputValue}
+            step={step}
+            {...(props.max && { max: Number(props.max) })}
+            {...(props.min && { min: Number(props.min) })}
+            handleChange={handleChange}
+            disabled={disabled}
+          />
         )}
       </div>
 

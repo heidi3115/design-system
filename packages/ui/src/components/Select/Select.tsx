@@ -1,6 +1,6 @@
 'use client';
 
-import { type Ref, useImperativeHandle, useState, type ComponentProps } from 'react';
+import { type Ref, useImperativeHandle, useState, type ComponentProps, type ReactNode, type RefCallback } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 import {
@@ -22,9 +22,14 @@ const selectVariaints = tv({
       full: 'w-full',
       fit: 'w-fit',
     },
+    error: {
+      true: 'border border-juiError light:border-juiError',
+      false: 'focus:border-juiText-primary light:focus:border-juiText-secondary', // 에러 아닐 때만 기본 파란색 포커스
+    },
   },
   defaultVariants: {
     width: 'full',
+    error: false,
   },
 });
 
@@ -51,31 +56,49 @@ type SelectOptions = OptionType[];
 type SelectProps = ComponentProps<typeof SelectRoot> &
   Omit<VariantProps<typeof selectVariaints>, 'width'> & {
     options: SelectOptions;
+    ref?: RefCallback<HTMLElement>;
     placeholder?: string;
     size?: 'small' | 'default' | 'large';
     width?: VariantProps<typeof selectVariaints>['width'] | number;
     isSelectIndicator?: boolean;
-    isContentfitTriggerWidth?: boolean;
+    isContentFitTriggerWidth?: boolean;
     selectRef?: Ref<string>;
+    error?: boolean;
+    helperText?: ReactNode;
+    isTriggerIcon?: boolean;
+    className?: string;
+    optionsClassName?: string;
+    itemClassName?: string;
+    position?: ComponentProps<typeof SelectContent>['position'];
+    container?: ComponentProps<typeof SelectContent>['container'];
   };
 
 function Select({
+  ref,
   options,
   size,
   width,
-  placeholder = '-',
+  placeholder,
   isSelectIndicator = false,
-  isContentfitTriggerWidth = false,
+  isContentFitTriggerWidth = false,
   value: controlledValue,
   onValueChange,
+  className,
+  optionsClassName,
+  itemClassName,
   selectRef,
+  error,
+  helperText,
+  isTriggerIcon,
+  position,
+  container,
   ...props
 }: SelectProps) {
   const isNumberWidth = typeof width === 'number';
-  const [interanlValue, setInternalValue] = useState(props.defaultValue ?? '');
+  const [internalValue, setInternalValue] = useState(props.defaultValue ?? '');
 
   const isControlled = controlledValue !== undefined;
-  const currentValue = isControlled ? controlledValue : interanlValue;
+  const currentValue = isControlled ? controlledValue : internalValue;
 
   // 비제어 선택값
   useImperativeHandle(selectRef, () => currentValue);
@@ -88,13 +111,35 @@ function Select({
         onValueChange?.(value);
       }}
       {...props}>
-      <SelectTrigger
-        size={size}
-        className={cn(!isNumberWidth && selectVariaints({ width }))}
-        style={isNumberWidth ? { width: `${width}px` } : undefined}>
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
-      <SelectContent isContentfitTriggerWidth={isContentfitTriggerWidth}>
+      <div
+        style={
+          isNumberWidth ? { width: `${width}px` } : width === 'fit' ? { width: 'fit-content' } : { width: '100%' }
+        }>
+        <SelectTrigger
+          ref={ref}
+          size={size}
+          style={isNumberWidth ? { width: `100%` } : undefined}
+          isTriggerIcon={isTriggerIcon}
+          className={cn(!isNumberWidth && selectVariaints({ width, error }), className)}>
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        {helperText && (
+          <p
+            className={cn(
+              'text-xs mx-1 mt-1',
+              error && 'text-juiError',
+              props.disabled && 'opacity-50 cursor-not-allowed',
+            )}>
+            {helperText}
+          </p>
+        )}
+      </div>
+
+      <SelectContent
+        isContentFitTriggerWidth={isContentFitTriggerWidth}
+        position={position}
+        container={container}
+        className={optionsClassName}>
         {options.map((opt, idx) => {
           // 그룹일 경우
           if ('type' in opt && opt.type === 'group') {
@@ -112,7 +157,8 @@ function Select({
                       value={item.value}
                       disabled={item.disabled}
                       size={size}
-                      isSelectIndicator={isSelectIndicator}>
+                      isSelectIndicator={isSelectIndicator}
+                      className={itemClassName}>
                       {item.label}
                     </SelectItem>
                   );
@@ -135,7 +181,8 @@ function Select({
               value={item.value}
               disabled={item.disabled}
               size={size}
-              isSelectIndicator={isSelectIndicator}>
+              isSelectIndicator={isSelectIndicator}
+              className={itemClassName}>
               {item.label}
             </SelectItem>
           );

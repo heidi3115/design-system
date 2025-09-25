@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 
-function jsxToBase64(svgChildren: string): string {
-  const svgWrapped = `<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20" height="20" viewBox="0 0 20 20">${svgChildren}</svg>`;
+function jsxToBase64(svgChildren: string, viewBox: string = '0 0 24 24', isStrokeIcon: boolean = false): string {
+  const strokeAttributes = isStrokeIcon ? 'fill="none" stroke="white" stroke-width="2"' : 'fill="#fff"';
+  const svgWrapped = `<svg xmlns="http://www.w3.org/2000/svg" ${strokeAttributes} width="24" height="24" viewBox="${viewBox}">${svgChildren}</svg>`;
   return Buffer.from(svgWrapped).toString('base64');
 }
 
@@ -23,8 +24,17 @@ async function processIconsDir(dirPath: string) {
       continue;
     }
 
+    // viewBox 추출
+    const viewBoxRegex = /viewBox:\s*['"`]([^'"`]+)['"`]/;
+    const viewBoxMatch = content.match(viewBoxRegex);
+    const viewBox = viewBoxMatch ? viewBoxMatch[1] : '0 0 24 24';
+
+    // stroke 아이콘인지 확인 (path에 stroke 속성이 없고 CreateIcon에 stroke 속성이 있는 경우)
+    const hasStrokeInCreateIcon = content.includes('stroke:') && content.includes('fill:');
+    const isStrokeIcon = hasStrokeInCreateIcon;
+
     const svgChildren = pathsMatch[1].trim();
-    const base64Svg = jsxToBase64(svgChildren);
+    const base64Svg = jsxToBase64(svgChildren, viewBox, isStrokeIcon);
 
     const rawName = path.basename(fileName).replace(/\.(tsx|ts)$/, '');
     const iconName = rawName.endsWith('Icon') ? rawName : `${rawName}Icon`;

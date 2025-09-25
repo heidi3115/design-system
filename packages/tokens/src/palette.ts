@@ -31,18 +31,25 @@ const palette = {
   juiBackground: {
     default: { main: '#182036', light: '#fff' },
     paper: { main: 'rgba(255, 255, 255, 0.05)', light: 'rgba(0, 0, 0, 0.05)' },
+    solidPaper: { main: '#242B40', light: '#F2F2F2' },
     input: { main: 'rgba(0, 0, 0, 0.3)', light: '#fff' },
     skeleton: { main: '#3c4f6b', light: '#e0e0e0' },
+    tooltip: { main: '#3B4154', light: '#3B4154' },
+    popover: { main: '#101822', light: '#fff' },
+    tableHead: { main: '#3B4154', light: '#e0e0e0' },
   },
   juiText: {
     primary: { main: '#fff', light: '#333333' },
     secondary: { main: 'rgba(255, 255, 255, 0.4)', light: 'rgba(0, 0, 0, 0.4)' },
-    disabled: { main: '#505050' },
+    disabled: { main: '#334259', light: '#c7c7c7' },
     blue: { main: '#7A97FF' },
     purple: { main: '#9747FF' },
+    tableHead: { main: 'rgba(255, 255, 255, 0.5)', light: '#000' },
   },
   juiBorder: {
-    primary: { main: '#E0E0E0' },
+    primary: { main: '#5A6372', light: '#D1D5DB' },
+    tableBottom: { main: '#30374B', light: '#EAEAEA' },
+    tableHead: { main: '#4B5062', light: '#EAEAEA' },
   },
   juiScore: {
     veryLow: { main: '#8294FF' },
