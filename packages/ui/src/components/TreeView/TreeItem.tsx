@@ -19,10 +19,10 @@ export type BaseTreeNodeProps<T = unknown> = {
   id: string;
   /** 트리 노드의 표시명 */
   name: string;
+  /** 노드 비활성화 여부 */
+  disabled?: boolean;
   /** 자식 노드들 (재귀적 구조) */
   children?: BaseTreeNodeProps<T>[];
-  /** 확장을 위한 인덱스 시그니처 */
-  [key: string]: unknown;
 } & Partial<T>;
 
 export type TreeItemProps<T> = {
@@ -90,10 +90,10 @@ export default function TreeItem<T = unknown>({
 }: TreeItemProps<T>) {
   const hasChildren = Array.isArray(node?.children) && node.children.length > 0;
   const hasLineLevel = showLineLevel !== undefined;
-  const lineLevelNum = hasLineLevel ? showLineLevel : 0;
-  const shouldShowLines = hasLineLevel ? (isAllLine ? level >= lineLevelNum : level === lineLevelNum) : false;
+  const lineLevelNum = hasLineLevel ? (showLineLevel ?? 0) : 0;
+  const shouldShowLines = isAllLine ? level >= lineLevelNum : hasLineLevel ? level === lineLevelNum : undefined;
 
-  const { base, common, items, itemTrigger, itemContent, icons } = treeViewVariants({
+  const { base, common, items, itemTrigger, itemContent, icons, lineDot } = treeViewVariants({
     size,
     variant,
     showLines: shouldShowLines,
@@ -169,10 +169,8 @@ export default function TreeItem<T = unknown>({
           className={'w-full gap-y-0 p-0'}
           contentClassName={'overflow-hidden flex w-full min-w-0 px-0 py-0 pb-2 shadow-none rounded-none'}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}>
-          {hasLineLevel && level === lineLevelNum && (
-            <span
-              className={'flex absolute left-3 bottom-1 size-1 font-bold text-[20px]/0 pointer-events-none'}
-              aria-hidden="true">
+          {(isAllLine || (hasLineLevel && level === lineLevelNum)) && (
+            <span className={cn(lineDot())} aria-hidden="true">
               •
             </span>
           )}

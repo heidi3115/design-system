@@ -2,6 +2,7 @@
 
 import { Button, DataTable, DataTableProps } from '@common/ui';
 import { ExceptionGroupsType } from '../../../services/scenario/getExceptionManageGroups';
+import { DEFAULT_PAGE_SIZE } from './constant';
 
 type TargetExceptGroupGridProps = {
   targetData: ExceptionGroupsType[];
@@ -38,7 +39,14 @@ export default function TargetExceptGroupGrid({ targetData, onSelectedData }: Ta
 
   return (
     <div className="overflow-auto h-ful w-full">
-      <DataTable rows={targetData} columns={columns} pageSize={15} isUseQuickSearch />
+      <DataTable
+        rows={targetData}
+        columns={columns}
+        pagination={{
+          pageSize: DEFAULT_PAGE_SIZE,
+        }}
+        isUseQuickSearch
+      />
     </div>
   );
 }

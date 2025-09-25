@@ -3,10 +3,11 @@
 import { DataTable } from '@common/ui';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { Button, Input } from '@common/ui';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useDebounce, useUpdateEffect } from '@common/utils';
 
 type Scenario = {
+  scnrIdx: string;
   scnrNm: string;
   regUser: string;
   regUserNm: string;
@@ -29,12 +30,14 @@ export default function Page() {
     totalCount: 20,
     list: [
       {
+        scnrIdx: 'oPcU8M0kSfYD8qV1dvKoFQ==',
         scnrNm: '[QA-3560] 테스트 시나리오',
         regUser: 'hycho',
         regUserNm: '테스트이름',
         regDt: '2025-03-26 15:48:46',
       },
       {
+        scnrIdx: 'SxYduENFkYl1vXBNrsdL5Q==',
         scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
         regUser: 'admin',
         regUserNm: '관리자',
@@ -45,74 +48,30 @@ export default function Page() {
 
   const clientData = [
     {
-      scnrNm: '[QA-3560] 테스트 시나리오',
-      regUser: 'hycho',
-      regUserNm: '테스트이름',
-      regDt: '2025-03-26 15:48:46',
-    },
-    {
-      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
-      regUser: 'admin',
-      regUserNm: '관리자',
-      regDt: '2024-11-28 10:38:05',
-    },
-    {
-      scnrNm: '[QA-3560] 테스트 시나리오',
-      regUser: 'test',
-      regUserNm: '테스트이름',
-      regDt: '2025-03-26 15:48:46',
-    },
-    {
-      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
-      regUser: 'test2',
-      regUserNm: '관리자',
-      regDt: '2024-11-28 10:38:05',
-    },
-    {
-      scnrNm: '[QA-3560] 테스트 시나리오',
-      regUser: 'test3',
-      regUserNm: '테스트이름',
-      regDt: '2025-03-26 15:48:46',
-    },
-    {
-      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
-      regUser: 'test4',
-      regUserNm: '관리자',
-      regDt: '2024-11-28 10:38:05',
-    },
-    {
+      scnrIdx: 'oPcU8M0kSfYD8qV1dvKoFQ==',
       scnrNm: '[QA-3560] 테스트 시나리오',
       regUser: 'test5',
       regUserNm: '테스트이름',
       regDt: '2025-03-26 15:48:46',
     },
     {
+      scnrIdx: 'SxYduENFkYl1vXBNrsdL5Q==',
       scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
       regUser: 'test6',
       regUserNm: '관리자',
       regDt: '2024-11-28 10:38:05',
     },
     {
+      scnrIdx: '7fafnrLzKgisDhs98tVOew==',
       scnrNm: '[QA-3560] 테스트 시나리오',
       regUser: 'test7',
       regUserNm: '테스트이름',
       regDt: '2025-03-26 15:48:46',
     },
     {
+      scnrIdx: 'DS9QzTVSQACrXP1lLKGf6w==',
       scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
       regUser: 'test8',
-      regUserNm: '관리자',
-      regDt: '2024-11-28 10:38:05',
-    },
-    {
-      scnrNm: '[QA-3560] 테스트 시나리오',
-      regUser: 'test9',
-      regUserNm: '테스트이름',
-      regDt: '2025-03-26 15:48:46',
-    },
-    {
-      scnrNm: '[1112] AI 다중 임계치 테스트 - 커스텀커맨드',
-      regUser: 'test10',
       regUserNm: '관리자',
       regDt: '2024-11-28 10:38:05',
     },
@@ -122,12 +81,14 @@ export default function Page() {
     totalCount: 20,
     list: [
       {
+        scnrIdx: 'KfgofzASdDT/CQd0q4e37Q==',
         scnrNm: '검색어로 필터링된 서버 데이터 예시',
         regUser: 'hycho',
         regUserNm: '새로운데이터',
         regDt: '2025-03-26 15:48:46',
       },
       {
+        scnrIdx: 'orIAA5m67XK+n4PSTaeznA==',
         scnrNm: '검색어로 필터링된 서버 데이터 예시2',
         regUser: 'admin',
         regUserNm: '새로운데이터2',
@@ -161,13 +122,16 @@ export default function Page() {
     }));
   }
 
-  const columns = createColumnsFromRaw(columnData.cols);
+  const columns = createColumnsFromRaw<Scenario>(columnData.cols);
 
   const testData: Scenario[] = [];
   const [value, setValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [totalCount, setTotalCount] = useState(serverData.totalCount);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  console.warn(selectedIds);
 
   const pageSize = 10; // pageSize 기능 구현 시 수정 예정
 
@@ -196,6 +160,8 @@ export default function Page() {
     setTotalCount(dummyData.totalCount);
   }, [currentPage]);
 
+  const getRowId = useCallback((row: Scenario) => row.scnrIdx.toString(), []);
+
   return (
     <section className="flex flex-col gap-20 items-center justify-center w-full min-h-svh">
       <div className="w-200 flex flex-col gap-2">
@@ -203,17 +169,23 @@ export default function Page() {
         <DataTable
           isUseQuickSearch
           rows={serverData.list}
-          columnFilterTrigger={<Button variant="transparent">커스텀필터목록</Button>}
+          getRowId={getRowId}
+          onSelectRows={setSelectedIds}
+          toolbar={{
+            columnFilterTrigger: <Button variant="transparent">커스텀필터목록</Button>,
+            onColumnStatusChange: handleColumnStatusChange,
+          }}
           columns={columns}
           globalFilter={value}
-          totalCount={totalCount}
-          onPageChange={setCurrentPage}
-          currentPage={currentPage}
-          pageSize={pageSize}
+          pagination={{
+            totalCount: totalCount,
+            onPageChange: setCurrentPage,
+            currentPage: currentPage,
+            pageSize: pageSize,
+            manualPagination: true,
+          }}
           onGlobalFilterChange={(e) => setValue(e)}
           manualFiltering
-          manualPagination
-          onColumnStatusChange={handleColumnStatusChange}
           emptyState={<div>검색 결과 없음</div>}
         />
       </div>
@@ -222,6 +194,8 @@ export default function Page() {
         <Input placeholder="검색어를 입력하세요" underline="primary" onChange={handleChange} />
         <DataTable
           rows={clientData}
+          getRowId={getRowId}
+          onSelectRows={setSelectedIds}
           searchValue={searchValue}
           isUseQuickSearch={false}
           columns={columns}
@@ -230,11 +204,18 @@ export default function Page() {
       </div>
       <div className="w-200 flex flex-col gap-2">
         <span>클라이언트사이드 필터링(내부Input)</span>
-        <DataTable rows={clientData} isUseQuickSearch columns={columns} emptyState={<div>검색 결과 없음</div>} />
+        <DataTable
+          rows={clientData}
+          getRowId={getRowId}
+          isUseQuickSearch
+          columns={columns}
+          emptyState={<div>검색 결과 없음</div>}
+          onSelectRows={setSelectedIds}
+        />
       </div>
       <div className="w-200 flex flex-col gap-2">
         <span>결과 없음</span>
-        <DataTable rows={testData} isUseQuickSearch columns={columns} />
+        <DataTable rows={testData} isUseQuickSearch columns={columns} enableRowSelection={false} />
       </div>
     </section>
   );

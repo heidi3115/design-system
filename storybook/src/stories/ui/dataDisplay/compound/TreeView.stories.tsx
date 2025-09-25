@@ -67,6 +67,8 @@ const meta: Meta<typeof TreeView> = {
     indentSize: DEFAULT_INDENT_SIZE,
     showLineLevel: undefined,
     isAllLine: false,
+    defaultExpandAll: false,
+    expandAll: undefined,
     defaultSelectedIds: undefined,
     selectedIds: undefined,
     defaultExpandedIds: undefined,
@@ -221,16 +223,36 @@ type TreeNodeProps<T> = {
     },
     isAllLine: {
       control: { type: 'boolean' },
-      description: [
-        'showLineLevel 부터 자식까지 선을 보여줄 지 여부입니다. True 일 경우, showLineLevel의 숫자부터 선이 계속 보이게 됩니다.',
-        '예를 들어 showLineLevel 이 1이고, isAllLine 이 true 라면 depth 1부터 자식인 depth=2,3,4... 등 계속 이어져서 선이 전부 보이게 됩니다.',
-        'showLineLevel 이 undefined 라면, isAllLine이 true 여도 선이 보이지 않습니다.',
-      ].join('<br/>'),
+      if: { arg: 'showLineLevel', exists: true },
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
-      if: { arg: 'showLineLevel', exists: true },
+      description: [
+        'showLineLevel 부터 자식까지 선을 보여줄 지 여부입니다. True 일 경우, showLineLevel의 숫자부터 선이 계속 보이게 됩니다.',
+        '예를 들어 showLineLevel 이 1이고, isAllLine 이 true 라면 depth 1부터 자식인 depth=2,3,4... 등 계속 이어져서 선이 전부 보이게 됩니다.',
+        'showLineLevel 이 undefined 라면, isAllLine이 true 여도 선이 보이지 않습니다.',
+      ].join('\n'),
+    },
+    defaultExpandAll: {
+      control: { type: 'boolean' },
+      description: [
+        '`defaultExpandAll`은 TreeView의 비제어(Uncontrolled) 모드에서만 동작합니다.',
+        'true로 설정하면 최초 렌더링 시 모든 노드가 확장된 상태로 시작합니다.',
+        '이후에는 사용자가 개별적으로 노드를 확장/축소할 수 있습니다.',
+        '제어(Controlled) 모드에서는 무시됩니다.',
+      ].join('\n'),
+    },
+    expandAll: {
+      control: { type: 'boolean' },
+      table: { defaultValue: { summary: 'undefined' } },
+      description: [
+        '`expandAll`은 TreeView의 제어(Controlled) 모드에서 전체 노드의 확장/축소를 외부에서 직접 제어할 수 있는 prop입니다.',
+        'true로 설정하면 모든 노드가 확장되고, false로 설정하면 모든 노드가 축소됩니다.',
+        '값이 변경될 때마다 전체 노드의 상태가 즉시 반영됩니다.',
+        '비제어(Uncontrolled) 모드에서는 사용하지 않습니다.',
+        '외부 버튼 등에서 상태를 변경하여 전체 열기/닫기를 구현할 수 있습니다.',
+      ].join('\n'),
     },
     defaultSelectedIds: {
       control: false,
@@ -1094,7 +1116,17 @@ function LeafOnlySelectRender(args: TreeViewProps) {
                     : '모든 노드 단일 선택 가능'}
               </p>
             </div>
-            <TreeView {...args} multiSelect={multiSelect} leafOnlySelect={leafOnlySelect} />
+            <TreeView
+              {...args}
+              multiSelect={multiSelect}
+              leafOnlySelect={leafOnlySelect}
+              onToggledNodes={(expandedIds, expandedNodes) => {
+                console.warn('onToggledNodes\n', { idx }, '\n', { expandedIds, expandedNodes });
+              }}
+              onSelectedNodes={(selectedIds, selectedNodes) => {
+                console.warn('onSelectedNodes', { idx }, '\n', { selectedIds, selectedNodes });
+              }}
+            />
           </div>
         ))}
       </div>
@@ -1134,6 +1166,71 @@ export const Selections: Story = {
     },
   },
   render: (args) => <LeafOnlySelectRender {...args} />,
+};
+
+function ExpandAllOverviewDemo(args: TreeViewProps) {
+  const [expandAll, setExpandAll] = useState(true);
+
+  return (
+    <div className={cn(flexRow, 'gap-6 justify-center w-full')}>
+      <div className={cn(flexCol, 'p-4 border border-juiBorder-primary rounded-md')}>
+        <h3 className={cn(blueTxt, 'text-xl font-bold')}>
+          Uncontrolled (defaultExpandAll)
+          <p className={'text-sm font-semibold text-juiText-primary'}>{`defaultExpandAll={true}`}</p>
+        </h3>
+        <TreeView {...args} defaultExpandAll={true} showLineLevel={0} />
+      </div>
+      <div className={cn(flexCol, 'p-4 border border-juiBorder-primary rounded-md')}>
+        <h3 className={cn(blueTxt, 'text-xl font-bold')}>
+          Controlled (expandAll)
+          <p className={'text-sm font-semibold text-juiText-primary'}>{`expandAll={${expandAll}}`}</p>
+        </h3>
+        <Button size="small" variant="default" onClick={() => setExpandAll((prev) => !prev)}>
+          전체 {expandAll ? '닫기' : '열기'}
+        </Button>
+        <TreeView {...args} expandAll={expandAll} showLineLevel={0} />
+      </div>
+    </div>
+  );
+}
+
+export const ExpandAllOverview: Story = {
+  args: {
+    treeData: assetDivisionTreeData,
+  },
+  argTypes: {
+    treeData: { table: { disable: true } },
+    multiSelect: { table: { disable: true } },
+    leafOnlySelect: { table: { disable: true } },
+    defaultIcon: { table: { disable: true } },
+    expandedIcon: { table: { disable: true } },
+    endIcon: { table: { disable: true } },
+    defaultExpandAll: { table: { disable: true } },
+    expandAll: { table: { disable: true } },
+    defaultSelectedIds: { table: { disable: true } },
+    selectedIds: { table: { disable: true } },
+    defaultExpandedIds: { table: { disable: true } },
+    expandedIds: { table: { disable: true } },
+    defaultDisabledIds: { table: { disable: true } },
+    disabledIds: { table: { disable: true } },
+    onSelectedNodes: { table: { disable: true } },
+    onToggledNodes: { table: { disable: true } },
+    onDisabledNodes: { table: { disable: true } },
+    onTreeViewState: { table: { disable: true } },
+    treeViewRef: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          '`defaultExpandAll`(비제어)와 `expandAll`(제어) 동작을 한 화면에서 비교할 수 있습니다.',
+          '- 왼쪽: 최초 전체 열림, 이후 개별 노드 확장/축소 가능',
+          '- 오른쪽: 버튼으로 전체 열기/닫기 제어, 개별 노드 확장/축소 불가',
+        ].join('\n'),
+      },
+    },
+  },
+  render: (args) => <ExpandAllOverviewDemo {...args} />,
 };
 
 // 내부 검색 vs 외부 API 검색 시뮬레이션
@@ -1354,7 +1451,7 @@ function DemoForInternalVsExternal({ ...args }: TreeViewProps) {
             ) : (
               <TreeView
                 {...args}
-                treeData={externalTreeData} // externalSearchedIds
+                treeData={externalTreeData}
                 expandedIds={externalExpandedIds}
                 quickSearchEnabled={true}
                 searchValue={externalSearchValue}
@@ -1606,11 +1703,13 @@ const HighlightingComparisonDemo = (args: TreeViewProps) => {
 
 export const HighlightingComparison: Story = {
   argTypes: {
-    // 컨트롤에서 불필요한 props 숨기기
     treeData: { table: { disable: true } },
     selectedIds: { table: { disable: true } },
     expandedIds: { table: { disable: true } },
     disabledIds: { table: { disable: true } },
+    defaultIcon: { table: { disable: true } },
+    expandedIcon: { table: { disable: true } },
+    endIcon: { table: { disable: true } },
     onSelectedNodes: { table: { disable: true } },
     onToggledNodes: { table: { disable: true } },
     onDisabledNodes: { table: { disable: true } },

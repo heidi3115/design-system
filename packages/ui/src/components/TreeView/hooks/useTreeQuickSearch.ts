@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import type { BaseTreeNodeProps } from '../TreeItem';
-import { filterTree, isMatched } from '../utils';
+import { filterTree, getNodeField, isMatched } from '../utils';
 
 export const DEFAULT_INTERNAL_DEBOUNCE = 500;
 export const DEFAULT_EXTERNAL_DEBOUNCE = 1000;
@@ -11,8 +11,9 @@ export const DEFAULT_EXTERNAL_DEBOUNCE = 1000;
  * 검색 옵션 설정
  */
 export type MatchModeType = 'partial' | 'exact' | 'startsWith';
-export type SearchOptionsProps = {
-  searchFields?: string[]; // 검색 대상 필드명
+export type SearchFieldsType<T> = keyof Exclude<BaseTreeNodeProps<T>, 'disabled' | 'children'>;
+export type SearchOptionsProps<T = unknown> = {
+  searchFields?: SearchFieldsType<T>[]; // 검색 대상 필드명 중 BaseTreeNodeProps 에서 disabled와 children 제외.
   caseSensitive?: boolean; // 대소문자 구분 여부
   matchMode?: MatchModeType; // 검색 일치 모드
 };
@@ -22,7 +23,7 @@ export type UseTreeSearchParams<T> = {
   flatTreeMap: Map<string, BaseTreeNodeProps<T>>;
   enabled?: boolean; // true : 내부 검색(자체 필터링), false : 외부 검색 (필터링 서버에 위임)
   searchValue: string;
-  searchOptions?: SearchOptionsProps;
+  searchOptions?: SearchOptionsProps<T>;
 };
 
 export type UseTreeSearchResultType<T> = {
@@ -56,8 +57,14 @@ export default function useTreeQuickSearch<T>({
     const { searchFields = ['name'], caseSensitive = false, matchMode = 'partial' } = searchOptions ?? {};
     const matchedIdList = new Set<string>();
 
-    flatTreeMap.forEach((node) => {
-      if (searchFields.some((field) => isMatched(node[field], externalSearchValue, caseSensitive, matchMode))) {
+    flatTreeMap.forEach((node: BaseTreeNodeProps<T>) => {
+      if (
+        searchFields.some(
+          (field: SearchFieldsType<T>) =>
+            Boolean(getNodeField(node, field as string)) &&
+            isMatched(getNodeField(node, field as string), externalSearchValue, caseSensitive, matchMode),
+        )
+      ) {
         matchedIdList.add(node.id);
       }
     });

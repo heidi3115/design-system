@@ -148,7 +148,7 @@ export const basicTreeData1: BaseTreeNodeProps[] = [
 ];
 
 // 샘플 데이터1 : 자산 형식
-export const sampleTreeData1: BaseTreeNodeProps[] = [
+export const sampleTreeData1: BaseTreeNodeProps<AssetTreeDataType | HighRiskTreeDataType>[] = [
   {
     id: '1',
     name: '자산구분 1',

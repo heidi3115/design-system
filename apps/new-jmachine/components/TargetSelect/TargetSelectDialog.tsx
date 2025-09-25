@@ -3,26 +3,41 @@
 import { useRef, useState } from 'react';
 
 import { Dialog, DialogHandleRefType, Input } from '@common/ui';
-import TargetSelect from './TargetSelect';
 import { SearchIcon, UserFilledIcon, XIcon } from '@common/ui/icons';
-import { EmployeeType } from '../../services/common/getSearchUsers';
-import { DeptsType } from '../../services/common/getSearchDept';
-import { ExceptionGroupsType } from '../../services/scenario/getExceptionManageGroups';
-import { minorCategoryValueMap } from '../../lib/mapper/minorCategoryTypeMap';
 import { useUpdateEffect } from '@common/utils';
-import { AssetType } from '../../services/asset/getAssets';
+import TargetSelectWrapper from './TargetSelectWrapper';
+import { type EmployeeType } from '../../services/common/getSearchUsers';
+import { type DeptsType } from '../../services/common/getSearchDept';
+import { type ExceptionGroupsType } from '../../services/scenario/getExceptionManageGroups';
+import { type AssetType } from '../../services/asset/getAssets';
+import { type TargetCategoryType } from './TargetSelectContent';
+
+export type TargetEntityType = EmployeeType | DeptsType | ExceptionGroupsType | AssetType | null;
 
 type TargetSelectDialogProps = {
-  targetType: string;
-  onTargetData?: (target: EmployeeType | DeptsType | ExceptionGroupsType | AssetType | null) => void;
+  detectTargetType: string;
+  targetCategory?: TargetCategoryType | TargetCategoryType[];
+  onTargetData?: (target: TargetEntityType) => void;
 };
 
 export default function TargetSelectDialog({
-  targetType = minorCategoryValueMap.employeeTargetType,
+  detectTargetType,
+  targetCategory = 'user',
   onTargetData,
 }: TargetSelectDialogProps) {
-  const [target, setTarget] = useState<EmployeeType | DeptsType | ExceptionGroupsType | AssetType | null>(null);
+  const [target, setTarget] = useState<TargetEntityType>(null);
   const dialogHandleRef = useRef<DialogHandleRefType>(null);
+
+  const getTargetLabel = (labelTarget: TargetEntityType): string => {
+    if (!labelTarget) return '';
+
+    if ('epyeNm' in labelTarget) return labelTarget.epyeNm;
+    if ('deptNm' in labelTarget) return labelTarget.deptNm;
+    if ('asstNm' in labelTarget) return labelTarget.asstNm;
+    if ('name' in labelTarget) return labelTarget.name;
+
+    return '';
+  };
 
   const ClearTargetIcon = () => (
     <XIcon
@@ -35,10 +50,10 @@ export default function TargetSelectDialog({
   );
 
   useUpdateEffect(() => {
-    if (targetType) {
+    if (detectTargetType) {
       setTarget(null);
     }
-  }, [targetType]);
+  }, [detectTargetType]);
 
   return (
     <Dialog
@@ -50,17 +65,7 @@ export default function TargetSelectDialog({
           type="button"
           iconLeft={SearchIcon}
           {...(target && { iconRight: ClearTargetIcon })}
-          value={
-            target
-              ? 'epyeNm' in target
-                ? target.epyeNm
-                : 'deptNm' in target
-                  ? target.deptNm
-                  : 'asstNm' in target
-                    ? target.asstNm
-                    : target.name
-              : ''
-          }
+          value={getTargetLabel(target)}
           className="group"
         />
       }
@@ -68,8 +73,9 @@ export default function TargetSelectDialog({
       className="w-320"
       buttons={['cancel']}
       isDraggable>
-      <TargetSelect
-        targetType={targetType}
+      <TargetSelectWrapper
+        detectTargetType={detectTargetType}
+        {...(Array.isArray(targetCategory) ? { targetTabList: targetCategory } : { targetType: targetCategory })}
         onSelectedData={(data) => {
           setTarget(data);
           onTargetData?.(data);

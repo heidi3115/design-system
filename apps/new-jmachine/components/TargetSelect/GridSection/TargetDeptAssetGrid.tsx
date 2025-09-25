@@ -2,6 +2,7 @@
 
 import { Button, DataTable, DataTableProps } from '@common/ui';
 import { AssetDivisionTreeType } from '../../../services/asset/getDivisionTree';
+import { DEFAULT_PAGE_SIZE } from './constant';
 
 type TargetDeptAssetGridProps = {
   targetData: AssetDivisionTreeType[];
@@ -38,7 +39,14 @@ export default function TargetDeptAssetGrid({ targetData, onSelectedData }: Targ
 
   return (
     <div className="overflow-auto h-ful w-full">
-      <DataTable rows={targetData} columns={columns} pageSize={15} isUseQuickSearch />
+      <DataTable
+        rows={targetData}
+        columns={columns}
+        pagination={{
+          pageSize: DEFAULT_PAGE_SIZE,
+        }}
+        isUseQuickSearch
+      />
     </div>
   );
 }

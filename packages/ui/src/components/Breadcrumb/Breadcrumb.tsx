@@ -29,7 +29,7 @@ export const DEFAULT_MAX_ITEM = 3;
 export type BreadcrumbItemBaseType = {
   value: string;
   label: string;
-  href: string;
+  href?: string;
   icon?: ReactNode;
   iconPosition?: string;
   target?: string;

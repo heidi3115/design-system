@@ -57,12 +57,13 @@ export default async function ScenarioPage() {
     scnrTyp: minorCategoryValueMap.singleScenarioType,
   };
 
-  const scenariosData = getScenariosServerFetch(scenarioListParam);
-
-  const complexScenariosData = getScenariosServerFetch({
+  const complexScenarioListParam = {
     ...scenarioListParam,
     scnrTyp: minorCategoryValueMap.complexScenarioType,
-  });
+  };
+
+  const scenariosData = getScenariosServerFetch(scenarioListParam);
+  const complexScenariosData = getScenariosServerFetch(complexScenarioListParam);
 
   const scenarioSearchOptions = {
     riskLevel: riskLevelCodeData,
@@ -95,10 +96,13 @@ export default async function ScenarioPage() {
         <ScenarioList
           scenarioType="complex"
           scenariosData={complexScenariosData}
-          currentSecnarioParams={scenarioListParam}
+          currentSecnarioParams={complexScenarioListParam}
+          classesListData={classesListData}
+          scenarioSearchOptions={scenarioSearchOptions}
         />
       ),
-      contentBoxType: 'box',
+      contentBoxType: 'inBox',
+      boxClassName: 'p-8',
     },
     {
       value: 'exception',

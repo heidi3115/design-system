@@ -3,7 +3,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 
-import { DataTable, DataTableProps, GradeBadge } from '@common/ui';
+import { Badge, DataTable, DataTableProps, GradeBadge, Tooltip } from '@common/ui';
 import {
   getScenariosClientFetch,
   GetScenariosRequest,
@@ -67,18 +67,60 @@ export function ScenarioListGrid({ scenarioType, scenariosData, params }: Scenar
     {
       accessorKey: 'scnrCls',
       header: '분류',
+      cell: (ctx) => {
+        const value = ctx.cell.getValue();
+
+        if (!value) return null;
+
+        return (
+          <div className="flex gap-1">
+            {value.split('|').map((item, idx) => (
+              <Tooltip key={idx} contents={item}>
+                <Badge className="h-5 font-normal">{item}</Badge>
+              </Tooltip>
+            ))}
+          </div>
+        );
+      },
     },
     {
       accessorKey: 'alrmYn',
       header: '알림 사용',
+      cell: (ctx) => {
+        const value = ctx.cell.getValue();
+
+        return (
+          <Badge status={value === 'Y' ? 'primary' : 'default'} className="w-21 h-5">
+            {value === 'Y' ? '사용' : '미사용'}
+          </Badge>
+        );
+      },
     },
     {
       accessorKey: 'explnUseYn',
       header: '소명 요청',
+      cell: (ctx) => {
+        const value = ctx.cell.getValue();
+
+        return (
+          <Badge status={value === 'Y' ? 'primary' : 'default'} className="w-21 h-5">
+            {value === 'Y' ? '사용' : '미사용'}
+          </Badge>
+        );
+      },
     },
     {
       accessorKey: 'oprStt',
       header: '운영 상태',
+      cell: (ctx) => {
+        const value = ctx.cell.getValue();
+
+        return (
+          <Badge status={value === minorCategoryValueMap.operateUse ? 'primary' : 'default'} className="w-21 h-5">
+            {value === minorCategoryValueMap.operateUse ? '사용' : '미사용'}
+          </Badge>
+        );
+      },
     },
     {
       accessorKey: 'regUser',
@@ -102,7 +144,14 @@ export function ScenarioListGrid({ scenarioType, scenariosData, params }: Scenar
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <DataTable rows={data} columns={columns} pageSize={20} isUseQuickSearch />
+      <DataTable
+        rows={data}
+        columns={columns}
+        pagination={{
+          pageSize: 20,
+        }}
+        isUseQuickSearch
+      />
     </div>
   );
 }
