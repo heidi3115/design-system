@@ -221,5 +221,3 @@ pnpm test
    * React + Vite → CSR & React Router DOM
 
 ---
-
-✅ 이제 **Node 버전(.nvmrc)**, **아이콘/토큰 스크립트**, **스토리북**, **UI 개발/변경 워크플로우**까지 포함된 전체 모노레포 README 완성입니다.
